@@ -1,19 +1,19 @@
 init <- function() {
-  setwd("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Librarian.R")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Loader_CHR2019.R")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Loader_CDC.R")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Loader_GEO.R")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Analyzer_PCA.R")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Analyzer_Kmeans.R")
-  source("~/data/AHRQ_Challenge/App_Shiny_Beta.01/init/Analyzer_Correlation.R")
+  setwd("~/data/AHRQ_Challenge/MortalityMinder/init")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Librarian.R")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Loader_CHR2019.R")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Loader_CDC.R")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Loader_GEO.R")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Analyzer_PCA.R")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Analyzer_Kmeans.R")
+  source("~/data/AHRQ_Challenge/MortalityMinder/init/Analyzer_Correlation.R")
 }
 init()
 
 
 ui <- fluidPage(
   # include css
-  tags$head(includeCSS("~/data/AHRQ_Challenge/App_Shiny_Beta.01/www/custom.css")),
+  tags$head(includeCSS("~/data/AHRQ_Challenge/MortalityMinder/www/custom.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -219,7 +219,7 @@ ui <- fluidPage(
   
   tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"),
   tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"),
-  includeScript(path = "~/data/AHRQ_Challenge/App_Shiny_Beta.01/inst/myscript.js")
+  includeScript(path = "~/data/AHRQ_Challenge/MortalityMinder/inst/myscript.js")
 )
 
 
