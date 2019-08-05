@@ -1,0 +1,150 @@
+---
+title: "Poverty NY.County Loader"
+author: "Yuxuan Wang"
+date: "6/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = file.path("~", "data", "AHRQ_Challenge", "Datasets", "RHIhub"))
+```
+
+# Basic environment settings
+
+## Packages: `dplyr`, `readr`, `readxl`, `stringr`, `lubridate`
+
+## Working directory: `~/data/AHRQ_Challenge/Datasets/RHIhub`
+```{r}
+# install and load libraries
+if (!require("readr")) {
+  install.packages("readr")
+  library("readr")
+}
+
+if (!require("readxl")) {
+  install.packages("readxl")
+  library("readxl")
+}
+
+if (!require("dplyr")) {
+  install.packages("dplyr")
+  library("dplyr")
+}
+
+if (!require("stringr")) {
+  install.packages("stringr")
+  library("stringr")
+}
+
+if (!require("lubridate")) {
+  install.packages("lubridate")
+  library("lubridate")
+}
+```
+
+# Combine datasets and replace `geoId` with `County.Code` (county fips)
+
+```{r}
+# Load raw data files
+rhi.poverty <- read_csv(
+    file = "~/data/AHRQ_Challenge/Datasets/RHIhub/Poverty-NY.csv",
+    col_types = cols(
+      metro_nonmetro = col_character(),
+      year = col_datetime(format = "%Y"),
+      county_name = col_character()
+    )
+  ) %>% 
+  
+  ## Unify names
+  rename(
+    poverty_rate = value
+  ) %>%
+  
+  ## Basic type conversion
+  # NULL
+  
+  ## General data manipulation
+  mutate(
+    # Clean county names
+    county_name = str_replace(county_name, pattern = " County", replacement = ''),
+    county_name = str_trim(county_name, side = "both")
+  )
+
+rhi.unemploy <- read_csv(
+    file = "~/data/AHRQ_Challenge/Datasets/RHIhub/Unemployment Rate-NY.csv",
+    col_types = cols(
+      metro_nonmetro = col_character(),
+      year = col_datetime(format = "%Y"),
+      county_name = col_character()
+    )
+  ) %>% 
+  
+  ## Unify names
+  rename(
+    unemploy_rate = value
+  ) %>%
+  
+  ## Basic type conversion
+  # NULL
+  
+  ## General data manipulation
+  mutate(
+    # Clean county names
+    county_name = str_replace(county_name, pattern = " County", replacement = ''),
+    county_name = str_trim(county_name, side = "both")
+  )
+
+rhi.medianIncome <- read_csv(
+    file = "~/data/AHRQ_Challenge/Datasets/RHIhub/Median Household Income-NY.csv",
+    col_types = cols(
+      metro_nonmetro = col_character(),
+      year = col_datetime(format = "%Y"),
+      county_name = col_character()
+    )
+  ) %>% 
+  
+  ## Unify names
+  rename(
+    medianIncome = value
+  ) %>%
+  
+  ## Basic type conversion
+  # NULL
+  
+  ## General data manipulation
+  mutate(
+    # Clean county names
+    county_name = str_replace(county_name, pattern = " County", replacement = ''),
+    county_name = str_trim(county_name, side = "both")
+  )
+
+# Create mapping from state name to state_fips
+rhi.map.state.nameAbbr <- data_frame(state_name = state.name, state_abbr = state.abb)
+rhi.map.state.nameFips <- read_excel(
+    path = "~/data/AHRQ_Challenge/Datasets/RHIhub/state-geocodes-v2016.xlsx",
+    trim_ws = T,
+    skip = 6,
+    col_types = c("skip", "skip", "text", "text"),
+    col_names = c("state_fips", "state_name")
+  ) %>% 
+  filter(state_fips != "00")
+
+# Combining data frames
+rhi.data.all <- purrr::reduce(
+    list(rhi.poverty, rhi.unemploy, rhi.medianIncome),
+    dplyr::full_join,
+    by = c("metro_nonmetro", "state_abbr", "county_name", "year", "geoId")
+  ) %>%
+  
+  # Replacing geoId with county fips, with name `County.Code`
+  # which matches the name of mortality file
+  left_join(rhi.map.state.nameAbbr, by = "state_abbr") %>% 
+  left_join(rhi.map.state.nameFips, by = "state_name") %>% 
+  mutate(geoId = str_replace(geoId, "us-..-", state_fips)) %>% 
+  select(year, county_name, county_fips = geoId, 
+         metro_nonmetro, poverty_rate, unemploy_rate, medianIncome)
+
+# Save to rds file
+saveRDS(rhi.data.all, file = "PovertyIndicator07-17.rds")
+```
