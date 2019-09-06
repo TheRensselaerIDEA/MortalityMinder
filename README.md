@@ -1,37 +1,5 @@
-## Welcome to GitHub Pages
+## Overview
 
-You can use the [editor on GitHub](https://github.com/TheRensselaerIDEA/MortalityMinder/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Since  2010  the  rate  of  increase  in  life  ex-pectancy in the United States (US) has stagnated and evendeclined, reversing for the US the trend toward increased lifeexpectancy that is still continuing in most nations.  The goalof this project is to develop an interactive tool, MortalityMinder, to explore trends in mortality, and identify their associated community level social determinants (SD). A key aspect of  the  tool  is  its ability  to  identify  and  explore  subpopulations (i.e.  groups of counties) exhibiting different mortality trends since 2000.   For example,  recent studies have found that “Deaths of Despair” due to suicide and substance abuse have  increased  dramatically  amongst  white  males  between the ages of 25-64 particularly in rural America.(1) Other studies found increases in maternal mortality in the US.(2) The identification of subpopulations experiencing different trendsin mortality and the characterization of their distinct demographics and SD can be used to guide the design of interven-tions and policies to decrease death and morbidity in the US,to deliver better healthcare more efficiently, and to improvethe daily lives of Americans. However, identifying more spe-cific  and  discriminating  subpopulations  is  a  major  analytic challenge.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/TheRensselaerIDEA/MortalityMinder/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Analyzing the SDs of subpopulations with troubling mortality trends can lead to an understanding of unmet healthcareneeds and community factors at the root of the problem. Providing state-of-the-art machine learning and data visualization capabilities in an open source environment,  Mortality-Minder features a multi-window interactive dashboard whichintegrates diverse public health and socioeconomic data re-sources to help decision makers solve these problems.
