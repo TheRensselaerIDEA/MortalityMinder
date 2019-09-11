@@ -468,17 +468,18 @@ chr.selector <- function (determ, year_begin, year_end) {
       tmp <- as.data.frame(chr.data.2018[[determ]])
     } else if (year == 2015) {
       tmp <- as.data.frame(chr.data.2018[[determ]])
-    } else if (year == 2014) {
-      tmp <- as.data.frame(chr.data.2018[[determ]])
-    } else if (year == 2013) {
-      tmp <- as.data.frame(chr.data.2018[[determ]])
-    } else if (year == 2012) {
-      tmp <- as.data.frame(chr.data.2018[[determ]])
-    } else if (year == 2011) {
-      tmp <- as.data.frame(chr.data.2018[[determ]])
-    } else if (year == 2010) {
-      tmp <- as.data.frame(chr.data.2018[[determ]])
     }
+    # else if (year == 2014) {
+    #   tmp <- as.data.frame(chr.data.2018[[determ]])
+    # } else if (year == 2013) {
+    #   tmp <- as.data.frame(chr.data.2018[[determ]])
+    # } else if (year == 2012) {
+    #   tmp <- as.data.frame(chr.data.2018[[determ]])
+    # } else if (year == 2011) {
+    #   tmp <- as.data.frame(chr.data.2018[[determ]])
+    # } else if (year == 2010) {
+    #   tmp <- as.data.frame(chr.data.2018[[determ]])
+    # }
     
     i <- 0
     for (colname in colnames(tmp)) {

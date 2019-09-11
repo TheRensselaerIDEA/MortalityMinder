@@ -84,6 +84,5 @@ if (!require("urbnmapr", character.only = T)) {
   require("urbnmapr", character.only = T)
 }
 
-
 # Clean-up's
 rm(list = ls(all.names = T))
