@@ -35,9 +35,10 @@ theme.line.mort <- function() {
 color.line.cluster <- function() {
   scale_color_manual(
     name = "Cluster",
+    #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
     values = colorRampPalette(
-      c("#ffc4c4", "#ff8f8f", "#ff5454", 
-        "#ff1414", "#a80000")
+      c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
+      
     )(4),
     guide = guide_legend(reverse = T)
   )

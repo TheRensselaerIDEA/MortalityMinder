@@ -2,7 +2,7 @@
 # Author: 
 #   UI:Shengjin Li
 #   Server: Yuxuan Wang
-#
+#   Graph: Ziyi Wang
 
 source("Source.R")
 library(shinyWidgets)
@@ -12,7 +12,13 @@ library(RUnit)
 library(randomForest)
 library(lubridate)
 library(forcats)
-
+library(htmltools)
+deps <- list("topojson.min.js", 
+             htmlDependency(name = "d3-scale-chromatic",
+                            version = "1.3.3",
+                            src = list(href = "https://d3js.org/"),
+                            script = "d3-scale-chromatic.v1.min.js")
+)
 #-----------------
 state.list <- state.abb
 names(state.list) <- state.name
@@ -130,13 +136,26 @@ ui <- fluidPage(
           ),
           tags$div(
             class = "col2_um",
-            plotOutput("geo_mort_change1",width="100%",height="100%")
-          ),
-          tags$div(
-            class = "col2_ur",
-            plotOutput("geo_mort_change2",width="100%",height="100%")
+            #plotOutput("geo_mort_change1",width="100%",height="100%")
+            tags$div(
+              id = "wrapper",
+              tags$button(
+                id = "play",
+                "play"
+              ),
+              tags$span(
+                id = "clock",
+                "year"
+              )
+            ),
+            d3Output("d3", width = '100%', height = '100%')
             
           )
+          # tags$div(
+          #   class = "col2_ur"
+          #   #plotOutput("geo_mort_change2",width="100%",height="100%")
+          #   
+          # )
         ),
         tags$div(
           class = "col2_lower",
@@ -497,6 +516,21 @@ server <- function(input, output) {
       )
     
   })
+  
+  
+  data_to_json <- function(data) {
+    jsonlite::toJSON(data, dataframe = "rows", auto_unbox = FALSE, rownames = TRUE)
+  }
+  output$d3 <- renderD3({
+    data_geo <- jsonlite::read_json("all-counties.json")
+    data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
+    r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
+         d3_version = 3,
+         dependencies = "topojson.min.js",
+         css = "geoattr.css",
+         script = "d3.js")
+  })
+  
 }
 
 shinyApp(ui = ui, server = server)
