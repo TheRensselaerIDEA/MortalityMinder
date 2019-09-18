@@ -64,7 +64,7 @@ LIBS_RC <- lapply(
     rc <- c()
     for (p in lib_vec) {
       if (!require(p, character.only = T)) {
-        # install.packages(p)
+         install.packages(p)
         rc <- c(rc, require(p, character.only = T))
       }
     }
@@ -74,12 +74,12 @@ LIBS_RC <- lapply(
 
 # SPECIAL PACKAGES
 if (!require("devtools", character.only = T)) {
-  # install.packages("devtools")
+   install.packages("devtools")
   require("devtools", character.only = T)
 }
 
 if (!require("urbnmapr", character.only = T)) {
-  # devtools::install_github("UrbanInstitute/urbnmapr")
+   devtools::install_github("UrbanInstitute/urbnmapr")
   require("urbnmapr", character.only = T)
 }
 

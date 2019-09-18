@@ -154,149 +154,149 @@ chr.unite.h <- function(df.list1, df.list2) {
 }
 
 # 2019 dat
-chr.data.2019 <- lapply(
-    # Sheet selected
-    2:5,
-    
-    # Importation function -> combine all states' data (vertical combination)
-    function(sheet, fnames) {
-      purrr::reduce(
-        lapply(
-          fnames,
-          chr.reader,
-          sheet
-        ),
-        chr.unite.v
-      )
-    },
-    
-    # File names
-    chr.fnames.2019 <- sapply(
-      state.name,  # this is builtin variable
-      function(state) {
-        paste("../data/CHR/2019/", state, ".xls", sep = '')
-      }
-    )
-  ) %>%
-  purrr::reduce(
-    chr.unite.h
-  )
+# chr.data.2019 <- lapply(
+#     # Sheet selected
+#     2:5,
+#     
+#     # Importation function -> combine all states' data (vertical combination)
+#     function(sheet, fnames) {
+#       purrr::reduce(
+#         lapply(
+#           fnames,
+#           chr.reader,
+#           sheet
+#         ),
+#         chr.unite.v
+#       )
+#     },
+#     
+#     # File names
+#     chr.fnames.2019 <- sapply(
+#       state.name,  # this is builtin variable
+#       function(state) {
+#         paste("../data/CHR/2019/", state, ".xls", sep = '')
+#       }
+#     )
+#   ) %>%
+#   purrr::reduce(
+#     chr.unite.h
+#   )
 
 # 2018 dat
-chr.data.2018 <- lapply(
-  # Sheet selected
-  2:5,
-  
-  # Importation function -> combine all states' data (vertical combination)
-  function(sheet, fnames) {
-    purrr::reduce(
-      lapply(
-        fnames,
-        chr.reader,
-        sheet
-      ),
-      chr.unite.v
-    )
-  },
-  
-  # File names
-  chr.fnames.2018 <- sapply(
-    state.name,  # this is builtin variable
-    function(state) {
-      paste("../data/CHR/2018/", state, ".xls", sep = '')
-    }
-  )
-) %>%
-  purrr::reduce(
-    chr.unite.h
-  )
+# chr.data.2018 <- lapply(
+#   # Sheet selected
+#   2:5,
+#   
+#   # Importation function -> combine all states' data (vertical combination)
+#   function(sheet, fnames) {
+#     purrr::reduce(
+#       lapply(
+#         fnames,
+#         chr.reader,
+#         sheet
+#       ),
+#       chr.unite.v
+#     )
+#   },
+#   
+#   # File names
+#   chr.fnames.2018 <- sapply(
+#     state.name,  # this is builtin variable
+#     function(state) {
+#       paste("../data/CHR/2018/", state, ".xls", sep = '')
+#     }
+#   )
+# ) %>%
+#   purrr::reduce(
+#     chr.unite.h
+#   )
 
 # 2017 dat
-chr.data.2017 <- lapply(
-  # Sheet selected
-  2:5,
-  
-  # Importation function -> combine all states' data (vertical combination)
-  function(sheet, fnames) {
-    purrr::reduce(
-      lapply(
-        fnames,
-        chr.reader,
-        sheet
-      ),
-      chr.unite.v
-    )
-  },
-  
-  # File names
-  chr.fnames.2017 <- sapply(
-    state.name,  # this is builtin variable
-    function(state) {
-      paste("../data/CHR/2017/", state, ".xls", sep = '')
-    }
-  )
-) %>%
-  purrr::reduce(
-    chr.unite.h
-  )
+# chr.data.2017 <- lapply(
+#   # Sheet selected
+#   2:5,
+#   
+#   # Importation function -> combine all states' data (vertical combination)
+#   function(sheet, fnames) {
+#     purrr::reduce(
+#       lapply(
+#         fnames,
+#         chr.reader,
+#         sheet
+#       ),
+#       chr.unite.v
+#     )
+#   },
+#   
+#   # File names
+#   chr.fnames.2017 <- sapply(
+#     state.name,  # this is builtin variable
+#     function(state) {
+#       paste("../data/CHR/2017/", state, ".xls", sep = '')
+#     }
+#   )
+# ) %>%
+#   purrr::reduce(
+#     chr.unite.h
+#   )
 
 # 2016 dat
-chr.data.2016 <- lapply(
-  # Sheet selected
-  2:5,
-  
-  # Importation function -> combine all states' data (vertical combination)
-  function(sheet, fnames) {
-    purrr::reduce(
-      lapply(
-        fnames,
-        chr.reader,
-        sheet
-      ),
-      chr.unite.v
-    )
-  },
-  
-  # File names
-  chr.fnames.2016 <- sapply(
-    state.name,  # this is builtin variable
-    function(state) {
-      paste("../data/CHR/2016/", state, ".xls", sep = '')
-    }
-  )
-) %>%
-  purrr::reduce(
-    chr.unite.h
-  )
+# chr.data.2016 <- lapply(
+#   # Sheet selected
+#   2:5,
+#   
+#   # Importation function -> combine all states' data (vertical combination)
+#   function(sheet, fnames) {
+#     purrr::reduce(
+#       lapply(
+#         fnames,
+#         chr.reader,
+#         sheet
+#       ),
+#       chr.unite.v
+#     )
+#   },
+#   
+#   # File names
+#   chr.fnames.2016 <- sapply(
+#     state.name,  # this is builtin variable
+#     function(state) {
+#       paste("../data/CHR/2016/", state, ".xls", sep = '')
+#     }
+#   )
+# ) %>%
+#   purrr::reduce(
+#     chr.unite.h
+#   )
 
 # 2015 dat
-chr.data.2015 <- lapply(
-  # Sheet selected
-  2:5,
-  
-  # Importation function -> combine all states' data (vertical combination)
-  function(sheet, fnames) {
-    purrr::reduce(
-      lapply(
-        fnames,
-        chr.reader,
-        sheet
-      ),
-      chr.unite.v
-    )
-  },
-  
-  # File names
-  chr.fnames.2015 <- sapply(
-    state.name,  # this is builtin variable
-    function(state) {
-      paste("../data/CHR/2015/", state, ".xls", sep = '')
-    }
-  )
-) %>%
-  purrr::reduce(
-    chr.unite.h
-  )
+# chr.data.2015 <- lapply(
+#   # Sheet selected
+#   2:5,
+#   
+#   # Importation function -> combine all states' data (vertical combination)
+#   function(sheet, fnames) {
+#     purrr::reduce(
+#       lapply(
+#         fnames,
+#         chr.reader,
+#         sheet
+#       ),
+#       chr.unite.v
+#     )
+#   },
+#   
+#   # File names
+#   chr.fnames.2015 <- sapply(
+#     state.name,  # this is builtin variable
+#     function(state) {
+#       paste("../data/CHR/2015/", state, ".xls", sep = '')
+#     }
+#   )
+# ) %>%
+#   purrr::reduce(
+#     chr.unite.h
+#   )
 
 # Loaders does NOT work for the below years yet.
 
