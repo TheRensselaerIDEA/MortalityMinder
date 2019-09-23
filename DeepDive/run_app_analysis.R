@@ -1,7 +1,7 @@
 # title: "run_app_analysis"
 # author: Ross DeVito
 #
-
+library(dplyr)  # dplyr is needed for pipe syntax '%>%' 
 source("run_loaders_analyzers.R")
 
 # selected params for run
