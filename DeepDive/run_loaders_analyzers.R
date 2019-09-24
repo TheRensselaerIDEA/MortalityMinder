@@ -21,15 +21,16 @@
 current.dir <- getwd()
 
 # set working directory to current apps init
-path.to.current.app <- file.path("..", "..", "beta.03")
+path.to.current.app <- file.path("..", "beta.03")
 setwd(file.path(path.to.current.app, "init"))
 
 source("Loader_CHR2019.R")
 source("Loader_CDC.R")
-# source("Loader_GEO.R")
-# source("Analyzer_PCA.R")
-# source("Analyzer_Kmeans.R")
-# source("Analyzer_Correlation.R")
+source("Loader_GEO.R")
+source("Analyzer_PCA.R")
+source("Analyzer_Kmeans.R")
+source("Analyzer_Correlation.R")
+source("Theme.R") # for styles for plots needed in run_app_analysis, could be optional
 
 # revert to original working directory
 setwd(current.dir)
