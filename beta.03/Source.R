@@ -1,4 +1,5 @@
 setwd("init")
+source("Curl_fixer.R")
 source("Librarian.R")
 source("Loader_CHR2019.R")
 source("Loader_CDC.R")

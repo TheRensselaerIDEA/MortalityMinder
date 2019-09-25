@@ -136,26 +136,13 @@ ui <- fluidPage(
           ),
           tags$div(
             class = "col2_um",
-            #plotOutput("geo_mort_change1",width="100%",height="100%")
-            tags$div(
-              id = "wrapper",
-              tags$button(
-                id = "play",
-                "play"
-              ),
-              tags$span(
-                id = "clock",
-                "year"
-              )
-            ),
-            d3Output("d3", width = '100%', height = '100%')
-            
+            plotOutput("geo_mort_change1",width="100%",height="100%")
+          ),
+          tags$div(
+            class = "col2_ur",
+            plotOutput("geo_mort_change2",width="100%",height="100%")
+
           )
-          # tags$div(
-          #   class = "col2_ur"
-          #   #plotOutput("geo_mort_change2",width="100%",height="100%")
-          #   
-          # )
         ),
         tags$div(
           class = "col2_lower",

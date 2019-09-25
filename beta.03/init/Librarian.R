@@ -43,7 +43,7 @@ LIBS_PLOT <- c(
   "ggplot2", "plotly",
   
   # Choropleth plot
-  "RUnit", "mapproj"
+  "RUnit", "mapproj", "maps"
 )
 
 
@@ -75,7 +75,7 @@ LIBS_RC <- lapply(
 # SPECIAL PACKAGES
 if (!require("devtools", character.only = T)) {
    install.packages("devtools")
-  require("devtools", character.only = T)
+   require("devtools", character.only = T)
 }
 
 if (!require("urbnmapr", character.only = T)) {

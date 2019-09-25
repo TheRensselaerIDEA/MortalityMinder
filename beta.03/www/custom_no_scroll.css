@@ -265,7 +265,7 @@
 
 .col2_um {
   float:left;
-  width:calc(100%/3*2);
+  width:calc(100%/3);
   height:100%;
   overflow:scroll;
   z-index:99999;
