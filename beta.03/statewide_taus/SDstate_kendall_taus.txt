@@ -1,0 +1,529 @@
+"chr_code"
+"kendall_cor"
+"kendall_p"
+"Direction"
+"1"
+"Number Of Chlamydia Cases"
+0.485260757306924
+4.46629581116976e-05
+"Destructive"
+"2"
+"Percentage Of Low Birthweight"
+0.324504862508978
+0.00278483714747702
+"Destructive"
+"3"
+"Chlamydia Rate"
+0.312317617429002
+0.0082853081800447
+"Destructive"
+"4"
+"Number Of Mental Health Providers"
+0.281167638731213
+0.0360197088253132
+"Destructive"
+"5"
+"Presence Of Violation"
+0.274712160486108
+0.0258827528024162
+"Destructive"
+"6"
+"Mental Health Providers Ratio"
+0.253937612859963
+0.0531773656936557
+"Protective"
+"7"
+"Primary Care Physicians Ratio"
+0.251803499169381
+0.0262887640647839
+"Protective"
+"8"
+"Severe Housing Cost Burden"
+0.227329431505625
+0.02506497708786
+"Destructive"
+"9"
+"Percentage Of Children In Poverty (Hispanic)"
+0.218694396370162
+0.0995716443768016
+"Protective"
+"10"
+"Physical Environment"
+0.216920846811961
+0.0384611195359755
+"Destructive"
+"11"
+"Percentage Of Severe Housing Problems"
+0.208450862799275
+0.0399422282874184
+"Destructive"
+"12"
+"Number Of American Indian/Alaskan Native"
+0.2006812971016
+0.0480565795453333
+"Destructive"
+"13"
+"Homeownership Percentage"
+0.197438364387238
+0.0516770396442953
+"Protective"
+"14"
+"Dentist Ratio"
+0.193637065371959
+0.0582855735326828
+"Protective"
+"15"
+"Annual Average Violent Crimes"
+0.193490381586338
+0.090099692146852
+"Destructive"
+"16"
+"Mental Health Providers Rate"
+0.192992585773572
+0.141712637450079
+"Destructive"
+"17"
+"Health Outcomes"
+0.188503268626988
+0.072059891332132
+"Destructive"
+"18"
+"Number Of Native Hawaiian/Other Pacific Islander"
+0.173003014163704
+0.108740324480157
+"Destructive"
+"19"
+"Percentage Of Adult Smoking"
+0.172266939445439
+0.0895563849834
+"Destructive"
+"20"
+"Percentage Of Physically Inactive"
+0.172185418387021
+0.0909646053386919
+"Protective"
+"21"
+"Total Number Of Limited Access To Healthy Foods"
+0.170693725386576
+0.0925227103667653
+"Destructive"
+"22"
+"American Indian/Alaskan Native Percentage"
+0.169120511327714
+0.0955674204105333
+"Destructive"
+"23"
+"Insufficient Sleep Percentage"
+0.165974083209989
+0.101897270822686
+"Destructive"
+"24"
+"Rural Percentage"
+0.164402198317151
+0.146610283368511
+"Protective"
+"25"
+"Cohort Size"
+0.163522502115784
+0.113898538005896
+"Destructive"
+"26"
+"Number Of Single Parent Households"
+0.162905994117769
+0.108548508020921
+"Destructive"
+"27"
+"Violent Crime Rate"
+0.162485326256485
+0.149055987318585
+"Destructive"
+"28"
+"Graduation Rate"
+0.158977399333772
+0.123646977698993
+"Protective"
+"29"
+"Mentally Unhealthy Days"
+0.151815156680227
+0.134605720176175
+"Destructive"
+"30"
+"Non-Hispanic White Percentage"
+0.151815156680227
+0.134605720176175
+"Protective"
+"31"
+"Number Of Uninsured"
+0.145522300444777
+0.15152490183455
+"Destructive"
+"32"
+"Food Insecurity Number"
+0.144505951468709
+0.155909857389423
+"Destructive"
+"33"
+"Total Number Of Uninsured Adults"
+0.143949086385914
+0.155997730669772
+"Destructive"
+"34"
+"Teenagers Birth Rate"
+0.141962553376819
+0.230101124765703
+"Destructive"
+"35"
+"Overcrowding"
+0.141623313456174
+0.162889101879851
+"Destructive"
+"36"
+"Percentage Older Than 65"
+0.139229444209327
+0.170017370984102
+"Protective"
+"37"
+"Average Daily Pm25"
+0.139094195122614
+0.176818752553439
+"Protective"
+"38"
+"Diabetes Prevalence Percentage"
+0.134796771516617
+0.187331409114412
+"Protective"
+"39"
+"Number Of Dentists"
+0.134277157034581
+0.208585037604661
+"Destructive"
+"40"
+"Number Of Households"
+0.12982137066816
+0.200849389957536
+"Destructive"
+"41"
+"Other Primary Care Providers Ratio"
+0.12982137066816
+0.200849389957536
+"Protective"
+"42"
+"Hispanic Percentage"
+0.12821694579729
+0.206367702968874
+"Destructive"
+"43"
+"Number Of Hispanic"
+0.12597831599823
+0.214821763827582
+"Destructive"
+"44"
+"Uninsured Children Percentage"
+0.12192408956184
+0.229519112606273
+"Protective"
+"45"
+"Number Of Rural"
+0.120379816437748
+0.235579910841963
+"Destructive"
+"46"
+"Native Hawaiian/Other Pacific Islander Percentage"
+0.119316770248538
+0.252604783250869
+"Destructive"
+"47"
+"Association Rate"
+0.118806224066013
+0.241758522651587
+"Protective"
+"48"
+"Total Number Of Uninsured Children"
+0.117430492816825
+0.248007968348894
+"Destructive"
+"49"
+"Households With Severe Housing Cost Burden Percentage"
+0.117204447385253
+0.248055605723537
+"Destructive"
+"50"
+"Some Collage Edu Population"
+0.109338377090941
+0.281229022679962
+"Destructive"
+"51"
+"Income Ratio"
+0.109338377090941
+0.281229022679962
+"Destructive"
+"52"
+"Percentage Of Children In Poverty"
+0.107999068158898
+0.288155359290279
+"Protective"
+"53"
+"Total Number Of Households With Severe Housing Cost Burden"
+0.10784296246204
+0.288193095882117
+"Destructive"
+"54"
+"Female Percentage"
+0.107765163032078
+0.288209331594123
+"Protective"
+"55"
+"Percentage Of Single Parent Households"
+0.104618734914353
+0.302517814766099
+"Destructive"
+"56"
+"Population"
+0.101472306796628
+0.317291119571452
+"Destructive"
+"57"
+"Other Primary Care Providers Rate"
+0.100831234460986
+0.321003425522948
+"Destructive"
+"58"
+"Number Of Some College"
+0.0983258786789033
+0.332529687449433
+"Destructive"
+"59"
+"Percentage Younger Than 18"
+0.0983258786789033
+0.332529687449433
+"Protective"
+"60"
+"Socio-Economic"
+0.0956725132227425
+0.361280353538393
+"Destructive"
+"61"
+"Percentage Of Accessing To Exercise Opportunities"
+0.0951794505611784
+0.348233065407247
+"Destructive"
+"62"
+"Number Of African American"
+0.0933598064647478
+0.360148685694423
+"Destructive"
+"63"
+"Percentage Of Workers Who Drive Alone In Lone Commute"
+0.0898461488665644
+0.376784907869577
+"Protective"
+"64"
+"Number Of Unemployed"
+0.086693652415106
+0.393751789938076
+"Destructive"
+"65"
+"Number Of People Not Proficient In English"
+0.0841669427961286
+0.417173638151405
+"Destructive"
+"66"
+"Number Of Asian"
+0.0840087217483595
+0.410986342190971
+"Destructive"
+"67"
+"Physically Unhealthy Days"
+0.0810205240314164
+0.424591065757421
+"Destructive"
+"68"
+"Clinical Care"
+0.0805164715240903
+0.442305509957964
+"Protective"
+"69"
+"Primary Care Physicians Rate"
+0.0789042031195862
+0.487680018676792
+"Protective"
+"70"
+"Labor Force"
+0.0778740959136914
+0.442800573663458
+"Destructive"
+"71"
+"Percentage Of Some College"
+0.0731544537371041
+0.470934669374012
+"Destructive"
+"72"
+"Rate Of Preventable Hospital Stays"
+0.0687383490151467
+0.504890074576508
+"Protective"
+"73"
+"Number Of Associations"
+0.0662673225034336
+0.51933962966888
+"Destructive"
+"74"
+"Food Insecure Percentage"
+0.064070389418217
+0.529906219151205
+"Destructive"
+"75"
+"Number Of Workers Who Drive Alone"
+0.0629436948694107
+0.53513478045441
+"Destructive"
+"76"
+"Number Of Primary Care Physicians"
+0.0620586923134906
+0.597965342841224
+"Destructive"
+"77"
+"Total Number Of Homeowners"
+0.0566493253824697
+0.576729559592061
+"Destructive"
+"78"
+"Percentage Of Excessive Drinking"
+0.0542758850307546
+0.592715446562986
+"Destructive"
+"79"
+"Percentage Of Screened"
+0.0523123118933949
+0.613498273290731
+"Protective"
+"80"
+"African American Percentage"
+0.0464098147364424
+0.647396022000359
+"Destructive"
+"81"
+"Health Overall Factors"
+0.0445208724897911
+0.670962114614338
+"Destructive"
+"82"
+"Children Eligible For Free Or Reduced Price Lunch Percentage"
+0.0435683397086907
+0.670073320666398
+"Destructive"
+"83"
+"Asian Percentage"
+0.0432633866187175
+0.669835583673473
+"Destructive"
+"84"
+"Percentage Of Vaccinated"
+0.0420454208652878
+0.681023697697609
+"Destructive"
+"85"
+"20th Percentile Income"
+0.0401169585009926
+0.692573774054511
+"Protective"
+"86"
+"Frequent Mental Distress	Percentage"
+0.0369705303832677
+0.715592424703562
+"Destructive"
+"87"
+"Percentage Of Unemployed"
+0.0353973163244052
+0.727201034178024
+"Protective"
+"88"
+"80th Percentile Income"
+0.0338241022655427
+0.738872600705732
+"Destructive"
+"89"
+"Frequent Physical Distress Percentage"
+0.0338241022655427
+0.738872600705732
+"Destructive"
+"90"
+"Number Of Non-Hispanic White"
+0.0322508882066803
+0.750604645180122
+"Destructive"
+"91"
+"Uninsured Adults Percentage"
+0.0306776741478178
+0.762394646501012
+"Destructive"
+"92"
+"People Not Proficient In English Percentage"
+0.0290608586033061
+0.778854971637623
+"Protective"
+"93"
+"Residential Segregation - Non-White/White"
+0.0215442981284216
+0.874870326019996
+"Destructive"
+"94"
+"Persentage Of Adult Obesity"
+0.0189745969250102
+0.852358476747314
+"Protective"
+"95"
+"Percentage Of Alcohol Impaired"
+0.0170685622835629
+0.871827104949612
+"Destructive"
+"96"
+"Food Environment Index"
+0.0167209429985976
+0.870565443177445
+"Protective"
+"97"
+"Inadequate Facilities"
+0.0165187476180558
+0.870678097393877
+"Protective"
+"98"
+"Percentage Of Uninsured"
+0.0133723195003309
+0.895151800004442
+"Destructive"
+"99"
+"Percentage Of Fair Or Poor"
+0.0117991054414684
+0.907427680991674
+"Destructive"
+"100"
+"Dentist Rate"
+0.0114850593642132
+0.911757429670574
+"Protective"
+"101"
+"Median Household Income"
+0.0102258913826059
+0.919725713938586
+"Destructive"
+"102"
+"Health Behaviors"
+0.00852527345549191
+0.935163588093262
+"Destructive"
+"103"
+"Limited Access To Healthy Foods Percentage"
+0.00707946326488104
+0.944376536839221
+"Protective"
+"104"
+"Percentage Of Children In Poverty (White)"
+0.00405954363551804
+0.974955807497712
+"Protective"
+"105"
+"Percentage Of Driving Alone"
+0.00393303514715613
+0.969080745366671
+"Protective"
