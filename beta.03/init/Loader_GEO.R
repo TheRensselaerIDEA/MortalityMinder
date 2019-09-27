@@ -43,6 +43,8 @@ geo.namemap.county <- county.fips %>%
 geo.namemap <- dplyr::left_join(geo.namemap.state, geo.namemap.county, by = "state_name") %>% 
   dplyr::select(state_name, state_abbr, state_fips, county_name, county_fips)
 
+# Write binary version of dataframe to wd
+write_rds(geo.namemap, "geo.namemap.rds")
 
 geo.map.fetch <- function(state.abbr, data) {
   urbnmapr::counties %>% 
