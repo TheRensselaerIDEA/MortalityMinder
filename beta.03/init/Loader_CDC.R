@@ -120,8 +120,10 @@ cdc.reader.batch <- function(cdc.files, cdc.periods, cdc.cause, suppress.sub = 0
 cdc.mort.mat <- function(cdc.data.long, state.abbr, death.cause = "Despair") {
   
   tmp <- cdc.data.long
-  if (state.abbr != "ALL") {
+  if (state.abbr != "US") {
     tmp <- dplyr::filter(cdc.data.long, state_abbr == state.abbr)
+  }else {
+    tmp <- cdc.data.long
   }
   
   dplyr::filter(tmp, death_cause == death.cause) %>%

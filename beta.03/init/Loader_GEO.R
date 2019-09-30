@@ -45,11 +45,18 @@ geo.namemap <- dplyr::left_join(geo.namemap.state, geo.namemap.county, by = "sta
 
 
 geo.map.fetch <- function(state.abbr, data) {
-  urbnmapr::counties %>% 
-    dplyr::mutate(county_fips = as.character(county_fips)) %>%
-    dplyr::rename(state_abbr = state_abbv) %>%
-    dplyr::filter(state_abbr == state.abbr) %>%
-    dplyr::left_join(data, geo.data, by = "county_fips")
+  if (state.abbr != "US") {
+    urbnmapr::counties %>% 
+      dplyr::mutate(county_fips = as.character(county_fips)) %>%
+      dplyr::rename(state_abbr = state_abbv) %>%
+      dplyr::filter(state_abbr == state.abbr) %>%
+      dplyr::left_join(data, geo.data, by = "county_fips")
+  }else {
+    urbnmapr::counties %>% 
+      dplyr::mutate(county_fips = as.character(county_fips)) %>%
+      dplyr::left_join(data, geo.data, by = "county_fips")
+  }
+  
 }
 
 
