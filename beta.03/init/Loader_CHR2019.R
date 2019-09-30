@@ -133,6 +133,9 @@ chr.namemap.2019 <- bind_rows(
   as.data.frame() %>% 
   textshape::column_to_rownames("code")
 
+# Write out binary version of dataframe to wd
+write_rds(chr.namemap.2019, "chr.namemap.2019.rds")
+
 # Data files
 # Sheet 23
 chr.reader.sheet23.2019 <- function(chr.file) { 
@@ -447,6 +450,9 @@ chr.data.2019 <- readRDS("../data/CHR/CountyHealthRanking2019.rds") %>%
     -dplyr::contains("life"),
     -dplyr::contains("ypll")
   )
+
+# Write out binary version of dataframe to wd
+write_rds(chr.data.2019, "chr.data.2019.rds")
 
 # Clean-up's
 rm(
