@@ -1,16 +1,19 @@
 setwd("init")
 source("Curl_fixer.R")
 source("Librarian.R")
-# Un-commenting this temporarily; other code may depend on its functions!
-source("Loader_CHR2019.R") # Added write_rds 9/27/2019
-read_rds("chr.data.2019.rds")
-read_rds("chr.namemap.2019.rds")
-# Un-commenting this temporarily; other code may depend on its functions!
-source("Loader_CDC.R")     # Added write_rds 9/27/2019
-read_rds("cdc.data.rds")
-# Un-commenting this temporarily; other code may depend on its functions!
-source("Loader_GEO.R")     # Added write_rds 9/27/2019
-read_rds("geo.namemap.rds")
+# Separated out function definitions 10/01/2019
+#source("Loader_CHR2019.R") # Added write_rds 9/27/2019
+source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
+chr.data.2019 <- readRDS("chr.data.2019.rds")
+chr.namemap.2019 <- readRDS("chr.namemap.2019.rds")
+# Separated out function definitions 10/01/2019
+#source("Loader_CDC.R")     # Added write_rds 9/27/2019
+source("CDC_Lib.R")         # Function definitions from Loader_CDC.R
+cdc.data <- readRDS("cdc.data.rds")
+# Separated out function definitions 10/01/2019
+#source("Loader_GEO.R")     # Added write_rds 9/27/2019
+source("GEO_Lib.R")         # Function definitions from Loader_GEO.R
+geo.namemap <- readRDS("geo.namemap.rds")
 source("Analyzer_PCA.R")
 source("Clustering_Lib.R")
 source("Analyzer_Correlation.R")
