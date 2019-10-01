@@ -436,6 +436,7 @@ server <- function(input, output) {
   # Mortality Trend Cluster by County
   output$geo_cluster_kmean <- renderPlot({
     
+    # draw.geo.cluster is defined in init/Theme.R
     if(input$state_choice == "United States"){
       draw.geo.cluster("US", mort.cluster.ord())
     }else{
