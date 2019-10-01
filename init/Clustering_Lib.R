@@ -79,10 +79,11 @@ km.func <- function(data.mat, cluster.num = 4, seed = 200) {
 #' 
 #' @note implemented in this way so that if/when additional clustering method
 #'        is added, it can be added to function in an else if
+#' @note "diana" not yet implemented
 #'
 #' @param county.data data.frame in which one column is "county_fips" and other columns
 #'                     are data to cluster by
-#' @param cluster.method method to be used to cluster counties. One of set {"kmeans",}
+#' @param cluster.method method to be used to cluster counties. One of set {"kmeans", "diana"}
 #' @param cluster.num optional argument used by clustering methods where you must provide
 #'                      desired number of clusters (e.g. kmeans)
 #' @param seed random seed to be used by clustering algorithm
@@ -101,6 +102,9 @@ km.func <- function(data.mat, cluster.num = 4, seed = 200) {
 cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4, seed=200) {
   if (cluster.method == "kmeans"){
     return(km.func(county.data, cluster.num, seed))
+  } else if (cluster.method == "diana") {
+    # insert diana clustering here
+    stop("diana clustering not yet implemented in cluster.counties()")
   }
 }
 
@@ -113,7 +117,6 @@ cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4
 #'                              county_fips: unique identifier for each county
 #'                              cluster: number corresponding to cluster county belongs to 
 #' @param full.cdc.data Full cdc dataset from Loader_CDC.R cdc.data
-#' @param state String with valid state initials (is element in state.abb)
 #' @param death.cause String that matches death_cause column in full.cdc.data
 #'                      ("Despair", "Assault", "Cancer", or "Cardiovascular")
 #'
@@ -148,20 +151,19 @@ cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4
 #'                                      cluster.method="kmeans",
 #'                                      cluster.num=4)
 #' cluster.deathrates.counts <- get.cluster.deathrate.during.time(county.clusters, cdc.data, 
-#'                                                                state, death.cause)
+#'                                                                death.cause)
 #' 
 #' 
 #' get.cluster.deathrate.during.time(mort.cluster.raw(), 
-#'                                   cdc.data, 
-#'                                   state=input$state_choice, 
+#'                                   cdc.data,
 #'                                   death.cause=input$death_cause)
 #' 
 #' @author Ross DeVito
 #' @export
-get.cluster.deathrate.during.time <- function(mort.clusters, full.cdc.data, state, death.cause) {
+get.cluster.deathrate.during.time <- function(mort.clusters, full.cdc.data, death.cause) {
   return(
     full.cdc.data %>%
-      dplyr::filter(state_abbr == state, death_cause == death.cause) %>%
+      dplyr::filter(death_cause == death.cause) %>%
       dplyr::right_join(mort.clusters, by = "county_fips") %>%
       dplyr::group_by(period, cluster) %>%
       dplyr::summarise(
