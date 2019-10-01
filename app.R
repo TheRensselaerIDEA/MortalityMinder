@@ -257,9 +257,10 @@ server <- function(input, output) {
     #   - cluster
     
     # Currently hard-coded 4 clusters
-    cdc.data %>%
-      cdc.mort.mat(input$state_choice, input$death_cause) %>%
-      km.func(4)
+    n.clusters <- 4
+    cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
+                     cluster.method="kmeans",
+                     cluster.num=n.clusters)
   })
   
   # Cache of Weighed Avg by UNORDERED cluster
@@ -273,16 +274,8 @@ server <- function(input, output) {
     
     # Notes:
     #   - The cluster labels are UNORDERED
-    
-    cdc.data %>%
-      dplyr::filter(state_abbr == input$state_choice, death_cause == input$death_cause) %>%
-      dplyr::right_join(mort.cluster.raw(), by = "county_fips") %>%
-      dplyr::group_by(period, cluster) %>%
-      dplyr::summarise(
-        death_rate = sum(death_num) / sum(population) * 10^5,
-        count = n()
-      ) %>% 
-      dplyr::ungroup()
+
+    get.cluster.deathrate.during.time(mort.cluster.raw(), cdc.data, state=input$state_choice, death.cause=input$death_cause)
   })
   
   # Cache of MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
@@ -295,12 +288,7 @@ server <- function(input, output) {
     #   - This is a mapping from raw cluster label to ORDERED cluster.
     #       Row names are the original cluster and `ord` are the reordered cluster
     
-    mort.avg.cluster.raw() %>% 
-      dplyr::filter(period == "2015-2017") %>%
-      dplyr::arrange(death_rate) %>% 
-      dplyr::mutate(ord = as.character(1:n())) %>% 
-      dplyr::select(-c(period, death_rate)) %>% 
-      textshape::column_to_rownames("cluster")
+    get.cluster.order.map(mort.avg.cluster.raw(), time.period="2015-2017")
   })
   
   # Cache of ORDERED mortality trend cluster label calculation
@@ -310,7 +298,7 @@ server <- function(input, output) {
     #   - county_fips
     #   - cluster
 
-    dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
+    order.county.clusters(mort.cluster.raw(), mort.cluster.map())
   })
   
   # Cache of Weighed Avg by ORDERED cluster
@@ -325,7 +313,7 @@ server <- function(input, output) {
     # Notes:
     #   - The cluster labels are ORDERED
     
-    dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
+    order.cluster.deathrate.during.time(mort.avg.cluster.raw(), mort.cluster.map())
   })
 
   # -------------------------------------------------------------------------------------------------------------------------- #
