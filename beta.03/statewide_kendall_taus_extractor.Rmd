@@ -1,0 +1,125 @@
+---
+title: "Statewide Kendall's Taus Extractor"
+author: "Lilian Ngweta"
+date: "09/27/2019"
+output: html_notebook
+---
+Note: Re-used code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
+
+
+
+Reading Source.R
+```{r}
+source("Source.R")
+```
+
+Extracting Taus for all social determinants state by state
+```{r}
+# A list of all the states as abbreviations eg. "NY"
+ state.list <- state.abb
+
+# Adding full state names as row names/array indeces
+ names(state.list) <- state.name
+
+ # A for loop to go through each state to extract taus for all social determinants for each state
+for (state in state.list){ 
+  
+  # UNORDERED mortality trend cluster label calculation
+  mort.cluster.raw <- function(){
+    
+    # Variables:
+    #   - county_fips
+    #   - cluster
+    
+    # Currently hard-coded 4 clusters
+    cdc.data %>%
+      cdc.mort.mat(state, "Despair") %>%
+      km.func(4)
+  }
+  
+  # Weighed Avg by UNORDERED cluster
+  mort.avg.cluster.raw <- function(){
+    
+    # Variables:
+    #   - period
+    #   - cluster
+    #   - death_rate
+    #   - count
+    
+    # Notes:
+    #   - The cluster labels are UNORDERED
+    
+    cdc.data %>%
+      dplyr::filter(state_abbr == state, death_cause == "Despair") %>%
+      dplyr::right_join(mort.cluster.raw(), by = "county_fips") %>%
+      dplyr::group_by(period, cluster) %>%
+      dplyr::summarise(
+        death_rate = sum(death_num) / sum(population) * 10^5,
+        count = n()
+      ) %>% 
+      dplyr::ungroup()
+  }
+  
+  # MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
+  mort.cluster.map <- function(){
+    
+    # Variables:
+    #   - ord
+    
+    # Notes:
+    #   - This is a mapping from raw cluster label to ORDERED cluster.
+    #       Row names are the original cluster and `ord` are the reordered cluster
+    
+    mort.avg.cluster.raw() %>% 
+      dplyr::filter(period == "2015-2017") %>%
+      dplyr::arrange(death_rate) %>% 
+      dplyr::mutate(ord = as.character(1:n())) %>% 
+      dplyr::select(-c(period, death_rate)) %>% 
+      textshape::column_to_rownames("cluster")
+  }
+  
+  # ORDERED mortality trend cluster label calculation
+  mort.cluster.ord <- function(){
+    
+    # Variables:
+    #   - county_fips
+    #   - cluster
+    
+    dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
+  }
+  
+  # Weighed Avg by ORDERED cluster
+  mort.avg.cluster.ord <- function(){
+    
+    # Variables:
+    #   - period
+    #   - cluster
+    #   - death_rate
+    #   - count
+    
+    # Notes:
+    #   - The cluster labels are ORDERED
+    
+    dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
+  }
+  
+ # Kendall Correlation Between raw mortality rates and county health rankings social determinants
+    kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    kendall.cor <- kendall.cor %>%
+      dplyr::mutate(
+        Direction = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        kendall_cor = abs(kendall_cor),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      #dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::arrange(desc(kendall_cor))
+    #print(kendall.cor)
+    write.table(kendall.cor,file=paste("statewide_taus/", state, "state_kendall_taus.txt", sep=""),sep="\n")
+    #break
+}
+```
+
