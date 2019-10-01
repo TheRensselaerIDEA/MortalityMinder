@@ -366,7 +366,8 @@ server <- function(input, output) {
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
-        )
+        ) + 
+        scale_y_continuous(limits=c(0, 300), breaks = c(50, 100, 150, 200, 250))
     }
     
   })
