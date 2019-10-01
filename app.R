@@ -258,9 +258,11 @@ server <- function(input, output) {
     #   - cluster
     
     if (input$state_choice == "United States"){
-      cdc.data %>%
-        cdc.mort.mat("US",input$death_cause) %>%
-        km.func(7)
+      # Currently hard-coded 7 clusters
+      n.clusters <- 7
+      cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
+                       cluster.method="kmeans",
+                       cluster.num=n.clusters)
     } else{
       # Currently hard-coded 4 clusters
       n.clusters <- 4
@@ -282,22 +284,10 @@ server <- function(input, output) {
     # Notes:
     #   - The cluster labels are UNORDERED
 
-    if (input$state_choice == "United States"){
-      cdc.data %>%
-        dplyr::filter(death_cause == input$death_cause) %>%
-        dplyr::right_join(mort.cluster.raw(), by = "county_fips") %>%
-        dplyr::group_by(period, cluster) %>%
-        dplyr::summarise(
-          death_rate = sum(death_num) / sum(population) * 10^5,
-          count = n()
-        ) %>% 
-        dplyr::ungroup()
-    }else{
-      get.cluster.deathrate.during.time(mort.cluster.raw(), 
+
+    get.cluster.deathrate.during.time(mort.cluster.raw(), 
                                         cdc.data, 
-                                        state=input$state_choice, 
                                         death.cause=input$death_cause)
-    }
   })
   
   # Cache of MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
