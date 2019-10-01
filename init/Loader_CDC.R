@@ -183,6 +183,9 @@ cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.period
 cdc.data <- dplyr::bind_rows(cdc.data.despair, cdc.data.assault, cdc.data.cancer, cdc.data.cardiovascular) %>% 
   as.data.frame()
 
+# Write out binary version of dataframe to wd
+write_rds(cdc.data, "cdc.data.rds")
+
 # saveRDS(cdc.data, "../MortalityCDC_00_16.rds")
 
 # Clean-up's

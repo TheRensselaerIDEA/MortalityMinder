@@ -28,7 +28,7 @@ source("Loader_CHR2019.R")
 source("Loader_CDC.R")
 source("Loader_GEO.R")
 source("Analyzer_PCA.R")
-source("Analyzer_Kmeans.R")
+source("Clustering_Lib.R")
 source("Analyzer_Correlation.R")
 source("Theme.R") # for styles for plots needed in run_app_analysis, could be optional
 
