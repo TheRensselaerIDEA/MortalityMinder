@@ -121,9 +121,18 @@ labs.geo.cluster <- function(state.choice) {
   )
 }
 
+# draw.geo.cluster: Used in app.R to draw state and US maps
 draw.geo.cluster <- function(state.choice, mort.cluster) {
   n <- length(unique(pull(mort.cluster, "cluster")))
+  ## This saves a df for plot experimentation
+  # if (state.choice != "US"){
+  #   # geo.match.fetch: defined in GEO_Lib.R
+  #   myDf <- geo.map.fetch(state.choice, mort.cluster) %>%
+  #     dplyr::rename(VAR_ = cluster)
+  #   write_rds(myDf, "myDf.rds")
+  # }
   if (state.choice != "US"){
+    # geo.match.fetch: defined in GEO_Lib.R
     geo.map.fetch(state.choice, mort.cluster) %>%
       dplyr::rename(VAR_ = cluster) %>%
       ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
@@ -134,6 +143,7 @@ draw.geo.cluster <- function(state.choice, mort.cluster) {
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
   } else {
+    # geo.match.fetch: defined in GEO_Lib.R
     geo.map.fetch("US", mort.cluster) %>%
       dplyr::rename(VAR_ = cluster) %>%
       ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
