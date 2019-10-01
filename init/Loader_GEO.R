@@ -1,3 +1,5 @@
+source("GEO_Lib.R")
+
 map.name.abbr.state <- tibble(state_name = state.name, state_abbr = state.abb)
 map.name.fips.state <- read_excel(
     path = "../data/GEO/state-geocodes-v2016.xlsx",
@@ -46,20 +48,21 @@ geo.namemap <- dplyr::left_join(geo.namemap.state, geo.namemap.county, by = "sta
 # Write binary version of dataframe to wd
 write_rds(geo.namemap, "geo.namemap.rds")
 
-geo.map.fetch <- function(state.abbr, data) {
-  if (state.abbr != "US") {
-    urbnmapr::counties %>% 
-      dplyr::mutate(county_fips = as.character(county_fips)) %>%
-      dplyr::rename(state_abbr = state_abbv) %>%
-      dplyr::filter(state_abbr == state.abbr) %>%
-      dplyr::left_join(data, geo.data, by = "county_fips")
-  }else {
-    urbnmapr::counties %>% 
-      dplyr::mutate(county_fips = as.character(county_fips)) %>%
-      dplyr::left_join(data, geo.data, by = "county_fips")
-  }
-  
-}
+# Moved to GEO_Lib.R (01 Oct 2019)
+# geo.map.fetch <- function(state.abbr, data) {
+#   if (state.abbr != "US") {
+#     urbnmapr::counties %>% 
+#       dplyr::mutate(county_fips = as.character(county_fips)) %>%
+#       dplyr::rename(state_abbr = state_abbv) %>%
+#       dplyr::filter(state_abbr == state.abbr) %>%
+#       dplyr::left_join(data, geo.data, by = "county_fips")
+#   }else {
+#     urbnmapr::counties %>% 
+#       dplyr::mutate(county_fips = as.character(county_fips)) %>%
+#       dplyr::left_join(data, geo.data, by = "county_fips")
+#   }
+#   
+# }
 
 
 # Clean-up's
