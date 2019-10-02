@@ -285,9 +285,11 @@ server <- function(input, output) {
     #   - The cluster labels are UNORDERED
 
 
-    get.cluster.deathrate.during.time(mort.cluster.raw(), 
-                                        cdc.data, 
-                                        death.cause=input$death_cause)
+    get.cluster.deathrate.during.time(
+      mort.cluster.raw(), 
+      cdc.data, 
+      death.cause=input$death_cause
+    )
   })
   
   # Cache of MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
@@ -300,7 +302,7 @@ server <- function(input, output) {
     #   - This is a mapping from raw cluster label to ORDERED cluster.
     #       Row names are the original cluster and `ord` are the reordered cluster
     
-    get.cluster.order.map(mort.avg.cluster.raw(), time.period="2015-2017")
+    get.cluster.order.map(mort.avg.cluster.raw(), time.period = "2015-2017")
   })
   
   # Cache of ORDERED mortality trend cluster label calculation
@@ -336,12 +338,12 @@ server <- function(input, output) {
     if (input$state_choice == "United States"){
       
       ggplot(
-        mort.avg.cluster.ord(),
-        aes(
-          x = period, y = death_rate, 
-          color = cluster, group = cluster
-        )
-      ) + 
+          mort.avg.cluster.ord(),
+          aes(
+            x = period, y = death_rate, 
+            color = cluster, group = cluster
+          )
+        ) + 
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
@@ -350,24 +352,22 @@ server <- function(input, output) {
         guides(
           color = guide_legend(reverse = T)
         )
-      
     } else {
+      
       ggplot(
-        mort.avg.cluster.ord(),
-        aes(
-          x = period, y = death_rate, 
-          color = cluster, group = cluster
-        )
-      ) + 
+          mort.avg.cluster.ord(),
+          aes(
+            x = period, y = death_rate, 
+            color = cluster, group = cluster
+          )
+        ) + 
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
         color.line.cluster(input$state_choice) +
         theme.line.mort() + 
-        guides(
-          color = guide_legend(reverse = T)
-        ) + 
-        scale_y_continuous(limits=c(0, 300), breaks = c(50, 100, 150, 200, 250))
+        guides(color = guide_legend(reverse = T)) + 
+        scale_y_continuous(limits = c(0, 300), breaks = c(50, 100, 150, 200, 250))
     }
     
   })
@@ -519,20 +519,25 @@ server <- function(input, output) {
     
     kendall.cor %>%
       dplyr::mutate(
-        Direction = dplyr::if_else(
+        DIR = dplyr::if_else(
           kendall_cor <= 0,
           "Protective",
           "Destructive"
         ),
-        kendall_cor = abs(kendall_cor),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(10, kendall_cor) %>%
+      dplyr::top_n(15, kendall_cor) %>%
       ggplot(
-        aes(x = reorder(chr_code, kendall_cor), y = kendall_cor, color = Direction, fill = Direction)
+        aes(
+          x = reorder(chr_code, kendall_cor), 
+          y = kendall_cor, 
+          color = DIR, 
+          fill = DIR)
       ) + 
+      
+      # Lolipop chart
       geom_point(stat = 'identity', size = 8) + 
       geom_segment(
         size = 1,
@@ -541,37 +546,49 @@ server <- function(input, output) {
           x = reorder(chr_code, kendall_cor), 
           yend = kendall_cor, 
           xend = reorder(chr_code, kendall_cor),
-          color = Direction
+          color = DIR
         )
+      ) +
+      
+      # Labels
+      geom_text(
+        aes(
+          label = chr_code, 
+          y = ifelse(DIR == "Protective", 0.1, -0.1),
+          hjust = ifelse(DIR == "Protective", 0, 1)
+        ), 
+        color = "black", 
+        size = 4
       ) +
       geom_text(
         aes(label = round(kendall_cor, 2)), 
         color = "black", 
-        size = 2
+        size = 2.5
       ) +
+      
+      # Coordinates
       coord_flip() + 
-      scale_y_continuous(
-        breaks = seq(
-          round(min(kendall.cor$kendall_cor), 2) - .03,
-          round(max(kendall.cor$kendall_cor), 2) + .03,
-          by = .1
-        )
-      ) +
+      scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
+      
+      # Themes
       geom_hline(yintercept = .0, linetype = "dashed") + 
       labs(
-        title = "Most Influential Social Determinants of 2019",
+        title = "Most Influential Social Determinants",
         subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
         caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
         y = "Correlation (tau)",
-        x = NULL
+        x = NULL,
+        fill = "Direction",
+        color = "Direction"
       ) + 
       theme_minimal() +
       theme.text() + 
       theme.background() + 
       theme(
-        axis.text.y = element_text(size = 12),
+        axis.text.y = element_blank(),
         axis.text.x = element_text(size = 12),
-        axis.title.x = element_text(size = 12)
+        axis.title.x = element_text(size = 12),
+        panel.grid.major.y = element_blank()
       )
     
   })
