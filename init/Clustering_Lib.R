@@ -1,3 +1,5 @@
+library(cluster) #should be in librarian
+
 #' Used to visualize optimal k for k means clustering
 #' 
 #' @note most recent use is beta.01
@@ -60,7 +62,7 @@ km.wssplot <- function(data, cluster.num = 25, seed = 20){
 #' 
 #' @author 
 #' @export
-km.func <- function(data.mat, cluster.num = 4, seed = 200) {
+km.func <- function(data.mat, cluster.num=4, seed=200) {
   
   set.seed(seed)
   cluster.num <- min(nrow(data.mat) - 1, cluster.num)
@@ -73,6 +75,18 @@ km.func <- function(data.mat, cluster.num = 4, seed = 200) {
       cluster = as.character(km.result$cluster)
     )
   )
+}
+
+diana.func <- function(data.mat, seed=200) {
+  set.seed(seed)
+  data.mat <- na.omit(data.mat)
+  
+  diana.res <- diana(dplyr::select(data.mat, -county_fips), 
+                     metric = "euclidean", 
+                     stand = FALSE,
+                     stop.at.k = FALSE,
+                     trace.lev = 0)
+  return(diana.res)
 }
 
 #' Clusters counties using some specified clustering method
@@ -91,8 +105,31 @@ km.func <- function(data.mat, cluster.num = 4, seed = 200) {
 #' @return a tribble with (num counties in state) rows and two columns:
 #'    county_fips: unique identifier for each county
 #'    cluster: number corresponding to cluster county belongs to
+#'    
+#'    e.g.
+#'    # A tibble: 67 x 2
+#'    county_fips cluster
+#'    <chr>       <chr>  
+#'  1 01001       1      
+#'  2 01003       4      
+#'  3 01005       2      
+#'  4 01007       4      
+#'  5 01009       4      
+#'  6 01011       2      
+#'  7 01013       2      
+#'  8 01015       1      
+#'  9 01017       1      
+#'  10 01019       4      
+#'  # … with 57 more rows
 #'
 #' @examples
+#' state <- "AL"
+#' death.cause <- "Despair"
+#' cluster.counties(cdc.mort.mat(cdc.data, state, death.cause),
+#'                  cluster.method="kmeans",
+#'                  cluster.num=4)
+#' 
+#' 
 #' cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
 #'                  cluster.method="kmeans",
 #'                  cluster.num=4)
@@ -230,6 +267,8 @@ get.cluster.order.map <- function(cluster.deathrates, time.period="2015-2017") {
 #'    county_fips: unique identifier for each county
 #'    cluster: number corresponding to cluster county belongs to, ordered such that 1 has the
 #'              lowest deathrate the highest cluster number (the number of clusters) the highest
+#'              
+#'    Same format at cluster.counties(). See for example
 #'
 #' @examples
 #' state <- "AL"
@@ -271,6 +310,8 @@ order.county.clusters <- function(county.clusters, cluster.order.map) {
 #'                      lowest deathrate the highest cluster number (the number of clusters) the highest
 #'            death_rate: average death rate for that cluster in that time window
 #'            count: number of counties in that cluster, not time variant 
+#'            
+#'          Same format at get.cluster.deathrate.during.time(). See for example
 #'
 #' @examples
 #' state <- "AL"
