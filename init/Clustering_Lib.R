@@ -187,7 +187,8 @@ cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4
 #' county.clusters <- cluster.counties(cdc.mort.mat(cdc.data, state, death.cause),
 #'                                      cluster.method="kmeans",
 #'                                      cluster.num=4)
-#' cluster.deathrates.counts <- get.cluster.deathrate.during.time(county.clusters, cdc.data, 
+#' cluster.deathrates.counts <- get.cluster.deathrate.during.time(county.clusters, 
+#'                                                                cdc.data, 
 #'                                                                death.cause)
 #' 
 #' 
@@ -234,7 +235,7 @@ get.cluster.deathrate.during.time <- function(mort.clusters, full.cdc.data, deat
 #'            4    14   4
 #'
 #' @examples
-#' cluster.deathrates <- get.cluster.deathrate.during.time(county.clusters, cdc.data, state, death.cause)
+#' cluster.deathrates <- get.cluster.deathrate.during.time(county.clusters, cdc.data, death.cause)
 #' get.cluster.order.map(cluster.deathrates)
 #' get.cluster.order.map(cluster.deathrates, "2000-2002")
 #' 
@@ -276,7 +277,7 @@ get.cluster.order.map <- function(cluster.deathrates, time.period="2015-2017") {
 #' county.clusters <- cluster.counties(cdc.mort.mat(cdc.data, state, death.cause),
 #'                                      cluster.method="kmeans",
 #'                                      cluster.num=4)
-#' cluster.deathrates <- get.cluster.deathrate.during.time(county.clusters, cdc.data, state, death.cause)
+#' cluster.deathrates <- get.cluster.deathrate.during.time(county.clusters, cdc.data, death.cause)
 #' cluster.order.map <- get.cluster.order.map(cluster.deathrates)
 #' county.clusters.ordered <- order.county.clusters(county.clusters, cluster.order.map)
 #' 
@@ -319,7 +320,7 @@ order.county.clusters <- function(county.clusters, cluster.order.map) {
 #' county.clusters <- cluster.counties(cdc.mort.mat(cdc.data, state, death.cause),
 #'                                      cluster.method="kmeans",
 #'                                      cluster.num=4)
-#' cluster.deathrates <- get.cluster.deathrate.during.time(county.clusters, cdc.data, state, death.cause)
+#' cluster.deathrates <- get.cluster.deathrate.during.time(county.clusters, cdc.data, death.cause)
 #' cluster.order.map <- get.cluster.order.map(cluster.deathrates)
 #' cluster.deathrates.ordered <- order.cluster.deathrate.during.time(cluster.deathrates, cluster.order.map)
 #' 
