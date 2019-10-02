@@ -623,10 +623,10 @@ cdc.data.imputed <-
                    cdc.data.cardiovascular.imputed) %>% 
   as.data.frame()
 
+saveRDS(cdc.data.imputed, "../data/CDC/cdc.data.imputed.Rds")
+
 ######################
 
-
-# saveRDS(cdc.data, "../MortalityCDC_00_16.rds")
 
 # Clean-up's
 rm(
