@@ -24,6 +24,7 @@ current.dir <- getwd()
 path.to.current.app <- file.path("..", "init")
 setwd(file.path(path.to.current.app))
 
+source("Librarian.R")
 source("Loader_CHR2019.R")
 source("Loader_CDC.R")
 source("Loader_GEO.R")
