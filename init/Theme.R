@@ -28,7 +28,8 @@ theme.line.mort <- function() {
     theme(
       axis.text.x = element_text(
         angle = 20
-      )
+      ),
+      panel.grid.major.x = element_blank() 
     )
 }
 
