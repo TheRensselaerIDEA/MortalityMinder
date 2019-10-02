@@ -100,7 +100,7 @@ color.geo.cluster <- function(n) {
     #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
     #c("#c6c6c6","#9e9e9e","#787878","#565656")
     values = colorRampPalette(
-      c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
+      c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
     )(n),
     guide = guide_legend(
       keyheight = unit(2, units = "mm"), 
@@ -218,7 +218,7 @@ labs.geo.mort <- function(state.choice, period.choice, death.cause) {
 
 bin.geo.mort <- function(death.cause) {
   bin <- list(
-    "Despair" = c(0, 5, 10, 15, 25, 50, 100, 200, Inf),
+    "Despair" = c(0, 5, 10, 15, 25, 35, 50, 100, 200, Inf),
     "Cardiovascular" = c(seq(0, 360, 45), Inf),
     "Assault" = c(seq(0, 40, 5), Inf),
     "Cancer" = c(seq(0, 360, 45), Inf)
