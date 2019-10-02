@@ -52,14 +52,11 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var tooltip = d3.select("body").append("div") 
         .attr("class", "tooltip")       
         .style("opacity", 0);
-  root.attr("transform", "scale(" + 1.5 * width / 900 + ")");
-  
+  root.attr("transform", "translate(" + 250 + "," + 100 + ")");
   
   var geo = topojson.feature(us, us.objects.collection);
   //only newyork state data
-  var geo2 = geo.features.filter(function(d){
-    return d.properties.state == state;
-  });
+  var geo2 = geo.features;
   
   path = d3.geo.path();
   for(var i = 0; i < stat.length; i++){
@@ -83,10 +80,9 @@ r2d3.onRender(function(data, svg, width, height, options) {
       .attr("class", "state")
       .attr("d", path)
       .attr("fill",function(d){
-        return color(d.properties.death_rate[0]);
+          return color(d.properties.death_rate[1]);
       })
-      .attr("transform","translate(-300,0)")
-      .on("mouseover", function(d) {    
+      .on("mouseover", function(d) {    //the hovering effect
             tooltip.transition()    
             .duration(200)    
             .style("opacity", .9);    
@@ -111,7 +107,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
       .attr("text-anchor", "middle")  
       .style("font-size", "8px") 
       .style("text-decoration", "underline")  
-      .text(state + " Death of despair 2000-2002");
+      .text("National Death of despair 2000-2002");
           
   var rect = svg
             .attr("width", "100%")
@@ -122,11 +118,11 @@ r2d3.onRender(function(data, svg, width, height, options) {
           .enter()
           .append("rect")
           .attr({
-              width: 10,
+              width: 24,
               height: 5,
-              y: 50,
+              y: 150,
               x: function (d, i) {
-                  return 10 * i;
+                  return 800 + 25 * i;
               },
               fill: color
           });
@@ -137,7 +133,6 @@ r2d3.onRender(function(data, svg, width, height, options) {
     d3.select('#play')  
     .on('click', function() {  // when user clicks the play button
       if(playing == false) {  // if the map is currently playing
-      console.log("asd");
         timer = setInterval(function(){   // set a JS interval
           if(index < 5) {  
               index += 1;  // increment the current attribute counter
