@@ -39,9 +39,9 @@ color.line.cluster <- function(state.choice) {
       name = "Cluster",
       #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
       values = colorRampPalette(
-        c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
+        c("#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603")
         
-      )(4),
+      )(6),
       guide = guide_legend(reverse = T)
     )
     
