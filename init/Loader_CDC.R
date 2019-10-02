@@ -96,7 +96,7 @@ cdc.reader <- function(cdc.file, cdc.period, death.cause, suppress.sub) {
 
 
 ## Importing and Conversion
-cdc.reader.batch <- function(cdc.files, cdc.periods, cdc.cause, suppress.sub = 0.5) {
+cdc.reader.batch <- function(cdc.files, cdc.periods, cdc.cause, suppress.sub = "NA") {
   
   if (length(cdc.files) != length(cdc.periods)) {
     stop("Lengths of cdc.files and cdc.periods are not equal")
@@ -175,12 +175,22 @@ cdc.files.cardiovascular <- c(
   "../data/CDC/cardiovascular/Underlying Cause of Death, 2015-2017.txt"
 )
 
+cdc.files.allcause <- c(
+  "../data/CDC/all_cause/Underlying Cause of Death, 2000-2002.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2003-2005.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2006-2008.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2009-2011.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2012-2014.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2015-2017.txt"
+)
+
 
 cdc.data.despair <- cdc.reader.batch(cdc.files.despair, cdc.periods, "Despair")
 cdc.data.assault <- cdc.reader.batch(cdc.files.assault, cdc.periods, "Assault")
 cdc.data.cancer <- cdc.reader.batch(cdc.files.cancer, cdc.periods, "Cancer")
 cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.periods, "Cardiovascular")
-cdc.data <- dplyr::bind_rows(cdc.data.despair, cdc.data.assault, cdc.data.cancer, cdc.data.cardiovascular) %>% 
+cdc.data.allcause <- cdc.reader.batch(cdc.files.allcause, cdc.periods, "All Cause")
+cdc.data <- dplyr::bind_rows(cdc.data.despair, cdc.data.assault, cdc.data.cancer, cdc.data.cardiovascular, cdc.data.allcause) %>% 
   as.data.frame()
 
 # Write out binary version of dataframe to wd
@@ -196,11 +206,13 @@ rm(
     "cdc.files.assault", 
     "cdc.files.cancer",
     "cdc.files.cardiovascular",
-    
+    "cdc.files.allcause",
+  
     # Comment out the three lines below to keep individual data frames
     "cdc.data.assault",
     "cdc.data.cancer",
     "cdc.data.despair",
-    "cdc.data.cardiovascular"
+    "cdc.data.cardiovascular",
+    "cdc.data.allcause"
   )
 )
