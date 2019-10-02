@@ -96,7 +96,7 @@ cdc.reader <- function(cdc.file, cdc.period, death.cause, suppress.sub) {
 
 
 ## Importing and Conversion
-cdc.reader.batch <- function(cdc.files, cdc.periods, cdc.cause, suppress.sub = "NA") {
+cdc.reader.batch <- function(cdc.files, cdc.periods, cdc.cause, suppress.sub = 0.5) {
   
   if (length(cdc.files) != length(cdc.periods)) {
     stop("Lengths of cdc.files and cdc.periods are not equal")
