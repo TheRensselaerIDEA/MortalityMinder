@@ -258,8 +258,8 @@ server <- function(input, output) {
     #   - cluster
     
     if (input$state_choice == "United States"){
-      # Currently hard-coded 7 clusters
-      n.clusters <- 7
+      # Currently hard-coded 6 clusters
+      n.clusters <- 6
       cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
