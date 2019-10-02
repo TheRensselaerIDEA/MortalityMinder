@@ -264,8 +264,8 @@ server <- function(input, output) {
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
     } else{
-      # Currently hard-coded 6 clusters
-      n.clusters <- 6
+      # Currently hard-coded 3 clusters
+      n.clusters <- 3
       cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
@@ -399,7 +399,7 @@ server <- function(input, output) {
     
     
     if (input$state_choice == "United States"){
-      cluster.num <- 7
+      cluster.num <- 6
       urban.data <- cdc.data %>% 
         dplyr::select(county_fips, urban_2013) %>% 
         unique() %>% 
