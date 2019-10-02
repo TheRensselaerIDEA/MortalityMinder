@@ -21,8 +21,8 @@
 current.dir <- getwd()
 
 # set working directory to current apps init
-path.to.current.app <- file.path("..", "beta.03")
-setwd(file.path(path.to.current.app, "init"))
+path.to.current.app <- file.path("..", "init")
+setwd(file.path(path.to.current.app))
 
 source("Loader_CHR2019.R")
 source("Loader_CDC.R")
