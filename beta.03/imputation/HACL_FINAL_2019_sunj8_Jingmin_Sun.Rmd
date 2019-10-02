@@ -1,0 +1,1120 @@
+---
+title: "HACL 2019 Final Notebook"
+author: "Jingmin Sun"
+date: "8/13/2019"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+  html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Notebook User Guide
+
+
+
+<!-- Expand this list as necessary for your notebook -->
+Executing this R notebook requires some subset of the following packages:
+
+* `ggplot2`
+* `tidyverse`
+* `glue`
+* `VIM`
+* `DMwR`
+* `Amelia`
+* `randomForest`
+* `nnet`
+* `urbnmapr`
+* `viridis`
+* `matrixStats`
+
+These will be installed and loaded as necessary. 
+
+<!-- The `include=FALSE` option prevents your code from being shown at all -->
+```{r,include=FALSE}
+# This code will install required packages if they are not already installed
+
+if (!require("ggplot2")) {
+   install.packages("ggplot2",repos = "http://cran.us.r-project.org")
+   library(ggplot2)
+}
+
+if (!require("knitr")) {
+   install.packages("knitr",repos = "http://cran.us.r-project.org")
+   library(knitr)
+}
+
+if (!require("ranger")) {
+   install.packages("ranger",repos = "http://cran.us.r-project.org")
+   library(ranger)
+}
+
+if (!require("dplyr")) {
+   install.packages("dplyr",repos = "http://cran.us.r-project.org")
+   library(dplyr)
+}
+
+if (!require("tidyr")) {
+   install.packages("tidyr",repos = "http://cran.us.r-project.org")
+   library(tidyr)
+}
+
+if (!require("gplots")) {
+  install.packages("gplots",repos = "http://cran.us.r-project.org")
+  library(gplots)
+}
+
+if (!require("reshape2")) {
+  install.packages("reshape2",repos = "http://cran.us.r-project.org")
+  library(reshape2)
+}
+
+if (!require("skimr")) {
+  install.packages("skimr",repos = "http://cran.us.r-project.org")
+  library(skimr)
+}
+
+
+if (!require("rsample")) {
+  install.packages("rsample",repos = "http://cran.us.r-project.org")
+  library(rsample)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse",repos = "http://cran.us.r-project.org")
+   library(tidyverse)
+}
+
+
+
+if (!require("curl")) {
+   install.packages("curl",repos = "http://cran.us.r-project.org")
+   library(curl)
+}
+
+
+if (!require("readxl")) {
+  install.packages("readxl",repos = "http://cran.us.r-project.org")
+  library("readxl")
+}
+
+
+if (!require("devtools")) {
+  install.packages("devtools",repos = "http://cran.us.r-project.org")
+  library("devtools")
+}
+
+if (!require("softImpute")) {
+install.packages("softImpute",repos = "http://cran.us.r-project.org")
+library(softImpute)
+}
+
+if (!require("mice")) {
+install.packages("mice",repos = "http://cran.us.r-project.org")
+library(mice)
+}
+
+
+if (!require("VIM")) {
+install.packages("VIM",repos = "http://cran.us.r-project.org")
+library(VIM)
+}
+
+if (!require("Amelia")) {
+install.packages("Amelia",repos = "http://cran.us.r-project.org")
+library(Amelia)
+}
+
+if (!require("DMwR")) {
+install.packages("DMwR",repos = "http://cran.us.r-project.org")
+library(DMwR)
+}
+
+
+if (!require("randomForest")) {
+install.packages("randomForest",repos = "http://cran.us.r-project.org")
+library(randomForest)
+}
+
+if (!require("nnet")) {
+install.packages("nnet",repos = "http://cran.us.r-project.org")
+library(nnet)
+}
+
+if (!require("urbnmapr")) {
+devtools::install_git("https://github.com/UrbanInstitute/urbnmapr.git")
+library(urbnmapr)
+}
+
+
+if (!require("viridis")) {
+install.packages("viridis",repos = "http://cran.us.r-project.org")
+library(viridis)
+}
+
+if (!require("gridExtra")) {
+install.packages("gridExtra",repos = "http://cran.us.r-project.org")
+library(gridExtra)
+}
+
+if (!require("matrixStats")) {
+install.packages("matrixStats",repos = "http://cran.us.r-project.org")
+library(matrixStats)
+}
+
+
+```
+
+
+# Overview & Problems Tackled
+
+<!-- * Provide a top-level summary of your group's work
+* Your wording should be suitable for sharing with external partners/mentors and useful to future contributors
+* Don't summarize everything, just the most important aspects of your work. What really matters?
+* Include here a snapshot of your recommendations for extending MortalityMinder app
+   + Data utilization...
+   + Analytics...
+   + User interface design...
+* Through, think of your group as consultants reporting back on a particular aspect of the application design!
+
+
+* Include data sources/locations, versions/dates, etc. * -->
+
+* We're the group of nationwide, and we are focusing on the analysis and visualization of mortality rate and corresponding determinants.
+
+*  And this part (my part) of work is to impute the missing data and to aim to establish the most complete and reliable data source for the other teammate to do further analysis.
+
+* There are many open-source imputation packages available, and the one named `Amelia` is the most suitable one for our project.
+
+# Data Description
+
+In the following part, we'll use the dataset of one cause of death -- Death of Despair as an example to illustrate the imputation method.
+
+
+The following six sets of data are the raw number of death of despair and population in a given county in the given period from CDC (`Center for Disease Control and Prevention`).
+
+We choose three-year as a block for our analysis because more people are dying in three years than in 1 year, and the suppressed data will be less. And our missing data is because they are 'suppressed' (death number is between 0-9 in the county).
+
+```{r}
+cdc_2000.2002 <-  read.delim("/academics/HACL_2019/Nationwide/CDCRawData/2000-2002.txt", header = TRUE, sep = "\t", dec = ".")
+cdc_2003.2005 <-  read.delim("/academics/HACL_2019/Nationwide/CDCRawData/2003-2005.txt", header = TRUE, sep = "\t", dec = ".")
+cdc_2006.2008 <-  read.delim("/academics/HACL_2019/Nationwide/CDCRawData/2006-2008.txt", header = TRUE, sep = "\t", dec = ".")
+cdc_2009.2011 <-  read.delim("/academics/HACL_2019/Nationwide/CDCRawData/2009-2011.txt", header = TRUE, sep = "\t", dec = ".")
+cdc_2012.2014 <-  read.delim("/academics/HACL_2019/Nationwide/CDCRawData/2012-2014.txt", header = TRUE, sep = "\t", dec = ".")
+cdc_2015.2017 <-  read.delim("/academics/HACL_2019/Nationwide/CDCRawData/2015-2017.txt", header = TRUE, sep = "\t", dec = ".")
+
+
+## If run the code locally, can be get from "/Data/20xx-20xx.txt"
+
+## For cancer "/Data/CDC-Cancer/County/20xx-20xx.txt"
+
+## For All State ""/Data/CDC-All_Cause/County/20xx-20xx.txt"
+
+```
+
+
+
+And also a combined version of these six data frames. (We combine it with python, and the code is available in appendix)
+
+
+```{r}
+cdc_dat <- read.delim("/academics/HACL_2019/Nationwide/NationCDC.txt", header = TRUE, sep = "\t", dec = ".")
+
+## If run the code locally, can be get from "/Data/NationCDC.txt"
+
+## For cancer "Data/CDC-Cancer/County/cdc_raw_cancer.txt"
+
+## For all-cause "Data/CDC-All_Cause/County/cdc_raw_all.txt"
+```
+
+And the state-level data:
+
+```{r}
+cdc_state <- readRDS("~/HACL_2019/Nationwide/CDCSTATE.Rds")
+
+## If run the code locally, can be get from "/Data/CDCSTATE.Rds"
+
+## For cancer "Data/CDC-Cancer/State/CANCERSTATE.Rds"
+
+## For all-cause "Data/CDC-All_Cause/State/ALLCAUSESTATE.Rds"
+```
+
+
+
+
+Besides that, we use the data for social determinants from CHR (`County Health Ranking`) as well. And for analyzing purpose, we choose the same three year block, and since we can only get access to the snapshot data, we will pick the last year of the period as a representation of the period. Only the last three period are available.
+
+
+```{r}
+
+# Input county health ranking data
+chr_dat_2011<-read.delim("~/HACL_2019/Nationwide/county-state-countyhealthrankings/2011.txt", header = TRUE, sep = "\t", dec = ".")[,1:46]
+
+chr_dat_2014<-read.delim("~/HACL_2019/Nationwide/county-state-countyhealthrankings/2014.txt", header = TRUE, sep = "\t", dec = ".")[,1:46]
+
+chr_dat_2017<-read.delim("~/HACL_2019/Nationwide/county-state-countyhealthrankings/2017.txt", header = TRUE, sep = "\t", dec = ".")[,1:46]
+
+## If run the code locally, can be get from "/Data/20xx.txt"
+
+
+
+
+```
+
+
+And since the data from CHR has a complicated data structure, which includes different social determinants in each year, or the same social determinants with a different name. So, we manually select 46 determinants and rename them. 
+
+
+
+# Results
+
+<!--* Break out your results by each problem you attacked -->
+
+## Problem 1 : Incomplete data in determinant matrix 
+ 
+### Methods
+
+Firstly, we will impute the determinant matrix directly, using the package `Amelia` (Explanation in Appendix), which can help us to set the bounds of each determinant. However, we don't know the bounds for each determinant exactly, so the imputed determinants matrix may not be useful. But we impute them anyway and set the bound of each determinant to their existing range.
+
+The range parameter in `Amelia` function is a matrix composed of three columns: `(n, min, max)`: $n$ stands for the index of the column that we want to set the binding on, and $\min$, $\max$ stands for the lower and upper bound corresponding to that column.
+	
+### Results
+
+The following is the process to impute CHR determinant data in 2017:
+
+
+```{r}
+
+
+chr_dat_2017_range <- colRanges(as.matrix(chr_dat_2017[,-(1:3)]),na.rm = TRUE)
+
+number_column <- c(1:nrow(chr_dat_2017_range)+3)
+
+
+chr_dat_2017_range <- cbind(number_column, chr_dat_2017_range)
+
+#Do the Amelia fitting, and produce 5 imputed output
+Amelia.Impute <- amelia(chr_dat_2017, m=5, parallel = "multicore",idvars = c("FIPS","State","County"),bounds = chr_dat_2017_range,p2s=0)
+
+
+Amelia.Output1<- Amelia.Impute$imputations$imp1
+Amelia.Output2<- Amelia.Impute$imputations$imp2
+Amelia.Output3<- Amelia.Impute$imputations$imp3
+Amelia.Output4<- Amelia.Impute$imputations$imp4
+Amelia.Output5<- Amelia.Impute$imputations$imp5
+
+Amelia_list <- list(Amelia.Output1[,-c(1:3)],Amelia.Output2[,-c(1:3)],Amelia.Output3[,-c(1:3)],Amelia.Output4[,-c(1:3)],Amelia.Output5[,-c(1:3)])
+
+#Calculate the mean output
+Amelia_mean <- Reduce("+", Amelia_list) / length(Amelia_list)
+
+#Combine it with the geographical factors
+Amelia_Result_2017 <- cbind(chr_dat_2017[,1:3], Amelia_mean)
+
+
+```
+
+
+```{r}
+
+compare.density(Amelia.Impute,  var="Length_of_Life", main = "Observed and imputed values of 'Leng of life' in 2017")
+
+```
+
+
+
+And we will do the same thing on the 2011 and 2014 determinant matrix from CHR:
+
+```{r}
+
+
+chr_dat_2014_range <- colRanges(as.matrix(chr_dat_2014[,-(1:3)]),na.rm = TRUE)
+
+number_column <- c(1:nrow(chr_dat_2014_range)+3)
+
+
+chr_dat_2014_range <- cbind(number_column, chr_dat_2014_range)
+
+#Do the Amelia fitting, and produce 5 imputed output
+Amelia.Impute <- amelia(chr_dat_2014, m=5, parallel = "multicore",idvars = c("FIPS","State","County"),bounds = chr_dat_2014_range,p2s = 0)
+
+
+Amelia.Output1<- Amelia.Impute$imputations$imp1
+Amelia.Output2<- Amelia.Impute$imputations$imp2
+Amelia.Output3<- Amelia.Impute$imputations$imp3
+Amelia.Output4<- Amelia.Impute$imputations$imp4
+Amelia.Output5<- Amelia.Impute$imputations$imp5
+
+Amelia_list <- list(Amelia.Output1[,-c(1:3)],Amelia.Output2[,-c(1:3)],Amelia.Output3[,-c(1:3)],Amelia.Output4[,-c(1:3)],Amelia.Output5[,-c(1:3)])
+
+#Calculate the mean output
+Amelia_mean <- Reduce("+", Amelia_list) / length(Amelia_list)
+
+#Combine it with the geographical factors
+Amelia_Result_2014 <- cbind(chr_dat_2014[,1:3], Amelia_mean)
+
+
+
+compare.density(Amelia.Impute,  var="HIV_prevalence", main = "Observed and imputed values of 'HIV prevalence' in 2014")
+
+chr_dat_2011_range <- colRanges(as.matrix(chr_dat_2011[,-(1:3)]),na.rm = TRUE)
+
+number_column <- c(1:nrow(chr_dat_2014_range)+3)
+
+
+chr_dat_2011_range <- cbind(number_column, chr_dat_2011_range)
+
+#Do the Amelia fitting, and produce 5 imputed output
+Amelia.Impute <- amelia(chr_dat_2011, m=5, parallel = "multicore",idvars = c("FIPS","State","County"),bounds = chr_dat_2011_range,p2s = 0)
+
+
+
+Amelia.Output1<- Amelia.Impute$imputations$imp1
+Amelia.Output2<- Amelia.Impute$imputations$imp2
+Amelia.Output3<- Amelia.Impute$imputations$imp3
+Amelia.Output4<- Amelia.Impute$imputations$imp4
+Amelia.Output5<- Amelia.Impute$imputations$imp5
+
+Amelia_list <- list(Amelia.Output1[,-c(1:3)],Amelia.Output2[,-c(1:3)],Amelia.Output3[,-c(1:3)],Amelia.Output4[,-c(1:3)],Amelia.Output5[,-c(1:3)])
+
+#Calculate the mean output
+Amelia_mean <- Reduce("+", Amelia_list) / length(Amelia_list)
+
+#Combine it with the geographical factors
+Amelia_Result_2011 <- cbind(chr_dat_2011[,1:3], Amelia_mean)
+
+compare.density(Amelia.Impute,  var="Clinical_Care", main = "Observed and imputed values of 'Clinical Care' in 2011")
+
+```
+
+As we rondomly pick one social determinants and compare the imputed and original data, we will find that the distribution does not change too much, which means our immputation is somehow reasonable. 
+
+
+
+## Problem 2: Impcomplete mortality rate
+ 
+ 
+ 
+ 
+ We can see the condition of our mortality data set, there exists a large percentage in missing values:
+ 
+```{r,warning=FALSE}
+
+#An overview of missing data
+
+missing.values <- cdc_dat %>%
+  gather(key = "key", value = "val") %>%
+  mutate(isna = is.na(val)) %>%
+  group_by(key) %>%
+  mutate(total = n()) %>%
+  group_by(key, total, isna) %>%
+  summarise(num.isna = n()) %>%
+  mutate(pct = num.isna / total * 100)
+
+
+levels <-
+    (missing.values  %>% filter(isna == T) %>% arrange(desc(pct)))$key
+
+percentage.plot <- missing.values %>%
+      ggplot() +
+        geom_bar(aes(x = reorder(key, desc(pct)), 
+                     y = pct, fill=isna), 
+                 stat = 'identity', alpha=0.8) +
+      scale_x_discrete(limits = levels) +
+      scale_fill_manual(name = "", 
+                        values = c('steelblue', 'tomato3'), labels = c("Present", "Missing")) +
+      coord_flip() +
+      labs(title = "Percentage of missing values", x =
+             'Variable', y = "% of missing values")
+
+percentage.plot
+
+```
+ 
+ 
+ 
+ 
+### Methods
+
+
+There are two methods for us to impute the mortality rate: 
+
+\textbf{A}: Using the complete determinants matrix above, and together with the mortality rate in the corresponding period, and regarding the ones with mortality rates as training sets, and others with missing rates as testing sets to fill the mortality rate in the last three periods. Then use Amelia method (without bound) and set the bounds manually to fill the mortality rate in all periods. 
+ 
+ However, this method is discarded in the end, since it will distort the covariance matrix too much, and this may because of too many randomnesses are introduced. (The Code of this part is in appendix)
+ 
+\textbf{B}:
+ With the disadvantage of the first method, we disregard the determinant matrix when filling the mortality rates. And here are our process: 
+ 
+ Firstly, we select the common data in all data sets.
+
+```{r,warning=FALSE}
+
+intersection <- intersect(cdc_dat$County.Code,cdc_2000.2002$County.Code)
+intersection <- intersect(intersection,cdc_2003.2005$County.Code)
+intersection <- intersect(intersection,cdc_2006.2008$County.Code)
+intersection <- intersect(intersection,cdc_2009.2011$County.Code)
+intersection <- intersect(intersection,cdc_2012.2014$County.Code)
+intersection <- intersect(intersection,cdc_2015.2017$County.Code)
+
+rownames(cdc_2000.2002) <-  make.names(cdc_2000.2002$County.Code, unique=TRUE)
+X2002_Population <- cdc_2000.2002$Population[which(cdc_2000.2002$County.Code %in% intersection)]
+
+rownames(cdc_2003.2005) <- make.names(cdc_2003.2005$County.Code, unique=TRUE)
+X2005_Population <- cdc_2003.2005$Population[which( cdc_2003.2005$County.Code %in% intersection)]
+
+rownames(cdc_2006.2008) <- make.names(cdc_2006.2008$County.Code, unique=TRUE)
+X2008_Population <- cdc_2006.2008$Population[which( cdc_2006.2008$County.Code %in% intersection)]
+
+rownames(cdc_2009.2011) <- make.names(cdc_2009.2011$County.Code, unique=TRUE)
+X2011_Population <- cdc_2009.2011$Population[which( cdc_2009.2011$County.Code %in% intersection)]
+
+rownames(cdc_2012.2014) <- make.names(cdc_2012.2014$County.Code, unique=TRUE)
+X2014_Population <- cdc_2012.2014$Population[which( cdc_2012.2014$County.Code %in% intersection)]
+
+rownames(cdc_2015.2017) <- make.names(cdc_2015.2017$County.Code, unique=TRUE)
+X2017_Population <- cdc_2015.2017$Population[which( cdc_2015.2017$County.Code %in% intersection)]
+
+cdc_dat.population <-cbind(X2002_Population,X2005_Population,X2008_Population,X2011_Population,X2014_Population,X2017_Population)
+
+cdc_dat <- cdc_dat[which(cdc_dat$County.Code %in% intersection),]
+
+
+```
+
+
+
+Now, we set the high bound and random data (might be used to impute) matrix.
+
+```{r}
+
+
+hi_bound <- matrix(Inf, nrow(cdc_dat), 6)
+random <- matrix(Inf, nrow(cdc_dat), 6)
+set.seed(123)
+for(i in 1:nrow(cdc_dat)){
+  if(is.na(cdc_dat$X2000.2002[i])&& !is.na(cdc_dat.population[i,1])){
+    hi_bound[i,1] <- (9/cdc_dat.population[i,1])*10^5
+    random[i,1] <- (sample(1:9,1)/cdc_dat.population[i,1])*10^5
+  }
+  if(is.na(cdc_dat$X2003.2005[i])&& !is.na(cdc_dat.population[i,2])){
+    hi_bound[i,2] <- (9/cdc_dat.population[i,2])*10^5
+    random[i,2] <- (sample(1:9,1)/cdc_dat.population[i,2])*10^5
+  }
+  
+  if(is.na(cdc_dat$X2006.2008[i])&& !is.na(cdc_dat.population[i,3])){
+    hi_bound[i,3] <- (9/cdc_dat.population[i,3])*10^5
+    random[i,3] <- (sample(1:9,1)/cdc_dat.population[i,3])*10^5
+  }
+  
+  if(is.na(cdc_dat$X2009.2011[i])&& !is.na(cdc_dat.population[i,4])){
+    hi_bound[i,4] <- (9/cdc_dat.population[i,4])*10^5
+    random[i,4] <- (sample(1:9,1)/cdc_dat.population[i,4])*10^5
+   }
+  
+  if(is.na(cdc_dat$X2012.2014[i])&& !is.na(cdc_dat.population[i,5])){
+    hi_bound[i,5] <- (9/cdc_dat.population[i,5])*10^5
+    random[i,5] <- (sample(1:9,1)/cdc_dat.population[i,5])*10^5
+   }
+  
+  if(is.na(cdc_dat$X2015.2017[i])&& !is.na(cdc_dat.population[i,6])){
+    hi_bound[i,6] <- (9/cdc_dat.population[i,6])*10^5
+    random[i,6] <- (sample(1:9,1)/cdc_dat.population[i,6])*10^5
+  }
+}
+
+
+```
+
+
+Here is our main algorithm:
+\begin{enumerate}
+\item Split the national mortality rate into 51 states mortality rate
+
+\item In each state, we filter the counties into 3 categories: 
+   \begin{enumerate}
+
+   \item With complete data
+   
+   \item With 1-4 missing data
+   
+   \item With complete missing data or just with one-year data
+
+   \end{enumerate}
+   
+   
+\item Then, we will impute the data in category b) and c), county by county, by combing one row in b) to the complete matrix (matrix of data in category a)) in each iteration. And if the imputation fails, we will do the same procedure as those data in category c), which will be introduced in the next step.
+
+\item For the data in category c), we'll compare the state mean of that missing data with the high bound of that county, which is $\dfrac{9}{P}$, where $P$ stands for the population of that county in the given year. If the state-mean is higher than the bound, we will replace it by a random number between 0-9 divided by the population, and if not, we will replace that missing data with the state mean.
+
+
+\item After completing the data in each state, we will combine it in a huge matrix with the counties in the whole states.
+\end{enumerate}
+
+```{r,warning=FALSE,echo = T, results = 'hide'}
+
+set.seed(123)
+
+## Formalize the rowname to the FIPS 
+rownames(cdc_dat) <- make.names(cdc_dat$County.Code, unique=TRUE)
+
+rownames(hi_bound) <-rownames(cdc_dat)
+
+rownames(random) <-rownames(cdc_dat)
+
+
+##Split the data by state
+Mortality_by_state <- split(cdc_dat,cdc_dat$State)
+
+
+##New the final complete data frame
+complete_data.frame <-data.frame()
+
+
+## For each state
+for(i in 1:length(Mortality_by_state)){
+
+  ## Extract the pure rate data
+  Mortality_by_state_data_frame <-as.data.frame(Mortality_by_state[i])
+  Mortality_by_state_raw_rate <-Mortality_by_state_data_frame[,c(7:12)]
+  
+  ## Category a) data
+  complete <- Mortality_by_state_raw_rate[complete.cases(Mortality_by_state_raw_rate),]
+  colnames(complete) <- colnames(cdc_dat)[c(7:12)]
+  
+  ## Catagory b) data 
+  test <-  Mortality_by_state_raw_rate[ rowSums(is.na(Mortality_by_state_raw_rate)) != ncol(Mortality_by_state_raw_rate) & !complete.cases(Mortality_by_state_raw_rate) & rowSums(is.na(Mortality_by_state_raw_rate)) != ncol(Mortality_by_state_raw_rate)-1, ]
+  colnames(test) <- colnames(cdc_dat)[c(7:12)]
+  
+  
+  ## If no complete data, break the loop (Imputation fails)
+  if(nrow(complete) == 0){
+     break
+  }
+  ## If we have some missing data
+  if(nrow(test) > 0){
+  for(j in 1:nrow(test)){
+    # Bind a missing county to the complete matrix
+    complete <- rbind(complete, test[j,])
+    num_na <- which(is.na(test[j,]))
+    upper_bound <- hi_bound[rownames(test[j,]),num_na]
+    lower_bound <- rep(0,length(upper_bound))
+    bound <-cbind(num_na,lower_bound,upper_bound)
+    # Bounded imputation with 2 imputed matrix
+    Amelia.Impute <- amelia(complete, m=2, parallel = "multicore",bounds =bound,p2s=0 )
+    Amelia.Output1<- Amelia.Impute$imputations$imp1
+    Amelia.Output2<- Amelia.Impute$imputations$imp2
+    Amelia_list <- list(Amelia.Output1,Amelia.Output2)
+    #Calculate the mean output
+     Amelia_result <- Reduce("+",Amelia_list) / length(Amelia_list)
+     
+    #If both imputation fails, replace it by state mean or random rate
+     if(length(Amelia_result) ==0 ){
+        for (k in 1:nrow(complete)) {
+         for (m in 1:ncol(complete)) {
+          if(is.na(complete[k,m])){
+              state_mean <-cdc_state[i,m+2]
+          if(state_mean > hi_bound[rownames(complete)[k],m]){
+            complete[k,m] <-random[rownames(complete)[k],m]
+          }else{
+            complete[k,m] <- state_mean
+          }
+        }
+       }
+      }
+     }
+     #If one of the imputation fails,use the successful one
+     else if ( xor(length(Amelia.Output1) == 1, length(Amelia.Output2)==1  )){
+       if (length(Amelia.Output1) == 1){
+         Amelia_result <- Amelia.Output2
+       }
+       else{
+         Amelia_result <- Amelia.Output1
+       }
+       complete <- Amelia_result
+     }
+     # If both success, use the mean output
+     else{
+       complete <- Amelia_result
+      }
+    }
+  }
+  
+   ## Category c) data
+   missing_all <- Mortality_by_state_raw_rate[(rowSums(is.na(Mortality_by_state_raw_rate)) == ncol(Mortality_by_state_raw_rate)) | (rowSums(is.na(Mortality_by_state_raw_rate)) == ncol(Mortality_by_state_raw_rate)-1), ]
+   ## Replace it with state mean or random rate
+  if(nrow(missing_all) >0){
+    for (k in 1:nrow(missing_all)) {
+      for (m in 1:ncol(missing_all)) {
+        if(is.na(missing_all[k,m])){
+          state_mean <-cdc_state[i,m+1]
+          if(state_mean > hi_bound[rownames(missing_all)[k],m]){
+            missing_all[k,m] <-random[rownames(missing_all)[k],m]
+          }else{
+            missing_all[k,m] <- state_mean
+          }
+        }
+      }
+    }
+  }
+     colnames(missing_all) <- colnames(cdc_dat)[c(7:12)]
+     complete <- rbind(complete,missing_all)
+     ## Bind the compelte data in a state to the complete data of the whole country
+     complete_data.frame <-rbind.data.frame(complete_data.frame,complete)
+}
+```
+
+
+	
+### Results
+
+Here are density plot comparision between original and imputed data of some ranmly picked states
+
+```{r,warning=FALSE}
+
+
+## Merge it with the first six factor column
+all <- merge(cdc_dat[,c(1:6)] ,complete_data.frame,  by=0, all=TRUE)[,-1]
+
+all <- all[order(all$State, all$County),]
+
+set.seed(123)
+## Random pick several states to compare the distribution
+for(i in sample(c(1:51),10)){
+p1<-ggplot(all[all$State.Code ==cdc_state$State.Code[i],]) + 
+  geom_density(aes(X2015.2017)) + 
+  ggtitle(paste('After Imputation in',cdc_state$State[i] )) +
+  geom_vline(xintercept = cdc_state$X2015.2017[i], linetype="dotted", 
+                color = "blue", size=1.5)+ theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9))
+
+
+p2<-ggplot(cdc_dat[cdc_dat$State.Code==cdc_state$State.Code[i],]) + 
+  geom_density(aes(X2015.2017)) + 
+  ggtitle(paste('2015-2017 MR  Before Imputation in',cdc_state$State[i])) +
+  geom_vline(xintercept = cdc_state$X2015.2017[i], linetype="dotted", 
+                color = "blue", size=1.5)+ theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9))
+
+plot <-grid.arrange(p2,p1,ncol =2)
+}
+
+
+```
+
+From the graphs above, we randomly select 10 states to see the differences in the distribution of Death of Despair rate in 2015-2017, and we can see that two distributions are quite similar. The blue dash line stands for the state mean data, and each distribution has a mean around it, so we can say that our imputation is successful.
+
+And the comparision of the whole states
+
+```{r}
+#And for the whole states:
+
+p1<-ggplot(all) + 
+  geom_density(aes(X2015.2017)) + 
+  ggtitle("After Imputation of the Nation" ) +
+  geom_vline(xintercept = cdc_state$X2015.2017[52], linetype="dotted",  color = "blue", size=1.5)+ theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9))
+
+p2<-ggplot(cdc_dat) + 
+  geom_density(aes(X2015.2017)) + 
+  ggtitle('2015-2017 MR  Before Imputation') + theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9))+
+  geom_vline(xintercept = cdc_state$X2015.2017[52], linetype="dotted",  color = "blue", size=1.5)+ theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9))
+
+plot <-grid.arrange(p2,p1,ncol =2)
+
+```
+
+And we can compare the three datasets: 1. Original county-level data, 2. State-level data 3. Imputed county-level data
+
+```{r}
+## For original data
+
+original_county_mean<- rep(NA,6)
+
+for (i in 1:6){
+  original_county_mean[i] <-weighted.mean(cdc_dat[,i+6],cdc_dat.population[,i],na.rm = TRUE)
+}
+
+state_mean <- cdc_state[52,-c(1,2)]
+
+imputed_county_mean<- rep(NA,6)
+
+for (i in 1:6){
+  imputed_county_mean[i] <-weighted.mean(all[,i+6],cdc_dat.population[,i],na.rm = TRUE)
+}
+
+Group <- c("Original_County","State","Imputed_County")
+
+total_mean <- rbind(original_county_mean,state_mean,imputed_county_mean)
+colnames(total_mean)<- colnames(state_mean)
+total_mean <- cbind(total_mean,Group)
+total_mean <-as.data.frame(total_mean)
+
+total_mean <- melt(total_mean, id="Group")
+ggplot(total_mean, aes(x=variable,y=value, group=Group, colour=Group)) +
+geom_line() + geom_point() +
+labs(x = "year", y = "mortality rates") +
+ggtitle("Weighted Mean Death of Despair versus Year for Different Data Set")
+
+```
+
+
+###Note
+
+We have imputed other mortality rate data with different cause of death other than death of despair, with the same method.
+
+```{r}
+CDC_Despair <- all
+CDC_Cancer <- readRDS("~/HACL_2019/Nationwide/FILLEDDATA/CDC_Cancer.Rds")
+CDC_ALL_CAUSE <- readRDS("~/HACL_2019/Nationwide/FILLEDDATA/CDC_ALL_CAUSE.Rds")
+
+##Locally: "Data/CDC_Cancer"
+
+##Locally: "Data/CDC_ALL_CAUSE"
+
+```
+
+
+
+And we can check the imputation result for these two set of data for the Death of Cancer and total Death rate
+
+```{r}
+all_cause_graph <- readRDS("~/HACL_2019/Nationwide/Jingmin_Sun-Final_Notebook/Data/all_cause_graph.Rds")
+
+## Locally: "/Data/all_cause_graph.Rds"
+ggplot(all_cause_graph, aes(x=variable,y=value, group=Group, colour=Group)) +
+geom_line() + geom_point() +
+labs(x = "year", y = "mortality rates") +
+ggtitle("Weighted Mean Mortality of all causes versus Year for Different Data Set")
+
+```
+
+
+```{r}
+cancer_graph <- readRDS("~/HACL_2019/Nationwide/Jingmin_Sun-Final_Notebook/Data/cancer_graph.Rds")
+
+## Locally: "/Data/cancer_graph"
+ggplot(cancer_graph, aes(x=variable,y=value, group=Group, colour=Group)) +
+geom_line() + geom_point() +
+labs(x = "year", y = "mortality rates") +
+ggtitle("Weighted Mean Death of Cancer versus Year for Different Data Set")
+
+```
+
+
+
+
+
+## Problem 3: Visualization
+
+### Methods
+
+Basicly, we use urbnmapr package hosted by `Urban University`:
+
+```{r}
+
+
+counties.df <- as.data.frame(counties)
+colnames(counties.df)[7] <- "County.Code"
+
+counties.df[,7] <-as.integer(counties.df[,7])
+
+states.df <- as.data.frame(states)
+colnames(states.df)[7] <- "State.Code"
+
+states.df[,7] <-as.integer(states.df[,7])
+mapALLCDC <- right_join(CDC_Despair, counties.df, by="County.Code")
+pp <- list()
+i <- 1
+
+
+for (year in 7:12) {
+  #X2000.2002, X2015.2017
+
+  y <- colnames(mapALLCDC)[year]
+  begin <- min(mapALLCDC[,year], na.rm=T) / 300
+  end <- max(mapALLCDC[,year], na.rm=T) / 300
+  p <- mapALLCDC %>% 
+    ggplot(aes_string("long", "lat", group = "group", fill = y)) + 
+    geom_polygon(color = NA) +
+    geom_polygon(data = states.df, mapping = aes(long, lat, group =  group),fill = NA, color = "#ffffff") +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45)+ scale_fill_viridis(
+      option = "inferno", name = "Mortality Rate", discrete = F,
+      direction = -1, begin=1-end, end=1-begin, 
+      guide =  guide_legend(
+        keyheight = unit(5, units = "mm"),
+        title.position = 'top',
+        reverse = F)
+      ) +theme_minimal()
+    # Theming
+  if(i==1){
+  p<- p +
+    theme(
+      legend.position = "bottom",
+      legend.text.align = 0,
+      plot.margin = unit(c(.5,.5,.2,.5), "cm")) +
+    theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9)) +
+    ggtitle(paste(" Imputed Death of Despair rate in ", y))
+  }else{
+  p<- p +
+    theme(
+      legend.position = "bottom",
+      legend.text.align = 0,
+      plot.margin = unit(c(.5,.5,.2,.5), "cm")) +
+    theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9)) +
+    ggtitle(paste("Imputed Death of Despair rate in ", y))
+}
+  pp[[i]] <- p
+  i <- i+1
+}
+
+```
+
+
+### Results
+
+We can see the mortality rate after new imputation method of the whole states over the years by:
+
+```{r,results='asis',fig.width=7, fig.height=18}
+grid.arrange(pp[[1]],pp[[2]],ncol =2)
+grid.arrange(pp[[3]],pp[[4]],ncol =2)
+grid.arrange(pp[[5]],pp[[6]],ncol =2)
+```
+
+
+
+And we can see the differences between the original and imputed data:
+
+```{r}
+
+mapOriginalCDC <- right_join(cdc_dat, counties.df, by="County.Code")
+pp2 <- list()
+i <- 1
+
+
+for (year in c(7:12)) {
+
+
+  y <- colnames(mapOriginalCDC)[year]
+  begin <- min(mapOriginalCDC[,year], na.rm=T) / 300
+  end <- max(mapOriginalCDC[,year], na.rm=T) / 300
+  p <- mapOriginalCDC %>% 
+    ggplot(aes_string("long", "lat", group = "group", fill = y)) + 
+    geom_polygon(color = NA) +
+    geom_polygon(data = states.df, mapping = aes(long, lat, group =           group),fill = NA, color = "#ffffff") +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45)+        scale_fill_viridis(
+      option = "inferno", name = "Mortality Rate", discrete = F,
+      direction = -1, begin=1-end, end=1-begin, 
+      guide =  guide_legend(
+        keyheight = unit(5, units = "mm"),
+        title.position = 'top',
+        reverse = F)
+      ) +theme_minimal()
+    # Theming
+
+  p<- p +
+    theme(
+      legend.position = "bottom",
+      legend.text.align = 0,
+      plot.margin = unit(c(.5,.5,.2,.5), "cm")) +
+    theme(plot.margin=unit(rep(0.5, 4), "cm"),plot.title = element_text(size = 9)) +
+    ggtitle(paste("Original Death of Despair rate in ", y))
+  pp2[[i]] <- p
+  i <- i+1
+}
+
+```
+
+
+
+
+
+
+We can compare two the original and imputed maps:
+
+```{r}
+
+##Put two 2000-2002 graphs together to compare
+grid.arrange(pp2[[1]],pp[[1]],ncol =2)
+
+## Put two 2003-2005 graphs together to compare
+grid.arrange(pp2[[2]],pp[[2]],ncol =2)
+
+## Put two 2006-2008 graphs together to compare
+grid.arrange(pp2[[3]],pp[[3]],ncol =2)
+
+## Put two 2009-2011 graphs together to compare
+grid.arrange(pp2[[4]],pp[[4]],ncol =2)
+
+## Put two 2012-2014 graphs together to compare
+grid.arrange(pp2[[5]],pp[[5]],ncol =2)
+
+## Put two 2015-2017 graphs together to compare
+grid.arrange(pp2[[6]],pp[[6]],ncol =2)
+```
+
+
+# Recommendations for inclusion in MortalityMinder
+
+* Do data imputation before the analyzing, especially when we have a amount of missing data.
+
+* Use Amelia to impute the missing data. Although some randomness might be introduced, it will help to set bounds and merely distort the whole distrubution of data.
+
+
+* Use `grid.arrange` function in `gridExtra` package to make the side-by-side maps for comparision.
+
+
+# References
+
+*https://uc-r.github.io/random_forests
+
+*https://github.com/ropensci/visdat
+
+*M. A. Davenport and J. Romberg, "An Overview of Low-Rank Matrix Recovery From Incomplete Observations," in IEEE Journal of Selected Topics in Signal Processing, vol. 10, no. 4, pp. 608-622, June 2016.
+
+*https://gking.harvard.edu/amelia
+
+*http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.533.1532&rep=rep1&type=pdf
+
+# Appendix
+
+
+## Location of data, code and other assets
+
+\begin{enumerate}
+\item Code for combing mortality rate: https://repl.it/@JingminSun/Combining-data
+
+\item Amelia method discription: https://cran.r-project.org/web/packages/Amelia/vignettes/amelia.pdf
+
+
+\item Code for the training method of mortality rate imputation:
+
+Add the column of mortality rate in the period `2015-2017` to the dataframe and use the random forest to test the missing mortality rate by setting them as testing data: 
+
+\end{enumerate}
+
+Setting the training and testing:
+```{r}
+set.seed(123)
+
+cdc_dat_1 <- cdc_dat
+
+intersection_1 <-intersect(cdc_dat_1$County.Code,Amelia_Result_2017$FIPS)
+
+cdc_dat_1 <- cdc_dat_1[which(intersection_1%in% cdc_dat_1$County.Code),]
+
+Amelia_Result_2017 <- Amelia_Result_2017[which(intersection_1%in% Amelia_Result_2017$FIPS),]
+
+test_code <- as.numeric(cdc_dat_1[which(is.na(cdc_dat_1$X2015.2017)),4])
+
+test_mortality <-cdc_dat_1$X2015.2017[which(is.na(cdc_dat_1$X2015.2017))]
+
+train_mortality <- cdc_dat_1$X2015.2017[ - which(is.na(cdc_dat_1$X2015.2017))]
+
+test <- Amelia_Result_2017[which(is.na(cdc_dat_1$X2015.2017)),-c(1:3)]
+
+train <- Amelia_Result_2017[-which(is.na(cdc_dat_1$X2015.2017)),-c(1:3)]
+
+```
+
+
+Setup the random forest:
+
+```{r}
+
+## Build the random Forest Model
+RandomForest_model <- randomForest(train_mortality ~ ., data = train, importance = TRUE)
+
+## Predict the result for the inner testing sets
+prediction_RF <- predict(RandomForest_model,test)
+
+```
+
+
+
+And now, we need the prediction to be valid, which means it is within the range $0<rate < \dfrac{9}{population}$ in 2017, so we can calculate the upper bound by the raw data:
+
+
+
+```{r}
+
+## Find out the missing counties
+
+test_county_code <-cdc_dat_1$County.Code[which(is.na(cdc_dat_1$X2015.2017))]
+
+## Combine the county code with the predicted data
+
+Prediction <- cbind(test_county_code, prediction_RF)
+
+```
+
+```{r}
+## Create a colunn with all NAs
+
+set.seed(123)
+
+Population <- rep(NA, length(test_county_code))
+
+new_intersection <-intersect(test_county_code,cdc_2015.2017$County.Code)
+
+index_inter_in_test_code <- which(test_county_code %in% new_intersection)
+
+
+index_inter_in_original_code <- which( cdc_2015.2017$County.Code %in% new_intersection )
+
+Population[index_inter_in_test_code] <- cdc_2015.2017$Population[index_inter_in_original_code]
+
+
+Upper_bound <- rep(NA, length(test_county_code))
+
+Upper_bound[index_inter_in_test_code] <-(9/Population[index_inter_in_test_code])*10^5
+
+random.X1.9 <- rep(NA, length(test_county_code))
+
+random.X1.9[index_inter_in_test_code] <-(sample(1:9,1)/Population[index_inter_in_test_code])*10^5
+
+Prediction<-cbind(Prediction,Upper_bound,random.X1.9)
+
+```
+
+```{r}
+
+j=1
+for(i in 1:length(test_county_code)){
+  if(!is.na(Upper_bound[i]) && Prediction[i,2] > Upper_bound[i]){
+    Prediction[i,2]  <-random.X1.9[i]
+    j=j+1
+  }
+  
+  else if(Prediction[i,2] <0){
+    Prediction[i,2]  <- 0
+  }
+}
+
+
+
+
+```
+
+
+```{r}
+
+j = 1
+for (i in 1:nrow(cdc_dat_1)){
+  if(is.na(cdc_dat_1$X2015.2017[i])){
+    cdc_dat_1$X2015.2017[i] <- Prediction[j,2]
+    j = j+1
+  }
+}
+
+
+
+```
+
+
+## Special instructions above and beyond your README files
+ 
+ *Please clear the environment and redo the data input process before dealing with different problems listed above. It will be nothing wrong with just run all the chunks, but clear the environment may help a lot when some minor changes are made.
