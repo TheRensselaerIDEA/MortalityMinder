@@ -42,11 +42,11 @@ km.wssplot <- function(data, cluster.num = 25, seed = 20){
   return(plot)
 }
 
-#' Kmeans core function
+#' Kmeans clustering function
 #'
 #' @param data.mat data.frame in which one column is "county_fips" and other columns
 #'                  are data to cluster by
-#' @param cluster.num Number of clusters to form 
+#' @param cluster.num number of clusters to form 
 #' @param seed random seed to use, is variable so that results can be replicated
 #'
 #' @return a tribble with two columns:
@@ -62,7 +62,7 @@ km.wssplot <- function(data, cluster.num = 25, seed = 20){
 #' 
 #' @author 
 #' @export
-km.func <- function(data.mat, cluster.num=4, seed=200) {
+km.func <- function(data.mat, cluster.num=3, seed=200) {
   
   set.seed(seed)
   cluster.num <- min(nrow(data.mat) - 1, cluster.num)
@@ -77,23 +77,44 @@ km.func <- function(data.mat, cluster.num=4, seed=200) {
   )
 }
 
-diana.func <- function(data.mat, seed=200) {
+#' Diana clustering function
+#'
+#' @param data.mat data.frame in which one column is "county_fips" and other columns
+#'                  are data to cluster by
+#' @param cluster.num number of clusters to form 
+#' @param seed random seed to use, is variable so that results can be replicated
+#'
+#' @return a tribble with two columns:
+#'    county_fips: unique identifier for each county
+#'    cluster: number corresponding to cluster county belongs to
+#'    
+#' @examples
+#' cdc.data %>%
+#'   cdc.mort.mat(input$state_choice, input$death_cause) %>%
+#'   diana.func(4)
+#'   
+#'   
+#' diana.func(cdc.mort.mat(cdc.data, "NY", "Despair"), 5)
+#'    
+#' @author Ross DeVito
+#' @export
+diana.func <- function(data.mat, cluster.num=3, seed=200) {
   set.seed(seed)
   data.mat <- na.omit(data.mat)
   
-  diana.res <- diana(dplyr::select(data.mat, -county_fips), 
+  diana.tree <- diana(dplyr::select(data.mat, -county_fips), 
                      metric = "euclidean", 
                      stand = FALSE,
                      stop.at.k = FALSE,
                      trace.lev = 0)
-  return(diana.res)
+  diana.clusters <- cutree(as.hclust(diana.res), k = cluster.num)
+  return(tibble(county.fips = data.mat$county_fips, cluster = diana.clusters))
 }
 
 #' Clusters counties using some specified clustering method
 #' 
 #' @note implemented in this way so that if/when additional clustering method
 #'        is added, it can be added to function in an else if
-#' @note "diana" not yet implemented
 #'
 #' @param county.data data.frame in which one column is "county_fips" and other columns
 #'                     are data to cluster by
@@ -131,7 +152,7 @@ diana.func <- function(data.mat, seed=200) {
 #' 
 #' 
 #' cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
-#'                  cluster.method="kmeans",
+#'                  cluster.method="diana",
 #'                  cluster.num=4)
 #' 
 #' @author Ross DeVito
@@ -140,8 +161,7 @@ cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4
   if (cluster.method == "kmeans"){
     return(km.func(county.data, cluster.num, seed))
   } else if (cluster.method == "diana") {
-    # insert diana clustering here
-    stop("diana clustering not yet implemented in cluster.counties()")
+    return(diana.func(county.data, cluster.num, seed))
   }
 }
 
