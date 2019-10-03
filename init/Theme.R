@@ -42,7 +42,7 @@ color.line.cluster <- function(state.choice) {
       values = colorRampPalette(
         c("#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603")
         
-      )(6),
+      )(5),
       guide = guide_legend(reverse = T)
     )
     
@@ -53,7 +53,7 @@ color.line.cluster <- function(state.choice) {
       values = colorRampPalette(
         c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
         
-      )(7),
+      )(6),
       guide = guide_legend(reverse = T)
     )
   }
