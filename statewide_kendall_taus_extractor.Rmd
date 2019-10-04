@@ -115,11 +115,16 @@ for (state in state.list){
         kendall_cor = abs(kendall_cor),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      #dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor))
     #print(kendall.cor)
     write.table(kendall.cor,file=paste("statewide_taus/", state, "state_kendall_taus.txt", sep=""),sep="\n")
     #break
 }
+```
+
+TODOS: Try using Benjamin Hochberg's p.adjust() method for multiple hypothesis testing
+```{r}
+
 ```
 
