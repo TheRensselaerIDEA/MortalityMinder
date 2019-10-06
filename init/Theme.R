@@ -136,7 +136,7 @@ draw.geo.cluster <- function(state.choice, mort.cluster) {
     # geo.match.fetch: defined in GEO_Lib.R
     geo.map.fetch(state.choice, mort.cluster) %>%
       dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
+      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_, text = county_name)) +
       geom_polygon(size = 0, color = "white",alpha = 0.9) +
       #base.geo() +
       labs.geo.cluster(state.choice) + 
