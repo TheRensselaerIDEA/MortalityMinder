@@ -1,5 +1,3 @@
-library(cluster) #should be in librarian
-
 #' Used to visualize optimal k for k means clustering
 #' 
 #' @note most recent use is beta.01
@@ -107,7 +105,7 @@ diana.func <- function(data.mat, cluster.num=3, seed=200) {
                      stand = FALSE,
                      stop.at.k = FALSE,
                      trace.lev = 0)
-  diana.clusters <- cutree(as.hclust(diana.res), k = cluster.num)
+  diana.clusters <- cutree(as.hclust(diana.tree), k = cluster.num)
   return(tibble(county.fips = data.mat$county_fips, cluster = diana.clusters))
 }
 
