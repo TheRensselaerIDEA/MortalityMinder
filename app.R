@@ -132,7 +132,7 @@ ui <- fluidPage(
           class = "col2_upper",
           tags$div(
             class = "col2_ul",
-            plotOutput("geo_cluster_kmean",width="100%",height="100%")
+            plotlyOutput("geo_cluster_kmean",width="100%",height="100%")
             
           ),
           tags$div(
@@ -434,13 +434,17 @@ server <- function(input, output) {
   })
   
   # Mortality Trend Cluster by County
-  output$geo_cluster_kmean <- renderPlot({
+  output$geo_cluster_kmean <- renderPlotly({
     
-    # draw.geo.cluster is defined in init/Theme.R
     if(input$state_choice == "United States"){
       draw.geo.cluster("US", mort.cluster.ord())
     }else{
-      draw.geo.cluster(input$state_choice, mort.cluster.ord())
+      return (ggplotly(draw.geo.cluster(input$state_choice, mort.cluster.ord()), tooltip = c('text')) %>% 
+                config(displayModeBar = F) %>% 
+                layout(dragmode = FALSE, 
+                       yaxis = list(visible = FALSE), 
+                       xaxis = list(visible = FALSE), 
+                       legend = list(orientation = "h", xanchor = "center", x = 1, y = 0)))
     }
     
   })
