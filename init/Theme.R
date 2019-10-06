@@ -142,7 +142,7 @@ draw.geo.cluster <- function(state.choice, mort.cluster) {
       labs.geo.cluster(state.choice) + 
       color.geo.cluster(n) + 
       theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
+      coord_map(projection = "albers", lat0 = 39, lat1 = 45) + guides(color = FALSE, fill = FALSE)
   } else {
     # geo.match.fetch: defined in GEO_Lib.R
     geo.map.fetch("US", mort.cluster) %>%
