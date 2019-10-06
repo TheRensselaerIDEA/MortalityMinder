@@ -26,7 +26,7 @@ LIBS_LOADER <- c(
 # All libraries for analysis should be listed below
 #   - e.g. `randomForest`
 LIBS_ANALYSIS <- c(
-  "randomForest"
+  "randomForest", "cluster"
 )
 
 # All libraries for build the shiny-d3 app should be listed below
