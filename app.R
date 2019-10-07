@@ -1,6 +1,6 @@
 # Date: 2019/8/1
 # Author: 
-#   UI:Shengjin Li
+#   UI: Shengjin Li
 #   Server: Yuxuan Wang
 #   Graph: Ziyi Wang
 
@@ -23,6 +23,9 @@ deps <- list("topojson.min.js",
 state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
+
+n.clusters.state = 3
+n.clusters.nation = 6
 
 ui <- fluidPage(
   # include css
@@ -259,13 +262,12 @@ server <- function(input, output) {
     
     if (input$state_choice == "United States"){
       # Currently hard-coded 6 clusters
-      n.clusters <- 6
+      n.clusters <- n.clusters.nation
       cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
     } else{
-      # Currently hard-coded 3 clusters
-      n.clusters <- 3
+      n.clusters <- n.clusters.state
       cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
@@ -347,7 +349,7 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster("US") +
+        color.line.cluster("US", n.clusters.nation) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
@@ -364,7 +366,7 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice) +
+        color.line.cluster(input$state_choice, n.clusters.state) +
         theme.line.mort() + 
         guides(color = guide_legend(reverse = T))
     }
