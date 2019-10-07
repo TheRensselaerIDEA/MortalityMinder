@@ -5,14 +5,6 @@
 #   Graph: Ziyi Wang
 
 source("Source.R")
-library(shinyWidgets)
-library(viridis)
-library(plotly)
-library(RUnit)
-library(randomForest)
-library(lubridate)
-library(forcats)
-library(htmltools)
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
