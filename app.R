@@ -498,8 +498,8 @@ server <- function(input, output) {
                                        maxZoom = 5.3, 
                                        dragging = FALSE)) %>%
         setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = 5.3) %>%
-        addPolygons(stroke = FALSE, 
-                    smoothFactor = 0.2, 
+        addPolygons(stroke = TRUE, 
+                    smoothFactor = 0.1, 
                     fillOpacity = 1,
                     weight = 1,
                     color = "white",
