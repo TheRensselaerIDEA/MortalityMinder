@@ -484,14 +484,12 @@ server <- function(input, output) {
       
       cty <- counties(cb = TRUE, resolution = "20m", state = input$state_choice)
       
-      diamond_color_colors <- c("#FFB2B2", "FF9D9D", "#FF6565", "#FF3838", "#D82121")
-      diamond_color_colors
-      
       max.long <- max(dataset$long)
       max.lat <- max(dataset$lat)
       min.long <- min(dataset$long)
       min.lat <- min(dataset$lat)
       
+      colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
       leaflet(cty, 
               options = leafletOptions(zoomControl = FALSE, 
                                        minZoom = 5.3, 
@@ -504,10 +502,12 @@ server <- function(input, output) {
                     weight = 1,
                     color = "white",
                     opacity = 1,
-                    fillColor = diamond_color_colors[dataset$VAR_],
+                    fillColor = colors[as.numeric(dataset$VAR_)],
                     label = dataset$county_name) %>%
-        addLegend("bottomright", colors = diamond_color_colors, labels = unique(dataset$VAR_),
-                  title = "RATE",
+        addLegend("bottomright", 
+                  colors = colors, 
+                  labels = c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]"),
+                  title = "Rate",
                   opacity = 1)
     }
     
