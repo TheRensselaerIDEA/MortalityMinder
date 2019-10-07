@@ -136,8 +136,9 @@ ui <- fluidPage(
             
           ),
           tags$div(
+            tags$style(HTML(".leaflet-container { background: #fff; }")),
             class = "col2_um",
-            plotOutput("geo_mort_change1",width="100%",height="100%")
+            leafletOutput("geo_mort_change1",width="100%",height="100%")
           ),
           tags$div(
             class = "col2_ur",
@@ -450,7 +451,7 @@ server <- function(input, output) {
   })
   
   # Mortality Rate by County Period 1
-  output$geo_mort_change1 <- renderPlot({
+  output$geo_mort_change1 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -478,7 +479,36 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort(input$state_choice, "2000-2002", mort.data, input$death_cause)
+      dataset <- geo.map.fetch(input$state_choice, mort.data) %>% 
+        dplyr::rename(VAR_ = death_rate)
+      
+      cty <- counties(cb = TRUE, resolution = "20m", state = input$state_choice)
+      
+      diamond_color_colors <- c("#FFB2B2", "FF9D9D", "#FF6565", "#FF3838", "#D82121")
+      diamond_color_colors
+      
+      max.long <- max(dataset$long)
+      max.lat <- max(dataset$lat)
+      min.long <- min(dataset$long)
+      min.lat <- min(dataset$lat)
+      
+      leaflet(cty, 
+              options = leafletOptions(zoomControl = FALSE, 
+                                       minZoom = 5.3, 
+                                       maxZoom = 5.3, 
+                                       dragging = FALSE)) %>%
+        setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = 5.3) %>%
+        addPolygons(stroke = FALSE, 
+                    smoothFactor = 0.2, 
+                    fillOpacity = 1,
+                    weight = 1,
+                    color = "white",
+                    opacity = 1,
+                    fillColor = diamond_color_colors[dataset$VAR_],
+                    label = dataset$county_name) %>%
+        addLegend("bottomright", colors = diamond_color_colors, labels = unique(dataset$VAR_),
+                  title = "RATE",
+                  opacity = 1)
     }
     
   })
