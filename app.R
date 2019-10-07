@@ -513,25 +513,40 @@ server <- function(input, output) {
     
   })
   
+  mort.rate <- reactive({
+    
+    if(input$state_choice == "United States"){
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
+  
+  
   # Kendall Correlation Between Raw Mort Rate and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
     
-    # mort.data <- dplyr::filter(
-    #   cdc.data,
-    #   death_cause == "Despair",
-    #   period == "2015-2017"
-    # ) %>% 
-    #   dplyr::mutate(
-    #     death_rate = death_num / population * 10^5,
-    #     death_rate = cut(death_rate, bin.geo.mort("Despair"))
-    #   ) %>%
-    #   dplyr::select(county_fips, death_rate)
     
-    
-    
-    kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-    
-    #kendall.cor <- kendall.func(mort.data, chr.data.2019)
+    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
     
     kendall.cor %>%
       dplyr::mutate(

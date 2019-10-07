@@ -13,8 +13,8 @@ Reading Source.R
 source("Source.R")
 ```
 
-Extracting Taus for all social determinants on nationwide data. The goal is to filter out social dterminants that are less relevant.
 
+Extracting Taus for all social determinants on nationwide data. The goal is to filter out social dterminants that are less relevant.
 ```{r}
 state = "US"
 # UNORDERED mortality trend cluster label calculation
@@ -132,6 +132,7 @@ selected_SDs2 <- selected_SDs2 %>%
 # selected_SDs2[selected_SDs2$kendall_p == p.adjust(selected_SDs2$kendall_p),]
 print(selected_SDs2)
 ```
+
 
 
 

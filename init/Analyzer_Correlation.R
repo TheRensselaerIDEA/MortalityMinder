@@ -9,8 +9,8 @@ kendall.func <- function(x.data, sd.data) {
   align <- dplyr::left_join(x.data, sd.data, by = "county_fips") %>% 
     dplyr::select(-dplyr::one_of(c("county_fips", "state_name", "county_name")))
   
-  x <- as.numeric(dplyr::pull(align, cluster))
-  sd <- dplyr::select(align, -cluster)
+  x <- as.numeric(dplyr::pull(align, death_rate))
+  sd <- dplyr::select(align, -death_rate)
   
   cor.res <- list()
   for (n in names(sd)) {
