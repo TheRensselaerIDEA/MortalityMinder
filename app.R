@@ -544,7 +544,6 @@ server <- function(input, output) {
     req(input$plot_hover) # Same as if-not-NULL
     hover <- input$plot_hover
     
-
     kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
     
     kendall.cor.new <- kendall.cor %>%
@@ -559,7 +558,7 @@ server <- function(input, output) {
       dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
-      dplyr::mutate(chr_code = chr_code, kendall_cor)
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
 #    browser()
     point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
@@ -582,7 +581,7 @@ server <- function(input, output) {
     # create style property for tooltip
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
-    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
                     "left:", left_px + 2, "px; top:", top_px + 2, "px;")
     
     # actual tooltip created as wellPanel
@@ -619,8 +618,10 @@ server <- function(input, output) {
       dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
-      dplyr::mutate(chr_code = chr_code, kendall_cor)
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
       
+#    browser() 
+    
     kendall.cor.new %>% 
       ggplot(
         aes(
