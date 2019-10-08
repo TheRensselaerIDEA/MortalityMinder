@@ -1,0 +1,25 @@
+CDC Mortality Rate Data Frame:
+  + Variables:
+    - period: character, year-year, e.g. "2000-2002"
+    - state_name: character, capitalized, e.g. "New York"
+    - state_abbr: character, upper-case, e.g. "NY"
+    - county_name: character, capitalized, e.g. "Albany"
+    - county_fips: character, e.g. "36001"
+    - urban_2013: character, e.g. "Medium Metro"
+    - population: numeric/double, e.g. 71485
+    - death_num: numeric/double, e.g. 23
+    - death_rate: numeric/double, per 10^5 individuals, e.g. 32.17
+    - death_cause: character, capitalized, "Death of Despair"
+
+
+Clustering Algo:
+  + Input requirements: 
+    - A data frame of type data.frame
+    - The first column is "county_fips"
+    - The rest of the columns make up a mortality rate matrix
+    - Each row is a county
+  + Output requirements:
+    - A data frame of type data.frame with two columns
+    - The first column is "county_fips"
+    - The second column is "*_cluster", where * depends on the algo chosen
+    
