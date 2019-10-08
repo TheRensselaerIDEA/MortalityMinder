@@ -568,12 +568,16 @@ server <- function(input, output) {
     
     # calculate point position INSIDE the image as percent of total dimensions
     # from left (horizontal) and from top (vertical)
-    left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
-    top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
-    
+    # left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+    # top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+
+    left_pct <- 1.00
+    top_pct <- 1.00
+        
     # calculate distance from left and bottom side of the picture in pixels
     left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
     top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+
     
     # create style property for tooltip
     # background color is set so tooltip is a bit transparent
@@ -585,10 +589,10 @@ server <- function(input, output) {
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
       style = style,
-      p(HTML(paste0("<b> chr_code: </b>", point$chr_code, "<br/>",
+      p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
                     "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
                     "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
-#                    "<b> Distance from left: </b>", left_px, "<b>, from top: </b>", top_px ,
+                    "<i>", point$DIR, "</i>",
                     NULL
                     )))
     )
