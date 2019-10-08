@@ -1,18 +1,10 @@
 # Date: 2019/8/1
 # Author: 
-#   UI:Shengjin Li
+#   UI: Shengjin Li
 #   Server: Yuxuan Wang
 #   Graph: Ziyi Wang
 
 source("Source.R")
-library(shinyWidgets)
-library(viridis)
-library(plotly)
-library(RUnit)
-library(randomForest)
-library(lubridate)
-library(forcats)
-library(htmltools)
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
@@ -23,6 +15,9 @@ deps <- list("topojson.min.js",
 state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
+
+n.clusters.state = 3
+n.clusters.nation = 6
 
 ui <- fluidPage(
   # include css
@@ -132,7 +127,7 @@ ui <- fluidPage(
           class = "col2_upper",
           tags$div(
             class = "col2_ul",
-            plotOutput("geo_cluster_kmean",width="100%",height="100%")
+            plotlyOutput("geo_cluster_kmean",width="100%",height="100%")
             
           ),
           tags$div(
@@ -258,14 +253,13 @@ server <- function(input, output) {
     #   - cluster
     
     if (input$state_choice == "United States"){
-      # Currently hard-coded 7 clusters
-      n.clusters <- 7
+      # Currently hard-coded 6 clusters
+      n.clusters <- n.clusters.nation
       cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
     } else{
-      # Currently hard-coded 4 clusters
-      n.clusters <- 4
+      n.clusters <- n.clusters.state
       cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
@@ -347,7 +341,7 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster("US") +
+        color.line.cluster("US", n.clusters.nation) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
@@ -364,10 +358,9 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice) +
+        color.line.cluster(input$state_choice, n.clusters.state) +
         theme.line.mort() + 
-        guides(color = guide_legend(reverse = T)) + 
-        scale_y_continuous(limits = c(0, 300), breaks = c(50, 100, 150, 200, 250))
+        guides(color = guide_legend(reverse = T))
     }
     
   })
@@ -399,13 +392,13 @@ server <- function(input, output) {
     
     
     if (input$state_choice == "United States"){
-      cluster.num <- 7
+      cluster.num <- 6
       urban.data <- cdc.data %>% 
         dplyr::select(county_fips, urban_2013) %>% 
         unique() %>% 
         dplyr::left_join(mort.label.raw(), by = "county_fips")
     } else {
-      cluster.num <- 4
+      cluster.num <- 6
       urban.data <- cdc.data %>% 
         dplyr::filter(state_abbr == input$state_choice) %>% 
         dplyr::select(county_fips, urban_2013) %>% 
@@ -435,13 +428,17 @@ server <- function(input, output) {
   })
   
   # Mortality Trend Cluster by County
-  output$geo_cluster_kmean <- renderPlot({
+  output$geo_cluster_kmean <- renderPlotly({
     
-    # draw.geo.cluster is defined in init/Theme.R
     if(input$state_choice == "United States"){
       draw.geo.cluster("US", mort.cluster.ord())
     }else{
-      draw.geo.cluster(input$state_choice, mort.cluster.ord())
+      return (ggplotly(draw.geo.cluster(input$state_choice, mort.cluster.ord()), tooltip = c('text')) %>% 
+                config(displayModeBar = F) %>% 
+                layout(dragmode = FALSE, 
+                       yaxis = list(visible = FALSE), 
+                       xaxis = list(visible = FALSE), 
+                       legend = list(orientation = "h", xanchor = "center", x = 1, y = 0)))
     }
     
   })
@@ -513,9 +510,37 @@ server <- function(input, output) {
     
   })
   
+  mort.rate <- reactive({
+    if(input$state_choice == "United States"){
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
+  
   # Kendall Correlation Between Raw Mort Rate and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
-    kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+
+    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
     
     kendall.cor %>%
       dplyr::mutate(

@@ -12,6 +12,15 @@
     fill: orange;
   }
 
+.explore_but {
+  margin-top:100px;
+  margin-left:600px;
+}
+
+.btn{
+  background-color:red;
+  margin:10px 10px;
+}
 .tooltip { 
           position: absolute;     
           text-align: center;     
