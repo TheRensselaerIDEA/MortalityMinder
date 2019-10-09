@@ -587,14 +587,14 @@ server <- function(input, output) {
     
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
-    browser()
+   # browser()
     wellPanel(
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
-                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
-                    "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
+#                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
+ #                   "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
                     "<i>", point$DIR, "</i>","<br/>",
-                    SocialDeterminants[SocialDeterminants$Code == point$chr_code,]$Definition[[1]],
+                    SocialDeterminants[SocialDeterminants$Name == point$chr_code,]$Definition[[1]],
                     NULL
                     )))
     )
