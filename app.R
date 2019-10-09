@@ -455,7 +455,7 @@ server <- function(input, output) {
         period == "2000-2002"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
@@ -463,6 +463,7 @@ server <- function(input, output) {
       draw.geo.mort("US", "2000-2002", mort.data, input$death_cause)
       
     } else {
+      
       mort.data <- dplyr::filter(
         cdc.data,
         state_abbr == input$state_choice,
@@ -470,11 +471,11 @@ server <- function(input, output) {
         period == "2000-2002"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
-      
+
       draw.geo.mort(input$state_choice, "2000-2002", mort.data, input$death_cause)
     }
     
@@ -489,7 +490,7 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>% 
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
@@ -503,7 +504,7 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>% 
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
@@ -521,7 +522,7 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5
+          # death_rate = death_num / population * 10^5
           #death_rate = cut(death_rate, bin.geo.mort("Despair"))
         ) %>%
         dplyr::select(county_fips, death_rate)
@@ -532,7 +533,7 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5
+          # death_rate = death_num / population * 10^5
           #death_rate = cut(death_rate, bin.geo.mort("Despair"))
         ) %>%
         dplyr::select(county_fips, death_rate)
