@@ -22,7 +22,6 @@ deps <- list("topojson.min.js",
 #-----------------
 state.list <- state.abb
 names(state.list) <- state.name
-state.list <- append(state.list, "United States", after = 0)
 
 ui <- fluidPage(
   # include css
@@ -142,7 +141,7 @@ ui <- fluidPage(
           tags$div(
             class = "col2_ur",
             plotOutput("geo_mort_change2",width="100%",height="100%")
-
+            
           )
         ),
         tags$div(
@@ -257,19 +256,10 @@ server <- function(input, output) {
     #   - county_fips
     #   - cluster
     
-    if (input$state_choice == "United States"){
-      # Currently hard-coded 6 clusters
-      n.clusters <- 6
-      cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
-                       cluster.method="kmeans",
-                       cluster.num=n.clusters)
-    } else{
-      # Currently hard-coded 3 clusters
-      n.clusters <- 3
-      cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
-                       cluster.method="kmeans",
-                       cluster.num=n.clusters)
-    }
+    # Currently hard-coded 4 clusters
+    cdc.data %>%
+      cdc.mort.mat(input$state_choice, input$death_cause) %>%
+      km.func(4)
   })
   
   # Cache of Weighed Avg by UNORDERED cluster
@@ -283,13 +273,16 @@ server <- function(input, output) {
     
     # Notes:
     #   - The cluster labels are UNORDERED
-
-
-    get.cluster.deathrate.during.time(
-      mort.cluster.raw(), 
-      cdc.data, 
-      death.cause=input$death_cause
-    )
+    
+    cdc.data %>%
+      dplyr::filter(state_abbr == input$state_choice, death_cause == input$death_cause) %>%
+      dplyr::right_join(mort.cluster.raw(), by = "county_fips") %>%
+      dplyr::group_by(period, cluster) %>%
+      dplyr::summarise(
+        death_rate = sum(death_num) / sum(population) * 10^5,
+        count = n()
+      ) %>% 
+      dplyr::ungroup()
   })
   
   # Cache of MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
@@ -297,12 +290,17 @@ server <- function(input, output) {
     
     # Variables:
     #   - ord
-  
+    
     # Notes:
     #   - This is a mapping from raw cluster label to ORDERED cluster.
     #       Row names are the original cluster and `ord` are the reordered cluster
     
-    get.cluster.order.map(mort.avg.cluster.raw(), time.period = "2015-2017")
+    mort.avg.cluster.raw() %>% 
+      dplyr::filter(period == "2015-2017") %>%
+      dplyr::arrange(death_rate) %>% 
+      dplyr::mutate(ord = as.character(1:n())) %>% 
+      dplyr::select(-c(period, death_rate)) %>% 
+      textshape::column_to_rownames("cluster")
   })
   
   # Cache of ORDERED mortality trend cluster label calculation
@@ -311,8 +309,8 @@ server <- function(input, output) {
     # Variables:
     #   - county_fips
     #   - cluster
-
-    order.county.clusters(mort.cluster.raw(), mort.cluster.map())
+    
+    dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
   })
   
   # Cache of Weighed Avg by ORDERED cluster
@@ -327,48 +325,39 @@ server <- function(input, output) {
     # Notes:
     #   - The cluster labels are ORDERED
     
-    order.cluster.deathrate.during.time(mort.avg.cluster.raw(), mort.cluster.map())
+    dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
   })
-
+  
+  mort.avg.national <- reactive({
+    
+    
+    cdc.data %>%
+      tidyr::drop_na() %>%
+      dplyr::select(period, death_num, population) %>% 
+      dplyr::group_by(period) %>%
+      dplyr::summarise(death_rate = sum(death_num) / sum(population) * 10^5) %>% 
+      dplyr::mutate(cluster = "National Avg.")
+  }) 
+  
   # -------------------------------------------------------------------------------------------------------------------------- #
   
   # Mortality Rate Trend Line Graph
   output$mort_line <- renderPlot({
-    
-    if (input$state_choice == "United States"){
-      
-      ggplot(
-          mort.avg.cluster.ord(),
-          aes(
-            x = period, y = death_rate, 
-            color = cluster, group = cluster
-          )
-        ) + 
-        geom_line(size = 1) + 
-        geom_point(color = "black", shape = 21, fill = "white") + 
-        labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster("US") +
-        theme.line.mort() + 
-        guides(
-          color = guide_legend(reverse = T)
-        )
-    } else {
-      
-      ggplot(
-          mort.avg.cluster.ord(),
-          aes(
-            x = period, y = death_rate, 
-            color = cluster, group = cluster
-          )
-        ) + 
-        geom_line(size = 1) + 
-        geom_point(color = "black", shape = 21, fill = "white") + 
-        labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice) +
-        theme.line.mort() + 
-        guides(color = guide_legend(reverse = T)) + 
-        scale_y_continuous(limits = c(0, 300), breaks = c(50, 100, 150, 200, 250))
-    }
+    ggplot(
+      dplyr::bind_rows(mort.avg.cluster.ord(), mort.avg.national()),
+      aes(
+        x = period, y = death_rate, 
+        color = cluster, group = cluster
+      )
+    ) + 
+      geom_line(size = 1) + 
+      geom_point(color = "black", shape = 21, fill = "white") + 
+      labs.line.mort(input$state_choice, input$death_cause) + 
+      color.line.cluster() +
+      theme.line.mort() + 
+      guides(
+        color = guide_legend(reverse = T)
+      )
     
   })
   
@@ -396,23 +385,12 @@ server <- function(input, output) {
   output$urban_dist_cluster <- renderPlot({
     
     # Calculate cluster label
-    
-    
-    if (input$state_choice == "United States"){
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    } else {
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::filter(state_abbr == input$state_choice) %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    }
-   
+    cluster.num <- 4
+    urban.data <- cdc.data %>% 
+      dplyr::filter(state_abbr == input$state_choice) %>% 
+      dplyr::select(county_fips, urban_2013) %>% 
+      unique() %>% 
+      dplyr::left_join(mort.label.raw(), by = "county_fips")
     
     ggplot(urban.data, aes(km_cluster, fill = urban_2013)) +
       geom_bar(position = "fill", color = "black", width = .75) +
@@ -436,81 +414,43 @@ server <- function(input, output) {
   
   # Mortality Trend Cluster by County
   output$geo_cluster_kmean <- renderPlot({
-    
-    # draw.geo.cluster is defined in init/Theme.R
-    if(input$state_choice == "United States"){
-      draw.geo.cluster("US", mort.cluster.ord())
-    }else{
-      draw.geo.cluster(input$state_choice, mort.cluster.ord())
-    }
-    
+    draw.geo.cluster(input$state_choice, mort.cluster.ord())
   })
   
   # Mortality Rate by County Period 1
   output$geo_mort_change1 <- renderPlot({
-    if(input$state_choice == "United States"){
-      mort.data <- dplyr::filter(
-        cdc.data,
-        death_cause == input$death_cause,
-        period == "2000-2002"
-      ) %>%
-        dplyr::mutate(
-          death_rate = death_num / population * 10^5,
-          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-        ) %>%
-        dplyr::select(county_fips, death_rate, period)
-      
-      draw.geo.mort("US", "2000-2002", mort.data, input$death_cause)
-      
-    } else {
-      mort.data <- dplyr::filter(
-        cdc.data,
-        state_abbr == input$state_choice,
-        death_cause == input$death_cause,
-        period == "2000-2002"
-      ) %>%
-        dplyr::mutate(
-          death_rate = death_num / population * 10^5,
-          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-        ) %>%
-        dplyr::select(county_fips, death_rate, period)
-      
-      draw.geo.mort(input$state_choice, "2000-2002", mort.data, input$death_cause)
-    }
     
+    mort.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    ) %>%
+      dplyr::mutate(
+        death_rate = death_num / population * 10^5,
+        death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+      ) %>%
+      dplyr::select(county_fips, death_rate, period)
+    
+    draw.geo.mort(input$state_choice, "2000-2002", mort.data, input$death_cause)
   })
   
   # Mortality Rate by County Period 2
   output$geo_mort_change2 <- renderPlot({
-    if(input$state_choice == "United States"){
-      mort.data <- dplyr::filter(
-        cdc.data,
-        death_cause == input$death_cause,
-        period == "2015-2017"
-      ) %>% 
-        dplyr::mutate(
-          death_rate = death_num / population * 10^5,
-          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-        ) %>%
-        dplyr::select(county_fips, death_rate, period)
-      
-      draw.geo.mort("US", "2015-2017", mort.data, input$death_cause)
-    } else{
-      mort.data <- dplyr::filter(
-        cdc.data,
-        state_abbr == input$state_choice,
-        death_cause == input$death_cause,
-        period == "2015-2017"
-      ) %>% 
-        dplyr::mutate(
-          death_rate = death_num / population * 10^5,
-          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-        ) %>%
-        dplyr::select(county_fips, death_rate, period)
-      
-      draw.geo.mort(input$state_choice, "2015-2017", mort.data, input$death_cause)
-    }
     
+    mort.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    ) %>% 
+      dplyr::mutate(
+        death_rate = death_num / population * 10^5,
+        death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+      ) %>%
+      dplyr::select(county_fips, death_rate, period)
+    
+    draw.geo.mort(input$state_choice, "2015-2017", mort.data, input$death_cause)
   })
   
   # Kendall Correlation Between Raw Mort Rate and CHR-SD
@@ -519,25 +459,20 @@ server <- function(input, output) {
     
     kendall.cor %>%
       dplyr::mutate(
-        DIR = dplyr::if_else(
+        Direction = dplyr::if_else(
           kendall_cor <= 0,
           "Protective",
           "Destructive"
         ),
+        kendall_cor = abs(kendall_cor),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>%
+      dplyr::top_n(10, kendall_cor) %>%
       ggplot(
-        aes(
-          x = reorder(chr_code, kendall_cor), 
-          y = kendall_cor, 
-          color = DIR, 
-          fill = DIR)
+        aes(x = reorder(chr_code, kendall_cor), y = kendall_cor, color = Direction, fill = Direction)
       ) + 
-      
-      # Lolipop chart
       geom_point(stat = 'identity', size = 8) + 
       geom_segment(
         size = 1,
@@ -546,49 +481,37 @@ server <- function(input, output) {
           x = reorder(chr_code, kendall_cor), 
           yend = kendall_cor, 
           xend = reorder(chr_code, kendall_cor),
-          color = DIR
+          color = Direction
         )
-      ) +
-      
-      # Labels
-      geom_text(
-        aes(
-          label = chr_code, 
-          y = ifelse(DIR == "Protective", 0.1, -0.1),
-          hjust = ifelse(DIR == "Protective", 0, 1)
-        ), 
-        color = "black", 
-        size = 4
       ) +
       geom_text(
         aes(label = round(kendall_cor, 2)), 
         color = "black", 
-        size = 2.5
+        size = 2
       ) +
-      
-      # Coordinates
       coord_flip() + 
-      scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
-      
-      # Themes
+      scale_y_continuous(
+        breaks = seq(
+          round(min(kendall.cor$kendall_cor), 2) - .03,
+          round(max(kendall.cor$kendall_cor), 2) + .03,
+          by = .1
+        )
+      ) +
       geom_hline(yintercept = .0, linetype = "dashed") + 
       labs(
-        title = "Most Influential Social Determinants",
+        title = "Most Influential Social Determinants of 2019",
         subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
         caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
         y = "Correlation (tau)",
-        x = NULL,
-        fill = "Direction",
-        color = "Direction"
+        x = NULL
       ) + 
       theme_minimal() +
       theme.text() + 
       theme.background() + 
       theme(
-        axis.text.y = element_blank(),
+        axis.text.y = element_text(size = 12),
         axis.text.x = element_text(size = 12),
-        axis.title.x = element_text(size = 12),
-        panel.grid.major.y = element_blank()
+        axis.title.x = element_text(size = 12)
       )
     
   })
@@ -599,23 +522,12 @@ server <- function(input, output) {
   }
   output$d3 <- renderD3({
     data_geo <- jsonlite::read_json("all-counties.json")
-    if (input$state_choice == "United States"){
-      data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat)),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-      
-    }else{
-      data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-    }
-    
+    data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
+    r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
+         d3_version = 3,
+         dependencies = "topojson.min.js",
+         css = "geoattr.css",
+         script = "d3.js")
   })
   
 }
