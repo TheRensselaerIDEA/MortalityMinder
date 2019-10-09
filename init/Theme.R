@@ -28,36 +28,20 @@ theme.line.mort <- function() {
     theme(
       axis.text.x = element_text(
         angle = 20
-      ),
-      panel.grid.major.x = element_blank() 
+      )
     )
 }
 
-color.line.cluster <- function(state.choice) {
-  
-  if (state.choice != "US"){
-    scale_color_manual(
-      name = "Cluster",
-      #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
-      values = colorRampPalette(
-        c("#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603")
-        
-      )(5),
-      guide = guide_legend(reverse = T)
-    )
-    
-  } else {
-    scale_color_manual(
-      name = "Cluster",
-      #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
-      values = colorRampPalette(
-        c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
-        
-      )(6),
-      guide = guide_legend(reverse = T)
-    )
-  }
-  
+color.line.cluster <- function() {
+  scale_color_manual(
+    name = "Cluster",
+    #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
+    values = c( colorRampPalette(
+      c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
+      
+    )(4), "grey"),
+    guide = guide_legend(reverse = T)
+  )
 }
 
 labs.line.mort <- function(state.choice, death.cause) {
@@ -101,7 +85,7 @@ color.geo.cluster <- function(n) {
     #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
     #c("#c6c6c6","#9e9e9e","#787878","#565656")
     values = colorRampPalette(
-      c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
+      c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
     )(n),
     guide = guide_legend(
       keyheight = unit(2, units = "mm"), 
@@ -122,40 +106,17 @@ labs.geo.cluster <- function(state.choice) {
   )
 }
 
-# draw.geo.cluster: Used in app.R to draw state and US maps
 draw.geo.cluster <- function(state.choice, mort.cluster) {
   n <- length(unique(pull(mort.cluster, "cluster")))
-  ## This saves a df for plot experimentation
-  # if (state.choice != "US"){
-  #   # geo.match.fetch: defined in GEO_Lib.R
-  #   myDf <- geo.map.fetch(state.choice, mort.cluster) %>%
-  #     dplyr::rename(VAR_ = cluster)
-  #   write_rds(myDf, "myDf.rds")
-  # }
-  if (state.choice != "US"){
-    # geo.match.fetch: defined in GEO_Lib.R
-    geo.map.fetch(state.choice, mort.cluster) %>%
-      dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
-      geom_polygon(size = 0, color = "white",alpha = 0.9) +
-      #base.geo() +
-      labs.geo.cluster(state.choice) + 
-      color.geo.cluster(n) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
-  } else {
-    # geo.match.fetch: defined in GEO_Lib.R
-    geo.map.fetch("US", mort.cluster) %>%
-      dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
-      geom_polygon(size = 0, color = "white",alpha = 0.9) +
-      #base.geo() +
-      labs.geo.cluster(state.choice) + 
-      color.geo.cluster(n) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
-  }
-   
+  geo.map.fetch(state.choice, mort.cluster) %>%
+    dplyr::rename(VAR_ = cluster) %>%
+    ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
+    geom_polygon(size = 0, color = "white",alpha = 0.9) +
+    #base.geo() +
+    labs.geo.cluster(state.choice) + 
+    color.geo.cluster(n) + 
+    theme.geo.mort() + 
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
 }
 
 theme.geo.mort <- function() {
@@ -228,23 +189,11 @@ bin.geo.mort <- function(death.cause) {
 }
 
 draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
-  if (state.choice != "US"){
-    geo.map.fetch(state.choice, mort.data) %>% 
-      dplyr::rename(VAR_ = death_rate) %>%
-      base.geo() + 
-      labs.geo.mort(state.choice, period.choice, death.cause) + 
-      color.geo.mort(death.cause) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
-    
-  }else{
-    geo.map.fetch("US", mort.data) %>% 
-      dplyr::rename(VAR_ = death_rate) %>%
-      base.geo() + 
-      labs.geo.mort(state.choice, period.choice, death.cause) + 
-      color.geo.mort(death.cause) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
-  }
-  
+  geo.map.fetch(state.choice, mort.data) %>% 
+    dplyr::rename(VAR_ = death_rate) %>%
+    base.geo() + 
+    labs.geo.mort(state.choice, period.choice, death.cause) + 
+    color.geo.mort(death.cause) + 
+    theme.geo.mort() + 
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45)
 }
