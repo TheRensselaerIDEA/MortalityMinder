@@ -122,40 +122,67 @@ labs.geo.cluster <- function(state.choice) {
   )
 }
 
+geoTitle <- function(state.choice, death.cause) {
+  return (tags$div(
+    HTML(paste(state.choice, "Trend Cluster<br/>Geo Distribution", sep = " "))))
+}
+
 # draw.geo.cluster: Used in app.R to draw state and US maps
-draw.geo.cluster <- function(state.choice, mort.cluster) {
-  n <- length(unique(pull(mort.cluster, "cluster")))
-  ## This saves a df for plot experimentation
-  # if (state.choice != "US"){
-  #   # geo.match.fetch: defined in GEO_Lib.R
-  #   myDf <- geo.map.fetch(state.choice, mort.cluster) %>%
-  #     dplyr::rename(VAR_ = cluster)
-  #   write_rds(myDf, "myDf.rds")
-  # }
-  if (state.choice != "US"){
-    # geo.match.fetch: defined in GEO_Lib.R
-    geo.map.fetch(state.choice, mort.cluster) %>%
-      dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_, text = county_name)) +
-      geom_polygon(size = 0, color = "white",alpha = 0.9) +
-      #base.geo() +
-      labs.geo.cluster(state.choice) + 
-      color.geo.cluster(n) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45) + guides(color = FALSE, fill = FALSE)
+draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
+  
+  dataset <- geo.map.fetch(state.choice, mort.cluster) %>% 
+    dplyr::rename(VAR_ = cluster)
+  
+  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  
+  max.long <- max(dataset$long)
+  max.lat <- max(dataset$lat)
+  min.long <- min(dataset$long)
+  min.lat <- min(dataset$lat)
+  
+  colors <- c("#fef0d9","#fdcc8a","#fc8d59")
+  labels <- c("Low", "Medium", "High")
+  
+  if (state.choice == "US") {
+    zoom.level = 2.7
+  } else if (state.choice == "MD") {
+    zoom.level = 6.2
   } else {
-    # geo.match.fetch: defined in GEO_Lib.R
-    geo.map.fetch("US", mort.cluster) %>%
-      dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
-      geom_polygon(size = 0, color = "white",alpha = 0.9) +
-      #base.geo() +
-      labs.geo.cluster(state.choice) + 
-      color.geo.cluster(n) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
+    zoom.level = 5.3
   }
-   
+  dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
+  return (leaflet(shapes, 
+                  options = leafletOptions(zoomControl = FALSE, 
+                                           minZoom = zoom.level, 
+                                           maxZoom = zoom.level, 
+                                           dragging = FALSE)) %>%
+            setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = zoom.level) %>%
+            addPolygons(stroke = TRUE, 
+                        smoothFactor = 0.1, 
+                        fillOpacity = 1,
+                        weight = 1,
+                        color = "white",
+                        opacity = 1,
+                        fillColor = colors[as.numeric(dataset$VAR_)],
+                        label = dataset$county_name) %>%
+            addControl(geoTitle(state.choice, death.cause), 
+                       position = "topleft", 
+                       className="map-title") %>%
+            addLegend("bottomleft",
+                      colors = colors[3],
+                      labels = labels[3],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[2],
+                      labels = labels[2],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[1],
+                      labels = labels[1],
+                      title = "Clusters:",
+                      opacity = 1))
 }
 
 theme.geo.mort <- function() {
@@ -258,11 +285,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   dataset <- geo.map.fetch(state.choice, mort.data) %>% 
     dplyr::rename(VAR_ = death_rate)
   
-  if(state.choice == "US") {
-    cty <- counties(cb = TRUE, resolution = "20m")
-  } else {
-    cty <- counties(cb = TRUE, resolution = "20m", state = state.choice) 
-  }
+  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
   max.long <- max(dataset$long)
   max.lat <- max(dataset$lat)
@@ -274,11 +297,13 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   
   if (state.choice == "US") {
     zoom.level = 2.7
+  } else if (state.choice == "MD") {
+    zoom.level = 6.2
   } else {
     zoom.level = 5.3
   }
   dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
-  return (leaflet(cty, 
+  return (leaflet(shapes, 
                   options = leafletOptions(zoomControl = FALSE, 
                                            minZoom = zoom.level, 
                                            maxZoom = zoom.level, 

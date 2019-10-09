@@ -13,6 +13,7 @@ library(randomForest)
 library(lubridate)
 library(forcats)
 library(htmltools)
+library(leaflet)
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
@@ -131,8 +132,36 @@ ui <- fluidPage(
         tags$div(
           class = "col2_upper",
           tags$div(
+            tags$style(HTML("
+              .leaflet-container { 
+                            background: #fff; 
+                            z-index: 0;
+                            }
+                            .leaflet-control {
+                            clear: none;
+                            background: transparent;
+                            box-shadow: 0 0 0 0;
+                            font-size: 8px;
+                            }
+                            .leaflet-left .leaflet-control {
+                            margin: 0;
+                            }
+                            .info {
+                            padding-right: 2px;
+                            }
+                            .leaflet-control i {
+                            display: block;
+                            height: 4px;
+                            width: 100%;
+                            }
+                            .leaflet-control.map-title { 
+                            padding: 20px 10px;
+                            font-size: 16px;
+                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+                            }
+                            ")),
             class = "col2_ul",
-            plotlyOutput("geo_cluster_kmean",width="100%",height="100%")
+            leafletOutput("geo_cluster_kmean",width="100%",height="100%")
             
           ),
           tags$div(
@@ -490,17 +519,12 @@ server <- function(input, output) {
   })
   
   # Mortality Trend Cluster by County
-  output$geo_cluster_kmean <- renderPlotly({
+  output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
       draw.geo.cluster("US", mort.cluster.ord())
     }else{
-      return (ggplotly(draw.geo.cluster(input$state_choice, mort.cluster.ord()), tooltip = c('text')) %>% 
-                config(displayModeBar = F) %>% 
-                layout(dragmode = FALSE, 
-                       yaxis = list(visible = FALSE), 
-                       xaxis = list(visible = FALSE), 
-                       legend = list(orientation = "h", xanchor = "center", x = 1, y = 0)))
+      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
     }
     
   })
