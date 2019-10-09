@@ -136,7 +136,24 @@ ui <- fluidPage(
             
           ),
           tags$div(
-            tags$style(HTML(".leaflet-container { background: #fff; }")),
+            tags$style(HTML("
+              .leaflet-container { 
+                background: #fff; 
+              }
+              .leaflet-control {
+                clear: none;
+                background: transparent;
+                box-shadow: 0 0 0 0;
+              }
+              .leaflet-left .leaflet-control {
+                margin: 0;
+              }
+              .leaflet-control i {
+                display: block;
+                height: 6px;
+                width: 100%;
+              }
+              ")),
             class = "col2_um",
             leafletOutput("geo_mort_change1",width="100%",height="100%")
           ),
@@ -490,6 +507,7 @@ server <- function(input, output) {
       min.lat <- min(dataset$lat)
       
       colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
+      labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
       leaflet(cty, 
               options = leafletOptions(zoomControl = FALSE, 
                                        minZoom = 5.3, 
@@ -504,9 +522,14 @@ server <- function(input, output) {
                     opacity = 1,
                     fillColor = colors[as.numeric(dataset$VAR_)],
                     label = dataset$county_name) %>%
-        addLegend("bottomright", 
-                  colors = colors, 
-                  labels = c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]"),
+        addLegend("bottomleft",
+                  colors = colors[2],
+                  labels = labels[2],
+                  title = "&nbsp;",
+                  opacity = 1) %>%
+        addLegend("bottomleft",
+                  colors = colors[1],
+                  labels = labels[1],
                   title = "Rate",
                   opacity = 1)
     }
