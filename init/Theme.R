@@ -248,3 +248,82 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
   }
   
 }
+
+title <- function(state.choice, death.cause, period) {
+  return (tags$div(
+    HTML(paste(state.choice, " - Death of", death.cause, "Rate<br/>", period))))
+}
+
+geo.plot <- function(state.choice, death.cause, mort.data, period) {
+  dataset <- geo.map.fetch(state.choice, mort.data) %>% 
+    dplyr::rename(VAR_ = death_rate)
+  
+  cty <- counties(cb = TRUE, resolution = "20m", state = state.choice)
+  
+  max.long <- max(dataset$long)
+  max.lat <- max(dataset$lat)
+  min.long <- min(dataset$long)
+  min.lat <- min(dataset$lat)
+  
+  colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
+  labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+  
+  dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
+  return (leaflet(cty, 
+                  options = leafletOptions(zoomControl = FALSE, 
+                                           minZoom = 5.3, 
+                                           maxZoom = 5.3, 
+                                           dragging = FALSE)) %>%
+            setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = 5.3) %>%
+            addPolygons(stroke = TRUE, 
+                        smoothFactor = 0.1, 
+                        fillOpacity = 1,
+                        weight = 1,
+                        color = "white",
+                        opacity = 1,
+                        fillColor = colors[as.numeric(dataset$VAR_)],
+                        label = dataset$county_name) %>%
+            addControl(title(state.choice, death.cause, period), 
+                       position = "topleft", 
+                       className="map-title") %>%
+            addLegend("bottomleft",
+                      colors = colors[8],
+                      labels = labels[8],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[7],
+                      labels = labels[7],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[6],
+                      labels = labels[6],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[5],
+                      labels = labels[5],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[4],
+                      labels = labels[4],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[3],
+                      labels = labels[3],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[2],
+                      labels = labels[2],
+                      title = "&nbsp;",
+                      opacity = 1) %>%
+            addLegend("bottomleft",
+                      colors = colors[1],
+                      labels = labels[1],
+                      title = "Rate;",
+                      opacity = 1))
+}

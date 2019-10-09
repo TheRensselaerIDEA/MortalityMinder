@@ -139,28 +139,66 @@ ui <- fluidPage(
             tags$style(HTML("
               .leaflet-container { 
                 background: #fff; 
+                z-index: 0;
               }
               .leaflet-control {
                 clear: none;
                 background: transparent;
                 box-shadow: 0 0 0 0;
+                font-size: 8px;
               }
               .leaflet-left .leaflet-control {
                 margin: 0;
               }
+              .info {
+                padding-right: 2px;
+              }
               .leaflet-control i {
                 display: block;
-                height: 6px;
+                height: 4px;
                 width: 100%;
+              }
+              .leaflet-control.map-title { 
+                  padding: 20px 10px;
+                  font-size: 16px;
+                  font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
               }
               ")),
             class = "col2_um",
             leafletOutput("geo_mort_change1",width="100%",height="100%")
           ),
           tags$div(
+            tags$style(HTML("
+              .leaflet-container { 
+                background: #fff; 
+                z-index: 0;
+                }
+                .leaflet-control {
+                clear: none;
+                background: transparent;
+                box-shadow: 0 0 0 0;
+                font-size: 8px;
+                }
+                .leaflet-left .leaflet-control {
+                margin: 0;
+                }
+                .info {
+                padding-right: 2px;
+                }
+                .leaflet-control i {
+                display: block;
+                height: 4px;
+                width: 100%;
+                }
+                .leaflet-control.map-title { 
+                padding: 20px 10px;
+                font-size: 16px;
+                font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+                }
+                "
+            )),
             class = "col2_ur",
-            plotOutput("geo_mort_change2",width="100%",height="100%")
-
+            leafletOutput("geo_mort_change2",width="100%",height="100%")
           )
         ),
         tags$div(
@@ -496,48 +534,13 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      dataset <- geo.map.fetch(input$state_choice, mort.data) %>% 
-        dplyr::rename(VAR_ = death_rate)
-      
-      cty <- counties(cb = TRUE, resolution = "20m", state = input$state_choice)
-      
-      max.long <- max(dataset$long)
-      max.lat <- max(dataset$lat)
-      min.long <- min(dataset$long)
-      min.lat <- min(dataset$lat)
-      
-      colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
-      labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
-      leaflet(cty, 
-              options = leafletOptions(zoomControl = FALSE, 
-                                       minZoom = 5.3, 
-                                       maxZoom = 5.3, 
-                                       dragging = FALSE)) %>%
-        setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = 5.3) %>%
-        addPolygons(stroke = TRUE, 
-                    smoothFactor = 0.1, 
-                    fillOpacity = 1,
-                    weight = 1,
-                    color = "white",
-                    opacity = 1,
-                    fillColor = colors[as.numeric(dataset$VAR_)],
-                    label = dataset$county_name) %>%
-        addLegend("bottomleft",
-                  colors = colors[2],
-                  labels = labels[2],
-                  title = "&nbsp;",
-                  opacity = 1) %>%
-        addLegend("bottomleft",
-                  colors = colors[1],
-                  labels = labels[1],
-                  title = "Rate",
-                  opacity = 1)
+      geo.plot(input$state_choice, input$death_cause, mort.data, "2000-2002")
     }
     
   })
   
   # Mortality Rate by County Period 2
-  output$geo_mort_change2 <- renderPlot({
+  output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -564,7 +567,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort(input$state_choice, "2015-2017", mort.data, input$death_cause)
+      geo.plot(input$state_choice, input$death_cause, mort.data, "2015-2017")
     }
     
   })
