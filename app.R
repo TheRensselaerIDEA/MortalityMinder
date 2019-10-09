@@ -16,6 +16,8 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
+SocialDeterminants <- readRDS("/home/erickj4/MortalityMinder/data/SocialDeterminants.rds")
+
 n.clusters.state = 3
 n.clusters.nation = 6
 
@@ -560,8 +562,9 @@ server <- function(input, output) {
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
-#    browser()
     point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
+    
+#browser()    
 
     if (nrow(point) == 0) return(NULL)
     
@@ -586,12 +589,14 @@ server <- function(input, output) {
     
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
+    browser()
     wellPanel(
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
                     "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
                     "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
-                    "<i>", point$DIR, "</i>",
+                    "<i>", point$DIR, "</i>","<br/>",
+                    SocialDeterminants[SocialDeterminants$Code == point$chr_code,]$Definition[[1]],
                     NULL
                     )))
     )
