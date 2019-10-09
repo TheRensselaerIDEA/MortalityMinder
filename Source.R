@@ -37,4 +37,6 @@ source("Analyzer_PCA.R")
 source("Clustering_Lib.R")
 source("Analyzer_Correlation.R")
 source("Theme.R")
+# Read in new SD definitions
+SocialDeterminants <- readRDS("SocialDeterminants.rds")
 setwd("../www")
