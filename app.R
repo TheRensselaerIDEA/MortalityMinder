@@ -16,7 +16,7 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
-n.clusters.state = 3
+n.clusters.state = 4
 n.clusters.nation = 6
 
 ui <- fluidPage(
@@ -268,7 +268,7 @@ server <- function(input, output) {
                        cluster.num=n.clusters)
     }
   })
-  
+
   # Cache of Weighed Avg by UNORDERED cluster
   mort.avg.cluster.raw <- reactive({
     
@@ -325,6 +325,7 @@ server <- function(input, output) {
     #   - The cluster labels are ORDERED
     
     order.cluster.deathrate.during.time(mort.avg.cluster.raw(), mort.cluster.map())
+    
   })
 
   # -------------------------------------------------------------------------------------------------------------------------- #
@@ -333,7 +334,7 @@ server <- function(input, output) {
   output$mort_line <- renderPlot({
     
     if (input$state_choice == "United States"){
-      
+    
       ggplot(
           mort.avg.cluster.ord(),
           aes(
@@ -401,7 +402,7 @@ server <- function(input, output) {
         unique() %>% 
         dplyr::left_join(mort.label.raw(), by = "county_fips")
     } else {
-      cluster.num <- 6
+      cluster.num <- 3
       urban.data <- cdc.data %>% 
         dplyr::filter(state_abbr == input$state_choice) %>% 
         dplyr::select(county_fips, urban_2013) %>% 
@@ -687,7 +688,6 @@ server <- function(input, output) {
         axis.title.x = element_text(size = 12),
         panel.grid.major.y = element_blank()
       )
-    
   })
   
   
