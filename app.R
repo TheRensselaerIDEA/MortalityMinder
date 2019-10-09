@@ -16,8 +16,6 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
-SocialDeterminants <- readRDS("/home/erickj4/MortalityMinder/data/SocialDeterminants.rds")
-
 n.clusters.state = 3
 n.clusters.nation = 6
 
