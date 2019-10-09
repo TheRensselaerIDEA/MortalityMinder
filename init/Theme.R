@@ -258,7 +258,11 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   dataset <- geo.map.fetch(state.choice, mort.data) %>% 
     dplyr::rename(VAR_ = death_rate)
   
-  cty <- counties(cb = TRUE, resolution = "20m", state = state.choice)
+  if(state.choice == "US") {
+    cty <- counties(cb = TRUE, resolution = "20m")
+  } else {
+    cty <- counties(cb = TRUE, resolution = "20m", state = state.choice) 
+  }
   
   max.long <- max(dataset$long)
   max.lat <- max(dataset$lat)
@@ -268,13 +272,18 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
   labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
   
+  if (state.choice == "US") {
+    zoom.level = 2.7
+  } else {
+    zoom.level = 5.3
+  }
   dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
   return (leaflet(cty, 
                   options = leafletOptions(zoomControl = FALSE, 
-                                           minZoom = 5.3, 
-                                           maxZoom = 5.3, 
+                                           minZoom = zoom.level, 
+                                           maxZoom = zoom.level, 
                                            dragging = FALSE)) %>%
-            setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = 5.3) %>%
+            setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = zoom.level) %>%
             addPolygons(stroke = TRUE, 
                         smoothFactor = 0.1, 
                         fillOpacity = 1,

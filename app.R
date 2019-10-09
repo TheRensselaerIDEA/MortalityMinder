@@ -519,7 +519,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort("US", "2000-2002", mort.data, input$death_cause)
+      geo.plot("US", input$death_cause, mort.data, "2000-2002")
       
     } else {
       mort.data <- dplyr::filter(
@@ -553,7 +553,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort("US", "2015-2017", mort.data, input$death_cause)
+      geo.plot("US", input$death_cause, mort.data, "2015-2017")
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
