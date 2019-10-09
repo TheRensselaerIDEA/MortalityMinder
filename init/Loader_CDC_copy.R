@@ -7,7 +7,7 @@
 #   Year 2000-2017
 
 # PACKAGES: 
-#   `stringr`, `tidyr`, `dplyr`, `readr`, `janitor`
+#   `stringr`, `tidyr`, `dplyr`, `readr`, `janitor`, `Amelia`
 # -----------------------------------------------------------------------------------------+
 
 # Helper function for reading CDC_WONDER deaths rate data
@@ -409,7 +409,7 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
     }
     
     complt.df <- rbind(complt.df, complt)
-    print(i)
+    # print(i)
   }
     
   final.df <- 
@@ -494,6 +494,15 @@ cdc.files.cardiovascular <- c(
   "../data/CDC/cardiovascular/Underlying Cause of Death, 2009-2011.txt",
   "../data/CDC/cardiovascular/Underlying Cause of Death, 2012-2014.txt",
   "../data/CDC/cardiovascular/Underlying Cause of Death, 2015-2017.txt"
+)
+
+cdc.files.allcause <- c(
+  "../data/CDC/all_cause/Underlying Cause of Death, 2000-2002.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2003-2005.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2006-2008.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2009-2011.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2012-2014.txt",
+  "../data/CDC/all_cause/Underlying Cause of Death, 2015-2017.txt"
 )
 
 # state data name map #
@@ -590,6 +599,14 @@ cdc.files.cardiovascular.state <- c(
   "../data/CDC/cardiovascular_state/Underlying Cause of Death, State, 2015-2017.txt"
 )
 
+cdc.files.allcause.state <- c(
+  "../data/CDC/allcause_state/Underlying Cause of Death, State, 2000-2002.txt",
+  "../data/CDC/allcause_state/Underlying Cause of Death, State, 2003-2005.txt",
+  "../data/CDC/allcause_state/Underlying Cause of Death, State, 2006-2008.txt",
+  "../data/CDC/allcause_state/Underlying Cause of Death, State, 2009-2011.txt",
+  "../data/CDC/allcause_state/Underlying Cause of Death, State, 2012-2014.txt",
+  "../data/CDC/allcause_state/Underlying Cause of Death, State, 2015-2017.txt"
+)
 
 ######################
 
@@ -597,18 +614,20 @@ cdc.data.despair <- cdc.reader.batch(cdc.files.despair, cdc.periods, "Despair")
 cdc.data.assault <- cdc.reader.batch(cdc.files.assault, cdc.periods, "Assault")
 cdc.data.cancer <- cdc.reader.batch(cdc.files.cancer, cdc.periods, "Cancer")
 cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.periods, "Cardiovascular")
+cdc.data.allcause <- cdc.reader.batch(cdc.files.allcause, cdc.periods, "All Cause")
 cdc.data <- dplyr::bind_rows(cdc.data.despair, cdc.data.assault, cdc.data.cancer, 
-                             cdc.data.cardiovascular) %>% 
+                             cdc.data.cardiovascular, cdc.data.allcause) %>% 
   as.data.frame()
 
 cdc.data.despair.state <- cdc.reader.state.batch(cdc.files.despair.state, cdc.periods, "Despair")
 cdc.data.assault.state <- cdc.reader.state.batch(cdc.files.assault.state, cdc.periods, "Assault")
 cdc.data.cancer.state <- cdc.reader.state.batch(cdc.files.cancer.state, cdc.periods, "Cancer")
 cdc.data.cardiovascular.state <- cdc.reader.state.batch(cdc.files.cardiovascular.state, cdc.periods, "Cardiovascular")
+cdc.data.allcause.state <- cdc.reader.state.batch(cdc.files.allcause.state, cdc.periods, "All Cause")
 
 cdc.data.state <- 
   dplyr::bind_rows(cdc.data.despair.state, cdc.data.assault.state, cdc.data.cancer.state,
-                   cdc.data.cardiovascular.state) %>% 
+                   cdc.data.cardiovascular.state, cdc.data.allcause.state) %>% 
   as.data.frame()
 
 ######################
@@ -617,10 +636,11 @@ cdc.data.despair.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Despair
 cdc.data.assault.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Assault")
 cdc.data.cancer.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Cancer")
 cdc.data.cardiovascular.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Cardiovascular")
+cdc.data.allcause.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "All Cause")
 
 cdc.data.imputed <- 
   dplyr::bind_rows(cdc.data.despair.imputed, cdc.data.assault.imputed, cdc.data.cancer.imputed,
-                   cdc.data.cardiovascular.imputed) %>% 
+                   cdc.data.cardiovascular.imputed, cdc.data.allcause.imputed) %>% 
   as.data.frame()
 
 saveRDS(cdc.data.imputed, "../data/CDC/cdc.data.imputed.Rds")
@@ -636,11 +656,13 @@ rm(
     "cdc.files.assault", 
     "cdc.files.cancer",
     "cdc.files.cardiovascular",
+    "cdc.files.allcause",
     
     # Comment out the three lines below to keep individual data frames
     "cdc.data.assault",
     "cdc.data.cancer",
     "cdc.data.despair",
-    "cdc.data.cardiovascular"
+    "cdc.data.cardiovascular",
+    "cdc.data.allcause"
   )
 )
