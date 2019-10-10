@@ -5,6 +5,15 @@
 #   Graph: Ziyi Wang
 
 source("Source.R")
+library(shinyWidgets)
+library(viridis)
+library(plotly)
+library(RUnit)
+library(randomForest)
+library(lubridate)
+library(forcats)
+library(htmltools)
+library(leaflet)
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
@@ -126,18 +135,102 @@ ui <- fluidPage(
         tags$div(
           class = "col2_upper",
           tags$div(
+            tags$style(HTML("
+              .leaflet-container { 
+                            background: #fff; 
+                            z-index: 0;
+                            }
+                            .leaflet-control {
+                            clear: none;
+                            background: transparent;
+                            box-shadow: 0 0 0 0;
+                            font-size: 8px;
+                            }
+                            .leaflet-left .leaflet-control {
+                            margin: 0;
+                            }
+                            .info {
+                            padding-right: 2px;
+                            }
+                            .leaflet-control i {
+                            display: block;
+                            height: 4px;
+                            width: 100%;
+                            }
+                            .leaflet-control.map-title { 
+                            padding: 20px 10px;
+                            font-size: 16px;
+                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+                            }
+                            ")),
             class = "col2_ul",
-            plotlyOutput("geo_cluster_kmean",width="100%",height="100%")
+            leafletOutput("geo_cluster_kmean",width="100%",height="100%")
             
           ),
           tags$div(
+            tags$style(HTML("
+              .leaflet-container { 
+                background: #fff; 
+                z-index: 0;
+              }
+              .leaflet-control {
+                clear: none;
+                background: transparent;
+                box-shadow: 0 0 0 0;
+                font-size: 8px;
+              }
+              .leaflet-left .leaflet-control {
+                margin: 0;
+              }
+              .info {
+                padding-right: 2px;
+              }
+              .leaflet-control i {
+                display: block;
+                height: 4px;
+                width: 100%;
+              }
+              .leaflet-control.map-title { 
+                  padding: 20px 10px;
+                  font-size: 16px;
+                  font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+              }
+              ")),
             class = "col2_um",
-            plotOutput("geo_mort_change1",width="100%",height="100%")
+            leafletOutput("geo_mort_change1",width="100%",height="100%")
           ),
           tags$div(
+            tags$style(HTML("
+              .leaflet-container { 
+                background: #fff; 
+                z-index: 0;
+                }
+                .leaflet-control {
+                clear: none;
+                background: transparent;
+                box-shadow: 0 0 0 0;
+                font-size: 8px;
+                }
+                .leaflet-left .leaflet-control {
+                margin: 0;
+                }
+                .info {
+                padding-right: 2px;
+                }
+                .leaflet-control i {
+                display: block;
+                height: 4px;
+                width: 100%;
+                }
+                .leaflet-control.map-title { 
+                padding: 20px 10px;
+                font-size: 16px;
+                font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+                }
+                "
+            )),
             class = "col2_ur",
-            plotOutput("geo_mort_change2",width="100%",height="100%")
-
+            leafletOutput("geo_mort_change2",width="100%",height="100%")
           )
         ),
         tags$div(
@@ -431,23 +524,18 @@ server <- function(input, output) {
   })
   
   # Mortality Trend Cluster by County
-  output$geo_cluster_kmean <- renderPlotly({
+  output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", mort.cluster.ord())
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
     }else{
-      return (ggplotly(draw.geo.cluster(input$state_choice, mort.cluster.ord()), tooltip = c('text')) %>% 
-                config(displayModeBar = F) %>% 
-                layout(dragmode = FALSE, 
-                       yaxis = list(visible = FALSE), 
-                       xaxis = list(visible = FALSE), 
-                       legend = list(orientation = "h", xanchor = "center", x = 1, y = 0)))
+      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
     }
     
   })
   
   # Mortality Rate by County Period 1
-  output$geo_mort_change1 <- renderPlot({
+  output$geo_mort_change1 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -460,7 +548,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort("US", "2000-2002", mort.data, input$death_cause)
+      geo.plot("US", input$death_cause, mort.data, "2000-2002")
       
     } else {
       
@@ -475,14 +563,13 @@ server <- function(input, output) {
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
-
-      draw.geo.mort(input$state_choice, "2000-2002", mort.data, input$death_cause)
+      geo.plot(input$state_choice, input$death_cause, mort.data, "2000-2002")
     }
     
   })
   
   # Mortality Rate by County Period 2
-  output$geo_mort_change2 <- renderPlot({
+  output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -495,7 +582,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort("US", "2015-2017", mort.data, input$death_cause)
+      geo.plot("US", input$death_cause, mort.data, "2015-2017")
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
@@ -509,7 +596,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort(input$state_choice, "2015-2017", mort.data, input$death_cause)
+      geo.plot(input$state_choice, input$death_cause, mort.data, "2015-2017")
     }
     
   })
