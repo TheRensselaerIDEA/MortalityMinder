@@ -710,75 +710,77 @@ server <- function(input, output) {
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
-      
-#    browser() 
     
-    kendall.cor.new %>% 
-      ggplot(
-        aes(
-          #x = reorder(chr_code, kendall_cor), 
-          x = chr_code, 
-          y = kendall_cor, 
-          color = DIR, 
-          fill = DIR)
-      ) + 
-      
-      # Lolipop chart
-      geom_point(stat = 'identity', size = 8) + 
-      geom_segment(
-        size = 1,
-        aes(
-          y = 0, 
-          #x = reorder(chr_code, kendall_cor), 
-          x = chr_code, 
-          yend = kendall_cor, 
-          #xend = reorder(chr_code, kendall_cor), 
-          xend = chr_code, 
-          color = DIR
-        )
-      ) +
-      
-      # Labels
-      geom_text(
-        aes(
-          label = chr_code, 
-          y = ifelse(DIR == "Protective", 0.1, -0.1),
-          hjust = ifelse(DIR == "Protective", 0, 1)
-        ), 
-        color = "black", 
-        size = 4
-      ) +
-      geom_text(
-        aes(label = round(kendall_cor, 2)), 
-        color = "black", 
-        size = 2.5
-      ) +
-      
-      # Coordinates
-      coord_flip() + 
-      scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
-      
-      # Themes
-      geom_hline(yintercept = .0, linetype = "dashed") + 
-      labs(
-        title = "Most Influential Social Determinants",
-        subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
-        caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
-        y = "Correlation (tau)",
-        x = NULL,
-        fill = "Direction",
-        color = "Direction"
-      ) + 
-      theme_minimal() +
-      theme.text() + 
-      theme.background() + 
-      theme(
-        axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 12),
-        axis.title.x = element_text(size = 12),
-        panel.grid.major.y = element_blank()
-      )
-    
+      #Only display the social determinants graph if there is any significant social determinant
+      #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
+      if(nrow(kendall.cor.new) > 0) {
+        kendall.cor.new %>% 
+          ggplot(
+            aes(
+              #x = reorder(chr_code, kendall_cor), 
+              x = chr_code, 
+              y = kendall_cor, 
+              color = DIR, 
+              fill = DIR)
+          ) + 
+          
+          # Lolipop chart
+          geom_point(stat = 'identity', size = 8) + 
+          geom_segment(
+            size = 1,
+            aes(
+              y = 0, 
+              #x = reorder(chr_code, kendall_cor), 
+              x = chr_code, 
+              yend = kendall_cor, 
+              #xend = reorder(chr_code, kendall_cor), 
+              xend = chr_code, 
+              color = DIR
+            )
+          ) +
+          
+          # Labels
+          geom_text(
+            aes(
+              label = chr_code, 
+              y = ifelse(DIR == "Protective", 0.1, -0.1),
+              hjust = ifelse(DIR == "Protective", 0, 1)
+            ), 
+            color = "black", 
+            size = 4
+          ) +
+          geom_text(
+            aes(label = round(kendall_cor, 2)), 
+            color = "black", 
+            size = 2.5
+          ) +
+          
+          # Coordinates
+          coord_flip() + 
+          scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
+          
+          # Themes
+          geom_hline(yintercept = .0, linetype = "dashed") + 
+          labs(
+            title = "Most Influential Social Determinants",
+            subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+            caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+            y = "Correlation (tau)",
+            x = NULL,
+            fill = "Direction",
+            color = "Direction"
+          ) + 
+          theme_minimal() +
+          theme.text() + 
+          theme.background() + 
+          theme(
+            axis.text.y = element_blank(),
+            axis.text.x = element_text(size = 12),
+            axis.title.x = element_text(size = 12),
+            panel.grid.major.y = element_blank()
+          )
+      }
+      #Display something else when there are no significant SD
   })
   
   
