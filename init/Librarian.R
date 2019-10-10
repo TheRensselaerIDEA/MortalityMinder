@@ -44,7 +44,7 @@ LIBS_PLOT <- c(
   "ggplot2", "plotly",
   
   # Choropleth plot
-  "RUnit", "mapproj", "maps"
+  "RUnit", "mapproj", "maps", "leaflet"
 )
 
 
