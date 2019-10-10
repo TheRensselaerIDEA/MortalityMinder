@@ -26,14 +26,15 @@ LIBS_LOADER <- c(
 # All libraries for analysis should be listed below
 #   - e.g. `randomForest`
 LIBS_ANALYSIS <- c(
-  "randomForest"
+  "randomForest", "cluster"
 )
 
 # All libraries for build the shiny-d3 app should be listed below
 #   - e.g. `shiny`
 LIBS_SHINYAPP <- c(
   "shiny", "shinythemes", "shinyWidgets", "shinydashboard", 
-  "r2d3", "RColorBrewer", "viridis", "shinyjs", "grid"
+  "r2d3", "RColorBrewer", "viridis", "shinyjs", "grid",
+  "htmltools"
 )
 
 # All libraries for plotting should be listed below

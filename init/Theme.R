@@ -33,7 +33,7 @@ theme.line.mort <- function() {
     )
 }
 
-color.line.cluster <- function(state.choice) {
+color.line.cluster <- function(state.choice, n.clusters) {
   
   if (state.choice != "US"){
     scale_color_manual(
@@ -42,7 +42,7 @@ color.line.cluster <- function(state.choice) {
       values = colorRampPalette(
         c("#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603")
         
-      )(5),
+      )(n.clusters),
       guide = guide_legend(reverse = T)
     )
     
@@ -53,7 +53,7 @@ color.line.cluster <- function(state.choice) {
       values = colorRampPalette(
         c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
         
-      )(6),
+      )(n.clusters),
       guide = guide_legend(reverse = T)
     )
   }

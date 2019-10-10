@@ -1,6 +1,6 @@
 # Date: 2019/8/1
 # Author: 
-#   UI:Shengjin Li
+#   UI: Shengjin Li
 #   Server: Yuxuan Wang
 #   Graph: Ziyi Wang
 
@@ -24,6 +24,9 @@ deps <- list("topojson.min.js",
 state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
+
+n.clusters.state = 3
+n.clusters.nation = 6
 
 ui <- fluidPage(
   # include css
@@ -233,7 +236,10 @@ ui <- fluidPage(
         tags$div(
           class = "col2_lower",
           tags$hr(),
-          plotOutput("page1.bar.cor1",width="100%",height="100%")
+          # Hovering tooltip
+          plotOutput("page1.bar.cor1",width="100%",height="100%", 
+                     hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
+          uiOutput("hover_info")
           
         )
         
@@ -344,13 +350,12 @@ server <- function(input, output) {
     
     if (input$state_choice == "United States"){
       # Currently hard-coded 6 clusters
-      n.clusters <- 6
+      n.clusters <- n.clusters.nation
       cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
     } else{
-      # Currently hard-coded 3 clusters
-      n.clusters <- 3
+      n.clusters <- n.clusters.state
       cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
@@ -432,7 +437,7 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster("US") +
+        color.line.cluster("US", n.clusters.nation) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
@@ -449,7 +454,7 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice) +
+        color.line.cluster(input$state_choice, n.clusters.state) +
         theme.line.mort() + 
         guides(color = guide_legend(reverse = T))
     }
@@ -538,7 +543,7 @@ server <- function(input, output) {
         period == "2000-2002"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
@@ -546,6 +551,7 @@ server <- function(input, output) {
       geo.plot("US", input$death_cause, mort.data, "2000-2002")
       
     } else {
+      
       mort.data <- dplyr::filter(
         cdc.data,
         state_abbr == input$state_choice,
@@ -553,11 +559,10 @@ server <- function(input, output) {
         period == "2000-2002"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
-      
       geo.plot(input$state_choice, input$death_cause, mort.data, "2000-2002")
     }
     
@@ -572,7 +577,7 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>% 
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
@@ -586,7 +591,7 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>% 
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
@@ -596,11 +601,40 @@ server <- function(input, output) {
     
   })
   
-  # Kendall Correlation Between Raw Mort Rate and CHR-SD
-  output$page1.bar.cor1 <- renderPlot({
-    kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+  mort.rate <- reactive({
+    if(input$state_choice == "United States"){
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
+  
+  # Implementation of hover (08 Oct 2019)
+  output$hover_info <- renderUI({
+    req(input$plot_hover) # Same as if-not-NULL
+    hover <- input$plot_hover
     
-    kendall.cor %>%
+    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+    
+    kendall.cor.new <- kendall.cor %>%
       dplyr::mutate(
         DIR = dplyr::if_else(
           kendall_cor <= 0,
@@ -611,10 +645,79 @@ server <- function(input, output) {
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>%
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
+    
+#browser()    
+
+    if (nrow(point) == 0) return(NULL)
+    
+    # calculate point position INSIDE the image as percent of total dimensions
+    # from left (horizontal) and from top (vertical)
+    # left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+    # top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+
+    left_pct <- 1.00
+    top_pct <- 1.00
+        
+    # calculate distance from left and bottom side of the picture in pixels
+    left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+    top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+
+    
+    # create style property for tooltip
+    # background color is set so tooltip is a bit transparent
+    # z-index is set so we are sure are tooltip will be on top
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
+                    "left:", left_px + 2, "px; top:", top_px + 2, "px;")
+    
+    # actual tooltip created as wellPanel
+    # TODO: Change these variables based on `kendall.cor`
+   # browser()
+    wellPanel(
+      style = style,
+      p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
+#                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
+ #                   "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
+                    "<i>", point$DIR, "</i>","<br/>",
+                    SocialDeterminants[SocialDeterminants$Name == point$chr_code,]$Definition[[1]],
+                    NULL
+                    )))
+    )
+    
+  })
+
+    
+  # Kendall Correlation Between Raw Mort Rate and CHR-SD
+  output$page1.bar.cor1 <- renderPlot({
+
+    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    # Sort by kendall.cor
+    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+    
+    kendall.cor.new <- kendall.cor %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+      
+#    browser() 
+    
+    kendall.cor.new %>% 
       ggplot(
         aes(
-          x = reorder(chr_code, kendall_cor), 
+          #x = reorder(chr_code, kendall_cor), 
+          x = chr_code, 
           y = kendall_cor, 
           color = DIR, 
           fill = DIR)
@@ -626,9 +729,11 @@ server <- function(input, output) {
         size = 1,
         aes(
           y = 0, 
-          x = reorder(chr_code, kendall_cor), 
+          #x = reorder(chr_code, kendall_cor), 
+          x = chr_code, 
           yend = kendall_cor, 
-          xend = reorder(chr_code, kendall_cor),
+          #xend = reorder(chr_code, kendall_cor), 
+          xend = chr_code, 
           color = DIR
         )
       ) +
