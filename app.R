@@ -522,7 +522,7 @@ server <- function(input, output) {
   output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", mort.cluster.ord())
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
     }else{
       draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
     }

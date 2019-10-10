@@ -147,8 +147,18 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
     zoom.level = 2.7
   } else if (state.choice == "MD") {
     zoom.level = 6.2
+  } else if (state.choice == "AK") {
+    zoom.level = 2.7
   } else {
     zoom.level = 5.3
+  }
+  
+  if (state.choice == "AK") {
+    lat = "64.2008"
+    long = "-149.4937"
+  } else {
+    lat = min.lat + (max.lat - min.lat)/2
+    long = min.long + (max.long - min.long)/2
   }
   dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
   return (leaflet(shapes, 
@@ -156,7 +166,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
                                            minZoom = zoom.level, 
                                            maxZoom = zoom.level, 
                                            dragging = FALSE)) %>%
-            setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = zoom.level) %>%
+            setView(lat = lat, lng = long, zoom = zoom.level) %>%
             addPolygons(stroke = TRUE, 
                         smoothFactor = 0.1, 
                         fillOpacity = 1,
@@ -299,16 +309,27 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
     zoom.level = 2.7
   } else if (state.choice == "MD") {
     zoom.level = 6.2
+  } else if (state.choice == "AK") {
+    zoom.level = 2.7
   } else {
     zoom.level = 5.3
   }
+  
+  if (state.choice == "AK") {
+    lat = "64.2008"
+    long = "-149.4937"
+  } else {
+    lat = min.lat + (max.lat - min.lat)/2
+    long = min.long + (max.long - min.long)/2
+  }
+  
   dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
   return (leaflet(shapes, 
                   options = leafletOptions(zoomControl = FALSE, 
                                            minZoom = zoom.level, 
                                            maxZoom = zoom.level, 
                                            dragging = FALSE)) %>%
-            setView(lat = min.lat + (max.lat - min.lat)/2, lng = min.long + (max.long - min.long)/2, zoom = zoom.level) %>%
+            setView(lat = lat, lng = long, zoom = zoom.level) %>%
             addPolygons(stroke = TRUE, 
                         smoothFactor = 0.1, 
                         fillOpacity = 1,
