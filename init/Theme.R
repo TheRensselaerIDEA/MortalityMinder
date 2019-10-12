@@ -237,12 +237,15 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
     
+    
   }else{
     geo.map.fetch("US", mort.data) %>% 
       dplyr::rename(VAR_ = death_rate) %>%
-      base.geo() + 
+      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_, text = county_name)) +
+      geom_polygon(size = 0, color = "white",alpha = 0.9) +
+      #base.geo() + 
       labs.geo.mort(state.choice, period.choice, death.cause) + 
-      color.geo.mort(death.cause) + 
+      color.geo.mort(death.cause) +
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
   }
