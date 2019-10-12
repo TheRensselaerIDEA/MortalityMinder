@@ -352,7 +352,6 @@ order.county.clusters <- function(county.clusters, cluster.order.map) {
 #' @author Ross DeVito
 #' @export
 order.cluster.deathrate.during.time <- function(cluster.deathrates.dt, cluster.order.map) {
-  return(
-    dplyr::mutate(cluster.deathrates.dt, cluster = cluster.order.map[cluster, "ord"])
+  return(dplyr::mutate(cluster.deathrates.dt, cluster = cluster.order.map[cluster, "ord"])
   )
 }

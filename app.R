@@ -127,7 +127,7 @@ ui <- fluidPage(
           class = "col2_upper",
           tags$div(
             tags$style(HTML("
-              .leaflet-container { 
+                            .leaflet-container { 
                             background: #fff; 
                             z-index: 0;
                             }
@@ -157,73 +157,73 @@ ui <- fluidPage(
             class = "col2_ul",
             leafletOutput("geo_cluster_kmean",width="100%",height="100%")
             
-          ),
+            ),
           tags$div(
             tags$style(HTML("
-              .leaflet-container { 
-                background: #fff; 
-                z-index: 0;
-              }
-              .leaflet-control {
-                clear: none;
-                background: transparent;
-                box-shadow: 0 0 0 0;
-                font-size: 8px;
-              }
-              .leaflet-left .leaflet-control {
-                margin: 0;
-              }
-              .info {
-                padding-right: 2px;
-              }
-              .leaflet-control i {
-                display: block;
-                height: 4px;
-                width: 100%;
-              }
-              .leaflet-control.map-title { 
-                  padding: 20px 10px;
-                  font-size: 16px;
-                  font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
-              }
-              ")),
+                            .leaflet-container { 
+                            background: #fff; 
+                            z-index: 0;
+                            }
+                            .leaflet-control {
+                            clear: none;
+                            background: transparent;
+                            box-shadow: 0 0 0 0;
+                            font-size: 8px;
+                            }
+                            .leaflet-left .leaflet-control {
+                            margin: 0;
+                            }
+                            .info {
+                            padding-right: 2px;
+                            }
+                            .leaflet-control i {
+                            display: block;
+                            height: 4px;
+                            width: 100%;
+                            }
+                            .leaflet-control.map-title { 
+                            padding: 20px 10px;
+                            font-size: 16px;
+                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+                            }
+                            ")),
             class = "col2_um",
             leafletOutput("geo_mort_change1",width="100%",height="100%")
-          ),
+            ),
           tags$div(
             tags$style(HTML("
-              .leaflet-container { 
-                background: #fff; 
-                z-index: 0;
-                }
-                .leaflet-control {
-                clear: none;
-                background: transparent;
-                box-shadow: 0 0 0 0;
-                font-size: 8px;
-                }
-                .leaflet-left .leaflet-control {
-                margin: 0;
-                }
-                .info {
-                padding-right: 2px;
-                }
-                .leaflet-control i {
-                display: block;
-                height: 4px;
-                width: 100%;
-                }
-                .leaflet-control.map-title { 
-                padding: 20px 10px;
-                font-size: 16px;
-                font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
-                }
-                "
+                            .leaflet-container { 
+                            background: #fff; 
+                            z-index: 0;
+                            }
+                            .leaflet-control {
+                            clear: none;
+                            background: transparent;
+                            box-shadow: 0 0 0 0;
+                            font-size: 8px;
+                            }
+                            .leaflet-left .leaflet-control {
+                            margin: 0;
+                            }
+                            .info {
+                            padding-right: 2px;
+                            }
+                            .leaflet-control i {
+                            display: block;
+                            height: 4px;
+                            width: 100%;
+                            }
+                            .leaflet-control.map-title { 
+                            padding: 20px 10px;
+                            font-size: 16px;
+                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
+                            }
+                            "
             )),
             class = "col2_ur",
             leafletOutput("geo_mort_change2",width="100%",height="100%")
-          )
-        ),
+            )
+            ),
         tags$div(
           class = "col2_lower",
           tags$hr(),
@@ -234,30 +234,30 @@ ui <- fluidPage(
           
         )
         
-      )
+          )
       
-  ),
-  tags$div(
-    class = "sd",
+          ),
     tags$div(
-      class = "sd_col3"
-      
-    ),
-    tags$div(
-      class = "sd_col1",
-      tags$div(class = "vl")
-    ),
-    tags$div(
-      class = "sd_col2",
-      tags$div(class = "vl"),
+      class = "sd",
       tags$div(
-        class = "desc_head",
-        h4("Correlation")
+        class = "sd_col3"
+        
+      ),
+      tags$div(
+        class = "sd_col1",
+        tags$div(class = "vl")
+      ),
+      tags$div(
+        class = "sd_col2",
+        tags$div(class = "vl"),
+        tags$div(
+          class = "desc_head",
+          h4("Correlation")
+        )
       )
     )
-  )
-  
-      ),
+    
+          ),
   
   tags$div(
     class = "helper",
@@ -325,7 +325,7 @@ ui <- fluidPage(
   tags$script(src = "jquery-ui.min.js"),
   tags$script(src = "jquery.ba-outside-events.js"),
   includeScript(path = "myscript.js")
-    )
+          )
 #------------------
 
 #-----------------
@@ -364,8 +364,8 @@ server <- function(input, output) {
     
     # Notes:
     #   - The cluster labels are UNORDERED
-
-
+    
+    
     get.cluster.deathrate.during.time(
       mort.cluster.raw(), 
       cdc.data, 
@@ -378,7 +378,7 @@ server <- function(input, output) {
     
     # Variables:
     #   - ord
-  
+    
     # Notes:
     #   - This is a mapping from raw cluster label to ORDERED cluster.
     #       Row names are the original cluster and `ord` are the reordered cluster
@@ -392,7 +392,7 @@ server <- function(input, output) {
     # Variables:
     #   - county_fips
     #   - cluster
-
+    
     order.county.clusters(mort.cluster.raw(), mort.cluster.map())
   })
   
@@ -410,7 +410,7 @@ server <- function(input, output) {
     
     order.cluster.deathrate.during.time(mort.avg.cluster.raw(), mort.cluster.map())
   })
-
+  
   # -------------------------------------------------------------------------------------------------------------------------- #
   
   # Mortality Rate Trend Line Graph
@@ -419,12 +419,12 @@ server <- function(input, output) {
     if (input$state_choice == "United States"){
       
       ggplot(
-          mort.avg.cluster.ord(),
-          aes(
-            x = period, y = death_rate, 
-            color = cluster, group = cluster
-          )
-        ) + 
+        mort.avg.cluster.ord(),
+        aes(
+          x = period, y = death_rate, 
+          color = cluster, group = cluster
+        )
+      ) + 
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
@@ -436,12 +436,12 @@ server <- function(input, output) {
     } else {
       
       ggplot(
-          mort.avg.cluster.ord(),
-          aes(
-            x = period, y = death_rate, 
-            color = cluster, group = cluster
-          )
-        ) + 
+        mort.avg.cluster.ord(),
+        aes(
+          x = period, y = death_rate, 
+          color = cluster, group = cluster
+        )
+      ) + 
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
@@ -492,7 +492,7 @@ server <- function(input, output) {
         unique() %>% 
         dplyr::left_join(mort.label.raw(), by = "county_fips")
     }
-   
+    
     
     ggplot(urban.data, aes(km_cluster, fill = urban_2013)) +
       geom_bar(position = "fill", color = "black", width = .75) +
@@ -641,22 +641,22 @@ server <- function(input, output) {
     
     point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
     
-#browser()    
-
+    #browser()    
+    
     if (nrow(point) == 0) return(NULL)
     
     # calculate point position INSIDE the image as percent of total dimensions
     # from left (horizontal) and from top (vertical)
     # left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
     # top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
-
+    
     left_pct <- 1.00
     top_pct <- 1.00
-        
+    
     # calculate distance from left and bottom side of the picture in pixels
     left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
     top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
-
+    
     
     # create style property for tooltip
     # background color is set so tooltip is a bit transparent
@@ -666,24 +666,24 @@ server <- function(input, output) {
     
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
-   # browser()
+    # browser()
     wellPanel(
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
-#                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
- #                   "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
+                    #                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
+                    #                   "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
                     "<i>", point$DIR, "</i>","<br/>",
                     SocialDeterminants[SocialDeterminants$Name == point$chr_code,]$Definition[[1]],
                     NULL
-                    )))
+      )))
     )
     
   })
-
-    
+  
+  
   # Kendall Correlation Between Raw Mort Rate and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
-
+    
     #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
     # Sort by kendall.cor
     kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
@@ -702,76 +702,76 @@ server <- function(input, output) {
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
-      #Only display the social determinants graph if there is any significant social determinant
-      #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
-      if(nrow(kendall.cor.new) > 0) {
-        kendall.cor.new %>% 
-          ggplot(
-            aes(
-              #x = reorder(chr_code, kendall_cor), 
-              x = chr_code, 
-              y = kendall_cor, 
-              color = DIR, 
-              fill = DIR)
-          ) + 
-          
-          # Lolipop chart
-          geom_point(stat = 'identity', size = 8) + 
-          geom_segment(
-            size = 1,
-            aes(
-              y = 0, 
-              #x = reorder(chr_code, kendall_cor), 
-              x = chr_code, 
-              yend = kendall_cor, 
-              #xend = reorder(chr_code, kendall_cor), 
-              xend = chr_code, 
-              color = DIR
-            )
-          ) +
-          
-          # Labels
-          geom_text(
-            aes(
-              label = chr_code, 
-              y = ifelse(DIR == "Protective", 0.1, -0.1),
-              hjust = ifelse(DIR == "Protective", 0, 1)
-            ), 
-            color = "black", 
-            size = 4
-          ) +
-          geom_text(
-            aes(label = round(kendall_cor, 2)), 
-            color = "black", 
-            size = 2.5
-          ) +
-          
-          # Coordinates
-          coord_flip() + 
-          scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
-          
-          # Themes
-          geom_hline(yintercept = .0, linetype = "dashed") + 
-          labs(
-            title = "Most Influential Social Determinants",
-            subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
-            caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
-            y = "Correlation (tau)",
-            x = NULL,
-            fill = "Direction",
-            color = "Direction"
-          ) + 
-          theme_minimal() +
-          theme.text() + 
-          theme.background() + 
-          theme(
-            axis.text.y = element_blank(),
-            axis.text.x = element_text(size = 12),
-            axis.title.x = element_text(size = 12),
-            panel.grid.major.y = element_blank()
+    #Only display the social determinants graph if there is any significant social determinant
+    #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
+    if(nrow(kendall.cor.new) > 0) {
+      kendall.cor.new %>% 
+        ggplot(
+          aes(
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            y = kendall_cor, 
+            color = DIR, 
+            fill = DIR)
+        ) + 
+        
+        # Lolipop chart
+        geom_point(stat = 'identity', size = 8) + 
+        geom_segment(
+          size = 1,
+          aes(
+            y = 0, 
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            yend = kendall_cor, 
+            #xend = reorder(chr_code, kendall_cor), 
+            xend = chr_code, 
+            color = DIR
           )
-      }
-      #Display something else when there are no significant SD
+        ) +
+        
+        # Labels
+        geom_text(
+          aes(
+            label = chr_code, 
+            y = ifelse(DIR == "Protective", 0.1, -0.1),
+            hjust = ifelse(DIR == "Protective", 0, 1)
+          ), 
+          color = "black", 
+          size = 4
+        ) +
+        geom_text(
+          aes(label = round(kendall_cor, 2)), 
+          color = "black", 
+          size = 2.5
+        ) +
+        
+        # Coordinates
+        coord_flip() + 
+        scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
+        
+        # Themes
+        geom_hline(yintercept = .0, linetype = "dashed") + 
+        labs(
+          title = "Most Influential Social Determinants",
+          subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+          y = "Correlation (tau)",
+          x = NULL,
+          fill = "Direction",
+          color = "Direction"
+        ) + 
+        theme_minimal() +
+        theme.text() + 
+        theme.background() + 
+        theme(
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12),
+          axis.title.x = element_text(size = 12),
+          panel.grid.major.y = element_blank()
+        )
+    }
+    #Display something else when there are no significant SD
   })
   
   
