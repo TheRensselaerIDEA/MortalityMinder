@@ -161,38 +161,76 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
     long = min.long + (max.long - min.long)/2
   }
   dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
-  return (leaflet(shapes, 
-                  options = leafletOptions(zoomControl = FALSE, 
-                                           minZoom = zoom.level, 
-                                           maxZoom = zoom.level, 
-                                           dragging = FALSE)) %>%
-            setView(lat = lat, lng = long, zoom = zoom.level) %>%
-            addPolygons(stroke = TRUE, 
-                        smoothFactor = 0.1, 
-                        fillOpacity = 1,
-                        weight = 1,
-                        color = "white",
-                        opacity = 1,
-                        fillColor = colors[as.numeric(dataset$VAR_)],
-                        label = dataset$county_name) %>%
-            addControl(geoTitle(state.choice, death.cause), 
-                       position = "topleft", 
-                       className="map-title") %>%
-            addLegend("bottomleft",
-                      colors = colors[3],
-                      labels = labels[3],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[2],
-                      labels = labels[2],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[1],
-                      labels = labels[1],
-                      title = "Clusters:",
-                      opacity = 1))
+  
+  if (state.choice != "US"){
+    return (leaflet(shapes, 
+                    options = leafletOptions(zoomControl = FALSE, 
+                                             minZoom = zoom.level, 
+                                             maxZoom = zoom.level, 
+                                             dragging = FALSE)) %>%
+              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 1,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(geoTitle(state.choice, death.cause), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Clusters:",
+                        opacity = 1))
+  }else{
+    return (leaflet(shapes, 
+                    options = leafletOptions(zoomControl = FALSE, 
+                                             minZoom = zoom.level, 
+                                             maxZoom = zoom.level, 
+                                             dragging = FALSE)) %>%
+              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 0,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(geoTitle(state.choice, death.cause), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Clusters:",
+                        opacity = 1))
+  }
+  
+  
 }
 
 theme.geo.mort <- function() {
@@ -274,12 +312,19 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
     
+    
   }else{
     geo.map.fetch("US", mort.data) %>% 
       dplyr::rename(VAR_ = death_rate) %>%
-      base.geo() + 
+      #ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_, text = county_name)) +
+      
+      ggplot(VAR_, aes(x = long, y = lat, group = group)) + 
+      geom_polygon(aes(fill = group, color = group))+
+    
+      #geom_polygon(size = 0, color = "white",alpha = 0.9) +
+      #base.geo() + 
       labs.geo.mort(state.choice, period.choice, death.cause) + 
-      color.geo.mort(death.cause) + 
+      color.geo.mort(death.cause) +
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
   }
@@ -324,61 +369,124 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   }
   
   dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
-  return (leaflet(shapes, 
-                  options = leafletOptions(zoomControl = FALSE, 
-                                           minZoom = zoom.level, 
-                                           maxZoom = zoom.level, 
-                                           dragging = FALSE)) %>%
-            setView(lat = lat, lng = long, zoom = zoom.level) %>%
-            addPolygons(stroke = TRUE, 
-                        smoothFactor = 0.1, 
-                        fillOpacity = 1,
-                        weight = 1,
-                        color = "white",
-                        opacity = 1,
-                        fillColor = colors[as.numeric(dataset$VAR_)],
-                        label = dataset$county_name) %>%
-            addControl(title(state.choice, death.cause, period), 
-                       position = "topleft", 
-                       className="map-title") %>%
-            addLegend("bottomleft",
-                      colors = colors[8],
-                      labels = labels[8],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[7],
-                      labels = labels[7],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[6],
-                      labels = labels[6],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[5],
-                      labels = labels[5],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[4],
-                      labels = labels[4],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[3],
-                      labels = labels[3],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[2],
-                      labels = labels[2],
-                      title = "&nbsp;",
-                      opacity = 1) %>%
-            addLegend("bottomleft",
-                      colors = colors[1],
-                      labels = labels[1],
-                      title = "Rate;",
-                      opacity = 1))
+  
+  if (state.choice != "US"){
+    return (leaflet(shapes, 
+                    options = leafletOptions(zoomControl = FALSE, 
+                                             minZoom = zoom.level, 
+                                             maxZoom = zoom.level, 
+                                             dragging = FALSE)) %>%
+              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 1,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(title(state.choice, death.cause, period), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[8],
+                        labels = labels[8],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[7],
+                        labels = labels[7],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[6],
+                        labels = labels[6],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[5],
+                        labels = labels[5],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[4],
+                        labels = labels[4],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Rate;",
+                        opacity = 1))
+  }else{
+    return (leaflet(shapes, 
+                    options = leafletOptions(zoomControl = FALSE, 
+                                             minZoom = zoom.level, 
+                                             maxZoom = zoom.level, 
+                                             dragging = FALSE)) %>%
+              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 0,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(title(state.choice, death.cause, period), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[8],
+                        labels = labels[8],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[7],
+                        labels = labels[7],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[6],
+                        labels = labels[6],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[5],
+                        labels = labels[5],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[4],
+                        labels = labels[4],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Rate;",
+                        opacity = 1))
+  }
+  
+  
 }
