@@ -729,8 +729,6 @@ server <- function(input, output) {
             color = DIR
           )
         ) +
-        
-        # Labels
         geom_text(
           aes(
             label = chr_code, 
@@ -771,7 +769,14 @@ server <- function(input, output) {
           panel.grid.major.y = element_blank()
         )
     }
-    #Display something else when there are no significant SD
+      #Display something else when there are no significant SD
+      else {
+        
+        # empty plot, then put text on it ?
+        ggplot() + theme_void() +
+        geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
+          
+      }
   })
   
   
