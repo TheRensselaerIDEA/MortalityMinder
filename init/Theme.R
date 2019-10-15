@@ -114,7 +114,7 @@ color.geo.cluster <- function(n) {
 }
 
 
- 
+
 labs.geo.cluster <- function(state.choice) {
   labs(
     title = paste(state.choice, "Trend Cluster\nGeo-Distribution"),
@@ -160,7 +160,10 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
     lat = min.lat + (max.lat - min.lat)/2
     long = min.long + (max.long - min.long)/2
   }
-  dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
+  
+  dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
+  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
+  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
@@ -320,7 +323,7 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
       
       ggplot(VAR_, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(fill = group, color = group))+
-    
+      
       #geom_polygon(size = 0, color = "white",alpha = 0.9) +
       #base.geo() + 
       labs.geo.mort(state.choice, period.choice, death.cause) + 
@@ -368,7 +371,9 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
     long = min.long + (max.long - min.long)/2
   }
   
-  dataset <- dataset %>% dplyr::distinct(county_name, VAR_)
+  dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
+  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
+  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
