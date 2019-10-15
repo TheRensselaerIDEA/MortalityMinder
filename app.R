@@ -23,22 +23,10 @@ ui <- fluidPage(
   # include css
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
+  tags$head(includeCSS("fullpage.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
-  
-  tags$div(
-    class = "header",
-    h6("WARNINGS")
-  ),
-  tags$div(
-    class = "header_drop",
-    h6("1. Smaller states (less than 4 counties) may have inaccurate result or result in errors."),
-    h6("2. Some display issue of geo-graphs (legends may overlap with maps)."),
-    h6("3. Suppressed number of death was substituted with 0.5 (will use other methods in future version)."),
-    h6("4. Mortality rates are still part of socio-determinants used (which is not very useful)."),
-    h6("5. Menu and get help not implemented.")
-  ),
   
   # navbar
   tags$div(
@@ -47,8 +35,10 @@ ui <- fluidPage(
       class = "title",
       h1("MortalityMinder")
     ),
-    # tags$a(href="#page1","Mortality Overview"),
-    # tags$a(href="#page2", "Social Determinants"),
+    # tags$div(
+    #   class = "page_select",
+    #   tags$a("asdfasdf")
+    # ),
     pickerInput(
       inputId = "state_choice",
       label = h4("State"), 
@@ -74,258 +64,142 @@ ui <- fluidPage(
   ),
   
   tags$div(
-    class = "main",
-    # main
+    id = "fullpage",
     tags$div(
-      class = "mort_ana",
-      
+      class = "section s1",
       tags$div(
-        class = "col3",
+        class = "slide",
         tags$div(
-          class = "draggble",
-          id = "first"
+          class = "nav_bar_blank"
         ),
         tags$div(
-          class = "draggble",
-          id = "second"
-          
-        )
-      ),
-      
-      tags$div(
-        class = "col1",
-        tags$div(
-          class = "plot_col1",
-          plotOutput("mort_line",width="100%",height="100%")
-        ),
-        tags$div(
-          class = "text_col1",
+          class = "page1",
           tags$div(
-            class = "desc_head",
-            h4("Mortality Trend")
+            class = "col1",
+            tags$div(
+              class = "col1_top",
+              tags$div(
+                class = "col1_top_left",
+                tags$h2(
+                  "High",tags$span(class = "word_redBG", "Death"),"rate!"
+                ),
+                tags$p(
+                  "Descriptions"
+                )
+              ),
+              tags$div(
+                class = "col1_top_right",
+                leafletOutput("geo_mort_change2",width="100%",height="100%")
+                
+              )
+            ),
+            tags$div(
+              class = "hr"
+            ),
+            tags$div(
+              class = "col1_bot",
+              tags$div(
+                class = "col1_bot_left",
+                leafletOutput("geo_cluster_kmean",width="100%",height="100%")
+              ),
+              tags$div(
+                class = "col1_bot_right",
+                plotOutput("mort_line",width="100%",height="100%")
+              )
+            )
           ),
           tags$div(
-            class = "desc",
-            tableOutput("table"),
-            tags$p("This plot is generated with k-mean Clustering algorithm on the mortality trend."),
-            tags$p("We first transform the data to a data frame with death rates of different counties
-                   being the observations. "),
-            tags$p("Each observation contains six periods
-                   of death rates (2000-2002, 2003-2005 etc) of a specific county in the chosen state."),
-            tags$p("These counites are then classified to 4 different clusters by k-mean."),
-            tags$p("With the resultant clustering,
-                   we calculate each cluster’s average death rates of a specific period and generate this line graph.")
-            )
-          
-            )
-        
-        ),
-      tags$div(
-        class = "col2",
-        tags$div(class = "vl"),
-        tags$div(
-          class = "col2_upper",
+            class = "vl"
+          ),
           tags$div(
-            tags$style(HTML("
-                            .leaflet-container { 
-                            background: #fff; 
-                            z-index: 0;
-                            }
-                            .leaflet-control {
-                            clear: none;
-                            background: transparent;
-                            box-shadow: 0 0 0 0;
-                            font-size: 8px;
-                            }
-                            .leaflet-left .leaflet-control {
-                            margin: 0;
-                            }
-                            .info {
-                            padding-right: 2px;
-                            }
-                            .leaflet-control i {
-                            display: block;
-                            height: 4px;
-                            width: 100%;
-                            }
-                            .leaflet-control.map-title { 
-                            padding: 20px 10px;
-                            font-size: 16px;
-                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
-                            }
-                            ")),
-            class = "col2_ul",
-            leafletOutput("geo_cluster_kmean",width="100%",height="100%")
-            
+            class = "col2",
+            tags$div(
+              class = "col2_title",
+              tags$h2(
+                "What are the", tags$span(class = "word_redBG", "determinants"),"?"
+              )
+              
             ),
-          tags$div(
-            tags$style(HTML("
-                            .leaflet-container { 
-                            background: #fff; 
-                            z-index: 0;
-                            }
-                            .leaflet-control {
-                            clear: none;
-                            background: transparent;
-                            box-shadow: 0 0 0 0;
-                            font-size: 8px;
-                            }
-                            .leaflet-left .leaflet-control {
-                            margin: 0;
-                            }
-                            .info {
-                            padding-right: 2px;
-                            }
-                            .leaflet-control i {
-                            display: block;
-                            height: 4px;
-                            width: 100%;
-                            }
-                            .leaflet-control.map-title { 
-                            padding: 20px 10px;
-                            font-size: 16px;
-                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
-                            }
-                            ")),
-            class = "col2_um",
-            leafletOutput("geo_mort_change1",width="100%",height="100%")
-            ),
-          tags$div(
-            tags$style(HTML("
-                            .leaflet-container { 
-                            background: #fff; 
-                            z-index: 0;
-                            }
-                            .leaflet-control {
-                            clear: none;
-                            background: transparent;
-                            box-shadow: 0 0 0 0;
-                            font-size: 8px;
-                            }
-                            .leaflet-left .leaflet-control {
-                            margin: 0;
-                            }
-                            .info {
-                            padding-right: 2px;
-                            }
-                            .leaflet-control i {
-                            display: block;
-                            height: 4px;
-                            width: 100%;
-                            }
-                            .leaflet-control.map-title { 
-                            padding: 20px 10px;
-                            font-size: 16px;
-                            font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
-                            }
-                            "
-            )),
-            class = "col2_ur",
-            leafletOutput("geo_mort_change2",width="100%",height="100%")
+            tags$div(
+              class = "col2_plot",
+              plotOutput("page1.bar.cor1",width="100%",height="100%", 
+                         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
+              uiOutput("hover_info")
             )
-            ),
-        tags$div(
-          class = "col2_lower",
-          tags$hr(),
-          # Hovering tooltip
-          plotOutput("page1.bar.cor1",width="100%",height="100%", 
-                     hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
-          uiOutput("hover_info")
-          
-        )
-        
           )
+        )
+      ),
       
-          ),
-    tags$div(
-      class = "sd",
       tags$div(
-        class = "sd_col3"
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
+        ),
+        tags$div(
+          class = "page3",
+          tags$div(
+            class = "page3_col1",
+            tags$p("Social Determinants ",tags$span(class = "word_redBG", "Deep Dive"),tags$br(),"What's Corr ?"),
+            tags$p("Important Ones"),
+            tags$p("What Do they ",tags$span(class = "word_redBG", "Mean"))
+          ),
+          tags$div(class = "vl"),
+          tags$div(
+            class = "page3_col2",
+            tags$p("Cool plot and desc")
+          ),
+          tags$div(class = "vl"),
+          tags$div(
+            class = "page3_col3",
+            tags$p("Cool plot and desc")
+          )
+        )
         
       ),
       tags$div(
-        class = "sd_col1",
-        tags$div(class = "vl")
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
+        ),
+        tags$div(
+          class = "page2",
+          tags$div(
+            class = "page2_col1",
+            tags$p("Something ",tags$span(class = "word_redBG", "National")," wide"),
+            tags$p("And something")
+          ),
+          tags$div(
+            class = "vl"
+          ),
+          tags$div(
+            class = "page2_col2",
+            tags$div(
+              class = "nation_wide",
+              tags$img(src = "us_map.png", alt = "us", width = "100%", height = "100%")
+            )
+          )
+          
+        )
       ),
       tags$div(
-        class = "sd_col2",
-        tags$div(class = "vl"),
+        class = "slide",
         tags$div(
-          class = "desc_head",
-          h4("Correlation")
+          class = "nav_bar_blank"
+        ),
+        tags$div(
+          class = "page4",
+          tags$p("About page?")
         )
       )
     )
-    
-          ),
-  
-  tags$div(
-    class = "helper",
-    tags$h1("Help Options"),
-    tags$hr(),
-    tags$div(
-      class = "helper_row",
-      tags$h4("FAQ"),
-      tags$i(class = "helper_arrow", tags$i(class="down_arrow"))
-    ),
-    tags$hr(),
-    tags$div(
-      class = "helper_row",
-      tags$h4("Bugs"),
-      tags$i(class = "helper_arrow", tags$i(class="down_arrow"))
-    ),
-    tags$hr(),
-    tags$div(
-      class = "helper_row",
-      tags$h4("General Questions"),
-      tags$i(class = "helper_arrow", tags$i(class="down_arrow"))
-    )
-  ),
-  tags$div(
-    class = "menu-background"
-  ),
-  tags$div(
-    class = "menu-container",
-    tags$div(
-      class = "cross-container",
-      tags$a(href="#", class="close")
-    ),
-    tags$div(
-      class = "menu",
-      tags$div(
-        class = "menu_title",
-        "Menu Page"
-      ),
-      tags$div(
-        class = "menu_mort_overview"
-      )
-      
-    )
   ),
   
-  tags$div(
-    class = "footer",
-    tags$div(
-      class = "logo",
-      tags$img(src="RPIlogo.png", alt="IDEA",style="width:100%;height:100%;")
-    ),
-    tags$a(href="#", class="left", tags$i(class="left_arrow")),
-    tags$a(href="#", class="menu_button", style="color:white;text-decoration: none;","menu"),
-    tags$a(href="#", class="right", tags$i(class="right_arrow")),
-    tags$a(href="#", class="helper_button", style="color:white;text-decoration: none;",
-           tags$img(src="icons8-help-100.png", alt="help"),
-           tags$p("Get Help")
-    )
-  ),
-  
-  
-  
-  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"),
-  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"),
   tags$script(src = "jquery-ui.min.js"),
+  tags$script(src = "fullpage.js"),
   tags$script(src = "jquery.ba-outside-events.js"),
   includeScript(path = "myscript.js")
-          )
+)
+
 #------------------
 
 #-----------------

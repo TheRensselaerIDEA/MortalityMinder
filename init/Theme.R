@@ -114,7 +114,7 @@ color.geo.cluster <- function(n) {
 }
 
 
- 
+
 labs.geo.cluster <- function(state.choice) {
   labs(
     title = paste(state.choice, "Trend Cluster\nGeo-Distribution"),
@@ -323,7 +323,7 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
       
       ggplot(VAR_, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(fill = group, color = group))+
-    
+      
       #geom_polygon(size = 0, color = "white",alpha = 0.9) +
       #base.geo() + 
       labs.geo.mort(state.choice, period.choice, death.cause) + 

@@ -1,4 +1,11 @@
 $(document).ready(() => {
+  
+  $('#fullpage').fullpage({
+		autoScrolling:true,
+		slidesNavigation: true,
+	  slidesNavPosition: 'bottom'
+  });
+
   $(".sd").hide();
   
   $(".header").on("click", () => {
@@ -81,3 +88,4 @@ $(document).ready(() => {
     });
   });
 });
+
