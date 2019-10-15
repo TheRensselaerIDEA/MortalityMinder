@@ -140,6 +140,17 @@ ui <- fluidPage(
           tags$div(
             class = "page3_col1",
             tags$p("Social Determinants ",tags$span(class = "word_redBG", "Deep Dive"),tags$br(),"What's Corr ?"),
+            pickerInput(
+              inputId = "d_choice",
+              label = h4("Determinant"), 
+              choices = chr.namemap.2019$name,
+              selected = "Socio-Economic",
+              width = "200px",
+              options = list(
+                `live-search` = TRUE,
+                "dropup-auto" = FALSE
+              )
+            ),
             tags$p("Important Ones"),
             tags$p("What Do they ",tags$span(class = "word_redBG", "Mean"))
           ),
@@ -577,6 +588,10 @@ server <- function(input, output) {
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    # # Set currently selected determinant to most correlated determinant
+    # max.cor.ind = which.max(abs(kendall.cor.new$kendall_cor))
+    # input$d_choice = kendall.cor.new[max.cor.ind, "chr_code"]
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
