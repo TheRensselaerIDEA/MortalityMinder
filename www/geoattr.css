@@ -12,15 +12,33 @@
     fill: orange;
   }
 
+.d3map{
+  width:100%;
+  height:100%;
+}
+
+.title{
+  font-size:40px;
+  text-align: center;
+}
 .explore_but {
-  margin-top:100px;
-  margin-left:600px;
+  margin-top:5%;
+  margin-left:30%;
 }
 
 .btn{
-  background-color:red;
-  margin:10px 10px;
+  background-color: #f4511e;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  margin-left:5%;
 }
+
 .tooltip { 
           position: absolute;     
           text-align: center;     
@@ -32,17 +50,9 @@
           border: 0px;        
           pointer-events: none;     
 }
-#wrapper {
-    width: 960px;
-    margin: 0px auto 0;
-}
 
-#play, #clock {
-  position: absolute;
-  top: 15px;
-}
 #play {
-	left: 15px;
+
 }
 #clock {
 	left: 65px;
