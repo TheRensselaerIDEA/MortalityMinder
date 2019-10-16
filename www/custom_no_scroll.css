@@ -191,7 +191,7 @@
 }
 
 .col1 {
-  width:50%;
+  width:calc(40%);
   height:100%;
   float:left;
   display:block;
@@ -249,7 +249,7 @@
 }
 
 .col2 {
-  width:calc(50% - 1px);
+  width:calc(40% - 1px);
   height:100%;
   float:left;
   display:block;
@@ -272,6 +272,13 @@
 .s2 {
   width:100vw;
   height:100vh;
+}
+
+.col3 {
+  width:calc(20% - 1px);
+  height:100%;
+  float:left;
+  display:block;
 }
 
 .page2 {
