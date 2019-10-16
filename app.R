@@ -139,6 +139,17 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
+            pickerInput(
+              inputId = "determinant_choice",
+              label = h4("Determinant"), 
+              choices = chr.namemap.2019$name,
+              selected = "Socio-Economic",
+              width = "200px",
+              options = list(
+                `live-search` = TRUE,
+                "dropup-auto" = TRUE
+              )
+            ),
             plotOutput("determinants_plot1",width="100%",height="100%")
           ),
           tags$div(
@@ -551,47 +562,6 @@ server <- function(input, output) {
       ) 
   })
   
-  # Mortality Cluster Urbanization Composition
-  output$urban_dist_cluster <- renderPlot({
-    
-    # Calculate cluster label
-    
-    
-    if (input$state_choice == "United States"){
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    } else {
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::filter(state_abbr == input$state_choice) %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    }
-    
-    
-    ggplot(urban.data, aes(km_cluster, fill = urban_2013)) +
-      geom_bar(position = "fill", color = "black", width = .75) +
-      labs(
-        title = "Urban-Rural Composition by Cluster",
-        x = "Cluster",
-        y = "Composition",
-        fill = "Urbanization 2013"
-      ) +
-      scale_fill_manual(
-        values = colorRampPalette(brewer.pal(9, "Blues"))(6)
-      ) +
-      theme_minimal() + 
-      theme(
-        plot.background = element_rect(fill = "gray95", color = "gray95"),
-        plot.margin = unit(c(5, 10, 5, 10), units = "mm")
-      ) + 
-      theme.text() + 
-      NULL
-  })
   
   # Mortality Trend Cluster by County
   output$geo_cluster_kmean <- renderLeaflet({
