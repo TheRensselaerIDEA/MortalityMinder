@@ -420,13 +420,17 @@ server <- function(input, output) {
       
     }
   })
+  
+  
   output$determinants_plot2 <- renderPlot({
-    
+
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
-      dplyr::select(county_fips, VAR = chr.namemap.inv.2019[input$sd_choice, "code"]) %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
       tidyr::drop_na()
     
+    browser()
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
@@ -452,7 +456,30 @@ server <- function(input, output) {
       )
     
   })
+  
+  
   output$determinants_plot3 <- renderPlot({
+    
+    dplyr::filter(
+        cdc.data,
+        period == input$period, 
+        state_abbr == input$state_choice,
+        death_cause == input$death_cause
+      ) %>% 
+      dplyr::select(county_fips, death_rate) %>% 
+      dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      tidyr::drop_na() %>%
+      
+      
+      ggplot(aes(x = death_rate, y = VAR)) + 
+      geom_point(aes(color = cluster)) + 
+      geom_smooth() + 
+      labs(
+        x = "Mortality Rate",
+        y = input$determinant_choice
+      ) +
+      theme.line.mort() + 
+      color.line.cluster(input$state_choice, 3)
     
   })
   output$determinants_plot4 <- renderPlot({
