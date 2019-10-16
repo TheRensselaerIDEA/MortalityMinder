@@ -277,12 +277,12 @@ ui <- fluidPage(
                    ) # Close inner fluidRow
                    ), # Close column
             column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
-                   tags$a("http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf"),
-                   tags$a("https://github.com/TheRensselaerIDEA/MortalityMinder"),
-                   tags$a("https://wonder.cdc.gov/"),
-                   tags$a("http://www.countyhealthrankings.org/"),
-                   tags$a("https://www.census.gov/programs-surveys/sahie.html"),
-                   tags$a("https://www.ahrq.gov/sdoh-challenge/index.html")
+                   tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
+                   tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
+                   tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
+                   tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
+                   tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
+                   tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
                    )
         ) # Close outter fluidRow
         ) # Close page 4 
