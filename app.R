@@ -198,14 +198,14 @@ ui <- fluidPage(
         ),
         tags$div(
           class = "page4",
-          fluidRow(
+          fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
             column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
                    fluidRow(
                      column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
                                  has stagnated and even declined, reversing for the US the trend toward increased life
                                  expectancy that is still continuing in most nations. The goal of this project is 
                                  to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
-                                 and identify their associated community level social determinants", offset=1),
+                                 and identify their associated community level social determinants.", offset=1), # Close column,
                      column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
                                 "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
                                  seeks tools that support visualizing such data clusters to enhance the research and analysis 
@@ -220,11 +220,44 @@ ui <- fluidPage(
                                    tags$li(
                                      "Other locally available data sources, such as SDOH data from voice, digital, and 
                                      social medical requests via service lines.")
-                                 ), offset=1)
-                   )),
-            column(3, tags$p("Methods Used",align="center"),  offset=1),
-            column(3, tags$p("Additional Resources",align="center"),  offset=1)
-        ))
+                                 ), offset=1) # Close column
+                   ) # Close inner fluidRow
+                   ), # Close outter column
+            column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
+                   fluidRow(
+                     column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
+                                 It looks at premature deaths, that is deaths in adults from 15 to 64 
+                                 caused by: ", tags$br(),
+                                 tags$ul(
+                                    tags$li(tags$b("Deaths of Despair: "), 
+                                            "deaths due to suicide, overdose, substance abuse and poisonings"),
+                                    tags$li(tags$b("Assault: "), 
+                                            "deaths due injuries inflicted by another person with intent to injure or kill, 
+                                            by any means"),
+                                    tags$li(tags$b("Cardiovascular Disease: "), 
+                                            "diseases of the circulatory systems such as heart disease and stroke"),
+                                    tags$li(tags$b("Cancer: "), 
+                                            "deaths due to cancer and neoplasm"),
+                                    tags$li(tags$b("All Cause: "), 
+                                            "deaths due to any cause")
+                                  ), tags$br(),
+                            "Machine learning and statistics methods are used for analysis and data visualization. 
+                            We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
+                            to discover counties with different patterns of mortality over time and associated social 
+                            determinants using cluster or supervised clustering.",
+                            offset=1) # Close Column
+                   ) # Close inner fluidRow
+                   ), # Close column
+            column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                   tags$a("http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf"),
+                   tags$a("https://github.com/TheRensselaerIDEA/MortalityMinder"),
+                   tags$a("https://wonder.cdc.gov/"),
+                   tags$a("http://www.countyhealthrankings.org/"),
+                   tags$a("https://www.census.gov/programs-surveys/sahie.html"),
+                   tags$a("https://www.ahrq.gov/sdoh-challenge/index.html")
+                   )
+        ) # Close outter fluidRow
+        ) # Close page 4 
       )
     )
   ),
