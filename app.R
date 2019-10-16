@@ -90,8 +90,12 @@ ui <- fluidPage(
               ),
               tags$div(
                 class = "col1_top_right",
-                leafletOutput("geo_mort_change2",width="100%",height="100%")
-                
+                leafletOutput("geo_mort_change2",width="100%",height="90%"),
+                radioButtons("year_selector", 
+                             label = "Years", 
+                             choices = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"), 
+                             selected = "2000-2002", 
+                             inline = TRUE)
               )
             ),
             tags$div(
@@ -696,7 +700,7 @@ server <- function(input, output) {
       mort.data <- dplyr::filter(
         cdc.data,
         death_cause == input$death_cause,
-        period == "2015-2017"
+        period == input$year_selector
       ) %>% 
         dplyr::mutate(
           # death_rate = death_num / population * 10^5,
@@ -710,7 +714,7 @@ server <- function(input, output) {
         cdc.data,
         state_abbr == input$state_choice,
         death_cause == input$death_cause,
-        period == "2015-2017"
+        period == input$year_selector
       ) %>% 
         dplyr::mutate(
           # death_rate = death_num / population * 10^5,
