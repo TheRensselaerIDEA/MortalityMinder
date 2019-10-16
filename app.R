@@ -424,7 +424,7 @@ server <- function(input, output) {
   
   output$determinants_plot2 <- renderPlot({
 
-    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.code = chr.namemap.inv.2019[input$d_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -434,7 +434,7 @@ server <- function(input, output) {
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
-      labs(y = input$sd_choice) + 
+      labs(y = input$d_choice) + 
       theme.background() + 
       theme.text() + 
       theme(
@@ -460,7 +460,7 @@ server <- function(input, output) {
   
   output$determinants_plot3 <- renderPlot({
     
-    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.code = chr.namemap.inv.2019[input$d_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -482,7 +482,7 @@ server <- function(input, output) {
       geom_smooth() + 
       labs(
         x = "Mortality Rate",
-        y = input$determinant_choice
+        y = input$d_choice
       ) +
       theme.line.mort() + 
       color.line.cluster(input$state_choice, 3)
