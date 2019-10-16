@@ -77,17 +77,19 @@ ui <- fluidPage(
           tags$div(
             class = "col1",
             tags$div(
+              class = "col1_title",
+              tags$h2(
+                "High",tags$b(style = "color:red", "Death"),"rate!"
+              )
+            ),
+            tags$div(
               class = "col1_top",
               tags$div(
                 class = "col1_top_left",
-                tags$h2(
-                  "High",tags$b(style = "color:red", "Death"),"rate!"
-                )
+                leafletOutput("geo_mort_change2",width="100%",height="100%")
               ),
               tags$div(
-                class = "col1_top_right",
-                leafletOutput("geo_mort_change2",width="100%",height="100%")
-                
+                class = "col1_top_right"
               )
             ),
             tags$div(

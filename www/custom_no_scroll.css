@@ -8,6 +8,11 @@
     src: url("AboveDemoRegular-lJMd.ttf") format("opentype");
 }
 
+html, body {
+    max-width: 100%;
+    overflow: hidden;
+}
+
 .container-fluid {
   padding:0px;
   height:100vh;
@@ -124,12 +129,12 @@
   background-color:rgb(235,235,235);
 }
 
-.col1_top_left h2 {
-  font-size: 38px;
+.col1_title h2 {
+  font-size: 30px;
   line-height: 1.07143;
   font-weight: 200;
   letter-spacing: -.005em;
-  margin:26px 1px 1px 26px;
+  margin:10px 1px 1px 10px;
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 }
 
@@ -147,11 +152,20 @@
 }
 
 .col2_title h2 {
-  font-size: 38px;
+  font-size: 30px;
   line-height: 1.07143;
   font-weight: 200;
   letter-spacing: -.005em;
-  margin:26px 1px 1px 26px;
+  margin:10px 1px 1px 10px;
+  font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+
+.col3_title h2 {
+  font-size: 30px;
+  line-height: 1.07143;
+  font-weight: 200;
+  letter-spacing: -.005em;
+  margin:10px 1px 1px 10px;
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 }
 
@@ -197,9 +211,19 @@
   display:block;
 }
 
+.col1_title {
+  height: 6%;
+  margin: 0;
+  width: 100%;
+  font-size: 30px;
+  display: block;
+  float: left;
+  text-align:center;
+}
+
 .col1_top {
   width:100%;
-  height:50%;
+  height:47%;
   float:left;
   display:block;
 }
@@ -221,7 +245,7 @@
 .hr {
   width:100%;
   height:0;
-  border-top:1px solid #eee;
+  border-top:1px solid #000;
   float:left;
   display:block;
   
@@ -229,7 +253,7 @@
 
 .col1_bot {
   width:100%;
-  height:calc(50% - 1px);
+  height:calc(47% - 1px);
   float:left;
   display:block;
 }
@@ -257,14 +281,14 @@
 
 .col2_title {
   width:100%;
-  height:10%;
+  height:6%;
   float:left;
   display:block;
 }
 
 .col2_plot {
   width:100%;
-  height:90%;
+  height:94%;
   float:left;
   display:block;
 }
