@@ -139,30 +139,29 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
-            tags$p("Social Determinants ",tags$span(class = "word_redBG", "Deep Dive"),tags$br(),"What's Corr ?"),
-            pickerInput(
-              inputId = "d_choice",
-              label = h4("Determinant"), 
-              choices = chr.namemap.2019$name,
-              selected = "Socio-Economic",
-              width = "200px",
-              options = list(
-                `live-search` = TRUE,
-                "dropup-auto" = FALSE
-              )
-            ),
-            tags$p("Important Ones"),
-            tags$p("What Do they ",tags$span(class = "word_redBG", "Mean"))
+            plotOutput("determinants_plot1",width="100%",height="100%")
           ),
-          tags$div(class = "vl"),
+          tags$div(
+            class = "vl"
+          ),
           tags$div(
             class = "page3_col2",
-            tags$p("Cool plot and desc")
+            tags$div(
+              class = "page3_col2_top",
+              plotOutput("determinants_plot2",width="100%",height="100%")
+            ),
+            tags$div(class = "hr"),
+            tags$div(
+              class = "page3_col2_bot",
+              plotOutput("determinants_plot3",width="100%",height="100%")
+            )
           ),
-          tags$div(class = "vl"),
+          tags$div(
+            class = "vl"
+          ),
           tags$div(
             class = "page3_col3",
-            tags$p("Cool plot and desc")
+            plotOutput("determinants_plot4",width="100%",height="100%")
           )
         )
         
@@ -308,6 +307,112 @@ server <- function(input, output) {
   })
   
   # -------------------------------------------------------------------------------------------------------------------------- #
+  
+  output$determinants_plot1 <- renderPlot({
+    
+    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    # Sort by kendall.cor
+    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+    
+    kendall.cor.new <- kendall.cor %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    #Only display the social determinants graph if there is any significant social determinant
+    #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
+    if(nrow(kendall.cor.new) > 0) {
+      kendall.cor.new %>% 
+        ggplot(
+          aes(
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            y = kendall_cor, 
+            color = DIR, 
+            fill = DIR)
+        ) + 
+        
+        # Lolipop chart
+        geom_point(stat = 'identity', size = 8) + 
+        geom_segment(
+          size = 1,
+          aes(
+            y = 0, 
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            yend = kendall_cor, 
+            #xend = reorder(chr_code, kendall_cor), 
+            xend = chr_code, 
+            color = DIR
+          )
+        ) +
+        geom_text(
+          aes(
+            label = chr_code, 
+            y = ifelse(DIR == "Protective", 0.1, -0.1),
+            hjust = ifelse(DIR == "Protective", 0, 1)
+          ), 
+          color = "black", 
+          size = 4
+        ) +
+        geom_text(
+          aes(label = round(kendall_cor, 2)), 
+          color = "black", 
+          size = 2.5
+        ) +
+        
+        # Coordinates
+        coord_flip() + 
+        scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
+        
+        # Themes
+        geom_hline(yintercept = .0, linetype = "dashed") + 
+        labs(
+          title = "Most Influential Social Determinants",
+          subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+          y = "Correlation (tau)",
+          x = NULL,
+          fill = "Direction",
+          color = "Direction"
+        ) + 
+        theme_minimal() +
+        theme.text() + 
+        theme.background() + 
+        theme(
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12),
+          axis.title.x = element_text(size = 12),
+          panel.grid.major.y = element_blank()
+        )
+    }
+    #Display something else when there are no significant SD
+    else {
+      
+      # empty plot, then put text on it ?
+      ggplot() + theme_void() +
+        geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
+      
+    }
+  })
+  output$determinants_plot2 <- renderPlot({
+    
+  })
+  output$determinants_plot3 <- renderPlot({
+    
+  })
+  output$determinants_plot4 <- renderPlot({
+    
+  })
   
   # Mortality Rate Trend Line Graph
   output$mort_line <- renderPlot({

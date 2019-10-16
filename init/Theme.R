@@ -167,9 +167,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(zoomControl = FALSE, 
-                                             minZoom = zoom.level, 
-                                             maxZoom = zoom.level, 
+                    options = leafletOptions(minZoom = zoom.level, 
+                                             maxZoom = zoom.level + 4, 
                                              dragging = FALSE)) %>%
               setView(lat = lat, lng = long, zoom = zoom.level) %>%
               addPolygons(stroke = TRUE, 
@@ -200,9 +199,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
                         opacity = 1))
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(zoomControl = FALSE, 
-                                             minZoom = zoom.level, 
-                                             maxZoom = zoom.level, 
+                    options = leafletOptions(minZoom = zoom.level, 
+                                             maxZoom = zoom.level + 4, 
                                              dragging = FALSE)) %>%
               setView(lat = lat, lng = long, zoom = zoom.level) %>%
               addPolygons(stroke = TRUE, 
@@ -377,9 +375,8 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(zoomControl = FALSE, 
-                                             minZoom = zoom.level, 
-                                             maxZoom = zoom.level, 
+                    options = leafletOptions(minZoom = zoom.level, 
+                                             maxZoom = zoom.level + 4, 
                                              dragging = FALSE)) %>%
               setView(lat = lat, lng = long, zoom = zoom.level) %>%
               addPolygons(stroke = TRUE, 
@@ -435,9 +432,8 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         opacity = 1))
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(zoomControl = FALSE, 
-                                             minZoom = zoom.level, 
-                                             maxZoom = zoom.level, 
+                    options = leafletOptions(minZoom = zoom.level, 
+                                             maxZoom = zoom.level + 4, 
                                              dragging = FALSE)) %>%
               setView(lat = lat, lng = long, zoom = zoom.level) %>%
               addPolygons(stroke = TRUE, 
