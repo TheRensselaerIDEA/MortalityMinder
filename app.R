@@ -424,7 +424,7 @@ server <- function(input, output) {
   
   output$determinants_plot2 <- renderPlot({
 
-    sd.code = chr.namemap.inv.2019[input$d_choice, "code"]
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -434,7 +434,7 @@ server <- function(input, output) {
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
-      labs(y = input$d_choice) + 
+      labs(y = input$determinant_choice) + 
       theme.background() + 
       theme.text() + 
       theme(
@@ -460,7 +460,7 @@ server <- function(input, output) {
   
   output$determinants_plot3 <- renderPlot({
     
-    sd.code = chr.namemap.inv.2019[input$d_choice, "code"]
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -482,7 +482,7 @@ server <- function(input, output) {
       geom_smooth() + 
       labs(
         x = "Mortality Rate",
-        y = input$d_choice
+        y = input$determinant_choice
       ) +
       theme.line.mort() + 
       color.line.cluster(input$state_choice, 3)
@@ -757,7 +757,7 @@ server <- function(input, output) {
     
     # # Set currently selected determinant to most correlated determinant
     # max.cor.ind = which.max(abs(kendall.cor.new$kendall_cor))
-    # input$d_choice = kendall.cor.new[max.cor.ind, "chr_code"]
+    # input$determinant_choice = kendall.cor.new[max.cor.ind, "chr_code"]
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
