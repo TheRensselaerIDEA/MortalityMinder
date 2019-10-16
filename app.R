@@ -213,7 +213,7 @@ ui <- fluidPage(
                 )
               ),
               d3Output("national_map", width = '100%', height = '100%')
-            )
+            
             )
           )
           
@@ -892,24 +892,16 @@ server <- function(input, output) {
   data_to_json <- function(data) {
     jsonlite::toJSON(data, dataframe = "rows", auto_unbox = FALSE, rownames = TRUE)
   }
-  output$d3 <- renderD3({
+  output$national_map <- renderD3({
     data_geo <- jsonlite::read_json("all-counties.json")
-    if (input$state_choice == "United States"){
-      data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat)),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-      
-    }else{
-      data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-    }
+    data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
+    cause <- input$death_cause
+    r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
+         d3_version = 3,
+         dependencies = "topojson.min.js",
+         css = "geoattr.css",
+         script = "d3.js")
+    
     
   })
   
