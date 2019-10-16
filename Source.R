@@ -10,7 +10,8 @@ chr.data.2019 <- readRDS("chr.data.2019.rds") %>%
   # Remove unwanted social determinants
   # This should be a temporary change because the source file will be replaced in the end
   dplyr::select(
-    -dplyr::starts_with("health_"),
+    #-dplyr::starts_with("health_"),
+    -dplyr::contains("cohort"),
     -dplyr::contains("mortality"), 
     -dplyr::contains("deaths"), 
     -dplyr::contains("death"),
