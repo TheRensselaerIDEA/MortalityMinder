@@ -24,6 +24,7 @@ ui <- fluidPage(
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
+  tags$head(includeCSS("geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -186,7 +187,22 @@ ui <- fluidPage(
             class = "page2_col2",
             tags$div(
               class = "nation_wide",
-              tags$img(src = "us_map.png", alt = "us", width = "100%", height = "100%")
+              tags$div(
+                class = "title",
+                tags$b("National Death of Despair")
+              ),
+              tags$div(
+                class = "explore_but",
+                tags$button(
+                  id = "play",
+                  "See changes"
+                ),
+                tags$span(
+                  id = "clock",
+                  "2000-2002"
+                )
+              ),
+              d3Output("national_map", width = '100%', height = '100%')
             )
           )
           
@@ -674,24 +690,16 @@ server <- function(input, output) {
   data_to_json <- function(data) {
     jsonlite::toJSON(data, dataframe = "rows", auto_unbox = FALSE, rownames = TRUE)
   }
-  output$d3 <- renderD3({
+  output$national_map <- renderD3({
     data_geo <- jsonlite::read_json("all-counties.json")
-    if (input$state_choice == "United States"){
-      data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat)),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
+    data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
+    cause <- input$death_cause
+    r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
+         d3_version = 3,
+         dependencies = "topojson.min.js",
+         css = "geoattr.css",
+         script = "d3.js")
       
-    }else{
-      data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-    }
     
   })
   
