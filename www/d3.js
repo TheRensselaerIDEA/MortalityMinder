@@ -52,7 +52,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var tooltip = d3.select("body").append("div") 
         .attr("class", "tooltip")       
         .style("opacity", 0);
-  root.attr("transform", "translate(" + 250 + "," + 100 + ")");
+  root.attr("transform", "translate(" + 250 + "," + 0 + ")");
   
   var geo = topojson.feature(us, us.objects.collection);
   //only newyork state data
@@ -97,17 +97,6 @@ r2d3.onRender(function(data, svg, width, height, options) {
           });
           
           
-  //title
-  var text = svg
-            .attr("width", "100%")
-            .attr("height", "100%")
-  text.append("text")
-      .attr("x", 300)
-      .attr("y", 100)
-      .attr("text-anchor", "middle")  
-      .style("font-size", "8px") 
-      .style("text-decoration", "underline")  
-      .text("National Death of despair 2000-2002");
           
   var rect = svg
             .attr("width", "100%")
@@ -120,16 +109,21 @@ r2d3.onRender(function(data, svg, width, height, options) {
           .attr({
               width: 24,
               height: 5,
-              y: 150,
+              y: 50,
               x: function (d, i) {
-                  return 800 + 25 * i;
+                  return 750 + 25 * i;
               },
               fill: color
           });
+  
           
   var index = 0;        
   var timer;
   var playing = false;
+  var year;
+  var year2;
+  var ten_year;
+  var ten_year2;
     d3.select('#play')  
     .on('click', function() {  // when user clicks the play button
       if(playing == false) {  // if the map is currently playing
@@ -140,8 +134,15 @@ r2d3.onRender(function(data, svg, width, height, options) {
               index = 0;  // or reset it to zero
           }
           sequenceMap(index,tooltip);  // update the representation of the map 
-          d3.select('#clock').html(index);  // update the clock
+          year = index*3;
+          year2 = year + 2;
+          ten_year = Math.floor(year/10);
+          ten_year2 = Math.floor(year2/10);
+          console.log(year);
+          d3.select('#clock').html("20" + ten_year + year%10 + "-" + "20" + ten_year2 + year2%10);  // update the clock
         }, 2000);
+        
+        
         d3.select(this).html('stop');  // change the button label to stop
         playing = true;   // change the status of the animation
       } else {    // else if is currently playing

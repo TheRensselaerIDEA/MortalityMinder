@@ -116,7 +116,7 @@ ui <- fluidPage(
             tags$div(
               class = "col2_title",
               tags$h2(
-                "What are the", tags$span(class = "word_redBG", "determinants"),"?"
+                "What are the", tags$span(class = "word_redBG", "Determinants"),"?"
               )
               
             ),
@@ -676,7 +676,9 @@ server <- function(input, output) {
     
     #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
     # Sort by kendall.cor
-    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+    kendall.cor <- mort.cluster.ord() %>% 
+      dplyr::mutate(VAR = as.numeric(cluster)) %>%
+      kendall.func(chr.data.2019)
     
     kendall.cor.new <- kendall.cor %>%
       dplyr::mutate(
@@ -687,10 +689,14 @@ server <- function(input, output) {
         ),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    # # Set currently selected determinant to most correlated determinant
+    # max.cor.ind = which.max(abs(kendall.cor.new$kendall_cor))
+    # input$d_choice = kendall.cor.new[max.cor.ind, "chr_code"]
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
