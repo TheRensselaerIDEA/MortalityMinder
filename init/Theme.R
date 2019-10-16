@@ -40,7 +40,7 @@ color.line.cluster <- function(state.choice, n.clusters) {
       name = "Cluster",
       #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
       values = colorRampPalette(
-        c("#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603")
+        c("#fef0d9","#fdcc8a","#fc8d59")
         
       )(n.clusters),
       guide = guide_legend(reverse = T)
@@ -132,34 +132,11 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
   
   dataset <- geo.map.fetch(state.choice, mort.cluster) %>% 
     dplyr::rename(VAR_ = cluster)
-  
+  lat_long <- getLatLong(state.choice, dataset)
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
-  
-  max.long <- max(dataset$long)
-  max.lat <- max(dataset$lat)
-  min.long <- min(dataset$long)
-  min.lat <- min(dataset$lat)
   
   colors <- c("#fef0d9","#fdcc8a","#fc8d59")
   labels <- c("Low", "Medium", "High")
-  
-  if (state.choice == "US") {
-    zoom.level = 2.7
-  } else if (state.choice == "MD") {
-    zoom.level = 6.2
-  } else if (state.choice == "AK") {
-    zoom.level = 2.7
-  } else {
-    zoom.level = 5.3
-  }
-  
-  if (state.choice == "AK") {
-    lat = "64.2008"
-    long = "-149.4937"
-  } else {
-    lat = min.lat + (max.lat - min.lat)/2
-    long = min.long + (max.long - min.long)/2
-  }
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   dataset$county_fips <- substr(dataset$county_fips, 3, 5)
@@ -167,10 +144,11 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(minZoom = zoom.level, 
-                                             maxZoom = zoom.level + 4, 
-                                             dragging = FALSE)) %>%
-              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+                    options = leafletOptions(dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
               addPolygons(stroke = TRUE, 
                           smoothFactor = 0.1, 
                           fillOpacity = 1,
@@ -199,10 +177,11 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
                         opacity = 1))
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(minZoom = zoom.level, 
-                                             maxZoom = zoom.level + 4, 
-                                             dragging = FALSE)) %>%
-              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+                    options = leafletOptions(dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
               addPolygons(stroke = TRUE, 
                           smoothFactor = 0.1, 
                           fillOpacity = 1,
@@ -337,37 +316,87 @@ title <- function(state.choice, death.cause, period) {
     HTML(paste(state.choice, " - Death of", death.cause, "Rate<br/>", period))))
 }
 
-geo.plot <- function(state.choice, death.cause, mort.data, period) {
-  dataset <- geo.map.fetch(state.choice, mort.data) %>% 
-    dplyr::rename(VAR_ = death_rate)
-  
-  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+getLatLong <- function(state.choice, dataset) {
   
   max.long <- max(dataset$long)
   max.lat <- max(dataset$lat)
   min.long <- min(dataset$long)
   min.lat <- min(dataset$lat)
   
+  switch(state.choice,
+         'AK'= {
+           min.lat = 50.0
+           max.lat = 76.0
+           min.long = -164.0
+           max.long = -120.0
+         },
+         "HI"= {
+           min.lat = 18.46
+           max.lat = 22.46
+           min.long = -160.505
+           max.long = -154.505
+         },
+         "MN"= {
+           min.lat = 43.0
+           max.lat = 49.9
+           min.long = -98.3655146
+           max.long = -89.3655146
+         },
+         "ID"= {
+           min.lat = 40.4945756
+           max.lat = 50.4945756
+           min.long = -110.1424303
+           max.long = -118.1424303
+         },
+         "LA" = {
+           min.lat = 28.9733766
+           max.lat = 33.9733766
+           min.long = -96.4299097
+           max.long = -87.4299097
+         },
+         "MI" = {
+           min.lat = 40.9435598
+           max.lat = 48.9435598
+           min.long = -90.4158049
+           max.long = -82.4158049
+         },
+         "NV" = {
+           min.lat = 34.502032
+           max.lat = 42.502032
+           min.long = -120.0230604
+           max.long = -114.0230604
+         }, 
+         "OH" = {
+           min.lat = 37.1903624
+           max.lat = 43.1903624
+           min.long = -86.6692525
+           max.long = -79.6692525
+         },
+         "WV" = {
+           min.lat = 36.9201705
+           max.lat = 40.9201705
+           min.long = -83.1816905
+           max.long = -77.1816905
+         })
+  
+  if (state.choice == 'AR' | state.choice == 'MN') {
+    padding = 0.5
+  } else {
+    padding = 0.05
+  }
+  
+  return(c(min.lat - padding, min.long - padding, max.lat + padding, max.long + padding))
+}
+
+geo.plot <- function(state.choice, death.cause, mort.data, period) {
+  dataset <- geo.map.fetch(state.choice, mort.data) %>% 
+    dplyr::rename(VAR_ = death_rate)
+  lat_long <- getLatLong(state.choice, dataset)
+  
+  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  
   colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
   labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
-  
-  if (state.choice == "US") {
-    zoom.level = 2.7
-  } else if (state.choice == "MD") {
-    zoom.level = 6.2
-  } else if (state.choice == "AK") {
-    zoom.level = 2.7
-  } else {
-    zoom.level = 5.3
-  }
-  
-  if (state.choice == "AK") {
-    lat = "64.2008"
-    long = "-149.4937"
-  } else {
-    lat = min.lat + (max.lat - min.lat)/2
-    long = min.long + (max.long - min.long)/2
-  }
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   dataset$county_fips <- substr(dataset$county_fips, 3, 5)
@@ -375,10 +404,12 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(minZoom = zoom.level, 
-                                             maxZoom = zoom.level + 4, 
-                                             dragging = FALSE)) %>%
-              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+                    options = leafletOptions(
+                      dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
               addPolygons(stroke = TRUE, 
                           smoothFactor = 0.1, 
                           fillOpacity = 1,
@@ -432,10 +463,11 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         opacity = 1))
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(minZoom = zoom.level, 
-                                             maxZoom = zoom.level + 4, 
-                                             dragging = FALSE)) %>%
-              setView(lat = lat, lng = long, zoom = zoom.level) %>%
+                    options = leafletOptions(dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
               addPolygons(stroke = TRUE, 
                           smoothFactor = 0.1, 
                           fillOpacity = 1,
