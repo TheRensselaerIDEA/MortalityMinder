@@ -199,7 +199,18 @@ ui <- fluidPage(
         ),
         tags$div(
           class = "page4",
-          tags$p("About page?")
+          fluidRow(
+            column(3, "Project Overview", offset=1,
+                   fluidRow(
+                     column(12, "Since 2010 the rate of increase in life expectancy in the United States (US) 
+                                 has stagnated and even declined, reversing for the US the trend toward increased life
+                                 expectancy that is still continuing in most nations. The goal of this project is 
+                                 to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
+                                 and identify their associated community level social determinants")
+                   )),
+            column(3, "Methods Used",  offset=1,),
+            column(3, "Additional Resources",  offset=1,)
+          )
         )
       )
     )
