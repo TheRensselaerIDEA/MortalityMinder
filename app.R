@@ -272,10 +272,18 @@ server <- function(input, output) {
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
     } else{
-      n.clusters <- n.clusters.state
-      cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
+        state.data <- cdc.mort.mat(cdc.data, input$state_choice, input$death_cause)
+        if (nrow(state.data) <= 6) {
+          county_fips <- state.data$county_fips
+          cluster <- order(state.data["2015-2017"])
+          data.frame(county_fips, cluster)
+        }
+        else {
+          n.clusters <- n.clusters.state
+          cluster.counties(state.data,
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
+        }
     }
   })
   
@@ -496,6 +504,7 @@ server <- function(input, output) {
           color = guide_legend(reverse = T)
         )
     } else {
+      nclusters <- max(mort.cluster.raw()$cluster)
       
       ggplot(
         mort.avg.cluster.ord(),
@@ -507,7 +516,7 @@ server <- function(input, output) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice, n.clusters.state) +
+        color.line.cluster(input$state_choice, nclusters) +
         theme.line.mort() + 
         guides(color = guide_legend(reverse = T))
     }
