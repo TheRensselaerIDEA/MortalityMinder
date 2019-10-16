@@ -81,10 +81,7 @@ ui <- fluidPage(
               tags$div(
                 class = "col1_top_left",
                 tags$h2(
-                  "High",tags$span(class = "word_redBG", "Death"),"rate!"
-                ),
-                tags$p(
-                  "Descriptions"
+                  "High",tags$b(style = "color:red", "Death"),"rate!"
                 )
               ),
               tags$div(
@@ -116,7 +113,7 @@ ui <- fluidPage(
             tags$div(
               class = "col2_title",
               tags$h2(
-                "What are the", tags$span(class = "word_redBG", "Determinants"),"?"
+                "What are the potential", tags$b(style = "color:red", "causes?")
               )
               
             ),
@@ -125,6 +122,22 @@ ui <- fluidPage(
               plotOutput("page1.bar.cor1",width="100%",height="100%", 
                          hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
               uiOutput("hover_info")
+            )
+          ),
+          tags$div(class = "vl"),
+          tags$div(
+            class = "col3",
+            tags$div(
+              class = "col3_title",
+              tags$h2(
+                "What is", tags$b(style= "color:red", "correlation?")
+              ),
+              tags$h3(
+                "And why is it important?"
+              ),
+              tags$p(
+                "Explain what correlation is and its significance"
+              )
             )
           )
         )
