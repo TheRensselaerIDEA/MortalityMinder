@@ -54,7 +54,7 @@ ui <- fluidPage(
     pickerInput(
       inputId = "death_cause",
       label = h4("Cause of Death"),
-      choices = c("Death of Despair"="Despair","Death of Cancer"="cancer","Death of Assault"="assault","Cardiovascular"="Cardiovascular"),
+      choices = c("Despair","Cancer","Assault","Cardiovascular"),
       width = "200px",
       choicesOpt = list(
         subtext = c("Self-Harm and some other causes"),
@@ -140,17 +140,6 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
-            pickerInput(
-              inputId = "determinant_choice",
-              label = h4("Determinant"), 
-              choices = chr.namemap.2019$name,
-              selected = "Socio-Economic",
-              width = "200px",
-              options = list(
-                `live-search` = TRUE,
-                "dropup-auto" = TRUE
-              )
-            ),
             plotOutput("determinants_plot1",width="100%",height="100%")
           ),
           tags$div(
@@ -213,7 +202,6 @@ ui <- fluidPage(
                 )
               ),
               d3Output("national_map", width = '100%', height = '100%')
-            
             )
           )
           
@@ -226,66 +214,8 @@ ui <- fluidPage(
         ),
         tags$div(
           class = "page4",
-          fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
-            column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
-                   fluidRow(
-                     column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
-                                 has stagnated and even declined, reversing for the US the trend toward increased life
-                                 expectancy that is still continuing in most nations. The goal of this project is 
-                                 to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
-                                 and identify their associated community level social determinants.", offset=1), # Close column,
-                     column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
-                                "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
-                                 seeks tools that support visualizing such data clusters to enhance the research and analysis 
-                                 of community-level health services.", tags$br(),
-                                "Challenge participants must develop visualization tools that can augment the insights drawn 
-                                 from the analysis of medical expenditure and health care utilization data at the community 
-                                 level. Tools must use publicly available and free SDOH data from at least three of the 
-                                 following data sources: ", tags$br(),
-                                 tags$ul(
-                                   tags$li("Federal databases."),
-                                   tags$li("State databases."),
-                                   tags$li(
-                                     "Other locally available data sources, such as SDOH data from voice, digital, and 
-                                     social medical requests via service lines.")
-                                 ), offset=1) # Close column
-                   ) # Close inner fluidRow
-                   ), # Close outter column
-            column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
-                   fluidRow(
-                     column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
-                                 It looks at premature deaths, that is deaths in adults from 15 to 64 
-                                 caused by: ", tags$br(),
-                                 tags$ul(
-                                    tags$li(tags$b("Deaths of Despair: "), 
-                                            "deaths due to suicide, overdose, substance abuse and poisonings"),
-                                    tags$li(tags$b("Assault: "), 
-                                            "deaths due injuries inflicted by another person with intent to injure or kill, 
-                                            by any means"),
-                                    tags$li(tags$b("Cardiovascular Disease: "), 
-                                            "diseases of the circulatory systems such as heart disease and stroke"),
-                                    tags$li(tags$b("Cancer: "), 
-                                            "deaths due to cancer and neoplasm"),
-                                    tags$li(tags$b("All Cause: "), 
-                                            "deaths due to any cause")
-                                  ), tags$br(),
-                            "Machine learning and statistics methods are used for analysis and data visualization. 
-                            We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
-                            to discover counties with different patterns of mortality over time and associated social 
-                            determinants using cluster or supervised clustering.",
-                            offset=1) # Close Column
-                   ) # Close inner fluidRow
-                   ), # Close column
-            column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
-                   tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
-                   tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
-                   tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
-                   tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
-                   tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
-                   tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
-                   )
-        ) # Close outter fluidRow
-        ) # Close page 4 
+          tags$p("About page?")
+        )
       )
     )
   ),
@@ -344,9 +274,10 @@ server <- function(input, output) {
     } else{
         state.data <- cdc.mort.mat(cdc.data, input$state_choice, input$death_cause)
         if (nrow(state.data) <= 6) {
-          county_fips <- state.data$county_fips
-          cluster <- order(state.data["2015-2017"])
-          data.frame(county_fips, cluster)
+          county_fips <- as.character(state.data$county_fips)
+          cluster <- as.character(order(state.data["2015-2017"]))
+          tibble(county_fips, cluster)
+          # browser()
         }
         else {
           n.clusters <- n.clusters.state
@@ -396,6 +327,7 @@ server <- function(input, output) {
     # Variables:
     #   - county_fips
     #   - cluster
+    # browser()
     
     order.county.clusters(mort.cluster.raw(), mort.cluster.map())
   })
@@ -514,21 +446,18 @@ server <- function(input, output) {
       
     }
   })
-  
-  
   output$determinants_plot2 <- renderPlot({
-
-    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    browser()
     sd.select <- chr.data.2019 %>% 
-      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::select(county_fips, VAR = chr.namemap.inv.2019[input$sd_choice, "code"]) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
       tidyr::drop_na()
+    browser()
     
-    # browser()
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
-      labs(y = input$determinant_choice) + 
+      labs(y = input$sd_choice) + 
       theme.background() + 
       theme.text() + 
       theme(
@@ -550,35 +479,7 @@ server <- function(input, output) {
       )
     
   })
-  
-  
   output$determinants_plot3 <- renderPlot({
-    
-    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
-    sd.select <- chr.data.2019 %>% 
-      dplyr::select(county_fips, VAR = sd.code) %>% 
-      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
-      tidyr::drop_na()
-    
-    dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        state_abbr == input$state_choice,
-        death_cause == input$death_cause
-      ) %>% 
-      dplyr::select(county_fips, death_rate) %>% 
-      dplyr::inner_join(sd.select, by = "county_fips") %>% 
-      tidyr::drop_na() %>%
-      
-      
-      ggplot(aes(x = death_rate, y = VAR)) + 
-      geom_point(aes(color = cluster)) + 
-      labs(
-        x = "Mortality Rate",
-        y = input$determinant_choice
-      ) +
-      theme.line.mort() + 
-      color.line.cluster(input$state_choice, 3)
     
   })
   output$determinants_plot4 <- renderPlot({
@@ -643,6 +544,48 @@ server <- function(input, output) {
         "Trend Grp." = "cluster",
         "Count" = "count"
       ) 
+  })
+  
+  # Mortality Cluster Urbanization Composition
+  output$urban_dist_cluster <- renderPlot({
+    
+    # Calculate cluster label
+    
+    
+    if (input$state_choice == "United States"){
+      cluster.num <- 6
+      urban.data <- cdc.data %>% 
+        dplyr::select(county_fips, urban_2013) %>% 
+        unique() %>% 
+        dplyr::left_join(mort.label.raw(), by = "county_fips")
+    } else {
+      cluster.num <- 6
+      urban.data <- cdc.data %>% 
+        dplyr::filter(state_abbr == input$state_choice) %>% 
+        dplyr::select(county_fips, urban_2013) %>% 
+        unique() %>% 
+        dplyr::left_join(mort.label.raw(), by = "county_fips")
+    }
+    
+    
+    ggplot(urban.data, aes(km_cluster, fill = urban_2013)) +
+      geom_bar(position = "fill", color = "black", width = .75) +
+      labs(
+        title = "Urban-Rural Composition by Cluster",
+        x = "Cluster",
+        y = "Composition",
+        fill = "Urbanization 2013"
+      ) +
+      scale_fill_manual(
+        values = colorRampPalette(brewer.pal(9, "Blues"))(6)
+      ) +
+      theme_minimal() + 
+      theme(
+        plot.background = element_rect(fill = "gray95", color = "gray95"),
+        plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+      ) + 
+      theme.text() + 
+      NULL
   })
   
   # Mortality Trend Cluster by County
@@ -809,7 +752,7 @@ server <- function(input, output) {
     
     # # Set currently selected determinant to most correlated determinant
     # max.cor.ind = which.max(abs(kendall.cor.new$kendall_cor))
-    # input$determinant_choice = kendall.cor.new[max.cor.ind, "chr_code"]
+    # input$d_choice = kendall.cor.new[max.cor.ind, "chr_code"]
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
@@ -901,7 +844,7 @@ server <- function(input, output) {
          dependencies = "topojson.min.js",
          css = "geoattr.css",
          script = "d3.js")
-    
+      
     
   })
   
