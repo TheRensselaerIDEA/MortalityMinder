@@ -460,6 +460,12 @@ server <- function(input, output) {
   
   output$determinants_plot3 <- renderPlot({
     
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      tidyr::drop_na()
+    
     dplyr::filter(
         cdc.data,
         period == "2015-2017", 
