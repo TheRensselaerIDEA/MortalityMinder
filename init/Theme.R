@@ -142,6 +142,16 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
   dataset$county_fips <- substr(dataset$county_fips, 3, 5)
   dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
   
+  county.count = length(unique(dataset$county_name))
+  
+  if (county.count <= 6) {
+    colors <- c("#fef0d9","#fdcc8a","#fc8d59","#e34a33", "#ff1414", "#a80000")[1:county.count]
+    labels <- c(" ", " ", " ", " ", " ", " ")[1:county.count]
+  } else {
+    colors <- c("#fef0d9","#fdcc8a","#fc8d59", "#fff", "#fff", "#fff")
+    labels <- c("Low", "Medium", "High", "", "", "")
+  }
+  
   if (state.choice != "US"){
     return (leaflet(shapes, 
                     options = leafletOptions(dragging = FALSE)) %>%
@@ -160,6 +170,21 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
                          className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[6],
+                        labels = labels[6],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[5],
+                        labels = labels[5],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[4],
+                        labels = labels[4],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
               addLegend("bottomleft",
                         colors = colors[3],
                         labels = labels[3],
