@@ -232,6 +232,32 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  mort.rate <- reactive({
+    if(input$state_choice == "United States"){
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
+  
   # Cache of UNORDERED mortality trend cluster label calculation
   mort.cluster.raw <- reactive({
     
@@ -317,9 +343,9 @@ server <- function(input, output) {
     
     #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
     # Sort by kendall.cor
-    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-    
-    kendall.cor.new <- kendall.cor %>%
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
       dplyr::mutate(
         DIR = dplyr::if_else(
           kendall_cor <= 0,
@@ -328,7 +354,7 @@ server <- function(input, output) {
         ),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
@@ -400,6 +426,7 @@ server <- function(input, output) {
           panel.grid.major.y = element_blank()
         )
     }
+  
     #Display something else when there are no significant SD
     else {
       
@@ -410,6 +437,35 @@ server <- function(input, output) {
     }
   })
   output$determinants_plot2 <- renderPlot({
+    
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = chr.namemap.inv.2019[input$sd_choice, "code"]) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      tidyr::drop_na()
+    
+    
+    ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
+      geom_boxplot() +
+      labs(y = input$sd_choice) + 
+      theme.background() + 
+      theme.text() + 
+      theme(
+        
+        panel.grid = element_line(color = "grey"),
+        panel.grid.major.x = element_blank(),
+        panel.background = element_blank(),
+        
+        axis.line.x = element_blank(), 
+        axis.title.x = element_blank(),
+        
+        legend.position = "top"
+      ) + 
+      scale_fill_manual(
+        name = "Cluster",
+        values = colorRampPalette(
+          c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
+        )(n.clusters.state)
+      )
     
   })
   output$determinants_plot3 <- renderPlot({
@@ -598,32 +654,6 @@ server <- function(input, output) {
     
   })
   
-  mort.rate <- reactive({
-    if(input$state_choice == "United States"){
-      cdc.data %>% dplyr::filter(
-        death_cause == input$death_cause,
-        #state_abbr == input$state_choice,
-        period == "2015-2017"
-      ) %>%
-        dplyr::mutate(
-          # death_rate = death_num / population * 10^5
-          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
-        ) %>%
-        dplyr::select(county_fips, death_rate)
-    }else {
-      cdc.data %>% dplyr::filter(
-        death_cause == input$death_cause,
-        state_abbr == input$state_choice,
-        period == "2015-2017"
-      ) %>%
-        dplyr::mutate(
-          # death_rate = death_num / population * 10^5
-          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
-        ) %>%
-        dplyr::select(county_fips, death_rate)
-    }
-  })
-  
   # Implementation of hover (08 Oct 2019)
   output$hover_info <- renderUI({
     req(input$plot_hover) # Same as if-not-NULL
@@ -687,16 +717,14 @@ server <- function(input, output) {
   })
   
   
-  # Kendall Correlation Between Raw Mort Rate and CHR-SD
+  # Kendall Correlation Between Cluster and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
     
     #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
     # Sort by kendall.cor
-    kendall.cor <- mort.cluster.ord() %>% 
-      dplyr::mutate(VAR = as.numeric(cluster)) %>%
-      kendall.func(chr.data.2019)
-    
-    kendall.cor.new <- kendall.cor %>%
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
       dplyr::mutate(
         DIR = dplyr::if_else(
           kendall_cor <= 0,
