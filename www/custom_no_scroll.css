@@ -126,7 +126,7 @@ html, body {
   display:block;
   width:1px;
   height:100%;
-  background-color:rgb(235,235,235);
+  background-color:black;
 }
 
 .col1_title h2 {
@@ -167,6 +167,14 @@ html, body {
   letter-spacing: -.005em;
   margin:10px 1px 1px 10px;
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+
+.col3 h3{
+  margin: 10px 1px 1px 10px;
+}
+
+.col3 p{
+  margin: 10px 1px 1px 10px;
 }
 
 .word_redBG {

@@ -133,13 +133,13 @@ ui <- fluidPage(
               class = "col3_title",
               tags$h2(
                 "What is", tags$b(style= "color:red", "correlation?")
-              ),
-              tags$h3(
-                "And why is it important?"
-              ),
-              tags$p(
-                "Explain what correlation is and its significance"
               )
+            ),
+            tags$h3(
+              "And why is it important?"
+            ),
+            tags$p(
+              "Explain what correlation is and its significance"
             )
           )
         )
