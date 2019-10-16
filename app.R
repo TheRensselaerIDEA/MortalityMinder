@@ -344,9 +344,9 @@ server <- function(input, output) {
     } else{
         state.data <- cdc.mort.mat(cdc.data, input$state_choice, input$death_cause)
         if (nrow(state.data) <= 6) {
-          county_fips <- state.data$county_fips
-          cluster <- order(state.data["2015-2017"])
-          data.frame(county_fips, cluster)
+          county_fips <- as.character(state.data$county_fips)
+          cluster <- as.character(order(state.data["2015-2017"]))
+          tibble(county_fips, cluster)
         }
         else {
           n.clusters <- n.clusters.state
@@ -546,7 +546,7 @@ server <- function(input, output) {
         name = "Cluster",
         values = colorRampPalette(
           c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
-        )(n.clusters.state)
+        )(max(sd.select$cluster))
       )
     
   })
@@ -578,7 +578,7 @@ server <- function(input, output) {
         y = input$determinant_choice
       ) +
       theme.line.mort() + 
-      color.line.cluster(input$state_choice, 3)
+      color.line.cluster(input$state_choice, max(sd.select$cluster))
     
   })
   output$determinants_plot4 <- renderPlot({
