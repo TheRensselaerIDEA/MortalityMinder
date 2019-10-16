@@ -490,7 +490,6 @@ server <- function(input, output) {
       
       ggplot(aes(x = death_rate, y = VAR)) + 
       geom_point(aes(color = cluster)) + 
-      geom_smooth() + 
       labs(
         x = "Mortality Rate",
         y = input$determinant_choice
@@ -561,7 +560,6 @@ server <- function(input, output) {
         "Count" = "count"
       ) 
   })
-  
   
   # Mortality Trend Cluster by County
   output$geo_cluster_kmean <- renderLeaflet({
