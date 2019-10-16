@@ -24,7 +24,6 @@ ui <- fluidPage(
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
-  tags$head(includeCSS("geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -197,22 +196,7 @@ ui <- fluidPage(
             class = "page2_col2",
             tags$div(
               class = "nation_wide",
-              tags$div(
-                class = "title",
-                tags$b("National Death of Despair")
-              ),
-              tags$div(
-                class = "explore_but",
-                tags$button(
-                  id = "play",
-                  "See changes"
-                ),
-                tags$span(
-                  id = "clock",
-                  "2000-2002"
-                )
-              ),
-              d3Output("national_map", width = '100%', height = '100%')
+              tags$img(src = "us_map.png", alt = "us", width = "100%", height = "100%")
             )
           )
           
@@ -508,16 +492,18 @@ server <- function(input, output) {
   
   
   output$determinants_plot2 <- renderPlot({
-    
+
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
-      dplyr::select(county_fips, VAR = chr.namemap.inv.2019[input$sd_choice, "code"]) %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
       tidyr::drop_na()
     
+    # browser()
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
-      labs(y = input$sd_choice) + 
+      labs(y = input$determinant_choice) + 
       theme.background() + 
       theme.text() + 
       theme(
@@ -540,15 +526,39 @@ server <- function(input, output) {
     
   })
   
+  
   output$determinants_plot3 <- renderPlot({
-   
+    
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      tidyr::drop_na()
+    
+    dplyr::filter(
+        cdc.data,
+        period == "2015-2017", 
+        state_abbr == input$state_choice,
+        death_cause == input$death_cause
+      ) %>% 
+      dplyr::select(county_fips, death_rate) %>% 
+      dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      tidyr::drop_na() %>%
+      
+      
+      ggplot(aes(x = death_rate, y = VAR)) + 
+      geom_point(aes(color = cluster)) + 
+      labs(
+        x = "Mortality Rate",
+        y = input$determinant_choice
+      ) +
+      theme.line.mort() + 
+      color.line.cluster(input$state_choice, 3)
+    
   })
-  
-  
   output$determinants_plot4 <- renderPlot({
     
   })
-  
   
   # Mortality Rate Trend Line Graph
   output$mort_line <- renderPlot({
@@ -607,48 +617,6 @@ server <- function(input, output) {
         "Trend Grp." = "cluster",
         "Count" = "count"
       ) 
-  })
-  
-  # Mortality Cluster Urbanization Composition
-  output$urban_dist_cluster <- renderPlot({
-    
-    # Calculate cluster label
-    
-    
-    if (input$state_choice == "United States"){
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    } else {
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::filter(state_abbr == input$state_choice) %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    }
-    
-    
-    ggplot(urban.data, aes(km_cluster, fill = urban_2013)) +
-      geom_bar(position = "fill", color = "black", width = .75) +
-      labs(
-        title = "Urban-Rural Composition by Cluster",
-        x = "Cluster",
-        y = "Composition",
-        fill = "Urbanization 2013"
-      ) +
-      scale_fill_manual(
-        values = colorRampPalette(brewer.pal(9, "Blues"))(6)
-      ) +
-      theme_minimal() + 
-      theme(
-        plot.background = element_rect(fill = "gray95", color = "gray95"),
-        plot.margin = unit(c(5, 10, 5, 10), units = "mm")
-      ) + 
-      theme.text() + 
-      NULL
   })
   
   # Mortality Trend Cluster by County
@@ -815,7 +783,7 @@ server <- function(input, output) {
     
     # # Set currently selected determinant to most correlated determinant
     # max.cor.ind = which.max(abs(kendall.cor.new$kendall_cor))
-    # input$d_choice = kendall.cor.new[max.cor.ind, "chr_code"]
+    # input$determinant_choice = kendall.cor.new[max.cor.ind, "chr_code"]
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
@@ -898,16 +866,24 @@ server <- function(input, output) {
   data_to_json <- function(data) {
     jsonlite::toJSON(data, dataframe = "rows", auto_unbox = FALSE, rownames = TRUE)
   }
-  output$national_map <- renderD3({
+  output$d3 <- renderD3({
     data_geo <- jsonlite::read_json("all-counties.json")
-    data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
-    cause <- input$death_cause
-    r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
-         d3_version = 3,
-         dependencies = "topojson.min.js",
-         css = "geoattr.css",
-         script = "d3.js")
+    if (input$state_choice == "United States"){
+      data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
+      r2d3(data = list(data_geo,data_to_json(data_stat)),
+           d3_version = 3,
+           dependencies = "topojson.min.js",
+           css = "geoattr.css",
+           script = "d3.js")
       
+    }else{
+      data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
+      r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
+           d3_version = 3,
+           dependencies = "topojson.min.js",
+           css = "geoattr.css",
+           script = "d3.js")
+    }
     
   })
   
