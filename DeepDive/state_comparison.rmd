@@ -55,22 +55,93 @@ input <- list(state_choice1 = state.abb[21], state_choice2 = state.abb[7],
 # Compare the mortality trends of Mass. and CT 2 New England states, where MA has Affordable Health Care
 # Act type policies, while CT doesn't 
 
-# Get data on states 
+# State data raw 
 ```{r}
-data.state1 <- cdc.mort.mat(cdc.data, input$state_choice1, input$death_cause)
-data.state2 <- cdc.mort.mat(cdc.data, input$state_choice2, input$death_cause)
-```
-
-# Sum mortality rate on time period (columns) and put into dataframe 
-```{r}
-periods <- c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017")
-state.compare <- data.frame("period" = character(), "state" = character(), "death_rate"=integer(), stringsAsFactors = FALSE)
-
-for(period in periods) {
-  state.compare[nrow(state.compare) + 1,] <- c(period, input$state_choice1, round(sum(data.state1[period]), 2))
-  state.compare[nrow(state.compare) + 1,] <- c(period, input$state_choice2, round(sum(data.state2[period]), 2))
+mort.state.raw <- function() {
+  # Variables:
+  #   - county_fips
+  rbind(cdc.data %>%
+    cdc.mort.mat(input$state_choice1, input$death_cause), cdc.data %>%
+    cdc.mort.mat(input$state_choice2, input$death_cause))
 }
 ```
+
+# Run 
+```{r}
+mort.state.raw()
+```
+
+## Cache of Weighed Avg by UNORDERED cluster (for states)
+
+* The cluster labels are UNORDERED
+```{r}
+mort.avg.state.raw <- function() {
+
+  # Variables:
+  #   - period
+  #   - cluster
+  #   - death_rate
+  #   - count
+  cdc.data %>%
+    dplyr::filter((state_abbr == input$state_choice1 | state_abbr == input$state_choice2), death_cause == input$death_cause) %>%
+    dplyr::right_join(mort.state.raw(), by = "county_fips") %>%
+    dplyr::group_by(period, state_abbr) %>%
+    dplyr::summarise(
+      death_rate = sum(death_num) / sum(population) * 10^5,
+      count = n()
+    ) %>%
+    dplyr::ungroup()
+}
+```
+
+# Run 
+```{r}
+mort.avg.state.raw()
+```
+
+## Cache of MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
+
+* This is a mapping from raw cluster label to ORDERED cluster.
+* Row names are the original cluster and `ord` are the reordered cluster
+```{r}
+mort.state.map <- function() {
+  # Variables:
+  #   - ord
+  mort.avg.state.raw() %>%
+    dplyr::filter(period == "2015-2017") %>%
+    dplyr::arrange(death_rate) %>%
+    dplyr::mutate(ord = as.character(1:n())) %>%
+    dplyr::select(-c(period, death_rate)) %>%
+    textshape::column_to_rownames("state_abbr")
+}
+```
+
+## Cache of ORDERED mortality trend state label calculation
+
+```{r}
+mort.state.ord <- function() {
+  # Variables:
+  #   - county_fips
+  #   - state_abbr
+  dplyr::mutate(mort.state.raw(), state_abbr = mort.state.map()[state_abbr, "ord"])
+}
+```
+
+## Cache of Weighed Avg by ORDERED state
+
+* The cluster labels are ORDERED
+```{r}
+mort.avg.state.ord <- function() {
+  # Variables:
+  #   - period
+  #   - state
+  #   - death_rate
+  #   - count
+
+  dplyr::mutate(mort.avg.state.raw(), state_abbr = mort.state.map()[state_abbr, "ord"])
+}
+```
+
 
 # Consider 2 states as 2 different "clusters"
 ```{r}
@@ -109,7 +180,7 @@ library(extrafont)
 loadfonts(quiet = T)
 
 plot_mort_line <- function() {
-  ggplot(state.compare, aes(x = period, y = death_rate,color = state, group = state)) + geom_line(size = 1) + geom_point(color = "black", shape = 21, fill = "white") + labs.line.mort.mult(input$state_choice1, input$state_choice2, input$death_cause) + color.line.cluster(input$state_choice1, 2) + theme.line.mort() + guides(color = guide_legend(reverse = T)) + theme(text=element_text(family="Arial Black")) + scale_y_reverse(name="death_rate")
+  ggplot(mort.avg.state.ord(), aes(x = period, y = death_rate,color = state_abbr, group = state_abbr)) + geom_line(size = 1) + geom_point(color = "black", shape = 21, fill = "white") + labs.line.mort.mult(input$state_choice1, input$state_choice2, input$death_cause) + color.line.cluster(input$state_choice1, 2) + theme.line.mort() + guides(color = guide_legend(reverse = T)) + theme(text=element_text(family="Arial Black"))
 }
 ```
 
