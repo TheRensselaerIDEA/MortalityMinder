@@ -430,7 +430,7 @@ server <- function(input, output) {
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
       tidyr::drop_na()
     
-    browser()
+    # browser()
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
@@ -462,7 +462,7 @@ server <- function(input, output) {
     
     dplyr::filter(
         cdc.data,
-        period == input$period, 
+        period == "2015-2017", 
         state_abbr == input$state_choice,
         death_cause == input$death_cause
       ) %>% 
