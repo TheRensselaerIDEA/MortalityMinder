@@ -22,6 +22,7 @@ chr.data.2019 <- readRDS("chr.data.2019.rds") %>%
   
   
 chr.namemap.2019 <- readRDS("chr.namemap.2019.rds")
+chr.namemap.inv.2019 <- readRDS("chr.namemap.inv.2019.rds")
 # Separated out function definitions 10/01/2019
 #source("Loader_CDC.R")     # Added write_rds 9/27/2019
 source("CDC_Lib.R")         # Function definitions from Loader_CDC.R
