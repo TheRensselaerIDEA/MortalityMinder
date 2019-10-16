@@ -24,6 +24,7 @@ ui <- fluidPage(
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
+  tags$head(includeCSS("geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -196,7 +197,23 @@ ui <- fluidPage(
             class = "page2_col2",
             tags$div(
               class = "nation_wide",
-              tags$img(src = "us_map.png", alt = "us", width = "100%", height = "100%")
+              tags$div(
+                class = "title",
+                tags$b("National Death of Despair")
+              ),
+              tags$div(
+                class = "explore_but",
+                tags$button(
+                  id = "play",
+                  "See changes"
+                ),
+                tags$span(
+                  id = "clock",
+                  "2000-2002"
+                )
+              ),
+              d3Output("national_map", width = '100%', height = '100%')
+            )
             )
           )
           
