@@ -1,6 +1,7 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "State Comparison"
+Author: Farukh Saidmuratov 
+Date: Oct 16, 2019 
 ---
 
 # Libraries and Environment
@@ -19,7 +20,7 @@ source("Loader_GEO.R")
 source("Analyzer_PCA.R")
 source("Clustering_Lib.R")
 source("Analyzer_Correlation.R")
-source("Theme.R") # for styles for plots needed in run_app_analysis, could be optional
+source("Theme.R") # for styles for plots 
 
 source("CDC_Lib.R")# For making plot 
 
@@ -27,15 +28,64 @@ source("CDC_Lib.R")# For making plot
 current.dir <- getwd()
 setwd(current.dir)
 ```
-# Compare the mortality trends of Mass. and Connecticut. 2 New England states, where MA has Affordable Health Care
-# Act type policies, while CT doesn't 
+
+# Labs line mort for multiple states 
 ```{r}
-state1 <- "MA"
-state2 <- "CT"
-death_cause <- "Despair"
-years <- c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017")
+labs.line.mort <- function(state.choice1, state.choice2, death.cause) {
+  labs(
+    title = paste(
+      state.choice1, 
+      paste("Death of", death.cause, "Trend"), 
+      state.choice2, 
+      sep = ' - '
+    ),
+    caption = "Data Sorce: CDCWONDER Multi-Cause of Death",
+    x = "Period", y = "Mortality Rate (# per 100k)"
+  )
+}
+```
+
+# Parameters. Set first state to be Mass., and second state to be Maine. Explore difference between deaths of cardiovascular disease.
+```{r}
+death.causes <- c("Despair","Cancer","Assault","Cardiovascular")
+input <- list(state_choice1 = state.abb[21], state_choice2 = state.abb[19], 
+              death_cause = death.causes[4])
+```
+
+# Compare the mortality trends of Mass. and Maine 2 New England states, where MA has Affordable Health Care
+# Act type policies, while Maine doesn't 
+
+# Get data on states 
+```{r}
+data.state1 <- cdc.mort.mat(cdc.data, input$state_choice1, input$death_cause)
+data.state2 <- cdc.mort.mat(cdc.data, input$state_choice2, input$death_cause)
+```
+
+# Sum mortality rate on time period (columns)
+```{r}
+
+```
 
 
+# Plot comparison between states
+```{r}
+plot_mort_line <- function() {
+  ggplot(
+    data_State1,
+    aes(
+      x = period, y = death_rate,
+      color = state, group = state
+    )
+  ) +
+    geom_line(size = 1) +
+    geom_point(color = "black", shape = 21, fill = "white") +
+    labs.line.mort(input$state_choice, input$death_cause) +
+    color.line.cluster() +
+    theme.line.mort() +
+    guides(
+      color = guide_legend(reverse = T)
+    )
+}
 ```
 
 
