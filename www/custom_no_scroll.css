@@ -160,6 +160,14 @@ html, body {
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 }
 
+.col3_title {
+  width:100%;
+  height:6%;
+  float:left;
+  display:block;
+  text-align:center;
+}
+
 .col3_title h2 {
   font-size: 30px;
   line-height: 1.07143;
@@ -292,6 +300,7 @@ html, body {
   height:6%;
   float:left;
   display:block;
+  text-align:center;
 }
 
 .col2_plot {
