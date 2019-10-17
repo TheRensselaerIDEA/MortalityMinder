@@ -348,297 +348,77 @@
 0.0147398405011829
 "Destructive"
 "70"
-"Teenagers Birth Rate (White)"
-0.199905268947815
-0.061561806437931
-"Destructive"
-"71"
 "Number Of Dentists"
 0.199421949038554
 0.015677100987853
 "Destructive"
-"72"
+"71"
 "Number Of Households"
 0.193936304078564
 0.0181815910985625
 "Destructive"
-"73"
+"72"
 "Rural Percentage"
 0.190782868239888
 0.0201526181309018
 "Protective"
-"74"
+"73"
 "Number Of Some College"
 0.189521493904418
 0.0209917809100539
 "Destructive"
-"75"
+"74"
 "Percentage Of Vaccinated"
 0.187374877870379
 0.0275076128496571
 "Protective"
-"76"
+"75"
 "Average Daily Pm25"
 0.186235086613234
 0.0264002224616055
 "Protective"
-"77"
+"76"
 "Percentage Of Screened"
 0.183636154777269
 0.0300235157258559
 "Protective"
-"78"
+"77"
 "Number Of Workers Who Drive Alone"
 0.181953247891596
 0.0266942008069647
 "Destructive"
-"79"
+"78"
 "Dentist Rate"
 0.180691873556126
 0.0277644491036294
 "Destructive"
-"80"
+"79"
 "Dentist Ratio"
 0.180691873556126
 0.0277644491036294
 "Protective"
-"81"
+"80"
 "Total Number Of Uninsured Children"
 0.171276314914778
 0.0370325378311986
 "Destructive"
-"82"
+"81"
 "Children Eligible For Free Or Reduced Price Lunch Percentage"
 0.169970191704628
 0.0384502732724686
 "Destructive"
-"83"
+"82"
 "Number Of Asian"
 0.166860350994324
 0.0421903351196744
 "Destructive"
-"84"
+"83"
 "Labor Force"
 0.163032632859541
 0.0470853780674001
 "Destructive"
-"85"
+"84"
 "American Indian/Alaskan Native Percentage"
 0.162401945691806
 0.047945580566769
 "Destructive"
-"86"
-"Number Of Native Hawaiian/Other Pacific Islander"
-0.161272449930719
-0.0509807408721676
-"Destructive"
-"87"
-"Uninsured Adults Percentage"
-0.15798713551766
-0.0543441006087831
-"Destructive"
-"88"
-"Number Of Associations"
-0.156401804658097
-0.0572755973355433
-"Destructive"
-"89"
-"Primary Care Physicians Rate"
-0.156095074014454
-0.0572966791565642
-"Destructive"
-"90"
-"Primary Care Physicians Ratio"
-0.155800081822721
-0.0578002492219105
-"Protective"
-"91"
-"Persentage Of Adult Obesity"
-0.148162513329481
-0.0722309165720593
-"Destructive"
-"92"
-"Percentage Of Driving Alone (White)"
-0.147325155130857
-0.210529324138763
-"Destructive"
-"93"
-"Percentage Of Children In Poverty (Hispanic)"
-0.144926671929907
-0.0927533630043176
-"Destructive"
-"94"
-"Percentage Of Vaccinated (White)"
-0.137518690835637
-0.135104988425269
-"Protective"
-"95"
-"Percentage Of Physically Inactive"
-0.134759474442111
-0.101785130159993
-"Destructive"
-"96"
-"Teenagers Birth Rate (Hispanic)"
-0.124316312101612
-0.285661588701988
-"Destructive"
-"97"
-"Uninsured Children Percentage"
-0.118253843950344
-0.149815811438129
-"Protective"
-"98"
-"Percentage Of Accessing To Exercise Opportunities"
-0.117623156782609
-0.152000380201212
-"Destructive"
-"99"
-"Percentage Younger Than 18"
-0.116992469614874
-0.154209118388486
-"Protective"
-"100"
-"Non-Hispanic White Percentage"
-0.116992469614874
-0.154209118388486
-"Protective"
-"101"
-"Percentage Of Alcohol Impaired"
-0.116712937348462
-0.156368535499448
-"Destructive"
-"102"
-"Percentage Of Vaccinated (Balck)"
-0.114201103139
-0.229363224551117
-"Protective"
-"103"
-"Disconnected Youth Percentage"
-0.111997423816172
-0.272979252458172
-"Destructive"
-"104"
-"Household Income (White)"
-0.111564862049349
-0.196384148335083
-"Protective"
-"105"
-"Overcrowding"
-0.111316285105257
-0.175197292404979
-"Destructive"
-"106"
-"Percentage Of Uninsured"
-0.109424223602052
-0.182647099908668
-"Destructive"
-"107"
-"80th Percentile Income"
-0.108162849266581
-0.187742507366019
-"Protective"
-"108"
-"Household Income (Hispanic)"
-0.101501130152869
-0.272426739437852
-"Protective"
-"109"
-"Native Hawaiian/Other Pacific Islander Percentage"
-0.0980718545828187
-0.232324961677549
-"Destructive"
-"110"
-"Clinical Care"
-0.0942877315764077
-0.25084250865763
-"Destructive"
-"111"
-"Inadequate Facilities"
-0.0911342957377318
-0.267041886995495
-"Protective"
-"112"
-"Number Of Hispanic"
-0.0898964083806847
-0.273713973094168
-"Destructive"
-"113"
-"Asian Percentage"
-0.087980859899056
-0.283946612641263
-"Destructive"
-"114"
-"Percentage Of Vaccinated (Hispanic)"
-0.0860501966491976
-0.419355692214579
-"Protective"
-"115"
-"Presence Of Violation"
-0.0857262655448976
-0.390885870570947
-"Destructive"
-"116"
-"Number Of People Not Proficient In English"
-0.0810962809256496
-0.323627952977588
-"Destructive"
-"117"
-"Percentage Of Driving Alone"
-0.0785205523830284
-0.338930241162657
-"Protective"
-"118"
-"Physical Environment"
-0.0778898652152933
-0.342824031443116
-"Destructive"
-"119"
-"Percentage Of Some College"
-0.0778898652152933
-0.342824031443116
-"Protective"
-"120"
-"Number Of Rural"
-0.0690602448670009
-0.400310680739619
-"Destructive"
-"121"
-"People Not Proficient In English Percentage"
-0.0570771886800327
-0.48697507568543
-"Protective"
-"122"
-"Hispanic Percentage"
-0.0532930656736217
-0.516311109454733
-"Protective"
-"123"
-"Residential Segregation - Black/White"
-0.0452812746647748
-0.622531449429457
-"Destructive"
-"124"
-"Percentage Of Workers Who Drive Alone In Lone Commute"
-0.0401273317001582
-0.625703508165802
-"Destructive"
-"125"
-"Percentage Older Than 65"
-0.031849701970626
-0.698098092436094
-"Destructive"
-"126"
-"Percentage Of Screened (Black)"
-0.0313248395094791
-0.771151976849476
-"Destructive"
-"127"
-"Rate Of Preventable Hospital Stays (Black)"
-0.0284204830959216
-0.791518353028926
-"Protective"
-"128"
-"Residential Segregation - Non-White/White"
-0.0125655683327439
-0.879020490651538
-"Protective"

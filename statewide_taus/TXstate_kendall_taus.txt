@@ -388,252 +388,37 @@
 0.0143850156300821
 "Protective"
 "78"
-"Total Number Of Firearm Fatalities"
-0.121501144459317
-0.0699893501355456
-"Protective"
-"79"
 "Teenagers Birth Rate"
 0.118759943016626
 0.0204256895288944
 "Protective"
-"80"
+"79"
 "Health Behaviors"
 0.115117351430892
 0.0232200550023841
 "Destructive"
-"81"
+"80"
 "Percentage Of Children In Poverty (Hispanic)"
 0.112700302533816
 0.0290996090787663
 "Protective"
-"82"
+"81"
 "Teenagers Birth Rate (Hispanic)"
 0.112312643423446
 0.0456949688249835
 "Protective"
-"83"
+"82"
 "Percentage Of Severe Housing Problems"
 0.104659904364536
 0.0351092543912286
 "Destructive"
-"84"
+"83"
 "Dentist Ratio"
 0.10387078056222
 0.0425185387712695
 "Protective"
-"85"
+"84"
 "Frequent Mental Distress	Percentage"
 0.100871030711677
 0.0422705527579279
 "Protective"
-"86"
-"Chlamydia Rate"
-0.099323291453247
-0.0574888958601859
-"Destructive"
-"87"
-"Graduation Rate"
-0.0940904037419471
-0.0609689823988269
-"Protective"
-"88"
-"Household Income (Black)"
-0.0825745320738745
-0.191566979219497
-"Destructive"
-"89"
-"Mental Health Providers Rate"
-0.0814907961383395
-0.136320647525995
-"Destructive"
-"90"
-"American Indian/Alaskan Native Percentage"
-0.0780266057441441
-0.11620741192279
-"Protective"
-"91"
-"Rate Of Preventable Hospital Stays (White)"
-0.0757314583161043
-0.17421355138763
-"Destructive"
-"92"
-"Mentally Unhealthy Days"
-0.0748082694458416
-0.132035743131845
-"Protective"
-"93"
-"Female Percentage"
-0.0744021966046718
-0.134153016664238
-"Destructive"
-"94"
-"Rural Percentage"
-0.070747272184063
-0.162836690027096
-"Protective"
-"95"
-"Hiv Prevalence Rate"
-0.0649442282894495
-0.25517637670431
-"Destructive"
-"96"
-"Overcrowding"
-0.0643911815203873
-0.194894276697519
-"Protective"
-"97"
-"Diabetes Prevalence Percentage"
-0.0635530362219814
-0.204824754393908
-"Destructive"
-"98"
-"Residential Segregation - Black/White"
-0.0616062949054014
-0.306541602819863
-"Protective"
-"99"
-"Percentage Older Than 65"
-0.0613696581681455
-0.216621592319518
-"Protective"
-"100"
-"Primary Care Physicians Ratio"
-0.0591601735160109
-0.252237732720547
-"Protective"
-"101"
-"Percentage Of Children In Poverty (Black)"
-0.0588923982403108
-0.377504156386807
-"Protective"
-"102"
-"Percentage Younger Than 18"
-0.0581118130099162
-0.242012638237407
-"Protective"
-"103"
-"Household Income (White)"
-0.057785680065794
-0.255476490436301
-"Destructive"
-"104"
-"Percentage Of Alcohol Impaired"
-0.0555760253079405
-0.265754584278353
-"Destructive"
-"105"
-"Percentage Of Single Parent Households"
-0.0553426446254212
-0.265185222218097
-"Destructive"
-"106"
-"Homeownership Percentage"
-0.0553426446254212
-0.265185222218097
-"Protective"
-"107"
-"Percentage Of Driving Alone"
-0.0463021243113348
-0.351230412616693
-"Destructive"
-"108"
-"Percentage Of Children In Poverty (White)"
-0.0428554200018272
-0.406147071356415
-"Protective"
-"109"
-"Percentage Of Unemployed"
-0.0424741562504153
-0.392475596489494
-"Destructive"
-"110"
-"Income Ratio"
-0.0407637875423448
-0.411816342759087
-"Protective"
-"111"
-"Percentage Of Vaccinated (Balck)"
-0.0344088616180748
-0.602445325733334
-"Protective"
-"112"
-"Health Overall Factors"
-0.0324803275630348
-0.521898373528285
-"Destructive"
-"113"
-"Other Primary Care Providers Ratio"
-0.0293812444363216
-0.557999673934121
-"Protective"
-"114"
-"Percentage Of Low Birthweight"
-0.0283252596170572
-0.583347978271638
-"Destructive"
-"115"
-"Percentage Of Driving Alone (White)"
-0.0265723035072409
-0.647264368569833
-"Destructive"
-"116"
-"Percentage Of Accessing To Exercise Opportunities"
-0.0254171257780165
-0.608924350113927
-"Protective"
-"117"
-"Health Outcomes"
-0.0186043781007315
-0.713748311059551
-"Destructive"
-"118"
-"Rate Of Preventable Hospital Stays"
-0.0172861035746655
-0.730740019578693
-"Destructive"
-"119"
-"Rate Of Preventable Hospital Stays (Hispanic)"
-0.0139521724477384
-0.812550804236403
-"Protective"
-"120"
-"Percentage Of Adult Smoking"
-0.0106287198287233
-0.83055556486398
-"Destructive"
-"121"
-"Other Primary Care Providers Rate"
-0.00703406063872039
-0.888556865175362
-"Protective"
-"122"
-"Teenagers Birth Rate (White)"
-0.0050827851122051
-0.926818098352768
-"Protective"
-"123"
-"Primary Care Physicians Rate"
-0.00496822553820816
-0.92354897272073
-"Protective"
-"124"
-"Limited Access To Healthy Foods Percentage"
-0.00493659731319246
-0.921059851396901
-"Destructive"
-"125"
-"Insufficient Sleep Percentage"
-0.00215832241732695
-0.965339853107331
-"Destructive"
-"126"
-"Percentage Of Driving Alone (Hispanic)"
-0.00135051149178232
-0.981639279423267
-"Protective"
-"127"
-"Socio-Economic"
-0.000132572765563407
-0.997914358635727
-"Destructive"
