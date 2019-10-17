@@ -7,8 +7,15 @@ var root = svg
   .attr("height", "100%")
   .append("g");
   
-function sequenceMap(index,tooltip) {
+function sequenceMap(index,tooltip,cause) {
     var death_rate_domain = [0,10,20,30,40,50,60,70,80,90,100,110,120];
+    if (cause == "Cardiovascular" || cause == "Cancer") {
+      death_rate_domain = [0,45,90,135,180,225,270,315,360,405,450,495,540];
+    }
+    else if (cause == "Assault") {
+      death_rate_domain = [0,3,6,9,12,15,18,21,24,27,30,33,36];
+    }
+    
     var color = d3.scale.threshold()
             .domain(death_rate_domain)
             .range(["#FFFFFF", "#FFD8D8", "#FFAFAF", "#FF8888", "#FF5F5F", "#FF3838",
@@ -40,8 +47,14 @@ d3.select("body").append("div");
 r2d3.onRender(function(data, svg, width, height, options) {
   var us = data[0];
   var stat = data[1];
-  var state = data[2];
+  var cause = data[2];
   var death_rate_domain = [0,10,20,30,40,50,60,70,80,90,100,110,120];
+    if (cause == "Cardiovascular" || cause == "Cancer") {
+      death_rate_domain = [0,45,90,135,180,225,270,315,360,405,450,495,540];
+    }
+    else if (cause == "Assault") {
+      death_rate_domain = [0,3,6,9,12,15,18,21,24,27,30,33,36];
+    }
   var death_rate = d3.map();
   var color = d3.scale.threshold()
               .domain(death_rate_domain)
@@ -133,12 +146,11 @@ r2d3.onRender(function(data, svg, width, height, options) {
           } else {
               index = 0;  // or reset it to zero
           }
-          sequenceMap(index,tooltip);  // update the representation of the map 
+          sequenceMap(index,tooltip,cause);  // update the representation of the map 
           year = index*3;
           year2 = year + 2;
           ten_year = Math.floor(year/10);
           ten_year2 = Math.floor(year2/10);
-          console.log(year);
           d3.select('#clock').html("20" + ten_year + year%10 + "-" + "20" + ten_year2 + year2%10);  // update the clock
         }, 2000);
         
