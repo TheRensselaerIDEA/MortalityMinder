@@ -11,9 +11,7 @@ Note: Re-used code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
 Reading Source.R
 ```{r}
 #source("Source.R")
-
 chr.data.2019 <- readRDS("init/chr.data.2019.rds") %>%
-
   # 10/02/2019
   # Remove unwanted social determinants
   # This should be a temporary change because the source file will be replaced in the end
@@ -133,8 +131,6 @@ mort.rate <- function(){
   
 }
 
-
-#print(mort.cluster.ord())
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
 #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
@@ -157,9 +153,6 @@ kendall.cor <- mort.rate() %>%
       #dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
-
-
-
 # kendall.cor <- kendall.func(chr.data.2019)
 # 
 # kendall.cor <- kendall.cor %>%
@@ -188,10 +181,8 @@ selected_SDs_despair <- cbind(selected_SDs_despair, Corrected_P_Vals = corrected
 selected_SDs_despair <- selected_SDs_despair %>%
   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
   dplyr::arrange(desc(kendall_cor))
 
-# selected_SDs2[selected_SDs2$kendall_p == p.adjust(selected_SDs2$kendall_p),]
 print(selected_SDs_despair)
 ```
 
@@ -297,7 +288,6 @@ mort.rate <- function(){
   
 }
 
-
 #print(mort.cluster.ord())
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
@@ -346,12 +336,9 @@ corrected_pvalues <- p.adjust(selected_SDs_cancer$kendall_p)
 selected_SDs_cancer <- cbind(selected_SDs_cancer, Corrected_P_Vals = corrected_pvalues)
 
 selected_SDs_cancer <- selected_SDs_cancer %>%
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
   dplyr::arrange(desc(kendall_cor))
 
-# selected_SDs2[selected_SDs2$kendall_p == p.adjust(selected_SDs2$kendall_p),]
 print(selected_SDs_cancer)
 ```
 
@@ -505,12 +492,9 @@ corrected_pvalues <- p.adjust(selected_SDs_assault$kendall_p)
 selected_SDs_assault <- cbind(selected_SDs_assault, Corrected_P_Vals = corrected_pvalues)
 
 selected_SDs_assault <- selected_SDs_assault %>%
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
   dplyr::arrange(desc(kendall_cor))
 
-# selected_SDs2[selected_SDs2$kendall_p == p.adjust(selected_SDs2$kendall_p),]
 print(selected_SDs_assault)
 ```
 
@@ -617,8 +601,6 @@ mort.rate <- function(){
   
 }
 
-
-#print(mort.cluster.ord())
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
 #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
@@ -664,12 +646,9 @@ corrected_pvalues <- p.adjust(selected_SDs_cardiovascular$kendall_p)
 selected_SDs_cardiovascular <- cbind(selected_SDs_cardiovascular, Corrected_P_Vals = corrected_pvalues)
 
 selected_SDs_cardiovascular <- selected_SDs_cardiovascular %>%
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
   dplyr::arrange(desc(kendall_cor))
 
-# selected_SDs2[selected_SDs2$kendall_p == p.adjust(selected_SDs2$kendall_p),]
 print(selected_SDs_cardiovascular)
 ```
 
@@ -694,9 +673,6 @@ print(selected_SDs_final)
 
 Creating a dataframe that only contains the final selected social determinants
 ```{r}
-# chr.data.2019 %>% 
-#   as_data_frame %>%
-#   select_(.dots = selected_SDs_final)
 
 selected_SDs_final <- selected_SDs_final[-1]
 selected_SDs_final <- append(selected_SDs_final, "county_fips", after = 0)
@@ -705,15 +681,11 @@ chr.data.2019_fewer_SDs <- chr.data.2019 %>%
   as_data_frame %>%
   select(selected_SDs_final)
 
-
-#chr.data.2019[,selected_SDs_final]
 head(chr.data.2019_fewer_SDs)
 
 saveRDS(chr.data.2019_fewer_SDs, "init/chr.data.2019.reduced.rds")
 ```
 
 
-```{r}
-head(chr.data.2019)
-```
+
 
