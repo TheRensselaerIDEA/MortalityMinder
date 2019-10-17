@@ -769,8 +769,8 @@ server <- function(input, output) {
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
     style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
-                    "left:", left_px + 2, "px; top:", top_px + 2, "px;")
-    
+                    "left: ", left_px + 200, "px; top:", top_px + 2, "px; width: 250px;")
+    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     # browser()
