@@ -728,9 +728,10 @@ server <- function(input, output) {
     req(input$plot_hover) # Same as if-not-NULL
     hover <- input$plot_hover
     
-    kendall.cor <- kendall.func(mort.rate(), chr.data.2019.reduced)
-    
-    kendall.cor.new <- kendall.cor %>%
+#   Replaced with new definition (from above) 
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
       dplyr::mutate(
         DIR = dplyr::if_else(
           kendall_cor <= 0,
@@ -739,10 +740,11 @@ server <- function(input, output) {
         ),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
     
     point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
     
