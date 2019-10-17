@@ -201,6 +201,7 @@ ui <- fluidPage(
           fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
             column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
                    fluidRow(
+                     #tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
                      column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
                                  has stagnated and even declined, reversing for the US the trend toward increased life
                                  expectancy that is still continuing in most nations. The goal of this project is 
