@@ -1,18 +1,10 @@
 # Date: 2019/8/1
 # Author: 
-#   UI:Shengjin Li
+#   UI: Shengjin Li
 #   Server: Yuxuan Wang
 #   Graph: Ziyi Wang
 
 source("Source.R")
-library(shinyWidgets)
-library(viridis)
-library(plotly)
-library(RUnit)
-library(randomForest)
-library(lubridate)
-library(forcats)
-library(htmltools)
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
@@ -24,26 +16,18 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
+n.clusters.state = 3
+n.clusters.nation = 6
+
 ui <- fluidPage(
   # include css
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
+  tags$head(includeCSS("fullpage.css")),
+  tags$head(includeCSS("geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
-  
-  tags$div(
-    class = "header",
-    h6("WARNINGS")
-  ),
-  tags$div(
-    class = "header_drop",
-    h6("1. Smaller states (less than 4 counties) may have inaccurate result or result in errors."),
-    h6("2. Some display issue of geo-graphs (legends may overlap with maps)."),
-    h6("3. Suppressed number of death was substituted with 0.5 (will use other methods in future version)."),
-    h6("4. Mortality rates are still part of socio-determinants used (which is not very useful)."),
-    h6("5. Menu and get help not implemented.")
-  ),
   
   # navbar
   tags$div(
@@ -52,8 +36,10 @@ ui <- fluidPage(
       class = "title",
       h1("MortalityMinder")
     ),
-    # tags$a(href="#page1","Mortality Overview"),
-    # tags$a(href="#page2", "Social Determinants"),
+    # tags$div(
+    #   class = "page_select",
+    #   tags$a("asdfasdf")
+    # ),
     pickerInput(
       inputId = "state_choice",
       label = h4("State"), 
@@ -68,7 +54,7 @@ ui <- fluidPage(
     pickerInput(
       inputId = "death_cause",
       label = h4("Cause of Death"),
-      choices = c("Despair","Cancer","Assault","Cardiovascular"),
+      choices = c("Death of Despair"="Despair","Death of Cancer"="cancer","Death of Assault"="assault","Cardiovascular"="Cardiovascular"),
       width = "200px",
       choicesOpt = list(
         subtext = c("Self-Harm and some other causes"),
@@ -79,176 +65,268 @@ ui <- fluidPage(
   ),
   
   tags$div(
-    class = "main",
-    # main
+    id = "fullpage",
     tags$div(
-      class = "mort_ana",
-      
+      class = "section s1",
       tags$div(
-        class = "col3",
+        class = "slide",
         tags$div(
-          class = "draggble",
-          id = "first"
+          class = "nav_bar_blank"
         ),
         tags$div(
-          class = "draggble",
-          id = "second"
-          
-        )
-      ),
-      
-      tags$div(
-        class = "col1",
-        tags$div(
-          class = "plot_col1",
-          plotOutput("mort_line",width="100%",height="100%")
-        ),
-        tags$div(
-          class = "text_col1",
+          class = "page1",
           tags$div(
-            class = "desc_head",
-            h4("Mortality Trend")
-          ),
-          tags$div(
-            class = "desc",
-            tableOutput("table"),
-            tags$p("This plot is generated with k-mean Clustering algorithm on the mortality trend."),
-            tags$p("We first transform the data to a data frame with death rates of different counties
-                   being the observations. "),
-            tags$p("Each observation contains six periods
-                   of death rates (2000-2002, 2003-2005 etc) of a specific county in the chosen state."),
-            tags$p("These counites are then classified to 4 different clusters by k-mean."),
-            tags$p("With the resultant clustering,
-                   we calculate each cluster’s average death rates of a specific period and generate this line graph.")
+            class = "col1",
+            tags$div(
+              class = "col1_top",
+              tags$div(
+                class = "col1_top_left",
+                tags$h2(
+                  "High",tags$span(class = "word_redBG", "Death"),"rate!"
+                ),
+                tags$p(
+                  "Descriptions"
+                )
+              ),
+              tags$div(
+                class = "col1_top_right",
+                leafletOutput("geo_mort_change2",width="100%",height="100%")
+                
+              )
+            ),
+            tags$div(
+              class = "hr"
+            ),
+            tags$div(
+              class = "col1_bot",
+              tags$div(
+                class = "col1_bot_left",
+                leafletOutput("geo_cluster_kmean",width="100%",height="100%")
+              ),
+              tags$div(
+                class = "col1_bot_right",
+                plotOutput("mort_line",width="100%",height="100%")
+              )
             )
-          
+          ),
+          tags$div(
+            class = "vl"
+          ),
+          tags$div(
+            class = "col2",
+            tags$div(
+              class = "col2_title",
+              tags$h2(
+                "What are the", tags$span(class = "word_redBG", "Determinants"),"?"
+              )
+              
+            ),
+            tags$div(
+              class = "col2_plot",
+              plotOutput("page1.bar.cor1",width="100%",height="100%", 
+                         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
+              uiOutput("hover_info")
             )
-        
-        ),
-      tags$div(
-        class = "col2",
-        tags$div(class = "vl"),
-        tags$div(
-          class = "col2_upper",
-          tags$div(
-            class = "col2_ul",
-            plotOutput("geo_cluster_kmean",width="100%",height="100%")
-            
-          ),
-          tags$div(
-            class = "col2_um",
-            plotOutput("geo_mort_change1",width="100%",height="100%")
-          ),
-          tags$div(
-            class = "col2_ur",
-            plotOutput("geo_mort_change2",width="100%",height="100%")
-
           )
+        )
+      ),
+      
+      tags$div(
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
         ),
         tags$div(
-          class = "col2_lower",
-          tags$hr(),
-          plotOutput("page1.bar.cor1",width="100%",height="100%")
-          
+          class = "page3",
+          tags$div(
+            class = "page3_col1",
+            pickerInput(
+              inputId = "determinant_choice",
+              label = h4("Determinant"), 
+              choices = chr.namemap.2019$name,
+              selected = "Socio-Economic",
+              width = "200px",
+              options = list(
+                `live-search` = TRUE,
+                "dropup-auto" = TRUE
+              )
+            ),
+            plotOutput("determinants_plot1",width="100%",height="100%")
+          ),
+          tags$div(
+            class = "vl"
+          ),
+          tags$div(
+            class = "page3_col2",
+            tags$div(
+              class = "page3_col2_top",
+              plotOutput("determinants_plot2",width="100%",height="100%")
+            ),
+            tags$div(class = "hr"),
+            tags$div(
+              class = "page3_col2_bot",
+              plotOutput("determinants_plot3",width="100%",height="100%")
+            )
+          ),
+          tags$div(
+            class = "vl"
+          ),
+          tags$div(
+            class = "page3_col3",
+            plotOutput("determinants_plot4",width="100%",height="100%")
+          )
         )
         
-      )
-      
-  ),
-  tags$div(
-    class = "sd",
-    tags$div(
-      class = "sd_col3"
-      
-    ),
-    tags$div(
-      class = "sd_col1",
-      tags$div(class = "vl")
-    ),
-    tags$div(
-      class = "sd_col2",
-      tags$div(class = "vl"),
+      ),
       tags$div(
-        class = "desc_head",
-        h4("Correlation")
-      )
-    )
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
+        ),
+        tags$div(
+          class = "page2",
+          tags$div(
+            class = "page2_col1",
+            tags$p("Something ",tags$span(class = "word_redBG", "National")," wide"),
+            tags$p("And something")
+          ),
+          tags$div(
+            class = "vl"
+          ),
+          tags$div(
+            class = "page2_col2",
+            tags$div(
+              class = "nation_wide",
+              tags$div(
+                class = "title",
+                tags$b("National Death of Despair")
+              ),
+              tags$div(
+                class = "explore_but",
+                tags$button(
+                  id = "play",
+                  "See changes"
+                ),
+                tags$span(
+                  id = "clock",
+                  "2000-2002"
+                )
+              ),
+              d3Output("national_map", width = '100%', height = '100%')
+              
+            )
+          )
+          
+        )
+      ),
+      tags$div(
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
+        ),
+        tags$div(
+          class = "page4",
+          fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
+                   column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
+                          fluidRow(
+                            column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
+                                   has stagnated and even declined, reversing for the US the trend toward increased life
+                                   expectancy that is still continuing in most nations. The goal of this project is 
+                                   to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
+                                   and identify their associated community level social determinants.", offset=1), # Close column,
+                            column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
+                                   "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
+                                   seeks tools that support visualizing such data clusters to enhance the research and analysis 
+                                   of community-level health services.", tags$br(),
+                                   "Challenge participants must develop visualization tools that can augment the insights drawn 
+                                   from the analysis of medical expenditure and health care utilization data at the community 
+                                   level. Tools must use publicly available and free SDOH data from at least three of the 
+                                   following data sources: ", tags$br(),
+                                   tags$ul(
+                                     tags$li("Federal databases."),
+                                     tags$li("State databases."),
+                                     tags$li(
+                                       "Other locally available data sources, such as SDOH data from voice, digital, and 
+                                       social medical requests via service lines.")
+                                     ), offset=1) # Close column
+                                   ) # Close inner fluidRow
+                            ), # Close outter column
+                   column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
+                          fluidRow(
+                            column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
+                                   It looks at premature deaths, that is deaths in adults from 15 to 64 
+                                   caused by: ", tags$br(),
+                                   tags$ul(
+                                     tags$li(tags$b("Deaths of Despair: "), 
+                                             "deaths due to suicide, overdose, substance abuse and poisonings"),
+                                     tags$li(tags$b("Assault: "), 
+                                             "deaths due injuries inflicted by another person with intent to injure or kill, 
+                                             by any means"),
+                                     tags$li(tags$b("Cardiovascular Disease: "), 
+                                             "diseases of the circulatory systems such as heart disease and stroke"),
+                                     tags$li(tags$b("Cancer: "), 
+                                             "deaths due to cancer and neoplasm"),
+                                     tags$li(tags$b("All Cause: "), 
+                                             "deaths due to any cause")
+                                     ), tags$br(),
+                                   "Machine learning and statistics methods are used for analysis and data visualization. 
+                                   We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
+                                   to discover counties with different patterns of mortality over time and associated social 
+                                   determinants using cluster or supervised clustering.",
+                                   offset=1) # Close Column
+                   ) # Close inner fluidRow
+                          ), # Close column
+                   column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                          tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
+                          tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
+                          tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
+                          tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
+                          tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
+                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
+                   )
+        ) # Close outter fluidRow
+                            ) # Close page 4 
   )
-  
-      ),
-  
-  tags$div(
-    class = "helper",
-    tags$h1("Help Options"),
-    tags$hr(),
-    tags$div(
-      class = "helper_row",
-      tags$h4("FAQ"),
-      tags$i(class = "helper_arrow", tags$i(class="down_arrow"))
-    ),
-    tags$hr(),
-    tags$div(
-      class = "helper_row",
-      tags$h4("Bugs"),
-      tags$i(class = "helper_arrow", tags$i(class="down_arrow"))
-    ),
-    tags$hr(),
-    tags$div(
-      class = "helper_row",
-      tags$h4("General Questions"),
-      tags$i(class = "helper_arrow", tags$i(class="down_arrow"))
-    )
-  ),
-  tags$div(
-    class = "menu-background"
-  ),
-  tags$div(
-    class = "menu-container",
-    tags$div(
-      class = "cross-container",
-      tags$a(href="#", class="close")
-    ),
-    tags$div(
-      class = "menu",
-      tags$div(
-        class = "menu_title",
-        "Menu Page"
-      ),
-      tags$div(
-        class = "menu_mort_overview"
-      )
-      
-    )
-  ),
-  
-  tags$div(
-    class = "footer",
-    tags$div(
-      class = "logo",
-      tags$img(src="RPIlogo.png", alt="IDEA",style="width:100%;height:100%;")
-    ),
-    tags$a(href="#", class="left", tags$i(class="left_arrow")),
-    tags$a(href="#", class="menu_button", style="color:white;text-decoration: none;","menu"),
-    tags$a(href="#", class="right", tags$i(class="right_arrow")),
-    tags$a(href="#", class="helper_button", style="color:white;text-decoration: none;",
-           tags$img(src="icons8-help-100.png", alt="help"),
-           tags$p("Get Help")
-    )
-  ),
-  
-  
-  
-  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"),
-  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"),
-  tags$script(src = "jquery-ui.min.js"),
-  tags$script(src = "jquery.ba-outside-events.js"),
-  includeScript(path = "myscript.js")
-    )
+)
+),
+
+tags$script(src = "jquery-ui.min.js"),
+tags$script(src = "fullpage.js"),
+tags$script(src = "jquery.ba-outside-events.js"),
+includeScript(path = "myscript.js")
+)
+
 #------------------
 
 #-----------------
 
 server <- function(input, output) {
+  
+  mort.rate <- reactive({
+    if(input$state_choice == "United States"){
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      cdc.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
   
   # Cache of UNORDERED mortality trend cluster label calculation
   mort.cluster.raw <- reactive({
@@ -259,16 +337,23 @@ server <- function(input, output) {
     
     if (input$state_choice == "United States"){
       # Currently hard-coded 6 clusters
-      n.clusters <- 6
+      n.clusters <- n.clusters.nation
       cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
     } else{
-      # Currently hard-coded 3 clusters
-      n.clusters <- 3
-      cluster.counties(cdc.mort.mat(cdc.data, input$state_choice, input$death_cause),
-                       cluster.method="kmeans",
-                       cluster.num=n.clusters)
+      state.data <- cdc.mort.mat(cdc.data, input$state_choice, input$death_cause)
+      if (nrow(state.data) <= 6) {
+        county_fips <- state.data$county_fips
+        cluster <- order(state.data["2015-2017"])
+        data.frame(county_fips, cluster)
+      }
+      else {
+        n.clusters <- n.clusters.state
+        cluster.counties(state.data,
+                         cluster.method="kmeans",
+                         cluster.num=n.clusters)
+      }
     }
   })
   
@@ -283,8 +368,8 @@ server <- function(input, output) {
     
     # Notes:
     #   - The cluster labels are UNORDERED
-
-
+    
+    
     get.cluster.deathrate.during.time(
       mort.cluster.raw(), 
       cdc.data, 
@@ -297,7 +382,7 @@ server <- function(input, output) {
     
     # Variables:
     #   - ord
-  
+    
     # Notes:
     #   - This is a mapping from raw cluster label to ORDERED cluster.
     #       Row names are the original cluster and `ord` are the reordered cluster
@@ -311,7 +396,7 @@ server <- function(input, output) {
     # Variables:
     #   - county_fips
     #   - cluster
-
+    
     order.county.clusters(mort.cluster.raw(), mort.cluster.map())
   })
   
@@ -329,8 +414,176 @@ server <- function(input, output) {
     
     order.cluster.deathrate.during.time(mort.avg.cluster.raw(), mort.cluster.map())
   })
-
+  
   # -------------------------------------------------------------------------------------------------------------------------- #
+  
+  output$determinants_plot1 <- renderPlot({
+    
+    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    # Sort by kendall.cor
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    #Only display the social determinants graph if there is any significant social determinant
+    #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
+    if(nrow(kendall.cor.new) > 0) {
+      kendall.cor.new %>% 
+        ggplot(
+          aes(
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            y = kendall_cor, 
+            color = DIR, 
+            fill = DIR)
+        ) + 
+        
+        # Lolipop chart
+        geom_point(stat = 'identity', size = 8) + 
+        geom_segment(
+          size = 1,
+          aes(
+            y = 0, 
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            yend = kendall_cor, 
+            #xend = reorder(chr_code, kendall_cor), 
+            xend = chr_code, 
+            color = DIR
+          )
+        ) +
+        geom_text(
+          aes(
+            label = chr_code, 
+            y = ifelse(DIR == "Protective", 0.1, -0.1),
+            hjust = ifelse(DIR == "Protective", 0, 1)
+          ), 
+          color = "black", 
+          size = 4
+        ) +
+        geom_text(
+          aes(label = round(kendall_cor, 2)), 
+          color = "black", 
+          size = 2.5
+        ) +
+        
+        # Coordinates
+        coord_flip() + 
+        scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
+        
+        # Themes
+        geom_hline(yintercept = .0, linetype = "dashed") + 
+        labs(
+          title = "Most Influential Social Determinants",
+          subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+          y = "Correlation (tau)",
+          x = NULL,
+          fill = "Direction",
+          color = "Direction"
+        ) + 
+        theme_minimal() +
+        theme.text() + 
+        theme.background() + 
+        theme(
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12),
+          axis.title.x = element_text(size = 12),
+          panel.grid.major.y = element_blank()
+        )
+    }
+    
+    #Display something else when there are no significant SD
+    else {
+      
+      # empty plot, then put text on it ?
+      ggplot() + theme_void() +
+        geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
+      
+    }
+  })
+  
+  
+  output$determinants_plot2 <- renderPlot({
+    
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      tidyr::drop_na()
+    
+    # browser()
+    
+    ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
+      geom_boxplot() +
+      labs(y = input$determinant_choice) + 
+      theme.background() + 
+      theme.text() + 
+      theme(
+        
+        panel.grid = element_line(color = "grey"),
+        panel.grid.major.x = element_blank(),
+        panel.background = element_blank(),
+        
+        axis.line.x = element_blank(), 
+        axis.title.x = element_blank(),
+        
+        legend.position = "top"
+      ) + 
+      scale_fill_manual(
+        name = "Cluster",
+        values = colorRampPalette(
+          c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
+        )(n.clusters.state)
+      )
+    
+  })
+  
+  
+  output$determinants_plot3 <- renderPlot({
+    
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      tidyr::drop_na()
+    
+    dplyr::filter(
+      cdc.data,
+      period == "2015-2017", 
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause
+    ) %>% 
+      dplyr::select(county_fips, death_rate) %>% 
+      dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      tidyr::drop_na() %>%
+      
+      
+      ggplot(aes(x = death_rate, y = VAR)) + 
+      geom_point(aes(color = cluster)) + 
+      labs(
+        x = "Mortality Rate",
+        y = input$determinant_choice
+      ) +
+      theme.line.mort() + 
+      color.line.cluster(input$state_choice, 3)
+    
+  })
+  output$determinants_plot4 <- renderPlot({
+    
+  })
   
   # Mortality Rate Trend Line Graph
   output$mort_line <- renderPlot({
@@ -338,36 +591,36 @@ server <- function(input, output) {
     if (input$state_choice == "United States"){
       
       ggplot(
-          mort.avg.cluster.ord(),
-          aes(
-            x = period, y = death_rate, 
-            color = cluster, group = cluster
-          )
-        ) + 
+        mort.avg.cluster.ord(),
+        aes(
+          x = period, y = death_rate, 
+          color = cluster, group = cluster
+        )
+      ) + 
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster("US") +
+        color.line.cluster("US", n.clusters.nation) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
         )
     } else {
+      nclusters <- max(mort.cluster.raw()$cluster)
       
       ggplot(
-          mort.avg.cluster.ord(),
-          aes(
-            x = period, y = death_rate, 
-            color = cluster, group = cluster
-          )
-        ) + 
+        mort.avg.cluster.ord(),
+        aes(
+          x = period, y = death_rate, 
+          color = cluster, group = cluster
+        )
+      ) + 
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice) +
+        color.line.cluster(input$state_choice, nclusters) +
         theme.line.mort() + 
-        guides(color = guide_legend(reverse = T)) + 
-        scale_y_continuous(limits = c(0, 300), breaks = c(50, 100, 150, 200, 250))
+        guides(color = guide_legend(reverse = T))
     }
     
   })
@@ -392,62 +645,19 @@ server <- function(input, output) {
       ) 
   })
   
-  # Mortality Cluster Urbanization Composition
-  output$urban_dist_cluster <- renderPlot({
-    
-    # Calculate cluster label
-    
-    
-    if (input$state_choice == "United States"){
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    } else {
-      cluster.num <- 6
-      urban.data <- cdc.data %>% 
-        dplyr::filter(state_abbr == input$state_choice) %>% 
-        dplyr::select(county_fips, urban_2013) %>% 
-        unique() %>% 
-        dplyr::left_join(mort.label.raw(), by = "county_fips")
-    }
-   
-    
-    ggplot(urban.data, aes(km_cluster, fill = urban_2013)) +
-      geom_bar(position = "fill", color = "black", width = .75) +
-      labs(
-        title = "Urban-Rural Composition by Cluster",
-        x = "Cluster",
-        y = "Composition",
-        fill = "Urbanization 2013"
-      ) +
-      scale_fill_manual(
-        values = colorRampPalette(brewer.pal(9, "Blues"))(6)
-      ) +
-      theme_minimal() + 
-      theme(
-        plot.background = element_rect(fill = "gray95", color = "gray95"),
-        plot.margin = unit(c(5, 10, 5, 10), units = "mm")
-      ) + 
-      theme.text() + 
-      NULL
-  })
-  
   # Mortality Trend Cluster by County
-  output$geo_cluster_kmean <- renderPlot({
+  output$geo_cluster_kmean <- renderLeaflet({
     
-    # draw.geo.cluster is defined in init/Theme.R
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", mort.cluster.ord())
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
     }else{
-      draw.geo.cluster(input$state_choice, mort.cluster.ord())
+      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
     }
     
   })
   
   # Mortality Rate by County Period 1
-  output$geo_mort_change1 <- renderPlot({
+  output$geo_mort_change1 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -455,14 +665,15 @@ server <- function(input, output) {
         period == "2000-2002"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort("US", "2000-2002", mort.data, input$death_cause)
+      geo.plot("US", input$death_cause, mort.data, "2000-2002")
       
     } else {
+      
       mort.data <- dplyr::filter(
         cdc.data,
         state_abbr == input$state_choice,
@@ -470,18 +681,17 @@ server <- function(input, output) {
         period == "2000-2002"
       ) %>%
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
-      
-      draw.geo.mort(input$state_choice, "2000-2002", mort.data, input$death_cause)
+      geo.plot(input$state_choice, input$death_cause, mort.data, "2000-2002")
     }
     
   })
   
   # Mortality Rate by County Period 2
-  output$geo_mort_change2 <- renderPlot({
+  output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -489,12 +699,12 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>% 
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort("US", "2015-2017", mort.data, input$death_cause)
+      geo.plot("US", input$death_cause, mort.data, "2015-2017")
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
@@ -503,52 +713,24 @@ server <- function(input, output) {
         period == "2015-2017"
       ) %>% 
         dplyr::mutate(
-          death_rate = death_num / population * 10^5,
+          # death_rate = death_num / population * 10^5,
           death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      draw.geo.mort(input$state_choice, "2015-2017", mort.data, input$death_cause)
+      geo.plot(input$state_choice, input$death_cause, mort.data, "2015-2017")
     }
     
   })
   
-  mort.rate <- reactive({
+  # Implementation of hover (08 Oct 2019)
+  output$hover_info <- renderUI({
+    req(input$plot_hover) # Same as if-not-NULL
+    hover <- input$plot_hover
     
-    if(input$state_choice == "United States"){
-      cdc.data %>% dplyr::filter(
-        death_cause == input$death_cause,
-        #state_abbr == input$state_choice,
-        period == "2015-2017"
-      ) %>%
-        dplyr::mutate(
-          death_rate = death_num / population * 10^5
-          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
-        ) %>%
-        dplyr::select(county_fips, death_rate)
-    }else {
-      cdc.data %>% dplyr::filter(
-        death_cause == input$death_cause,
-        state_abbr == input$state_choice,
-        period == "2015-2017"
-      ) %>%
-        dplyr::mutate(
-          death_rate = death_num / population * 10^5
-          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
-        ) %>%
-        dplyr::select(county_fips, death_rate)
-    }
-  })
-  
-  
-  # Kendall Correlation Between Raw Mort Rate and CHR-SD
-  output$page1.bar.cor1 <- renderPlot({
+    kendall.cor <- kendall.func(mort.rate(), chr.data.2019.reduced)
     
-    
-    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-    
-    kendall.cor %>%
+    kendall.cor.new <- kendall.cor %>%
       dplyr::mutate(
         DIR = dplyr::if_else(
           kendall_cor <= 0,
@@ -559,93 +741,167 @@ server <- function(input, output) {
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.05) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>%
-      ggplot(
-        aes(
-          x = reorder(chr_code, kendall_cor), 
-          y = kendall_cor, 
-          color = DIR, 
-          fill = DIR)
-      ) + 
-      
-      # Lolipop chart
-      geom_point(stat = 'identity', size = 8) + 
-      geom_segment(
-        size = 1,
-        aes(
-          y = 0, 
-          x = reorder(chr_code, kendall_cor), 
-          yend = kendall_cor, 
-          xend = reorder(chr_code, kendall_cor),
-          color = DIR
-        )
-      ) +
-      
-      # Labels
-      geom_text(
-        aes(
-          label = chr_code, 
-          y = ifelse(DIR == "Protective", 0.1, -0.1),
-          hjust = ifelse(DIR == "Protective", 0, 1)
-        ), 
-        color = "black", 
-        size = 4
-      ) +
-      geom_text(
-        aes(label = round(kendall_cor, 2)), 
-        color = "black", 
-        size = 2.5
-      ) +
-      
-      # Coordinates
-      coord_flip() + 
-      scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
-      
-      # Themes
-      geom_hline(yintercept = .0, linetype = "dashed") + 
-      labs(
-        title = "Most Influential Social Determinants",
-        subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
-        caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
-        y = "Correlation (tau)",
-        x = NULL,
-        fill = "Direction",
-        color = "Direction"
-      ) + 
-      theme_minimal() +
-      theme.text() + 
-      theme.background() + 
-      theme(
-        axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 12),
-        axis.title.x = element_text(size = 12),
-        panel.grid.major.y = element_blank()
-      )
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
+    point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
+    
+    #browser()    
+    
+    if (nrow(point) == 0) return(NULL)
+    
+    # calculate point position INSIDE the image as percent of total dimensions
+    # from left (horizontal) and from top (vertical)
+    # left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+    # top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+    
+    left_pct <- 1.00
+    top_pct <- 1.00
+    
+    # calculate distance from left and bottom side of the picture in pixels
+    left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+    top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+    
+    
+    # create style property for tooltip
+    # background color is set so tooltip is a bit transparent
+    # z-index is set so we are sure are tooltip will be on top
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
+                    "left:", left_px + 2, "px; top:", top_px + 2, "px;")
+    
+    # actual tooltip created as wellPanel
+    # TODO: Change these variables based on `kendall.cor`
+    # browser()
+    wellPanel(
+      style = style,
+      p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
+                    #                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
+                    #                   "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
+                    "<i>", point$DIR, "</i>","<br/>",
+                    SocialDeterminants[SocialDeterminants$Name == point$chr_code,]$Definition[[1]],
+                    NULL
+      )))
+    )
+    
+  })
+  
+  
+  # Kendall Correlation Between Cluster and CHR-SD
+  output$page1.bar.cor1 <- renderPlot({
+    
+    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
+    # Sort by kendall.cor
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    # # Set currently selected determinant to most correlated determinant
+    # max.cor.ind = which.max(abs(kendall.cor.new$kendall_cor))
+    # input$determinant_choice = kendall.cor.new[max.cor.ind, "chr_code"]
+    
+    #Only display the social determinants graph if there is any significant social determinant
+    #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
+    if(nrow(kendall.cor.new) > 0) {
+      kendall.cor.new %>% 
+        ggplot(
+          aes(
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            y = kendall_cor, 
+            color = DIR, 
+            fill = DIR)
+        ) + 
+        
+        # Lolipop chart
+        geom_point(stat = 'identity', size = 8) + 
+        geom_segment(
+          size = 1,
+          aes(
+            y = 0, 
+            #x = reorder(chr_code, kendall_cor), 
+            x = chr_code, 
+            yend = kendall_cor, 
+            #xend = reorder(chr_code, kendall_cor), 
+            xend = chr_code, 
+            color = DIR
+          )
+        ) +
+        geom_text(
+          aes(
+            label = chr_code, 
+            y = ifelse(DIR == "Protective", 0.1, -0.1),
+            hjust = ifelse(DIR == "Protective", 0, 1)
+          ), 
+          color = "black", 
+          size = 4
+        ) +
+        geom_text(
+          aes(label = round(kendall_cor, 2)), 
+          color = "black", 
+          size = 2.5
+        ) +
+        
+        # Coordinates
+        coord_flip() + 
+        scale_y_continuous(breaks = seq(-1, 1, by = .2), limits = c(-1, 1)) +
+        
+        # Themes
+        geom_hline(yintercept = .0, linetype = "dashed") + 
+        labs(
+          title = "Most Influential Social Determinants",
+          subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+          y = "Correlation (tau)",
+          x = NULL,
+          fill = "Direction",
+          color = "Direction"
+        ) + 
+        theme_minimal() +
+        theme.text() + 
+        theme.background() + 
+        theme(
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12),
+          axis.title.x = element_text(size = 12),
+          panel.grid.major.y = element_blank()
+        )
+    }
+    #Display something else when there are no significant SD
+    else {
+      
+      # empty plot, then put text on it ?
+      ggplot() + theme_void() +
+        geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
+      
+    }
   })
   
   
   data_to_json <- function(data) {
     jsonlite::toJSON(data, dataframe = "rows", auto_unbox = FALSE, rownames = TRUE)
   }
-  output$d3 <- renderD3({
+  output$national_map <- renderD3({
     data_geo <- jsonlite::read_json("all-counties.json")
-    if (input$state_choice == "United States"){
-      data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat)),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-      
-    }else{
-      data_stat <- cdc.mort.mat(cdc.data,input$state_choice,input$death_cause)
-      r2d3(data = list(data_geo,data_to_json(data_stat),state.name[grep(input$state_choice, state.abb)]),
-           d3_version = 3,
-           dependencies = "topojson.min.js",
-           css = "geoattr.css",
-           script = "d3.js")
-    }
+    data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
+    cause <- input$death_cause
+    r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
+         d3_version = 3,
+         dependencies = "topojson.min.js",
+         css = "geoattr.css",
+         script = "d3.js")
+    
     
   })
   

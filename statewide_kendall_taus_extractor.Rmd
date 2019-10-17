@@ -11,6 +11,23 @@ Note: Re-used code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
 Reading Source.R
 ```{r}
 source("Source.R")
+
+# chr.data.2019 <- readRDS("init/chr.data.2019.rds") %>%
+#   
+#   # 10/02/2019
+#   # Remove unwanted social determinants
+#   # This should be a temporary change because the source file will be replaced in the end
+#   dplyr::select(
+#     -dplyr::starts_with("health_"),
+#     -dplyr::contains("cohort"),
+#     -dplyr::contains("firearm"),
+#     -dplyr::contains("mortality"), 
+#     -dplyr::contains("deaths"), 
+#     -dplyr::contains("death"),
+#     -dplyr::contains("life"),
+#     -dplyr::contains("ypll"),
+#     -dplyr::starts_with("num_")
+#   )
 ```
 
 
@@ -121,23 +138,45 @@ mort.rate <- function(){
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
 #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+#kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
 
-kendall.cor <- kendall.cor %>%
-  dplyr::mutate(
-    Direction = dplyr::if_else(
-      kendall_cor <= 0,
-      "Protective",
-      "Destructive"
-    ),
-    #kendall_cor = abs(kendall_cor),
-    kendall_cor = kendall_cor
-    #chr_code = chr.namemap.2019[chr_code, 1]
-  ) %>% na.omit() %>% 
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-  dplyr::filter(kendall_p < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-  dplyr::arrange(desc(kendall_cor))
+
+kendall.cor <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        )
+        #chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      #dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      #dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+
+
+
+# kendall.cor <- kendall.func(chr.data.2019)
+# 
+# kendall.cor <- kendall.cor %>%
+#   dplyr::mutate(
+#     Direction = dplyr::if_else(
+#       kendall_cor <= 0,
+#       "Protective",
+#       "Destructive"
+#     ),
+#     #kendall_cor = abs(kendall_cor),
+#     kendall_cor = kendall_cor
+#     #chr_code = chr.namemap.2019[chr_code, 1]
+#   ) %>% na.omit() %>% 
+#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
+#   dplyr::filter(kendall_p < 0.05) %>% 
+#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
+#   dplyr::arrange(desc(kendall_cor))
 
 selected_SDs_despair <- cbind(kendall.cor, state = state)
 
@@ -263,23 +302,41 @@ mort.rate <- function(){
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
 #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+# 
+# kendall.cor <- kendall.cor %>%
+#   dplyr::mutate(
+#     Direction = dplyr::if_else(
+#       kendall_cor <= 0,
+#       "Protective",
+#       "Destructive"
+#     ),
+#     #kendall_cor = abs(kendall_cor),
+#     kendall_cor = kendall_cor
+#     #chr_code = chr.namemap.2019[chr_code, 1]
+#   ) %>% na.omit() %>% 
+#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
+#   dplyr::filter(kendall_p < 0.05) %>% 
+#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
+#   dplyr::arrange(desc(kendall_cor))
 
-kendall.cor <- kendall.cor %>%
-  dplyr::mutate(
-    Direction = dplyr::if_else(
-      kendall_cor <= 0,
-      "Protective",
-      "Destructive"
-    ),
-    #kendall_cor = abs(kendall_cor),
-    kendall_cor = kendall_cor
-    #chr_code = chr.namemap.2019[chr_code, 1]
-  ) %>% na.omit() %>% 
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-  dplyr::filter(kendall_p < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-  dplyr::arrange(desc(kendall_cor))
+
+kendall.cor <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        )
+        #chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      #dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      #dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+
 
 selected_SDs_cancer <- cbind(kendall.cor, state = state)
 
@@ -406,23 +463,39 @@ mort.rate <- function(){
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
 #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+# 
+# kendall.cor <- kendall.cor %>%
+#   dplyr::mutate(
+#     Direction = dplyr::if_else(
+#       kendall_cor <= 0,
+#       "Protective",
+#       "Destructive"
+#     ),
+#     #kendall_cor = abs(kendall_cor),
+#     kendall_cor = kendall_cor
+#     #chr_code = chr.namemap.2019[chr_code, 1]
+#   ) %>% na.omit() %>% 
+#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
+#   dplyr::filter(kendall_p < 0.05) %>% 
+#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
+#   dplyr::arrange(desc(kendall_cor))
 
-kendall.cor <- kendall.cor %>%
-  dplyr::mutate(
-    Direction = dplyr::if_else(
-      kendall_cor <= 0,
-      "Protective",
-      "Destructive"
-    ),
-    #kendall_cor = abs(kendall_cor),
-    kendall_cor = kendall_cor
-    #chr_code = chr.namemap.2019[chr_code, 1]
-  ) %>% na.omit() %>% 
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-  dplyr::filter(kendall_p < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-  dplyr::arrange(desc(kendall_cor))
+kendall.cor <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        )
+        #chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      #dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      #dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
 
 selected_SDs_assault <- cbind(kendall.cor, state = state)
 
@@ -549,23 +622,39 @@ mort.rate <- function(){
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
 
 #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
+# 
+# kendall.cor <- kendall.cor %>%
+#   dplyr::mutate(
+#     Direction = dplyr::if_else(
+#       kendall_cor <= 0,
+#       "Protective",
+#       "Destructive"
+#     ),
+#     #kendall_cor = abs(kendall_cor),
+#     kendall_cor = kendall_cor
+#     #chr_code = chr.namemap.2019[chr_code, 1]
+#   ) %>% na.omit() %>% 
+#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
+#   dplyr::filter(kendall_p < 0.05) %>% 
+#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
+#   dplyr::arrange(desc(kendall_cor))
 
-kendall.cor <- kendall.cor %>%
-  dplyr::mutate(
-    Direction = dplyr::if_else(
-      kendall_cor <= 0,
-      "Protective",
-      "Destructive"
-    ),
-    #kendall_cor = abs(kendall_cor),
-    kendall_cor = kendall_cor
-    #chr_code = chr.namemap.2019[chr_code, 1]
-  ) %>% na.omit() %>% 
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-  dplyr::filter(kendall_p < 0.05) %>% 
-  #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-  dplyr::arrange(desc(kendall_cor))
+kendall.cor <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        )
+        #chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      #dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      #dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
 
 selected_SDs_cardiovascular <- cbind(kendall.cor, state = state)
 
@@ -609,13 +698,18 @@ Creating a dataframe that only contains the final selected social determinants
 #   as_data_frame %>%
 #   select_(.dots = selected_SDs_final)
 
+selected_SDs_final <- selected_SDs_final[-1]
+
 chr.data.2019_fewer_SDs <- chr.data.2019 %>%
   as_data_frame %>%
   select(selected_SDs_final)
-  
+
 
 #chr.data.2019[,selected_SDs_final]
 head(chr.data.2019_fewer_SDs)
+
+saveRDS(chr.data.2019_fewer_SDs, "init/chr.data.2019.reduced.rds")
 ```
+
 
 

@@ -7,8 +7,15 @@ var root = svg
   .attr("height", "100%")
   .append("g");
   
-function sequenceMap(index,tooltip) {
+function sequenceMap(index,tooltip,cause) {
     var death_rate_domain = [0,10,20,30,40,50,60,70,80,90,100,110,120];
+    if (cause == "Cardiovascular" || cause == "Cancer") {
+      death_rate_domain = [0,45,90,135,180,225,270,315,360,405,450,495,540];
+    }
+    else if (cause == "Assault") {
+      death_rate_domain = [0,3,6,9,12,15,18,21,24,27,30,33,36];
+    }
+    
     var color = d3.scale.threshold()
             .domain(death_rate_domain)
             .range(["#FFFFFF", "#FFD8D8", "#FFAFAF", "#FF8888", "#FF5F5F", "#FF3838",
@@ -40,8 +47,14 @@ d3.select("body").append("div");
 r2d3.onRender(function(data, svg, width, height, options) {
   var us = data[0];
   var stat = data[1];
-  var state = data[2];
+  var cause = data[2];
   var death_rate_domain = [0,10,20,30,40,50,60,70,80,90,100,110,120];
+    if (cause == "Cardiovascular" || cause == "Cancer") {
+      death_rate_domain = [0,45,90,135,180,225,270,315,360,405,450,495,540];
+    }
+    else if (cause == "Assault") {
+      death_rate_domain = [0,3,6,9,12,15,18,21,24,27,30,33,36];
+    }
   var death_rate = d3.map();
   var color = d3.scale.threshold()
               .domain(death_rate_domain)
@@ -52,7 +65,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var tooltip = d3.select("body").append("div") 
         .attr("class", "tooltip")       
         .style("opacity", 0);
-  root.attr("transform", "translate(" + 250 + "," + 100 + ")");
+  root.attr("transform", "translate(" + 250 + "," + 0 + ")");
   
   var geo = topojson.feature(us, us.objects.collection);
   //only newyork state data
@@ -97,17 +110,6 @@ r2d3.onRender(function(data, svg, width, height, options) {
           });
           
           
-  //title
-  var text = svg
-            .attr("width", "100%")
-            .attr("height", "100%")
-  text.append("text")
-      .attr("x", 300)
-      .attr("y", 100)
-      .attr("text-anchor", "middle")  
-      .style("font-size", "8px") 
-      .style("text-decoration", "underline")  
-      .text("National Death of despair 2000-2002");
           
   var rect = svg
             .attr("width", "100%")
@@ -120,16 +122,21 @@ r2d3.onRender(function(data, svg, width, height, options) {
           .attr({
               width: 24,
               height: 5,
-              y: 150,
+              y: 50,
               x: function (d, i) {
-                  return 800 + 25 * i;
+                  return 750 + 25 * i;
               },
               fill: color
           });
+  
           
   var index = 0;        
   var timer;
   var playing = false;
+  var year;
+  var year2;
+  var ten_year;
+  var ten_year2;
     d3.select('#play')  
     .on('click', function() {  // when user clicks the play button
       if(playing == false) {  // if the map is currently playing
@@ -139,9 +146,15 @@ r2d3.onRender(function(data, svg, width, height, options) {
           } else {
               index = 0;  // or reset it to zero
           }
-          sequenceMap(index,tooltip);  // update the representation of the map 
-          d3.select('#clock').html(index);  // update the clock
+          sequenceMap(index,tooltip,cause);  // update the representation of the map 
+          year = index*3;
+          year2 = year + 2;
+          ten_year = Math.floor(year/10);
+          ten_year2 = Math.floor(year2/10);
+          d3.select('#clock').html("20" + ten_year + year%10 + "-" + "20" + ten_year2 + year2%10);  // update the clock
         }, 2000);
+        
+        
         d3.select(this).html('stop');  // change the button label to stop
         playing = true;   // change the status of the animation
       } else {    // else if is currently playing

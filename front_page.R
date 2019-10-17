@@ -9,29 +9,30 @@ deps <- list("topojson.min.js",
 ui <- fluidPage(
   # include css
   tags$head(includeCSS("~/data/AHRQ_Challenge/App_develop/custom_no_scroll.css")),
-  tags$head(includeCSS("~/data/AHRQ_Challenge/Code_by_ziyi/git/MortalityMinder/www/geoattr.css")),
+  tags$head(includeCSS("~/data/AHRQ_Challenge/Code_by_ziyi/git2/MortalityMinder/www/geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
   
   tags$title("D3 NY"),
   tags$div(
-    id = "wrapper",
-    tags$button(
-      id = "play",
-      "play"
-    ),
-    tags$span(
-      id = "clock",
-      "year"
-    )
+    class = "title",
+    tags$b("National Death of Despair")
   ),
   tags$div(
     class = "explore_but",
     tags$button(
-      id = "btn",
+      id = "play",
+      "See changes"
+    ),
+    tags$span(
+      id = "clock",
+      "2000-2002"
+    ),
+    tags$button(
+      class = "btn",
       "Explore more",
-      onclick="window.location.href=' https://shengjin-li.shinyapps.io/mm_online_version_code/'"
+      onclick="window.location.href=' https://shengjin-li.shinyapps.io/beta/'"
     ) 
   ),
   d3Output("d3", width = '100%', height = '100%'),

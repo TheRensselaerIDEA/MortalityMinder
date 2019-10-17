@@ -33,16 +33,16 @@ theme.line.mort <- function() {
     )
 }
 
-color.line.cluster <- function(state.choice) {
+color.line.cluster <- function(state.choice, n.clusters) {
   
   if (state.choice != "US"){
     scale_color_manual(
       name = "Cluster",
       #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
       values = colorRampPalette(
-        c("#feedde", "#fdd0a2", "#fdae6b", "#fd8d3c", "#e6550d", "#a63603")
+        c("#fef0d9","#fdcc8a","#fc8d59")
         
-      )(5),
+      )(n.clusters),
       guide = guide_legend(reverse = T)
     )
     
@@ -53,7 +53,7 @@ color.line.cluster <- function(state.choice) {
       values = colorRampPalette(
         c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
         
-      )(6),
+      )(n.clusters),
       guide = guide_legend(reverse = T)
     )
   }
@@ -114,7 +114,7 @@ color.geo.cluster <- function(n) {
 }
 
 
- 
+
 labs.geo.cluster <- function(state.choice) {
   labs(
     title = paste(state.choice, "Trend Cluster\nGeo-Distribution"),
@@ -122,40 +122,95 @@ labs.geo.cluster <- function(state.choice) {
   )
 }
 
+geoTitle <- function(state.choice, death.cause) {
+  return (tags$div(
+    HTML(paste(state.choice, "Trend Cluster<br/>Geo Distribution", sep = " "))))
+}
+
 # draw.geo.cluster: Used in app.R to draw state and US maps
-draw.geo.cluster <- function(state.choice, mort.cluster) {
-  n <- length(unique(pull(mort.cluster, "cluster")))
-  ## This saves a df for plot experimentation
-  # if (state.choice != "US"){
-  #   # geo.match.fetch: defined in GEO_Lib.R
-  #   myDf <- geo.map.fetch(state.choice, mort.cluster) %>%
-  #     dplyr::rename(VAR_ = cluster)
-  #   write_rds(myDf, "myDf.rds")
-  # }
+draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
+  
+  dataset <- geo.map.fetch(state.choice, mort.cluster) %>% 
+    dplyr::rename(VAR_ = cluster)
+  lat_long <- getLatLong(state.choice, dataset)
+  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  
+  colors <- c("#fef0d9","#fdcc8a","#fc8d59")
+  labels <- c("Low", "Medium", "High")
+  
+  dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
+  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
+  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
+  
   if (state.choice != "US"){
-    # geo.match.fetch: defined in GEO_Lib.R
-    geo.map.fetch(state.choice, mort.cluster) %>%
-      dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
-      geom_polygon(size = 0, color = "white",alpha = 0.9) +
-      #base.geo() +
-      labs.geo.cluster(state.choice) + 
-      color.geo.cluster(n) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
-  } else {
-    # geo.match.fetch: defined in GEO_Lib.R
-    geo.map.fetch("US", mort.cluster) %>%
-      dplyr::rename(VAR_ = cluster) %>%
-      ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_)) +
-      geom_polygon(size = 0, color = "white",alpha = 0.9) +
-      #base.geo() +
-      labs.geo.cluster(state.choice) + 
-      color.geo.cluster(n) + 
-      theme.geo.mort() + 
-      coord_map(projection = "albers", lat0 = 39, lat1 = 45)
+    return (leaflet(shapes, 
+                    options = leafletOptions(dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 1,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(geoTitle(state.choice, death.cause), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Clusters:",
+                        opacity = 1))
+  }else{
+    return (leaflet(shapes, 
+                    options = leafletOptions(dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 0,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(geoTitle(state.choice, death.cause), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Clusters:",
+                        opacity = 1))
   }
-   
+  
+  
 }
 
 theme.geo.mort <- function() {
@@ -237,14 +292,234 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
     
+    
   }else{
     geo.map.fetch("US", mort.data) %>% 
       dplyr::rename(VAR_ = death_rate) %>%
-      base.geo() + 
+      #ggplot(aes(long, lat, group = group, fill = VAR_, color = VAR_, text = county_name)) +
+      
+      ggplot(VAR_, aes(x = long, y = lat, group = group)) + 
+      geom_polygon(aes(fill = group, color = group))+
+      
+      #geom_polygon(size = 0, color = "white",alpha = 0.9) +
+      #base.geo() + 
       labs.geo.mort(state.choice, period.choice, death.cause) + 
-      color.geo.mort(death.cause) + 
+      color.geo.mort(death.cause) +
       theme.geo.mort() + 
       coord_map(projection = "albers", lat0 = 39, lat1 = 45)
   }
+  
+}
+
+title <- function(state.choice, death.cause, period) {
+  return (tags$div(
+    HTML(paste(state.choice, " - Death of", death.cause, "Rate<br/>", period))))
+}
+
+getLatLong <- function(state.choice, dataset) {
+  
+  max.long <- max(dataset$long)
+  max.lat <- max(dataset$lat)
+  min.long <- min(dataset$long)
+  min.lat <- min(dataset$lat)
+  
+  switch(state.choice,
+         'AK'= {
+           min.lat = 50.0
+           max.lat = 76.0
+           min.long = -164.0
+           max.long = -120.0
+         },
+         "HI"= {
+           min.lat = 18.46
+           max.lat = 22.46
+           min.long = -160.505
+           max.long = -154.505
+         },
+         "MN"= {
+           min.lat = 43.0
+           max.lat = 49.9
+           min.long = -98.3655146
+           max.long = -89.3655146
+         },
+         "ID"= {
+           min.lat = 40.4945756
+           max.lat = 50.4945756
+           min.long = -110.1424303
+           max.long = -118.1424303
+         },
+         "LA" = {
+           min.lat = 28.9733766
+           max.lat = 33.9733766
+           min.long = -96.4299097
+           max.long = -87.4299097
+         },
+         "MI" = {
+           min.lat = 40.9435598
+           max.lat = 48.9435598
+           min.long = -90.4158049
+           max.long = -82.4158049
+         },
+         "NV" = {
+           min.lat = 34.502032
+           max.lat = 42.502032
+           min.long = -120.0230604
+           max.long = -114.0230604
+         }, 
+         "OH" = {
+           min.lat = 37.1903624
+           max.lat = 43.1903624
+           min.long = -86.6692525
+           max.long = -79.6692525
+         },
+         "WV" = {
+           min.lat = 36.9201705
+           max.lat = 40.9201705
+           min.long = -83.1816905
+           max.long = -77.1816905
+         })
+  
+  if (state.choice == 'AR' | state.choice == 'MN') {
+    padding = 0.5
+  } else {
+    padding = 0.05
+  }
+  
+  return(c(min.lat - padding, min.long - padding, max.lat + padding, max.long + padding))
+}
+
+geo.plot <- function(state.choice, death.cause, mort.data, period) {
+  dataset <- geo.map.fetch(state.choice, mort.data) %>% 
+    dplyr::rename(VAR_ = death_rate)
+  lat_long <- getLatLong(state.choice, dataset)
+  
+  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  
+  colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
+  labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+  
+  dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
+  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
+  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
+  
+  if (state.choice != "US"){
+    return (leaflet(shapes, 
+                    options = leafletOptions(
+                      dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 1,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(title(state.choice, death.cause, period), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[8],
+                        labels = labels[8],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[7],
+                        labels = labels[7],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[6],
+                        labels = labels[6],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[5],
+                        labels = labels[5],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[4],
+                        labels = labels[4],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Rate;",
+                        opacity = 1))
+  }else{
+    return (leaflet(shapes, 
+                    options = leafletOptions(dragging = FALSE)) %>%
+              fitBounds(lat1 = lat_long[1], 
+                        lng1 = lat_long[2], 
+                        lat2 = lat_long[3], 
+                        lng2 = lat_long[4]) %>%
+              addPolygons(stroke = TRUE, 
+                          smoothFactor = 0.1, 
+                          fillOpacity = 1,
+                          weight = 0,
+                          color = "white",
+                          opacity = 1,
+                          fillColor = colors[as.numeric(dataset$VAR_)],
+                          label = dataset$county_name) %>%
+              addControl(title(state.choice, death.cause, period), 
+                         position = "topleft", 
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        colors = colors[8],
+                        labels = labels[8],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[7],
+                        labels = labels[7],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[6],
+                        labels = labels[6],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[5],
+                        labels = labels[5],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[4],
+                        labels = labels[4],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[3],
+                        labels = labels[3],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[2],
+                        labels = labels[2],
+                        title = "&nbsp;",
+                        opacity = 1) %>%
+              addLegend("bottomleft",
+                        colors = colors[1],
+                        labels = labels[1],
+                        title = "Rate;",
+                        opacity = 1))
+  }
+  
   
 }

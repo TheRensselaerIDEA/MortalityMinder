@@ -1,5 +1,3 @@
-library(cluster) #should be in librarian
-
 #' Used to visualize optimal k for k means clustering
 #' 
 #' @note most recent use is beta.01
@@ -107,7 +105,7 @@ diana.func <- function(data.mat, cluster.num=3, seed=200) {
                      stand = FALSE,
                      stop.at.k = FALSE,
                      trace.lev = 0)
-  diana.clusters <- cutree(as.hclust(diana.res), k = cluster.num)
+  diana.clusters <- cutree(as.hclust(diana.tree), k = cluster.num)
   return(tibble(county.fips = data.mat$county_fips, cluster = diana.clusters))
 }
 
@@ -168,6 +166,9 @@ cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4
 #' Given a set of county to cluster number pairs and the full cdc.data,
 #' for each cluster for each time window in the data (e.g. 2000-2002, 2003-2005)
 #' an average death rate is calculated.
+#' 
+#' Fiters out counties with na death_num or population values to avoid na death_rate
+#'  return values.
 #'
 #' @param mort.clusters a data.frame or tribble in the same form as one returned by 
 #'                        cluster counties. It has two columns:
@@ -219,13 +220,14 @@ cluster.counties <- function(county.data, cluster.method="kmeans", cluster.num=4
 #' @author Ross DeVito
 #' @export
 get.cluster.deathrate.during.time <- function(mort.clusters, full.cdc.data, death.cause) {
+  full.cdc.data[is.na(full.cdc.data)] <- 0
   return(
     full.cdc.data %>%
       dplyr::filter(death_cause == death.cause) %>%
       dplyr::right_join(mort.clusters, by = "county_fips") %>%
       dplyr::group_by(period, cluster) %>%
       dplyr::summarise(
-        death_rate = sum(death_num) / sum(population) * 10^5,
+        death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
         count = n()
       ) %>% 
       dplyr::ungroup()
@@ -350,7 +352,6 @@ order.county.clusters <- function(county.clusters, cluster.order.map) {
 #' @author Ross DeVito
 #' @export
 order.cluster.deathrate.during.time <- function(cluster.deathrates.dt, cluster.order.map) {
-  return(
-    dplyr::mutate(cluster.deathrates.dt, cluster = cluster.order.map[cluster, "ord"])
+  return(dplyr::mutate(cluster.deathrates.dt, cluster = cluster.order.map[cluster, "ord"])
   )
 }
