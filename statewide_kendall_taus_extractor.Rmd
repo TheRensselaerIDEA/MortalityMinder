@@ -10,24 +10,24 @@ Note: Re-used code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
 
 Reading Source.R
 ```{r}
-source("Source.R")
+#source("Source.R")
 
-# chr.data.2019 <- readRDS("init/chr.data.2019.rds") %>%
-#   
-#   # 10/02/2019
-#   # Remove unwanted social determinants
-#   # This should be a temporary change because the source file will be replaced in the end
-#   dplyr::select(
-#     -dplyr::starts_with("health_"),
-#     -dplyr::contains("cohort"),
-#     -dplyr::contains("firearm"),
-#     -dplyr::contains("mortality"), 
-#     -dplyr::contains("deaths"), 
-#     -dplyr::contains("death"),
-#     -dplyr::contains("life"),
-#     -dplyr::contains("ypll"),
-#     -dplyr::starts_with("num_")
-#   )
+chr.data.2019 <- readRDS("init/chr.data.2019.rds") %>%
+
+  # 10/02/2019
+  # Remove unwanted social determinants
+  # This should be a temporary change because the source file will be replaced in the end
+  dplyr::select(
+    -dplyr::starts_with("health_"),
+    -dplyr::contains("cohort"),
+    -dplyr::contains("firearm"),
+    -dplyr::contains("mortality"),
+    -dplyr::contains("deaths"),
+    -dplyr::contains("death"),
+    -dplyr::contains("life"),
+    -dplyr::contains("ypll"),
+    -dplyr::starts_with("num_")
+  )
 ```
 
 
@@ -699,6 +699,7 @@ Creating a dataframe that only contains the final selected social determinants
 #   select_(.dots = selected_SDs_final)
 
 selected_SDs_final <- selected_SDs_final[-1]
+selected_SDs_final <- append(selected_SDs_final, "county_fips", after = 0)
 
 chr.data.2019_fewer_SDs <- chr.data.2019 %>%
   as_data_frame %>%
@@ -712,4 +713,7 @@ saveRDS(chr.data.2019_fewer_SDs, "init/chr.data.2019.reduced.rds")
 ```
 
 
+```{r}
+head(chr.data.2019)
+```
 
