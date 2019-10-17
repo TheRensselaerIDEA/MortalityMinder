@@ -311,7 +311,7 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
   
 }
 
-title <- function(state.choice, death.cause, period) {
+get_title <- function(state.choice, death.cause, period) {
   return (tags$div(
     HTML(paste(state.choice, " - Death of", death.cause, "Rate<br/>", period))))
 }
@@ -418,7 +418,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                           opacity = 1,
                           fillColor = colors[as.numeric(dataset$VAR_)],
                           label = dataset$county_name) %>%
-              addControl(title(state.choice, death.cause, period), 
+              addControl(get_title(state.choice, death.cause, period), 
                          position = "topleft", 
                          className="map-title") %>%
               addLegend("bottomleft",
@@ -476,7 +476,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                           opacity = 1,
                           fillColor = colors[as.numeric(dataset$VAR_)],
                           label = dataset$county_name) %>%
-              addControl(title(state.choice, death.cause, period), 
+              addControl(get_title(state.choice, death.cause, period), 
                          position = "topleft", 
                          className="map-title") %>%
               addLegend("bottomleft",

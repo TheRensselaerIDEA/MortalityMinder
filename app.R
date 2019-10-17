@@ -89,12 +89,54 @@ ui <- fluidPage(
                 )
               ),
               tags$div(
+                tags$style(HTML(
+                  "
+                  #year_selector {
+                    width: 100%;
+                    text-align: center;
+                  }
+                  #year_selector .control-label {
+                    width: 100%;
+                    text-align: left;
+                    font-size: 12px;
+                    display: block;
+                  }
+                  .radio-inline {
+                    padding: 0;
+                    margin: 0 2px;
+                  }
+                  .radio-inline+.radio-inline {
+                    margin: 0;
+                  }
+                  .radio-inline input[type=radio] {
+                    display: none;
+                  }
+                  .radio-inline input[type=radio]:checked + span {
+                    padding: 0 2px;
+                    border: 2px solid black;
+                    border-radius: 3px;
+                  }
+                  @media screen and (min-width : 1601px)
+                  {
+                    .radio-inline {
+                      font-size: 16px;
+                    }
+                  }
+                  @media screen and (max-width : 1600px)
+                  {
+                    .radio-inline {
+                      font-size: 10px;
+                    }
+                  }
+                  "
+                )),
                 class = "col1_top_right",
-                leafletOutput("geo_mort_change2",width="100%",height="90%"),
+                leafletOutput("geo_mort_change2",width="100%",height="85%"),
                 radioButtons("year_selector", 
-                             label = "Years", 
-                             choices = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"), 
+                             label = "Select years:",
                              selected = "2000-2002", 
+                             choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                             choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                              inline = TRUE)
               )
             ),
@@ -708,7 +750,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      geo.plot("US", input$death_cause, mort.data, "2015-2017")
+      geo.plot("US", input$death_cause, mort.data, input$year_selector)
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
@@ -722,7 +764,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      geo.plot(input$state_choice, input$death_cause, mort.data, "2015-2017")
+      geo.plot(input$state_choice, input$death_cause, mort.data, input$year_selector)
     }
     
   })
