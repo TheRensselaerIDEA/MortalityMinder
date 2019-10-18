@@ -5,12 +5,13 @@ kendall.func <- function(x.data, sd.data) {
   #   1. Align social determinants and "x" data by "county_fips"
   #   2. Re-separate "x column and sd data frame with select
   #   3. Do cor.test
+  #   4. Rename the variables to VAR
   
   align <- dplyr::left_join(x.data, sd.data, by = "county_fips") %>% 
     dplyr::select(-dplyr::one_of(c("county_fips", "state_name", "county_name")))
-  
-  x <- as.numeric(dplyr::pull(align, death_rate))
-  sd <- dplyr::select(align, -death_rate)
+  #browser()
+  x <- as.numeric(dplyr::pull(align, VAR))
+  sd <- dplyr::select(align, -VAR)
   
   cor.res <- list()
   for (n in names(sd)) {
