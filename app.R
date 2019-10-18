@@ -147,11 +147,11 @@ ui <- fluidPage(
               class = "col1_bot",
               tags$div(
                 class = "col1_bot_left",
-                leafletOutput("geo_cluster_kmean",width="100%",height="100%")
+                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
                 class = "col1_bot_right",
-                plotOutput("mort_line",width="100%",height="100%")
+                plotOutput("mort_line",width="100%",height="90%")
               )
             )
           ),
@@ -169,7 +169,7 @@ ui <- fluidPage(
             ),
             tags$div(
               class = "col2_plot",
-              plotOutput("page1.bar.cor1",width="100%",height="100%", 
+              plotOutput("page1.bar.cor1",width="100%",height="90%", 
                          hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
               uiOutput("hover_info")
             )
