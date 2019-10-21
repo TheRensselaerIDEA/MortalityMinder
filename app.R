@@ -54,7 +54,7 @@ ui <- fluidPage(
     pickerInput(
       inputId = "death_cause",
       label = h4("Cause of Death"),
-      choices = c("Death of Despair"="Despair","Death of Cancer"="cancer","Death of Assault"="assault","Cardiovascular"="Cardiovascular"),
+      choices = c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular"),
       width = "200px",
       choicesOpt = list(
         subtext = c("Self-Harm and some other causes"),
@@ -89,9 +89,55 @@ ui <- fluidPage(
                 )
               ),
               tags$div(
+                tags$style(HTML(
+                  "
+                  #year_selector {
+                    width: 100%;
+                    text-align: center;
+                  }
+                  #year_selector .control-label {
+                    width: 100%;
+                    text-align: left;
+                    font-size: 12px;
+                    display: block;
+                  }
+                  .radio-inline {
+                    padding: 0;
+                    margin: 0 2px;
+                  }
+                  .radio-inline+.radio-inline {
+                    margin: 0;
+                  }
+                  .radio-inline input[type=radio] {
+                    display: none;
+                  }
+                  .radio-inline input[type=radio]:checked + span {
+                    padding: 0 2px;
+                    border: 2px solid black;
+                    border-radius: 3px;
+                  }
+                  @media screen and (min-width : 1601px)
+                  {
+                    .radio-inline {
+                      font-size: 16px;
+                    }
+                  }
+                  @media screen and (max-width : 1600px)
+                  {
+                    .radio-inline {
+                      font-size: 10px;
+                    }
+                  }
+                  "
+                )),
                 class = "col1_top_right",
-                leafletOutput("geo_mort_change2",width="100%",height="100%")
-                
+                leafletOutput("geo_mort_change2",width="100%",height="85%"),
+                radioButtons("year_selector", 
+                             label = "Select years:",
+                             selected = "2000-2002", 
+                             choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                             choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                             inline = TRUE)
               )
             ),
             tags$div(
@@ -101,11 +147,11 @@ ui <- fluidPage(
               class = "col1_bot",
               tags$div(
                 class = "col1_bot_left",
-                leafletOutput("geo_cluster_kmean",width="100%",height="100%")
+                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
                 class = "col1_bot_right",
-                plotOutput("mort_line",width="100%",height="100%")
+                plotOutput("mort_line",width="100%",height="90%")
               )
             )
           ),
@@ -123,7 +169,7 @@ ui <- fluidPage(
             ),
             tags$div(
               class = "col2_plot",
-              plotOutput("page1.bar.cor1",width="100%",height="100%", 
+              plotOutput("page1.bar.cor1",width="100%",height="90%", 
                          hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
               uiOutput("hover_info")
             )
@@ -213,7 +259,7 @@ ui <- fluidPage(
                 )
               ),
               d3Output("national_map", width = '100%', height = '100%')
-            
+              
             )
           )
           
@@ -227,73 +273,73 @@ ui <- fluidPage(
         tags$div(
           class = "page4",
           fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
-            column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
-                   fluidRow(
-                     column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
-                                 has stagnated and even declined, reversing for the US the trend toward increased life
-                                 expectancy that is still continuing in most nations. The goal of this project is 
-                                 to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
-                                 and identify their associated community level social determinants.", offset=1), # Close column,
-                     column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
-                                "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
-                                 seeks tools that support visualizing such data clusters to enhance the research and analysis 
-                                 of community-level health services.", tags$br(),
-                                "Challenge participants must develop visualization tools that can augment the insights drawn 
-                                 from the analysis of medical expenditure and health care utilization data at the community 
-                                 level. Tools must use publicly available and free SDOH data from at least three of the 
-                                 following data sources: ", tags$br(),
-                                 tags$ul(
-                                   tags$li("Federal databases."),
-                                   tags$li("State databases."),
-                                   tags$li(
-                                     "Other locally available data sources, such as SDOH data from voice, digital, and 
-                                     social medical requests via service lines.")
-                                 ), offset=1) # Close column
+                   column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
+                          fluidRow(
+                            column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
+                                   has stagnated and even declined, reversing for the US the trend toward increased life
+                                   expectancy that is still continuing in most nations. The goal of this project is 
+                                   to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
+                                   and identify their associated community level social determinants.", offset=1), # Close column,
+                            column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
+                                   "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
+                                   seeks tools that support visualizing such data clusters to enhance the research and analysis 
+                                   of community-level health services.", tags$br(),
+                                   "Challenge participants must develop visualization tools that can augment the insights drawn 
+                                   from the analysis of medical expenditure and health care utilization data at the community 
+                                   level. Tools must use publicly available and free SDOH data from at least three of the 
+                                   following data sources: ", tags$br(),
+                                   tags$ul(
+                                     tags$li("Federal databases."),
+                                     tags$li("State databases."),
+                                     tags$li(
+                                       "Other locally available data sources, such as SDOH data from voice, digital, and 
+                                       social medical requests via service lines.")
+                                     ), offset=1) # Close column
+                                   ) # Close inner fluidRow
+                            ), # Close outter column
+                   column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
+                          fluidRow(
+                            column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
+                                   It looks at premature deaths, that is deaths in adults from 15 to 64 
+                                   caused by: ", tags$br(),
+                                   tags$ul(
+                                     tags$li(tags$b("Deaths of Despair: "), 
+                                             "deaths due to suicide, overdose, substance abuse and poisonings"),
+                                     tags$li(tags$b("Assault: "), 
+                                             "deaths due injuries inflicted by another person with intent to injure or kill, 
+                                             by any means"),
+                                     tags$li(tags$b("Cardiovascular Disease: "), 
+                                             "diseases of the circulatory systems such as heart disease and stroke"),
+                                     tags$li(tags$b("Cancer: "), 
+                                             "deaths due to cancer and neoplasm"),
+                                     tags$li(tags$b("All Cause: "), 
+                                             "deaths due to any cause")
+                                     ), tags$br(),
+                                   "Machine learning and statistics methods are used for analysis and data visualization. 
+                                   We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
+                                   to discover counties with different patterns of mortality over time and associated social 
+                                   determinants using cluster or supervised clustering.",
+                                   offset=1) # Close Column
                    ) # Close inner fluidRow
-                   ), # Close outter column
-            column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
-                   fluidRow(
-                     column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
-                                 It looks at premature deaths, that is deaths in adults from 15 to 64 
-                                 caused by: ", tags$br(),
-                                 tags$ul(
-                                    tags$li(tags$b("Deaths of Despair: "), 
-                                            "deaths due to suicide, overdose, substance abuse and poisonings"),
-                                    tags$li(tags$b("Assault: "), 
-                                            "deaths due injuries inflicted by another person with intent to injure or kill, 
-                                            by any means"),
-                                    tags$li(tags$b("Cardiovascular Disease: "), 
-                                            "diseases of the circulatory systems such as heart disease and stroke"),
-                                    tags$li(tags$b("Cancer: "), 
-                                            "deaths due to cancer and neoplasm"),
-                                    tags$li(tags$b("All Cause: "), 
-                                            "deaths due to any cause")
-                                  ), tags$br(),
-                            "Machine learning and statistics methods are used for analysis and data visualization. 
-                            We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
-                            to discover counties with different patterns of mortality over time and associated social 
-                            determinants using cluster or supervised clustering.",
-                            offset=1) # Close Column
-                   ) # Close inner fluidRow
-                   ), # Close column
-            column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
-                   tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
-                   tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
-                   tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
-                   tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
-                   tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
-                   tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
+                          ), # Close column
+                   column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                          tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
+                          tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
+                          tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
+                          tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
+                          tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
+                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
                    )
         ) # Close outter fluidRow
-        ) # Close page 4 
-      )
-    )
-  ),
-  
-  tags$script(src = "jquery-ui.min.js"),
-  tags$script(src = "fullpage.js"),
-  tags$script(src = "jquery.ba-outside-events.js"),
-  includeScript(path = "myscript.js")
+                            ) # Close page 4 
+  )
+)
+),
+
+tags$script(src = "jquery-ui.min.js"),
+tags$script(src = "fullpage.js"),
+tags$script(src = "jquery.ba-outside-events.js"),
+includeScript(path = "myscript.js")
 )
 
 #------------------
@@ -341,7 +387,8 @@ server <- function(input, output) {
       cluster.counties(cdc.mort.mat(cdc.data, "US", input$death_cause),
                        cluster.method="kmeans",
                        cluster.num=n.clusters)
-    } else{
+    } 
+    else{
         state.data <- cdc.mort.mat(cdc.data, input$state_choice, input$death_cause)
         if (nrow(state.data) <= 6) {
           county_fips <- as.character(state.data$county_fips)
@@ -504,7 +551,7 @@ server <- function(input, output) {
           panel.grid.major.y = element_blank()
         )
     }
-  
+    
     #Display something else when there are no significant SD
     else {
       
@@ -517,7 +564,7 @@ server <- function(input, output) {
   
   
   output$determinants_plot2 <- renderPlot({
-
+    
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
@@ -561,11 +608,11 @@ server <- function(input, output) {
       tidyr::drop_na()
     
     dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        state_abbr == input$state_choice,
-        death_cause == input$death_cause
-      ) %>% 
+      cdc.data,
+      period == "2015-2017", 
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause
+    ) %>% 
       dplyr::select(county_fips, death_rate) %>% 
       dplyr::inner_join(sd.select, by = "county_fips") %>% 
       tidyr::drop_na() %>%
@@ -696,7 +743,7 @@ server <- function(input, output) {
       mort.data <- dplyr::filter(
         cdc.data,
         death_cause == input$death_cause,
-        period == "2015-2017"
+        period == input$year_selector
       ) %>% 
         dplyr::mutate(
           # death_rate = death_num / population * 10^5,
@@ -704,13 +751,13 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      geo.plot("US", input$death_cause, mort.data, "2015-2017")
+      geo.plot("US", input$death_cause, mort.data, input$year_selector)
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
         state_abbr == input$state_choice,
         death_cause == input$death_cause,
-        period == "2015-2017"
+        period == input$year_selector
       ) %>% 
         dplyr::mutate(
           # death_rate = death_num / population * 10^5,
@@ -718,7 +765,7 @@ server <- function(input, output) {
         ) %>%
         dplyr::select(county_fips, death_rate, period)
       
-      geo.plot(input$state_choice, input$death_cause, mort.data, "2015-2017")
+      geo.plot(input$state_choice, input$death_cause, mort.data, input$year_selector)
     }
     
   })
@@ -728,9 +775,10 @@ server <- function(input, output) {
     req(input$plot_hover) # Same as if-not-NULL
     hover <- input$plot_hover
     
-    kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-    
-    kendall.cor.new <- kendall.cor %>%
+#   Replaced with new definition (from above) 
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
       dplyr::mutate(
         DIR = dplyr::if_else(
           kendall_cor <= 0,
@@ -739,10 +787,11 @@ server <- function(input, output) {
         ),
         chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.05) %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
     
     point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
     
@@ -755,20 +804,20 @@ server <- function(input, output) {
     # left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
     # top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
     
-    left_pct <- 1.00
-    top_pct <- 1.00
+    left_pct <- 1.75
+    top_pct <- 0.30
     
     # calculate distance from left and bottom side of the picture in pixels
     left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
     top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
-    
+    #browser()
     
     # create style property for tooltip
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
     style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
-                    "left:", left_px + 2, "px; top:", top_px + 2, "px;")
-    
+                    "left: ", left_px + 200, "px; top:", top_px + 2, "px; width: 250px;")
+    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     # browser()
@@ -878,14 +927,14 @@ server <- function(input, output) {
           panel.grid.major.y = element_blank()
         )
     }
-      #Display something else when there are no significant SD
-      else {
-        
-        # empty plot, then put text on it ?
-        ggplot() + theme_void() +
+    #Display something else when there are no significant SD
+    else {
+      
+      # empty plot, then put text on it ?
+      ggplot() + theme_void() +
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
-          
-      }
+      
+    }
   })
   
   

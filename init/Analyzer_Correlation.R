@@ -9,7 +9,7 @@ kendall.func <- function(x.data, sd.data) {
   
   align <- dplyr::left_join(x.data, sd.data, by = "county_fips") %>% 
     dplyr::select(-dplyr::one_of(c("county_fips", "state_name", "county_name")))
-  
+  #browser()
   x <- as.numeric(dplyr::pull(align, VAR))
   sd <- dplyr::select(align, -VAR)
   

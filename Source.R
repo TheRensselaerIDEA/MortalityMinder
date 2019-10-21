@@ -1,25 +1,12 @@
 setwd("init")
 source("Curl_fixer.R")
 source("Librarian.R")
+
 # Separated out function definitions 10/01/2019
 #source("Loader_CHR2019.R") # Added write_rds 9/27/2019
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
-chr.data.2019 <- readRDS("chr.data.2019.rds") %>%
   
-  # 10/02/2019
-  # Remove unwanted social determinants
-  # This should be a temporary change because the source file will be replaced in the end
-  dplyr::select(
-    -dplyr::starts_with("health_"),
-    -dplyr::contains("mortality"), 
-    -dplyr::contains("deaths"), 
-    -dplyr::contains("death"),
-    -dplyr::contains("life"),
-    -dplyr::contains("ypll"),
-    -dplyr::starts_with("num_")
-  )
-  
-  
+chr.data.2019 <- readRDS("chr.data.2019.reduced.rds")
   
 chr.namemap.2019 <- readRDS("chr.namemap.2019.rds")
 chr.namemap.inv.2019 <- readRDS("chr.namemap.inv.2019.rds")
