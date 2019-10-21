@@ -54,7 +54,7 @@ ui <- fluidPage(
     pickerInput(
       inputId = "death_cause",
       label = h4("Cause of Death"),
-      choices = c("Death of Despair"="Despair","Death of Cancer"="cancer","Death of Assault"="assault","Cardiovascular"="Cardiovascular"),
+      choices = c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular"),
       width = "200px",
       choicesOpt = list(
         subtext = c("Self-Harm and some other causes"),
