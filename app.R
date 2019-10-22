@@ -186,17 +186,6 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
-            pickerInput(
-              inputId = "determinant_choice",
-              label = h4("Determinant"), 
-              choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
-              selected = "Socio-Economic",
-              width = "200px",
-              options = list(
-                `live-search` = TRUE,
-                "dropup-auto" = TRUE
-              )
-            ),
             plotOutput("determinants_plot1",width="100%",height="95%")
           ),
           tags$div(
@@ -219,7 +208,31 @@ ui <- fluidPage(
           ),
           tags$div(
             class = "page3_col3",
-            plotOutput("determinants_plot4",width="100%",height="100%")
+            tags$div(
+              pickerInput(
+                inputId = "determinant_choice",
+                label = "Selected Determinant: ",
+                choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
+                selected = "Socio-Economic",
+                width = "auto",
+                inline = TRUE,
+                options = list(
+                  `live-search` = TRUE,
+                  "dropup-auto" = TRUE
+                )
+              )
+            ),
+            tags$div(
+              tags$br(),
+              tags$br(),
+              tags$h2(style = "padding: 20px",
+                      textOutput("determinant_title")),
+              tags$h4(style = "padding: 20px; padding-top: 0px",
+                      textOutput("determinant_text"))
+            ),
+            tags$div(
+              plotOutput("determinants_plot4",width="100%",height="100%")
+            )
           )
         )
         
@@ -627,6 +640,15 @@ server <- function(input, output) {
       color.line.cluster(input$state_choice, max(sd.select$cluster))
     
   })
+  
+  output$determinant_title <- renderText({
+    input$determinant_choice
+  })
+  
+  output$determinant_text <- renderText({
+    SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definition"
+  })
+  
   output$determinants_plot4 <- renderPlot({
     
   })
