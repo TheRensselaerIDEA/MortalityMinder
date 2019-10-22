@@ -610,7 +610,6 @@ server <- function(input, output) {
     dplyr::filter(
       cdc.data,
       period == "2015-2017", 
-      state_abbr == input$state_choice,
       death_cause == input$death_cause
     ) %>% 
       dplyr::select(county_fips, death_rate) %>% 
