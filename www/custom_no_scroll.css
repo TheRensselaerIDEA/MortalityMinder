@@ -448,3 +448,6 @@ padding: 20px 10px;
 font-size: 16px;
 font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
 }
+.info {
+  width: 40px;
+}
