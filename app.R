@@ -16,6 +16,13 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
+cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular")
+cause.definitions <- c("Deaths of Despair are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
+                       "Deaths due to Assault are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
+                       "Cardiovascular Disease are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
+                       "Deaths due to Cancer deaths due to cancer and neoplasm"="Cancer")
+                                                            
+  
 n.clusters.state = 3
 n.clusters.nation = 6
 
@@ -54,7 +61,7 @@ ui <- fluidPage(
     pickerInput(
       inputId = "death_cause",
       label = h4("Cause of Death"),
-      choices = c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular"),
+      choices = cause.list,
       width = "200px",
       choicesOpt = list(
         subtext = c("Self-Harm and some other causes"),
@@ -81,12 +88,8 @@ ui <- fluidPage(
               class = "col1_top",
               tags$div(
                 class = "col1_top_left",
-                tags$h2(
-                  "High",tags$span(class = "word_redBG", "Death"),"rate!"
-                ),
-                tags$p(
-                  "Descriptions"
-                )
+                tags$h2("Exploring Causes of Premature Death"),  # Put header here so it shows up at launch
+                uiOutput("textDescription")
               ),
               tags$div(
                 tags$style(HTML(
@@ -163,7 +166,7 @@ ui <- fluidPage(
             tags$div(
               class = "col2_title",
               tags$h2(
-                "What are the", tags$span(class = "word_redBG", "Determinants"),"?"
+                "What are the Social Determinants of Mortality?"
               )
               
             ),
@@ -691,6 +694,20 @@ server <- function(input, output) {
         guides(color = guide_legend(reverse = T))
     }
     
+  })
+  
+  # Textual description box (upper-left panel, Page 1)
+  output$textDescription <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+
+    tagList(
+    tags$h4(
+      paste0("Morality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
+    ),
+    tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+    tags$h5(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify indiviual counties. Zoom map with mouse wheel or zoom buttons.")),
+    NULL
+    )
   })
   
   # Mortality Rate Table
