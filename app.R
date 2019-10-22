@@ -189,7 +189,7 @@ ui <- fluidPage(
             pickerInput(
               inputId = "determinant_choice",
               label = h4("Determinant"), 
-              choices = chr.namemap.2019$name,
+              choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
               selected = "Socio-Economic",
               width = "200px",
               options = list(
@@ -197,7 +197,7 @@ ui <- fluidPage(
                 "dropup-auto" = TRUE
               )
             ),
-            plotOutput("determinants_plot1",width="100%",height="100%")
+            plotOutput("determinants_plot1",width="100%",height="95%")
           ),
           tags$div(
             class = "vl"
@@ -211,7 +211,7 @@ ui <- fluidPage(
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="100%")
+              plotOutput("determinants_plot3",width="100%",height="95%")
             )
           ),
           tags$div(
