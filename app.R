@@ -186,18 +186,7 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
-            pickerInput(
-              inputId = "determinant_choice",
-              label = h4("Determinant"), 
-              choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
-              selected = "Socio-Economic",
-              width = "200px",
-              options = list(
-                `live-search` = TRUE,
-                "dropup-auto" = TRUE
-              )
-            ),
-            plotOutput("determinants_plot1",width="100%",height="95%")
+            plotOutput("determinants_plot1",width="100%",height="80%")
           ),
           tags$div(
             class = "vl"
@@ -219,6 +208,22 @@ ui <- fluidPage(
           ),
           tags$div(
             class = "page3_col3",
+            pickerInput(
+              inputId = "determinant_choice",
+              label = "Selected Determinant: ",
+              choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
+              selected = "Socio-Economic",
+              width = "auto",
+              inline = TRUE,
+              options = list(
+                `live-search` = TRUE,
+                "dropup-auto" = TRUE
+              )
+            ),
+            tags$br(),
+            tags$br(),
+            tags$h3(textOutput("determinant_title")),
+            tags$h4(textOutput("determinant_text")),
             plotOutput("determinants_plot4",width="100%",height="100%")
           )
         )
@@ -628,6 +633,15 @@ server <- function(input, output) {
       color.line.cluster(input$state_choice, max(sd.select$cluster))
     
   })
+  
+  output$determinant_title <- renderText({
+    input$determinant_choice
+  })
+  
+  output$determinant_text <- renderText({
+    SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definition"
+  })
+  
   output$determinants_plot4 <- renderPlot({
     
   })
