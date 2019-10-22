@@ -186,7 +186,7 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
-            plotOutput("determinants_plot1",width="100%",height="80%")
+            plotOutput("determinants_plot1",width="100%",height="95%")
           ),
           tags$div(
             class = "vl"
@@ -208,23 +208,31 @@ ui <- fluidPage(
           ),
           tags$div(
             class = "page3_col3",
-            pickerInput(
-              inputId = "determinant_choice",
-              label = "Selected Determinant: ",
-              choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
-              selected = "Socio-Economic",
-              width = "auto",
-              inline = TRUE,
-              options = list(
-                `live-search` = TRUE,
-                "dropup-auto" = TRUE
+            tags$div(
+              pickerInput(
+                inputId = "determinant_choice",
+                label = "Selected Determinant: ",
+                choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
+                selected = "Socio-Economic",
+                width = "auto",
+                inline = TRUE,
+                options = list(
+                  `live-search` = TRUE,
+                  "dropup-auto" = TRUE
+                )
               )
             ),
-            tags$br(),
-            tags$br(),
-            tags$h3(textOutput("determinant_title")),
-            tags$h4(textOutput("determinant_text")),
-            plotOutput("determinants_plot4",width="100%",height="100%")
+            tags$div(
+              tags$br(),
+              tags$br(),
+              tags$h2(style = "padding: 20px",
+                      textOutput("determinant_title")),
+              tags$h4(style = "padding: 20px; padding-top: 0px",
+                      textOutput("determinant_text"))
+            ),
+            tags$div(
+              plotOutput("determinants_plot4",width="100%",height="100%")
+            )
           )
         )
         
