@@ -92,6 +92,7 @@ ui <- fluidPage(
               class = "col1_top",
               tags$div(
                 class = "col1_top_left",
+                style = "padding-right: 20px; padding-left: 20px",
                 tags$h3("Exploring Causes of Premature Death"),  # Put header here so it shows up at launch
                 uiOutput("textDescription")
               ),
@@ -194,7 +195,9 @@ ui <- fluidPage(
           class = "page3",
           tags$div(
             class = "page3_col1",
-            plotOutput("determinants_plot1",width="100%",height="95%")
+            tags$h2(style = "padding-right: 20px; padding-left: 20px",
+                      textOutput("state_title")),
+            plotOutput("determinants_plot1", height = "85%", width = "100%")
           ),
           tags$div(
             class = "vl"
@@ -231,12 +234,10 @@ ui <- fluidPage(
               )
             ),
             tags$div(
+              style = "padding: 20px",
               tags$br(),
-              tags$br(),
-              tags$h2(style = "padding: 20px",
-                      textOutput("determinant_title")),
-              tags$h4(style = "padding: 20px; padding-top: 0px",
-                      textOutput("determinant_text"))
+              tags$h2(textOutput("determinant_title")),
+              tags$h4(textOutput("determinant_text"))
             ),
             tags$div(
               plotOutput("determinants_plot4",width="100%",height="100%")
@@ -734,6 +735,15 @@ server <- function(input, output) {
     input$determinant_choice
   })
   
+  output$state_title <- renderText({
+    if (input$state_choice == "United States") {
+      "United States"
+    }
+    else {
+      names(which(state.list == input$state_choice))
+    }
+  })
+  
   output$determinant_text <- renderText({
     SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definition"
   })
@@ -802,6 +812,7 @@ server <- function(input, output) {
     
     tagList(
       tags$h3(
+        style = "padding-right: 20px; padding-left: 20px",
         paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?")
       ),
       NULL
