@@ -606,7 +606,7 @@ server <- function(input, output) {
     
     ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
       geom_boxplot() +
-      labs(y = input$determinant_choice) + 
+      labs(y = input$determinant_choice, caption = "Boxplot will show only lines if the state has too few counties to cluster (6 or fewer).") + 
       theme.background() + 
       theme.text() + 
       theme(
