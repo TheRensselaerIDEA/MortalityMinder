@@ -504,12 +504,9 @@ server <- function(input, output) {
     order.cluster.deathrate.during.time(mort.avg.cluster.raw(), mort.cluster.map())
   })
   
-  # -------------------------------------------------------------------------------------------------------------------------- #
-  
-  output$determinants_plot1 <- renderPlot({
+  # get unfiltered kendal cors
+  kendall.cor <- reactive({
     
-    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-    # Sort by kendall.cor
     kendall.cor.new <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
@@ -520,7 +517,16 @@ server <- function(input, output) {
           "Destructive"
         ),
         chr_code = chr.namemap.2019[chr_code, 1]
-      ) %>% na.omit() %>% 
+      ) %>% na.omit()
+    
+  })
+  
+  # -------------------------------------------------------------------------------------------------------------------------- #
+  
+  output$determinants_plot1 <- renderPlot({
+    
+    # Sort by kendall.cor
+    kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
@@ -986,19 +992,8 @@ server <- function(input, output) {
   # Kendall Correlation Between Cluster and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
     
-    #kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
     # Sort by kendall.cor
-    kendall.cor.new <- mort.rate() %>% 
-      dplyr::mutate(VAR = death_rate) %>%
-      kendall.func(chr.data.2019) %>%
-      dplyr::mutate(
-        DIR = dplyr::if_else(
-          kendall_cor <= 0,
-          "Protective",
-          "Destructive"
-        ),
-        chr_code = chr.namemap.2019[chr_code, 1]
-      ) %>% na.omit() %>% 
+    kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
       dplyr::top_n(15, kendall_cor) %>% 
