@@ -85,7 +85,8 @@
   border:0;
   border-radius:0px;
   z-index: 999;
-  background-color:#D6001C;
+  background-color: #7a6669;
+  background-image: url("https://www.transparenttextures.com/patterns/cardboard-flat.png");
   position:fixed;
   /*top:20px;*/
   width:100%;
@@ -105,7 +106,7 @@
 
 .title h1 {
   margin:0;
-  color:white;
+  color:black;
   font-family:'customFont';
   font-size:26px;
 }
