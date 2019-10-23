@@ -4,6 +4,10 @@
 #   Server: Yuxuan Wang
 #   Graph: Ziyi Wang
 
+# This version uses reactlog
+library(reactlog)
+options(shiny.reactlog = TRUE)
+
 source("Source.R")
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
@@ -88,7 +92,7 @@ ui <- fluidPage(
               class = "col1_top",
               tags$div(
                 class = "col1_top_left",
-                tags$h2("Exploring Causes of Premature Death"),  # Put header here so it shows up at launch
+                tags$h3("Exploring Causes of Premature Death"),  # Put header here so it shows up at launch
                 uiOutput("textDescription")
               ),
               tags$div(
@@ -165,9 +169,10 @@ ui <- fluidPage(
             class = "col2",
             tags$div(
               class = "col2_title",
-              tags$h2(
-                "What are the Social Determinants of Mortality?"
-              )
+              # tags$h2(
+              #   "What are the Social Determinants of Mortality?"
+              # ),
+              uiOutput("textDeterminants")
               
             ),
             tags$div(
@@ -709,7 +714,20 @@ server <- function(input, output) {
     NULL
     )
   })
+
+  # Determinant Header (upper-right panel, Page 1)
+  output$textDeterminants <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?")
+      ),
+      NULL
+    )
+  })
   
+    
   # Mortality Rate Table
   output$table <- renderTable(width = "100%", {
     rate.table <- mort.avg.cluster.ord() %>%
@@ -984,12 +1002,16 @@ server <- function(input, output) {
     data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
     cause <- input$death_cause
     r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
+                d3_version = 3,
+                dependencies = "topojson.min.js",
+                css = "geoattr.css",
+                script = "d3.js")
+    viz <- r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
          d3_version = 3,
          dependencies = "topojson.min.js",
          css = "geoattr.css",
          script = "d3.js")
-    
-    
+    save_d3_html(viz, "national.1.html", selfcontained = TRUE)
   })
   
 }
