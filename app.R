@@ -5,8 +5,8 @@
 #   Graph: Ziyi Wang
 
 # This version uses reactlog
-library(reactlog)
-options(shiny.reactlog = TRUE)
+# library(reactlog)
+# options(shiny.reactlog = TRUE)
 
 source("Source.R")
 deps <- list("topojson.min.js", 
@@ -1006,12 +1006,6 @@ server <- function(input, output) {
                 dependencies = "topojson.min.js",
                 css = "geoattr.css",
                 script = "d3.js")
-    viz <- r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
-         d3_version = 3,
-         dependencies = "topojson.min.js",
-         css = "geoattr.css",
-         script = "d3.js")
-    save_d3_html(viz, "national.1.html", selfcontained = TRUE)
   })
   
 }
