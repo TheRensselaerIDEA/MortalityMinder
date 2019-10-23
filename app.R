@@ -263,9 +263,9 @@ ui <- fluidPage(
           tags$div(
             class = "page2_col2",
             tags$div(
-              class = "nation_wide",
+              class = "page2_col2_top",
               tags$div(
-                class = "title",
+                class = "National_title",
                 tags$b("National Death of Despair")
               ),
               tags$div(
@@ -277,10 +277,20 @@ ui <- fluidPage(
                 tags$span(
                   id = "clock",
                   "2000-2002"
+                ),
+                tags$div(
+                  class = "year_but",
+                  radioButtons("year_selector", 
+                               label = "Select years:",
+                               selected = "2000-2002", 
+                               choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                               choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                               inline = TRUE)
                 )
-              ),
-              d3Output("national_map", width = '100%', height = '100%')
-              
+            )),
+            tags$div(
+                class = "page2_col2_down",
+                d3Output("national_map", width = '100%', height = '100%')
             )
           )
           
