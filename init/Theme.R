@@ -156,7 +156,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
                           color = "white",
                           opacity = 1,
                           fillColor = colors[as.numeric(dataset$VAR_)],
-                          label = dataset$county_name) %>%
+                          label = dataset$county_name,
+                          layerId = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
                          className="map-title") %>%

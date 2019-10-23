@@ -164,3 +164,26 @@ cdc.mort.mat <- function(cdc.data.long, state.abbr, death.cause = "Despair") {
     dplyr::arrange(county_fips)
 }
 
+#' Used in app.R and/or elsewhere
+#' 
+#' @note Importing and Conversion
+#'
+#' @param cdc.data.long
+#' @param state.abbr
+#' @param death.cause
+#'
+#' @return 
+#'
+#' @examples
+#' 
+#' @author Hongrui Zhang (based on others)
+#' @export
+
+cdc.countymort.mat <- function(cdc.data.long, state.abbr, county.choice, death.cause = "Despair") {
+  tmp <- cdc.data.long
+  dplyr::filter(tmp, death_cause == death.cause & state_abbr == state.abbr & county_name == substr(county.choice, 0, nchar(county.choice)-7)) %>%
+    tidyr::drop_na(county_fips) %>%
+    dplyr::select(county_fips, death_rate, period) %>%
+    tidyr::spread(key = period, value = death_rate) %>%
+    dplyr::arrange(county_fips)
+}
