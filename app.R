@@ -294,28 +294,29 @@ ui <- fluidPage(
         tags$div(
           class = "page4",
           fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
-                   column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
-                          fluidRow(
-                            column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
-                                   has stagnated and even declined, reversing for the US the trend toward increased life
-                                   expectancy that is still continuing in most nations. The goal of this project is 
-                                   to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
-                                   and identify their associated community level social determinants.", offset=1), # Close column,
-                            column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
-                                   "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
-                                   seeks tools that support visualizing such data clusters to enhance the research and analysis 
-                                   of community-level health services.", tags$br(),
-                                   "Challenge participants must develop visualization tools that can augment the insights drawn 
-                                   from the analysis of medical expenditure and health care utilization data at the community 
-                                   level. Tools must use publicly available and free SDOH data from at least three of the 
-                                   following data sources: ", tags$br(),
-                                   tags$ul(
-                                     tags$li("Federal databases."),
-                                     tags$li("State databases."),
-                                     tags$li(
-                                       "Other locally available data sources, such as SDOH data from voice, digital, and 
-                                       social medical requests via service lines.")
-                                     ), offset=1) # Close column
+            column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
+                   fluidRow(
+                     tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
+                     column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
+                                 has stagnated and even declined, reversing for the US the trend toward increased life
+                                 expectancy that is still continuing in most nations. The goal of this project is 
+                                 to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
+                                 and identify their associated community level social determinants.", offset=1), # Close column,
+                     column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
+                                "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
+                                 seeks tools that support visualizing such data clusters to enhance the research and analysis 
+                                 of community-level health services.", tags$br(),
+                                "Challenge participants must develop visualization tools that can augment the insights drawn 
+                                 from the analysis of medical expenditure and health care utilization data at the community 
+                                 level. Tools must use publicly available and free SDOH data from at least three of the 
+                                 following data sources: ", tags$br(),
+                                 tags$ul(
+                                   tags$li("Federal databases."),
+                                   tags$li("State databases."),
+                                   tags$li(
+                                     "Other locally available data sources, such as SDOH data from voice, digital, and 
+                                     social medical requests via service lines.")
+                                 ), offset=1) # Close column
                                    ) # Close inner fluidRow
                             ), # Close outter column
                    column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
@@ -344,12 +345,21 @@ ui <- fluidPage(
                    ) # Close inner fluidRow
                           ), # Close column
                    column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                          "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
+                          of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
+                          Institute. Retrieved from ", tags$br(),
                           tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
+                          "Erickson, J. S., & Bennet, K. P. (n.d.). Mortality Minder Github. Retrieved from ", tags$br(),
                           tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
+                          "CDC WONDER.", tags$br(),
                           tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
+                          "County Health Rankings Roadmaps. ", tags$br(),
                           tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
+                          "Small Area Health Insurance Estimates (SAHIE) Program.", tags$br(),
                           tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
-                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
+                          "Agency for Healthcare Research and Quality, US Dept. of Health and Human Services.", tags$br(),
+                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
+                          "ZIP link for data*"
                    )
         ) # Close outter fluidRow
                             ) # Close page 4 
