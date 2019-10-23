@@ -345,12 +345,21 @@ ui <- fluidPage(
                    ) # Close inner fluidRow
                           ), # Close column
                    column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                          "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
+                          of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
+                          Institute. Retrieved from ", tags$br(),
                           tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
+                          "Erickson, J. S., & Bennet, K. P. (n.d.). Mortality Minder Github. Retrieved from ", tags$br(),
                           tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
+                          "CDC WONDER.", tags$br(),
                           tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
+                          "County Health Rankings Roadmaps. ", tags$br(),
                           tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
+                          "Small Area Health Insurance Estimates (SAHIE) Program.", tags$br(),
                           tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
-                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br()
+                          "Agency for Healthcare Research and Quality, US Dept. of Health and Human Services.", tags$br(),
+                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
+                          "ZIP link for data*"
                    )
         ) # Close outter fluidRow
                             ) # Close page 4 
