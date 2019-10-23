@@ -388,8 +388,10 @@ includeScript(path = "myscript.js")
 #-----------------
 
 server <- function(input, output) {
+  county_choice <- reactiveVal()
   
   mort.rate <- reactive({
+    county_choice(NULL)
     if(input$state_choice == "United States"){
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
@@ -763,9 +765,10 @@ server <- function(input, output) {
           color = guide_legend(reverse = T)
         )
     } else {
+      
       nclusters <- max(mort.cluster.raw()$cluster)
       
-      ggplot(
+      line_plot <- ggplot(
         mort.avg.cluster.ord(),
         aes(
           x = period, y = death_rate, 
@@ -778,6 +781,30 @@ server <- function(input, output) {
         color.line.cluster(input$state_choice, nclusters) +
         theme.line.mort() + 
         guides(color = guide_legend(reverse = T))
+      
+      if (is.null(county_choice())){
+        line_plot 
+      } else {
+        drop.cols <- c('county_fips')
+        county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause) %>%
+                        dplyr::select(-drop.cols) %>%
+                          tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
+                            dplyr::mutate("county" = county_choice())
+        line_plot + 
+          geom_line(
+            mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
+            data = county_data, color = "black"
+          ) +
+          geom_point(
+            mapping = aes(x = period, y = death_rate),
+            data = county_data, color = "black", shape = 21, 
+            fill = "white", inherit.aes = FALSE
+          ) +
+          scale_linetype_manual(name = "County",
+                                values = c(2),
+                                guide = guide_legend(override.aes = list(color = c("black")))
+                                )
+      }
     }
     
   })
@@ -1089,6 +1116,12 @@ server <- function(input, output) {
                 script = "d3.js")
   })
   
+  observe({
+    event <- input$geo_cluster_kmean_shape_click
+    if (is.null(event))
+      return()
+    county_choice(event$id)
+  })
 }
 
 shinyApp(ui = ui, server = server)
