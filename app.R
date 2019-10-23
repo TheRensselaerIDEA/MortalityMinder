@@ -604,28 +604,57 @@ server <- function(input, output) {
     
     # browser()
     
-    ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
-      geom_boxplot() +
-      labs(y = input$determinant_choice, caption = "Boxplot will show only lines if the state has too few counties to cluster (6 or fewer).") + 
-      theme.background() + 
-      theme.text() + 
-      theme(
-        
-        panel.grid = element_line(color = "grey"),
-        panel.grid.major.x = element_blank(),
-        panel.background = element_blank(),
-        
-        axis.line.x = element_blank(), 
-        axis.title.x = element_blank(),
-        
-        legend.position = "top"
-      ) + 
-      scale_fill_manual(
-        name = "Cluster",
-        values = colorRampPalette(
-          c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
-        )(max(sd.select$cluster))
-      )
+    if (nrow(sd.select) <= 6){
+      
+      ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
+        geom_boxplot() +
+        labs(y = input$determinant_choice, caption = "Plot will show only single values if the state has too few counties to cluster (6 or fewer). \n In these cases, the x-axis is individual counties rather than clusters.") + 
+        theme.background() + 
+        theme.text() + 
+        theme(
+          
+          panel.grid = element_line(color = "grey"),
+          panel.grid.major.x = element_blank(),
+          panel.background = element_blank(),
+          
+          axis.line.x = element_blank(), 
+          axis.title.x = element_blank(),
+          
+          legend.position = "top"
+        ) + 
+        scale_fill_manual(
+          name = "County",
+          values = colorRampPalette(
+            c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
+          )(max(sd.select$cluster))
+        )
+      
+    } else{
+     
+      ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
+        geom_boxplot() +
+        labs(y = input$determinant_choice) + 
+        theme.background() + 
+        theme.text() + 
+        theme(
+          
+          panel.grid = element_line(color = "grey"),
+          panel.grid.major.x = element_blank(),
+          panel.background = element_blank(),
+          
+          axis.line.x = element_blank(), 
+          axis.title.x = element_blank(),
+          
+          legend.position = "top"
+        ) + 
+        scale_fill_manual(
+          name = "Cluster",
+          values = colorRampPalette(
+            c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
+          )(max(sd.select$cluster))
+        ) 
+      
+    }
     
   })
   
@@ -638,6 +667,39 @@ server <- function(input, output) {
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
       tidyr::drop_na()
     
+    if (nrow(sd.select) <= 6){
+     
+      dplyr::filter(
+        cdc.data,
+        period == "2015-2017", 
+        death_cause == input$death_cause
+      ) %>% 
+        dplyr::select(county_fips, death_rate) %>% 
+        dplyr::inner_join(sd.select, by = "county_fips") %>% 
+        tidyr::drop_na() %>%
+        
+        
+        ggplot(aes(x = death_rate, y = VAR)) + 
+        geom_point(aes(color = cluster)) + 
+        labs(
+          x = "Mortality Rate",
+          y = input$determinant_choice
+        ) +
+        theme.line.mort() + 
+        color.line.cluster(input$state_choice, max(sd.select$cluster)) + 
+        scale_color_manual(
+          name = "County",
+          #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
+          values = colorRampPalette(
+            c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
+            
+          )(nrow(sd.select)),
+          guide = guide_legend(reverse = T)
+        )
+      
+    } else{
+      
+    
     dplyr::filter(
       cdc.data,
       period == "2015-2017", 
@@ -647,7 +709,6 @@ server <- function(input, output) {
       dplyr::inner_join(sd.select, by = "county_fips") %>% 
       tidyr::drop_na() %>%
       
-      
       ggplot(aes(x = death_rate, y = VAR)) + 
       geom_point(aes(color = cluster)) + 
       labs(
@@ -656,7 +717,7 @@ server <- function(input, output) {
       ) +
       theme.line.mort() + 
       color.line.cluster(input$state_choice, max(sd.select$cluster))
-    
+    }
   })
   
   output$determinant_title <- renderText({
