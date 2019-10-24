@@ -619,9 +619,10 @@ server <- function(input, output) {
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      dplyr::inner_join(geo.namemap, by = "county_fips") %>% 
       tidyr::drop_na()
     
-    # browser()
+   # browser()
     
     if (nrow(sd.select) <= 6){
       
@@ -643,6 +644,7 @@ server <- function(input, output) {
         ) + 
         scale_fill_manual(
           name = "County",
+          labels = sd.select$county_name,  
           values = colorRampPalette(
             c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
           )(max(sd.select$cluster))
@@ -684,6 +686,7 @@ server <- function(input, output) {
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
     if (nrow(sd.select) <= 6){
@@ -708,6 +711,7 @@ server <- function(input, output) {
         color.line.cluster(input$state_choice, max(sd.select$cluster)) + 
         scale_color_manual(
           name = "County",
+          labels = sd.select$county_name,
           #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
           values = colorRampPalette(
             c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
