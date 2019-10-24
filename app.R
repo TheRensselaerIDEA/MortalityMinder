@@ -785,22 +785,97 @@ server <- function(input, output) {
           color = guide_legend(reverse = T)
         )
     } else {
+ if(input$death_cause=='Assault'){      
+        nclusters <- max(mort.cluster.raw()$cluster)
+        
+        line_plot <- ggplot(
+          mort.avg.cluster.ord(),
+          aes(
+            x = period, y = death_rate, 
+            color = cluster, group = cluster
+          )
+        ) + 
+          geom_line(size = 1) + 
+          geom_point(color = "black", shape = 21, fill = "white") + 
+          labs.line.mort(input$state_choice, input$death_cause) + 
+          color.line.cluster(input$state_choice, nclusters) +
+          theme.line.mort() + 
+          guides(color = guide_legend(reverse = T))+
+          geom_segment(aes(x="2000-2002",y=6.750937,xend="2003-2005",yend=6.729051),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2003-2005",y=6.729051,xend="2006-2008",yend=6.687417),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2006-2008",y=6.687417,xend="2009-2011",yend=5.934990),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2009-2011",y=5.934990,xend="2012-2014",yend=5.915201),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2012-2014",y=5.915201,xend="2015-2017",yend=6.999898),size=1,color='black',linetype='dotdash')
+      }
+      if(input$death_cause=='Cancer'){      
+        nclusters <- max(mort.cluster.raw()$cluster)
+        
+        line_plot <- ggplot(
+          mort.avg.cluster.ord(),
+          aes(
+            x = period, y = death_rate, 
+            color = cluster, group = cluster
+          )
+        ) + 
+          geom_line(size = 1) + 
+          geom_point(color = "black", shape = 21, fill = "white") + 
+          labs.line.mort(input$state_choice, input$death_cause) + 
+          color.line.cluster(input$state_choice, nclusters) +
+          theme.line.mort() + 
+          guides(color = guide_legend(reverse = T))+
+          geom_segment(aes(x="2000-2002",y=107.637100,xend="2003-2005",yend=107.638200),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2003-2005",y=107.638200,xend="2006-2008",yend=106.628310),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2006-2008",y=106.628310,xend="2009-2011",yend=106.949100),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2009-2011",y=106.949100,xend="2012-2014",yend=105.219690),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2012-2014",y=105.219690,xend="2015-2017",yend=101.169700),size=1,color='black',linetype='dotdash')
+      }
+
+      if(input$death_cause=='Cardiovascular'){      
+        nclusters <- max(mort.cluster.raw()$cluster)
+        
+        line_plot <- ggplot(
+          mort.avg.cluster.ord(),
+          aes(
+            x = period, y = death_rate, 
+            color = cluster, group = cluster
+          )
+        ) + 
+          geom_line(size = 1) + 
+          geom_point(color = "black", shape = 21, fill = "white") + 
+          labs.line.mort(input$state_choice, input$death_cause) + 
+          color.line.cluster(input$state_choice, nclusters) +
+          theme.line.mort() + 
+          guides(color = guide_legend(reverse = T))+
+          geom_segment(aes(x="2000-2002",y=96.830591,xend="2003-2005",yend=95.807343),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2003-2005",y=95.807343,xend="2006-2008",yend=92.915303),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2006-2008",y=92.915303,xend="2009-2011",yend=90.702418),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2009-2011",y=90.702418,xend="2012-2014",yend=91.232679),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2012-2014",y=91.232679,xend="2015-2017",yend=93.598232),size=1,color='black',linetype='dotdash')
+      }
       
-      nclusters <- max(mort.cluster.raw()$cluster)
+      if(input$death_cause=='Despair'){      
+        nclusters <- max(mort.cluster.raw()$cluster)
+        
+        line_plot <- ggplot(
+          mort.avg.cluster.ord(),
+          aes(
+            x = period, y = death_rate, 
+            color = cluster, group = cluster
+          )
+        ) + 
+          geom_line(size = 1) + 
+          geom_point(color = "black", shape = 21, fill = "white") + 
+          labs.line.mort(input$state_choice, input$death_cause) + 
+          color.line.cluster(input$state_choice, nclusters) +
+          theme.line.mort() + 
+          guides(color = guide_legend(reverse = T))+
+        geom_segment(aes(x="2000-2002",y=28.929453,xend="2003-2005",yend=33.665595),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2003-2005",y=33.665595,xend="2006-2008",yend=37.821445),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2006-2008",y=37.821445,xend="2009-2011",yend=40.081486),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2009-2011",y=40.081486,xend="2012-2014",yend=43.900063),size=1,color='black',linetype='dotdash')+
+          geom_segment(aes(x="2012-2014",y=43.900063,xend="2015-2017",yend=55.084642),size=1,color='black',linetype='dotdash')
+      }
       
-      line_plot <- ggplot(
-        mort.avg.cluster.ord(),
-        aes(
-          x = period, y = death_rate, 
-          color = cluster, group = cluster
-        )
-      ) + 
-        geom_line(size = 1) + 
-        geom_point(color = "black", shape = 21, fill = "white") + 
-        labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster(input$state_choice, nclusters) +
-        theme.line.mort() + 
-        guides(color = guide_legend(reverse = T))
       
       if (is.null(county_choice())){
         line_plot 
