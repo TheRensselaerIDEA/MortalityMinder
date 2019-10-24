@@ -243,9 +243,14 @@ ui <- fluidPage(
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text"))
             ),
+            # tags$div(
+            #   plotOutput("determinants_plot4",width="100%",height="100%")
+            # ),
             tags$div(
-              plotOutput("determinants_plot4",width="100%",height="100%")
-            )
+              class = "col1_bot",
+                leafletOutput("geo_cluster_kmean_2"),
+              tags$h5(tags$i("Replace this with a social determinant geo-distribution"))
+              )
           )
         )
         
@@ -882,6 +887,19 @@ server <- function(input, output, session) {
   
   # Mortality Trend Cluster by County
   output$geo_cluster_kmean <- renderLeaflet({
+    
+    if(input$state_choice == "United States"){
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
+    }else{
+      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
+    }
+    
+  })
+
+  
+  # Mortality Trend Cluster by County
+  # TODO: Replace this with a social determinant map!
+  output$geo_cluster_kmean_2 <- renderLeaflet({
     
     if(input$state_choice == "United States"){
       draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
