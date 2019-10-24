@@ -29,8 +29,11 @@ cause.definitions <- c("Deaths of Despair are deaths due to suicide, overdose, s
   
 n.clusters.state = 3
 n.clusters.nation = 6
+jscode <- "shinyjs.nextpage = function(){$('.fp-next').click();}"
 
 ui <- fluidPage(
+  useShinyjs(),
+  extendShinyjs(text = jscode, functions = c("nextpage")),
   # include css
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
@@ -179,7 +182,8 @@ ui <- fluidPage(
             tags$div(
               class = "col2_plot",
               plotOutput("page1.bar.cor1",width="100%",height="90%", 
-                         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
+                         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
+                         click = clickOpts("bar_plot_click")),
               uiOutput("hover_info")
             )
           )
@@ -388,7 +392,7 @@ includeScript(path = "myscript.js")
 
 #-----------------
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   county_choice <- reactiveVal()
   
   mort.rate <- reactive({
@@ -1019,6 +1023,7 @@ server <- function(input, output) {
   })
   
   
+  
   # Kendall Correlation Between Cluster and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
     
@@ -1125,11 +1130,43 @@ server <- function(input, output) {
                 script = "d3.js")
   })
   
+  # click on geo cluster map shows county data on mort_line
   observe({
     event <- input$geo_cluster_kmean_shape_click
     if (is.null(event))
       return()
     county_choice(event$id)
+  })
+  
+  
+  # click on bar plot triggers page change
+  observe({
+    req(input$bar_plot_click) # Same as if-not-NULL
+    click <- input$bar_plot_click
+    
+    #   Replaced with new definition (from above) 
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    point <- nearPoints(kendall.cor.new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
+    
+    if (nrow(point) == 0) return(NULL)
+    
+    updatePickerInput(session, "determinant_choice", selected = point[1, "chr_code"])
+    js$nextpage()
   })
 }
 
