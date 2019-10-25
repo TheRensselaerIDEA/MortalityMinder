@@ -1202,7 +1202,7 @@ correlation please navigate to...",
     
     if (nrow(point) == 0) return(NULL)
     
-    updatePickerInput(session, "determinant_choice", selected = point[1, "chr_code"])
+    updatePickerInput(session, "determinant_choice", selected = point$chr_code)
     js$nextpage()
   })
 }
