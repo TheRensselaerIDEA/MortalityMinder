@@ -96,7 +96,14 @@ ui <- fluidPage(
               tags$div(
                 class = "col1_top_left",
                 style = "padding-right: 20px; padding-left: 20px",
-                tags$h3("Exploring Causes of Premature Death"),  # Put header here so it shows up at launch
+                tags$div(
+                  title="The mortality rate used in the app is the number
+of people per 100,000 that died prematurely in a given 
+county during a three year period. A premature death is 
+considered anyone that dies between the ages of 25 to 64 
+as a result of the selected cause.",
+                  tags$h3("Exploring Causes of Premature Death",  icon("info-circle"))
+                ),
                 uiOutput("textDescription")
               ),
               tags$div(
