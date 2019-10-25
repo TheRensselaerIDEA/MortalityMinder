@@ -865,7 +865,19 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?")
+        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"),
+        tags$div(
+          title=
+"Each factor is rated as Destructive, meaning 
+that it has a positive correlation with the 
+death rate; or Protective, meaning it has a 
+negative correlation with the death rate. 
+MortalityMinder shows those factors which have 
+the highest absolute correlation with mortality. 
+For more information on the method of determining
+correlation please navigate to...",
+          icon("info-circle")
+        )
       ),
       NULL
     )
