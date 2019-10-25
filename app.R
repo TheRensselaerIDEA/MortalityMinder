@@ -190,7 +190,7 @@ as a result of the selected cause.",
               class = "col2_plot",
               plotOutput("page1.bar.cor1",width="100%",height="90%", 
                          hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
-                         click = clickOpts("bar_plot_click")),
+                         click = clickOpts("page1_bar_plot_click")),
               uiOutput("hover_info")
             )
           )
@@ -208,7 +208,8 @@ as a result of the selected cause.",
             class = "page3_col1",
             tags$h2(style = "padding-right: 20px; padding-left: 20px",
                       textOutput("state_title")),
-            plotOutput("determinants_plot1", height = "85%", width = "100%")
+            plotOutput("determinants_plot1", height = "85%", width = "100%",
+                       click = clickOpts("page2_bar_plot_click"))
           ),
           tags$div(
             class = "vl"
@@ -1178,8 +1179,8 @@ correlation please navigate to...",
   
   # click on bar plot triggers page change
   observe({
-    req(input$bar_plot_click) # Same as if-not-NULL
-    click <- input$bar_plot_click
+    req(input$page1_bar_plot_click) # Same as if-not-NULL
+    click <- input$page1_bar_plot_click
     
     #   Replaced with new definition (from above) 
     kendall.cor.new <- mort.rate() %>% 
@@ -1204,6 +1205,35 @@ correlation please navigate to...",
     
     updatePickerInput(session, "determinant_choice", selected = point$chr_code)
     js$nextpage()
+  })
+  
+  # click on bar plot triggers page change
+  observe({
+    req(input$page2_bar_plot_click) # Same as if-not-NULL
+    click <- input$page2_bar_plot_click
+    
+    #   Replaced with new definition (from above) 
+    kendall.cor.new <- mort.rate() %>% 
+      dplyr::mutate(VAR = death_rate) %>%
+      kendall.func(chr.data.2019) %>%
+      dplyr::mutate(
+        DIR = dplyr::if_else(
+          kendall_cor <= 0,
+          "Protective",
+          "Destructive"
+        ),
+        chr_code = chr.namemap.2019[chr_code, 1]
+      ) %>% na.omit() %>% 
+      dplyr::filter(kendall_p < 0.1) %>% 
+      dplyr::arrange(desc(kendall_cor)) %>% 
+      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    
+    point <- nearPoints(kendall.cor.new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
+    
+    if (nrow(point) == 0) return(NULL)
+    
+    updatePickerInput(session, "determinant_choice", selected = point$chr_code)
   })
 }
 
