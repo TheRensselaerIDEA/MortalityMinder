@@ -422,6 +422,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
+      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
         state_abbr == input$state_choice,
@@ -1173,6 +1174,30 @@ correlation please navigate to...",
     event <- input$geo_cluster_kmean_shape_click
     if (is.null(event))
       return()
+    county_name <- sub(event$id, pattern = " [[:alpha:]]*$", replacement = "")
+    
+    county_indices <- which(state_map@data$NAME %in% c(county_name))
+    
+    if (length(county_indices) == 1){
+      polygon <- state_map@polygons[[county_indices[[1]]]]
+    } else {
+      for (index in county_indices){
+        current_polygon <- state_map@polygons[[index]]
+        current_coords <- current_polygon@Polygons[[1]]@coords
+        if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
+          polygon = current_polygon
+          break
+        }
+      }
+    }
+    
+    proxy <- leafletProxy("geo_cluster_kmean")
+    #remove any previously highlighted polygon
+    proxy %>% clearGroup("highlighted_polygon")
+    
+    #add a slightly thicker red polygon on top of the selected one
+    proxy %>% addPolylines(stroke=TRUE, weight = 3,color="#000000",data=polygon,group="highlighted_polygon")
+    
     county_choice(event$id)
   })
   
