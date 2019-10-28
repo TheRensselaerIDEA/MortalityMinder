@@ -272,9 +272,23 @@ as a result of the selected cause.",
           class = "page2",
           tags$div(
             class = "page2_col1",
-            tags$p("Something ",tags$span(class = "word_redBG", "National")," wide"),
-            tags$p("And something")
-          ),
+            tags$p("MortalityMinder analyzes trends of
+premature death in the United States
+which are caused by:"),
+            tags$ul(
+              tags$li("Deaths of Despair: Deaths due to suicide, overdose, substance abuse and poisonings."),
+              tags$li("Assault Deaths: Deaths due to intentional injuries inflicted by another person."),
+              tags$li("Cardiovascular Disease Deaths: Deaths due to diseases of the circulatory systems such as heart disease and stroke."),
+              tags$li("Cancer Deaths: Deaths due to cancer and neoplasm.")
+            ),
+            tags$p("The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. To represent premature death, the rate includes all deaths for the selected causes in individuals age 25 to 64."),
+            
+            tags$hr(),
+            tags$p("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed from 2000 to 2017. The map shows the changes by county. The graph shows the average mortality rate of the United States."),
+            
+            tags$p("To help address why rates are changing, MortalityMinder analyzes factors such as social determinants that are associated with increased mortality rates."),
+            tags$p(tags$i("Click right and left to investigate more."))          
+            ),
           tags$div(
             class = "vl"
           ),
