@@ -312,7 +312,16 @@
   font-weight: 200;
   letter-spacing: -.005em;
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
-  border:2px dashed black;
+}
+
+.page2_col1 li {
+  margin:1px 10% 1px 20%;
+  padding:5px 5px;
+  font-size: 15px;
+  line-height: 1.07143;
+  font-weight: 200;
+  letter-spacing: -.005em;
+  font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 }
 
 .page2_col1 p:nth-child(1) {
