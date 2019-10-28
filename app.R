@@ -246,14 +246,11 @@ as a result of the selected cause.",
               )
             ),
             tags$div(
-              style = "padding: 20px",
+              style = "padding: 20px; height: 50%",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text"))
             ),
-            # tags$div(
-            #   plotOutput("determinants_plot4",width="100%",height="100%")
-            # ),
             tags$div(
               class = "col1_bot",
                 leafletOutput("geo_cluster_kmean_2"),
