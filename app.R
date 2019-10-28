@@ -1174,9 +1174,22 @@ correlation please navigate to...",
     event <- input$geo_cluster_kmean_shape_click
     if (is.null(event))
       return()
+    county_name <- sub(event$id, pattern = " [[:alpha:]]*$", replacement = "")
     
-    county_index <- match(c(substr(event$id, 0, nchar(event$id)-7)), state_map@data$NAME)
-    polygon <- state_map@polygons[[county_index]]
+    county_indices <- which(state_map@data$NAME %in% c(county_name))
+    
+    if (length(county_indices) == 1){
+      polygon <- state_map@polygons[[county_indices[[1]]]]
+    } else {
+      for (index in county_indices){
+        current_polygon <- state_map@polygons[[index]]
+        current_coords <- current_polygon@Polygons[[1]]@coords
+        if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
+          polygon = current_polygon
+          break
+        }
+      }
+    }
     
     proxy <- leafletProxy("geo_cluster_kmean")
     #remove any previously highlighted polygon

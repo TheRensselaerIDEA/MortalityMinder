@@ -181,7 +181,11 @@ cdc.mort.mat <- function(cdc.data.long, state.abbr, death.cause = "Despair") {
 
 cdc.countymort.mat <- function(cdc.data.long, state.abbr, county.choice, death.cause = "Despair") {
   tmp <- cdc.data.long
-  dplyr::filter(tmp, death_cause == death.cause & state_abbr == state.abbr & county_name == substr(county.choice, 0, nchar(county.choice)-7)) %>%
+  true_county_name = county.choice
+  if (endsWith(county.choice, "County")){
+    true_county_name <- substr(county.choice, 0, nchar(county.choice)-7)
+  }
+  dplyr::filter(tmp, death_cause == death.cause & state_abbr == state.abbr & county_name == true_county_name) %>%
     tidyr::drop_na(county_fips) %>%
     dplyr::select(county_fips, death_rate, period) %>%
     tidyr::spread(key = period, value = death_rate) %>%
