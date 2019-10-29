@@ -149,7 +149,7 @@ as a result of the selected cause.",
                   "
                 )),
                 class = "col1_top_right",
-                leafletOutput("geo_mort_change2",width="100%",height="85%"),
+                leafletOutput("geo_mort_change2",width="100%",height="85%"), 
                 radioButtons("year_selector", 
                              label = "Select years:",
                              selected = "2000-2002", 
@@ -164,12 +164,10 @@ as a result of the selected cause.",
             tags$div(
               class = "col1_bot",
               tags$div(
-                class = "col1_bot_left",
-                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
+                class = "col1_bot_left",leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
-                class = "col1_bot_right",
-                plotOutput("mort_line",width="100%",height="90%")
+                class = "col1_bot_right",plotOutput("mort_line",width="100%",height="90%")
               )
             )
           ),
@@ -388,7 +386,7 @@ which are caused by:"),
                           of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
                           Institute. Retrieved from ", tags$br(),
                           tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
-                          "Erickson, J. S., & Bennet, K. P. (n.d.). Mortality Minder Github. Retrieved from ", tags$br(),
+                          "Erickson, J. S., & Bennett, K. P. (n.d.). Mortality Minder Github. Retrieved from ", tags$br(),
                           tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
                           "CDC WONDER.", tags$br(),
                           tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
@@ -878,10 +876,8 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"),
-        tags$div(
-          title=
-"Each factor is rated as Destructive, meaning 
+        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"), tags$div(
+title="Each factor is rated as Destructive, meaning 
 that it has a positive correlation with the 
 death rate; or Protective, meaning it has a 
 negative correlation with the death rate. 

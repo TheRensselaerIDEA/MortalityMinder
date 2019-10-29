@@ -67,7 +67,7 @@ labs.line.mort <- function(state.choice, death.cause) {
       paste("Death of", death.cause, "Trend"), 
       sep = ' - '
     ),
-    caption = "Data Sorce: CDCWONDER Multi-Cause of Death",
+    caption = "Data Source: CDCWONDER Multi-Cause of Death",
     x = "Period", y = "Mortality Rate (# per 100k)"
   )
 }
@@ -123,8 +123,22 @@ labs.geo.cluster <- function(state.choice) {
 }
 
 geoTitle <- function(state.choice, death.cause) {
-  return (tags$div(
-    HTML(paste(state.choice, "Trend Cluster<br/>Geo Distribution", sep = " "))))
+  return (tags$div(title="This map visualizes the counties 
+within the selected state and 
+divides them into three clusters 
+of counties that have similar 
+rates of premature deaths. The 
+Low cluster is the grouping of 
+counties that have relatively lower 
+deaths compared to the rest of the 
+state. The Medium cluster is the 
+grouping of counties that have average 
+premature deaths compared to the 
+rest of the state. The High cluster 
+is the grouping of counties that 
+have relatively higher deaths compared 
+to the rest of the state.",
+    HTML(paste0(state.choice, "Trend Cluster<br/>Geo Distribution", sep = " ")),icon("info-circle")))
 }
 
 # draw.geo.cluster: Used in app.R to draw state and US maps
@@ -313,8 +327,15 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
 }
 
 get_title <- function(state.choice, death.cause, period) {
-  return (tags$div(
-    HTML(paste(state.choice, " - Death of", death.cause, "Rate<br/>", period))))
+  return (tags$div(title="This map is a visualization of each
+of the individual counties within
+the selected state. Lighter colors
+indicate lower premature deaths, 
+darker colors are higher. The key 
+for each of the colors appears beneath 
+the map of the state. The desired time 
+range can be selected beneath the key.",
+    HTML(paste(state.choice, " - Death of", death.cause, "Rate", period)),icon("info-circle")))
 }
 
 getLatLong <- function(state.choice, dataset) {
