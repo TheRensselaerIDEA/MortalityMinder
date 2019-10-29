@@ -848,8 +848,30 @@ server <- function(input, output, session) {
     } else {
         nclusters <- max(mort.cluster.raw()$cluster)
         
+        switch(input$death_cause,
+               "Despair" = {
+                 death_rate <- c(28.929453, 33.665595, 37.821445, 40.081486, 43.900063, 55.084642)
+               },
+               "Assault" = {
+                 death_rate <- c(6.750937, 6.729051, 6.687417, 5.934990, 5.915201, 6.999898)
+               }, 
+               "Cancer" = {
+                 death_rate <- c(107.637100, 107.638200, 106.628310, 106.949100, 105.219690, 101.169700)
+               },
+               "Cardiovascular" = {
+                 death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
+               })
+        
+        nation.dataframe <- data.frame(
+          period = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"), 
+          cluster = rep("National Average", 6), 
+          death_rate, 
+          count = rep(NA, 6))
+        
+        total.data <- rbind(mort.avg.cluster.ord(), nation.dataframe)
+        
         line_plot <- ggplot(
-          mort.avg.cluster.ord(),
+          total.data,
           aes(
             x = period, y = death_rate, 
             color = cluster, group = cluster
@@ -858,7 +880,7 @@ server <- function(input, output, session) {
           geom_line(size = 1) + 
           geom_point(color = "black", shape = 21, fill = "white") + 
           labs.line.mort(input$state_choice, input$death_cause) + 
-          color.line.cluster(input$state_choice, nclusters) +
+          color.line.cluster(input$state_choice, as.integer(nclusters) + 1) +
           theme.line.mort() + 
           guides(color = guide_legend(reverse = T))
       
