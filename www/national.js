@@ -28,49 +28,97 @@ btn1.onclick = function(){
   if(playing === true){
     playing = false;
     btn.innerHTML = "Play";
-    image.src = images[0];
-    position = 0;
   }
+  for(i = 0; i < btn_list.length; i++){
+    if(i === 0){
+      btn_list[i].style.backgroundColor = "red";
+    }
+    else{
+      btn_list[i].style.backgroundColor = "white";
+    }
+  }
+  image.src = images[0];
+  position = 0;
 }
 btn2.onclick = function(){
   if(playing === true){
     playing = false;
     btn.innerHTML = "Play";
-    image.src = images[1];
-    position = 1;
   }
+  for(i = 0; i < btn_list.length; i++){
+    if(i === 1){
+      btn_list[i].style.backgroundColor = "red";
+    }
+    else{
+      btn_list[i].style.backgroundColor = "white";
+    }
+  }
+  image.src = images[1];
+  position = 1;
 }
 btn3.onclick = function(){
   if(playing === true){
     playing = false;
     btn.innerHTML = "Play";
-    image.src = images[2];
-    position = 2;
   }
+  for(i = 0; i < btn_list.length; i++){
+    if(i === 2){
+      btn_list[i].style.backgroundColor = "red";
+    }
+    else{
+      btn_list[i].style.backgroundColor = "white";
+    }
+  }
+  image.src = images[2];
+  position = 2;
 }
 btn4.onclick = function(){
   if(playing === true){
     playing = false;
     btn.innerHTML = "Play";
-    image.src = images[3];
-    position = 3;
   }
+  for(i = 0; i < btn_list.length; i++){
+    if(i === 3){
+      btn_list[i].style.backgroundColor = "red";
+    }
+    else{
+      btn_list[i].style.backgroundColor = "white";
+    }
+  }
+  image.src = images[3];
+  position = 3;
 }
 btn5.onclick = function(){
   if(playing === true){
     playing = false;
     btn.innerHTML = "Play";
-    image.src = images[4];
-    position = 4
   }
+  for(i = 0; i < btn_list.length; i++){
+    if(i === 4){
+      btn_list[i].style.backgroundColor = "red";
+    }
+    else{
+      btn_list[i].style.backgroundColor = "white";
+    }
+  }
+  image.src = images[4];
+  position = 4;
 }
 btn6.onclick = function(){
   if(playing === true){
     playing = false;
     btn.innerHTML = "Play";
-    image.src = images[5];
-    position = 5;
   }
+  for(i = 0; i < btn_list.length; i++){
+    if(i === 5){
+      btn_list[i].style.backgroundColor = "red";
+    }
+    else{
+      btn_list[i].style.backgroundColor = "white";
+    }
+  }
+  image.src = images[5];
+  position = 5;
 }
 
 function changeImage(){
@@ -78,6 +126,7 @@ function changeImage(){
       if(position >= images.length){
         position = 0;
       }
+      var i;
       for(i = 0; i < btn_list.length; i++){
         if(i === position){
           btn_list[i].style.backgroundColor = "red";
