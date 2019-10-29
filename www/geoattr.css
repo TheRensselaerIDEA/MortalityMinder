@@ -22,7 +22,7 @@
   text-align: center;
 }
 .explore_but {
-  margin-top:5%;
+  margin-top:0%;
   margin-left:30%;
 }
 
@@ -37,6 +37,10 @@
           background: #fff; 
           border: 0px;        
           pointer-events: none;     
+}
+
+.landing_page_map{
+  display:center;
 }
 
 #play {
