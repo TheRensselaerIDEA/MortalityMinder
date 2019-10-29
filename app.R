@@ -302,7 +302,40 @@ which are caused by:"),
                 tags$button(
                   id = "play",
                   "Stop"
-                )
+                ),
+                tags$ul(
+                  class = "ul_period",
+                  tags$button(
+                    id = "first_period",
+                    class = "period_text",
+                    "2000-2002"
+                  ),
+                  tags$button(
+                    id = "second_period",
+                    class = "period_text",
+                    "2003-2005"
+                  ),
+                  tags$button(
+                    id = "third_period",
+                    class = "period_text",
+                    "2006-2008"
+                  ),
+                  tags$button(
+                    id = "forth_period",
+                    class = "period_text",
+                    "2009-2011"
+                  ),
+                  tags$button(
+                    id = "fifth_period",
+                    class = "period_text",
+                    "2012-2014"
+                  ),
+                  tags$button(
+                    id = "sixth_period",
+                    class = "period_text",
+                    "2015-2017"
+                  ))
+              
             )),
             tags$div(
                 class = "page2_col2_down",
