@@ -117,7 +117,7 @@ color.geo.cluster <- function(n) {
 
 labs.geo.cluster <- function(state.choice) {
   labs(
-    title = paste(state.choice, "Trend Cluster\nGeo-Distribution"),
+    title = paste(state.choice, "Trend Cluster Geo-Distribution"),
     x = NULL, y = NULL
   )
 }
