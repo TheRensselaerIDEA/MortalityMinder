@@ -180,11 +180,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
             class = "col2",
             tags$div(
               class = "col2_title",
-              # tags$h2(
-              #   "What are the Social Determinants of Mortality?"
-              # ),
               uiOutput("textDeterminants")
-              
             ),
             tags$div(
               class = "col2_plot",
@@ -206,8 +202,10 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
           class = "page3",
           tags$div(
             class = "page3_col1",
-            tags$h2(style = "padding-right: 20px; padding-left: 20px",
-                      textOutput("state_title")),
+            tags$div(
+              class = "col2_title",
+              uiOutput("textDeterminants2")
+            ),
             plotOutput("determinants_plot1", height = "85%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
           ),
@@ -880,6 +878,29 @@ server <- function(input, output, session) {
         style = "padding-right: 20px; padding-left: 20px",
         paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"), tags$div(
 title="Each factor is rated as Destructive, meaning 
+that it has a positive correlation with the 
+death rate; or Protective, meaning it has a 
+negative correlation with the death rate. 
+MortalityMinder shows those factors which have 
+the highest absolute correlation with mortality. 
+For more information on the method of determining
+correlation please navigate to...",
+          icon("info-circle")
+        )
+      ),
+      NULL
+    )
+  })
+
+  # Determinant Header (upper-right panel, Page 1)
+  output$textDeterminants2 <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        style = "padding-right: 20px; padding-left: 20px",
+        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"), tags$div(
+          title="Each factor is rated as Destructive, meaning 
 that it has a positive correlation with the 
 death rate; or Protective, meaning it has a 
 negative correlation with the death rate. 
