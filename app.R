@@ -301,25 +301,17 @@ which are caused by:"),
                 class = "explore_but",
                 tags$button(
                   id = "play",
-                  "See changes"
-                ),
-                tags$span(
-                  id = "clock",
-                  "2000-2002"
-                ),
-                tags$div(
-                  class = "year_but",
-                  radioButtons("year_selector", 
-                               label = "Select years:",
-                               selected = "2000-2002", 
-                               choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                               choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                               inline = TRUE)
+                  "Stop"
                 )
             )),
             tags$div(
                 class = "page2_col2_down",
-                d3Output("national_map", width = '100%', height = '100%')
+                tags$img(
+                  id = "national_map",
+                  class = "landing_page_map",
+                  src = "Despair/1.png",
+                  style = "width:760px;"
+                )
             )
           )
           
@@ -409,6 +401,7 @@ which are caused by:"),
 tags$script(src = "jquery-ui.min.js"),
 tags$script(src = "fullpage.js"),
 tags$script(src = "jquery.ba-outside-events.js"),
+includeScript(path = "national.js"),
 includeScript(path = "myscript.js")
 )
 
@@ -1165,20 +1158,6 @@ correlation please navigate to...",
     }
   })
   
-  
-  data_to_json <- function(data) {
-    jsonlite::toJSON(data, dataframe = "rows", auto_unbox = FALSE, rownames = TRUE)
-  }
-  output$national_map <- renderD3({
-    data_geo <- jsonlite::read_json("all-counties.json")
-    data_stat <- cdc.mort.mat(cdc.data,"US", input$death_cause)
-    cause <- input$death_cause
-    r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
-                d3_version = 3,
-                dependencies = "topojson.min.js",
-                css = "geoattr.css",
-                script = "d3.js")
-  })
   
   # click on geo cluster map shows county data on mort_line
   observe({
