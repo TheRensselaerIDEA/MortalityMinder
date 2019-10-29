@@ -203,7 +203,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
           tags$div(
             class = "page3_col1",
             tags$div(
-              class = "col2_title",
+              class = "col1_title",
               uiOutput("textDeterminants2")
             ),
             plotOutput("determinants_plot1", height = "85%", width = "100%",
@@ -215,13 +215,17 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
           tags$div(
             class = "page3_col2",
             tags$div(
+              class = "col2_title",
+              uiOutput("textDeterminants3")
+            ),
+            tags$div(
               class = "page3_col2_top",
-              plotOutput("determinants_plot2",width="100%",height="100%")
+              plotOutput("determinants_plot2",width="100%",height="85%")
             ),
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="95%")
+              plotOutput("determinants_plot3",width="100%",height="85%")
             )
           ),
           tags$div(
@@ -918,14 +922,14 @@ correlation please navigate to...",
     )
   })
 
-  # Determinant Header (upper-right panel, Page 1)
+  # Determinant Header (upper-left panel, Page 2)
   output$textDeterminants2 <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"), tags$div(
+        paste0("Factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
           title="Each factor is rated as Destructive, meaning 
 that it has a positive correlation with the 
 death rate; or Protective, meaning it has a 
@@ -934,6 +938,22 @@ MortalityMinder shows those factors which have
 the highest absolute correlation with mortality. 
 For more information on the method of determining
 correlation please navigate to...",
+          icon("info-circle")
+        )
+      ),
+      NULL
+    )
+  })
+
+  # Determinant Header (upper-center panel, Page 2)
+  output$textDeterminants3 <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        style = "padding-right: 20px; padding-left: 20px",
+        paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), tags$div(
+          title="Help text for cluster distribution bar plots",
           icon("info-circle")
         )
       ),
