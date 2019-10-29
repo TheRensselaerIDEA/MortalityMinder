@@ -819,6 +819,15 @@ server <- function(input, output, session) {
         switch(input$death_cause,
                "Despair" = {
                  death_rate <- c(28.929453, 33.665595, 37.821445, 40.081486, 43.900063, 55.084642)
+               },
+               "Assault" = {
+                 death_rate <- c(6.750937, 6.729051, 6.687417, 5.934990, 5.915201, 6.999898)
+               }, 
+               "Cancer" = {
+                 death_rate <- c(107.637100, 107.638200, 106.628310, 106.949100, 105.219690, 101.169700)
+               },
+               "Cardiovascular" = {
+                 death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
                })
         
         nation.dataframe <- data.frame(
