@@ -168,7 +168,7 @@ as a result of the selected cause.",
               ),
               tags$div(
                 class = "col1_bot_right", tags$div(title="This plot represents the average
-premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-circle"))),
+premature deaths for each cluster.",tags$h4("Premature Death Trends",icon("info-circle"))),
                 plotOutput("mort_line",width="100%",height="90%")
               )
             )
@@ -206,7 +206,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
               class = "col1_title",
               uiOutput("textDeterminants2")
             ),
-            plotOutput("determinants_plot1", height = "85%", width = "100%",
+            plotOutput("determinants_plot1", height = "80%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
           ),
           tags$div(
@@ -215,17 +215,21 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
           tags$div(
             class = "page3_col2",
             tags$div(
-              class = "col2_title",
+              class = "col2_title1",
               uiOutput("textDeterminants3")
             ),
             tags$div(
               class = "page3_col2_top",
-              plotOutput("determinants_plot2",width="100%",height="85%")
+              plotOutput("determinants_plot2",width="100%",height="80%")
             ),
             tags$div(class = "hr"),
             tags$div(
+              class = "col2_title2",
+              uiOutput("textDeterminants4")
+            ),
+            tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="85%")
+              plotOutput("determinants_plot3",width="100%",height="80%")
             )
           ),
           tags$div(
@@ -878,7 +882,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
         paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"), tags$div(
 title="Each factor is rated as Destructive, meaning 
@@ -888,8 +892,7 @@ negative correlation with the death rate.
 MortalityMinder shows those factors which have 
 the highest absolute correlation with mortality. 
 For more information on the method of determining
-correlation please navigate to...",
-          icon("info-circle")
+correlation please navigate to...",icon("info-circle")
         )
       ),
       NULL
@@ -901,7 +904,7 @@ correlation please navigate to...",
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
         paste0("Factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
           title="Each factor is rated as Destructive, meaning 
@@ -911,8 +914,7 @@ negative correlation with the death rate.
 MortalityMinder shows those factors which have 
 the highest absolute correlation with mortality. 
 For more information on the method of determining
-correlation please navigate to...",
-          icon("info-circle")
+correlation please navigate to...",icon("info-circle")
         )
       ),
       NULL
@@ -924,10 +926,25 @@ correlation please navigate to...",
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
         paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), tags$div(
-          title="Help text for cluster distribution bar plots",
+          title="Help text for cluster distribution bar plots",icon("info-circle")
+        )
+      ),
+      NULL
+    )
+  })
+
+  # Determinant Header (upper-center panel, Page 2)
+  output$textDeterminants4 <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        paste0("Relationship of '",input$determinant_choice, "' to ", names(which(cause.list == input$death_cause)), " mortality rates for ", names(which(state.list == input$state_choice)), " counties."), tags$div(
+          title="Help text for scatter plot",
           icon("info-circle")
         )
       ),
