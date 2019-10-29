@@ -90,7 +90,7 @@
   position:fixed;
   /*top:20px;*/
   width:100%;
-  height:50px;
+  height:60px;
   margin-bottom:0;
   opacity:1;
   border-bottom: 1px solid #D4D4D4;
@@ -110,6 +110,25 @@
   font-family:'customFont';
   font-size:26px;
 }
+
+.prompt_text {
+  float:none;
+  width:300px;
+  height:20px;
+  padding:0px;
+  overflow:none;
+}
+
+.title_right {
+  float:right;
+  width:700px;
+  height:20px;
+  padding:0px;
+  overflow:none;
+  vertical-align: text-top;
+}
+
+
 
 .page_select {
   width:100px;
@@ -423,8 +442,8 @@
 .fp-controlArrow.fp-prev {
     left: 0;
     border: none;
-    width: 18px !important;
-    height: 15px;
+    width: 20px !important;
+    height: 20px;
     background: url(left.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
@@ -434,8 +453,8 @@
 .fp-controlArrow.fp-next {
     right: 0;
     border: none;
-    width: 18px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background: url(right.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */

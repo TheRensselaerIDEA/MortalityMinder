@@ -50,10 +50,13 @@ ui <- fluidPage(
       class = "title",
       h1("MortalityMinder")
     ),
-    # tags$div(
-    #   class = "page_select",
-    #   tags$a("asdfasdf")
-    # ),
+    tags$div(
+      class="title_right",
+    tags$div(
+      class = "prompt_text",
+      h4("Select cause of death and state: ")
+    ),
+
     pickerInput(
       inputId = "state_choice",
       label = h4("State"), 
@@ -74,6 +77,7 @@ ui <- fluidPage(
         subtext = c("Self-Harm and some other causes"),
         "dropup-auto" = FALSE
       )
+    )
     )
     
   ),
