@@ -167,7 +167,9 @@ as a result of the selected cause.",
                 class = "col1_bot_left",leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
-                class = "col1_bot_right",plotOutput("mort_line",width="100%",height="90%")
+                class = "col1_bot_right", tags$div(title="This plot represents the average
+premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-circle"))),
+                plotOutput("mort_line",width="100%",height="90%")
               )
             )
           ),
