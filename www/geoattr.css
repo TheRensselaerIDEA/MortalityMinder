@@ -12,15 +12,20 @@
     fill: orange;
   }
 
-.explore_but {
-  margin-top:100px;
-  margin-left:600px;
+.d3map{
+  width:100%;
+  height:100%;
 }
 
-.btn{
-  background-color:red;
-  margin:10px 10px;
+.National_title{
+  font-size:32px;
+  text-align: left;
 }
+.explore_but {
+  margin-left:0%;
+}
+
+
 .tooltip { 
           position: absolute;     
           text-align: center;     
@@ -32,18 +37,41 @@
           border: 0px;        
           pointer-events: none;     
 }
-#wrapper {
-    width: 960px;
-    margin: 0px auto 0;
+
+.landing_page_map{
+  display:center;
 }
 
-#play, #clock {
-  position: absolute;
-  top: 15px;
-}
 #play {
-	left: 15px;
+
 }
 #clock {
 	left: 65px;
 }
+.period_text{
+  font-size:12px;
+  
+}
+
+.ul_period {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: white;
+}
+
+
+.period_text {
+  float: left;
+  background-color: white; /* Green */
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
+
+
