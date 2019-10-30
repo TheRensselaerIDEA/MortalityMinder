@@ -746,7 +746,8 @@ server <- function(input, output, session) {
           axis.text.x = element_text(size = 12),
           axis.title.x = element_text(size = 12),
           panel.grid.major.y = element_blank()
-        )
+        ) + 
+        theme(legend.position="top")
     }
     
     #Display something else when there are no significant SD
@@ -1362,7 +1363,8 @@ correlation please navigate to...",
           axis.text.x = element_text(size = 12),
           axis.title.x = element_text(size = 12),
           panel.grid.major.y = element_blank()
-        )
+        ) + 
+        theme(legend.position="top")
     }
     #Display something else when there are no significant SD
     else {
