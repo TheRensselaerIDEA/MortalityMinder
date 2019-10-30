@@ -29,13 +29,18 @@ theme.categorical.colors <- function(n_clusters) {
   }
 }
 
-#' Gives the theme categorical colors with black appended
+theme.cat.accent.color <- function() {
+  return ("#0571b0")
+}
+
+#' Gives the theme categorical colors with accent color appended
 #'
 #' @param n_clusters 
 #'
 #' @return a vector of (n_clusters + 1) hex values where the first n_clusters
 #'          values are the values that would be returned by 
-#'          theme.categorical.colors(n_clusters) and the last value is black
+#'          theme.categorical.colors(n_clusters) and the last value is 
+#'          theme.cat.accent.color()
 #'
 #' @examples
 #' scale_fill_manual(values = theme.categorical.colors(3))
@@ -44,8 +49,8 @@ theme.categorical.colors <- function(n_clusters) {
 #' 
 #' @author Ross DeVito
 #' @export
-theme.categorical.colors.black <- function(n_clusters) {
-  return(append(theme.categorical.colors(n_clusters), "#000000"))
+theme.categorical.colors.accent <- function(n_clusters) {
+  return(append(theme.categorical.colors(n_clusters), theme.cat.accent.color()))
 }
 
 
@@ -259,22 +264,23 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
                           label = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
-                         className="map-title") %>%
-              addLegend("bottomleft",
-                        colors = colors[3],
-                        labels = labels[3],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[2],
-                        labels = labels[2],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[1],
-                        labels = labels[1],
-                        title = "Clusters:",
-                        opacity = 1))
+                         className="map-title")# %>%
+              # addLegend("bottomleft",
+              #           colors = colors[3],
+              #           labels = labels[3],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[2],
+              #           labels = labels[2],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[1],
+              #           labels = labels[1],
+              #           title = "Clusters:",
+              #           opacity = 1)
+            )
   }
   
   
