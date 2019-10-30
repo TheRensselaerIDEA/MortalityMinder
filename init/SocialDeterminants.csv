@@ -25,8 +25,8 @@ pct_physically_inactive,Percentage Of Physically Inactive,Percentage of adults a
 pct_with_access,Percentage Of Accessing To Exercise Opportunities,Percentage of population with adequate access to locations for physical activity.,http://bit.ly/2N0LI1S
 pct_excessive_drinking,Percentage Of Excessive Drinking,Percentage of adults reporting binge or heavy drinking.,http://bit.ly/2NpvVIP
 num_alcohol_impaired_driving_deaths,Number Of Alcohol Impaired Driving Deaths,Number of driving deaths with alcohol involvement. ,http://bit.ly/2MYWS77
-num_driving_deaths,Number Of Driving Deaths,"Number of motor vehicle crash deaths per 100,000 population.",
-pct_alcohol_impaired,Percentage Of Alcohol Impaired,Percentage of driving deaths with alcohol involvement.,
+num_driving_deaths,Number Of Driving Deaths,"Number of motor vehicle crash deaths per 100,000 population.",http://bit.ly/2MZjV1F
+pct_alcohol_impaired,Percentage Of Alcohol Impaired,Percentage of driving deaths with alcohol involvement.,http://bit.ly/2MYWS77
 num_chlamydia_cases,Number Of Chlamydia Cases,"Number of newly diagnosed chlamydia cases per 100,000 population.",http://bit.ly/2N1NTC8
 chlamydia_rate,Chlamydia Rate,"Number of newly diagnosed chlamydia cases per 100,000 population.",http://bit.ly/2N1NTC8
 teen_birth_rate,Teenagers Birth Rate,"Number of births per 1,000 female population ages 15-19.",http://bit.ly/2N0MTyk
