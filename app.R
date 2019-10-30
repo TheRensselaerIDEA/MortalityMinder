@@ -434,11 +434,12 @@ which are caused by:"),
                           tags$p("Download Data",align="center"), tags$br(),
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
-                          downloadButton("downloadCHRDesc", "County Health Rankings (CHR) Factor Descriptions"), tags$br(),
+                          downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
+                          tags$br(),
+                          tags$p("Download Current Results",align="center"), tags$br(),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
-                          downloadButton("downloadCorr", "Current Factor Correlations"), tags$br(),
-                          downloadButton("downloadAll", "Download All")
+                          downloadButton("downloadCorr", "Current Factor Correlations")
                    )
         ) # Close outter fluidRow
                             ) # Close page 4 
@@ -606,6 +607,55 @@ server <- function(input, output, session) {
     }
   )
   
+  # Outputs chr.data.2019 as a csv
+  output$downloadCHRData <- downloadHandler(
+    filename = function() {
+      "chr_data_2019.csv"
+    },
+    content = function(file) {
+      write.csv(chr.data.2019, file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs chr.namemap.2019 as a csv
+  output$downloadFactorDesc <- downloadHandler(
+    filename = function() {
+      "chr_data_desc.csv"
+    },
+    content = function(file) {
+      write.csv(SocialDeterminants, file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs mort.cluster.ord as a csv
+  output$downloadClusters <- downloadHandler(
+    filename = function() {
+      paste0(input$state_choice, "_", input$death_cause, "_clusters.csv")
+    },
+    content = function(file) {
+      write.csv( mort.cluster.ord(), file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs mort.avg.cluster.ord as a csv
+  output$downloadClusterTime <- downloadHandler(
+    filename = function() {
+      paste0(input$state_choice, "_", input$death_cause, "_clusters_time_series.csv")
+    },
+    content = function(file) {
+      write.csv( mort.avg.cluster.ord(), file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs kendall.cor as a csv
+  output$downloadCorr <- downloadHandler(
+    filename = function() {
+      paste0(input$state_choice, "_", input$death_cause, "_", input$determinant_choice , "_correlations.csv")
+    },
+    content = function(file) {
+      write.csv( kendall.cor(), file, row.names = FALSE)
+    }
+  )
   
   # ----------------------------------------------------------------------
   output$determinants_plot1 <- renderPlot({

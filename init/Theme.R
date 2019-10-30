@@ -14,18 +14,18 @@
 #' @export
 theme.categorical.colors <- function(n_clusters) {
   if (n_clusters == 3) {
-    return(c("#4575b4", "#fdae61", "#d73027"))
+    return(c("#fed976", "#fd8d3c", "#bd0026"))
   }
   if (n_clusters == 4) {
-    return(c("#4575b4", "#fdae61", "#d73027", "#a50026"))
+    return(c("#fed976", "#fd8d3c", "#fc4e2a", "#bd0026"))
   }
   if (n_clusters == 5) {
-    return(c("#313695", "#4575b4",
-             "#fdae61", "#d73027", "#a50026"))
+    return(c("#fed976", "#fd8d3c", "#fc4e2a", 
+            "#e31a1c", "#bd0026"))
   }
   if (n_clusters == 6) {
-    return(c("#313695", "#4575b4", "#abd9e9",
-             "#fdae61", "#d73027", "#a50026"))
+    return(c("#fed976", "#fd8d3c", "#fc4e2a", 
+             "#e31a1c", "#bd0026", "#800026"))
   }
 }
 
