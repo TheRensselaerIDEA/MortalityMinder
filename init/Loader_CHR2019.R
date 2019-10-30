@@ -53,7 +53,7 @@ chr.rankedMeasure.namemap <- tibble(
            "years of potential life lost rate (Hispanic)", "years of potential life lost rate (White)", 
            "percentage of fair or poor", "physically unhealthy days", "mentally unhealthy days", "percentage of low birthweight",
            "percentage of low birthweight (Black)", "percentage of low birthweight (Hispanic)", "percentage of low birthweight (White)",
-           "percentage of adult smoking", "percentage of adult obesity", "food environment index", "percentage of physically inactive",
+           "percentage of adult smoking", "persentage of adult obesity", "food environment index", "percentage of physically inactive",
            "percentage of accessing to exercise opportunities", "percentage of excessive drinking", 
            "number of alcohol impaired driving deaths", "number of driving deaths", "percentage of alcohol impaired", 
            "number of chlamydia cases", "chlamydia rate", "teenagers birth rate", "teenagers birth rate (Black)", "teenagers birth rate (Hispanic)",
