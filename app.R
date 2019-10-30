@@ -50,11 +50,10 @@ ui <- fluidPage(
       class = "title",
       h1("MortalityMinder")
     ),
-    tags$div(
-      class="title_right",
+    
     tags$div(
       class = "prompt_text",
-      h4("Select cause of death and state: ")
+      "Select cause of death and state: "
     ),
 
     pickerInput(
@@ -78,7 +77,7 @@ ui <- fluidPage(
         "dropup-auto" = FALSE
       )
     )
-    )
+    
     
   ),
   
