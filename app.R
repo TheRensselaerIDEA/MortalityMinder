@@ -1249,23 +1249,23 @@ correlation please navigate to...",
     
     if (nrow(point) == 0) return(NULL)
     
+
     # calculate point position INSIDE the image as percent of total dimensions
     # from left (horizontal) and from top (vertical)
-    # left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
-    # top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
-    
-    left_pct <- 1.75
-    top_pct <- 0.30
+    left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+    top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
     
     # calculate distance from left and bottom side of the picture in pixels
     left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
     top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
-
-    # create style property for tooltip
+    
+    # create style property fot tooltip
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
-    style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
-                    "left: ", left_px + 200, "px; top:", top_px + 2, "px; width: 250px;")
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+                    "left:", left_px + 2, "px; top:", top_px + 2, "px;")
+    
+    
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
