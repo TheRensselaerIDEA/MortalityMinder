@@ -214,7 +214,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(dragging = FALSE)) %>%
+                    options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 
@@ -249,7 +249,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
             )
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(dragging = FALSE)) %>%
+                    options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 
@@ -484,8 +484,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(
-                      dragging = FALSE)) %>%
+                    options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 
