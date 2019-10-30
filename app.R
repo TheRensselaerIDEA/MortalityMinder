@@ -434,7 +434,9 @@ which are caused by:"),
                           tags$p("Download Data",align="center"), tags$br(),
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
-                          downloadButton("downloadCHRDesc", "County Health Rankings (CHR) Factor Descriptions"), tags$br(),
+                          downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
+                          tags$br(),
+                          tags$p("Download Current Results",align="center"), tags$br(),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
@@ -616,12 +618,12 @@ server <- function(input, output, session) {
   )
   
   # Outputs chr.namemap.2019 as a csv
-  output$downloadCHRDesc <- downloadHandler(
+  output$downloadFactorDesc <- downloadHandler(
     filename = function() {
       "chr_data_desc.csv"
     },
     content = function(file) {
-      write.csv(chr.namemap.2019, file, row.names = TRUE)
+      write.csv(SocialDeterminants, file, row.names = FALSE)
     }
   )
   
