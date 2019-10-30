@@ -341,7 +341,7 @@ labs.geo.mort <- function(state.choice, period.choice, death.cause) {
 
 bin.geo.mort <- function(death.cause) {
   bin <- list(
-    "Despair" = c(0, 5, 10, 15, 25, 50, 100, 200, Inf),
+    "Despair" = c(-1, 5, 10, 15, 25, 50, 100, 200, Inf),
     "Cardiovascular" = c(seq(0, 360, 45), Inf),
     "Assault" = c(seq(0, 40, 5), Inf),
     "Cancer" = c(seq(0, 360, 45), Inf)

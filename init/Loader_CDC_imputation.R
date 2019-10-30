@@ -478,6 +478,11 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
       death_rate = dplyr::if_else(is.na(population), death_rate, death_num/population*10^5),
       death_cause = death.cause ) %>%
     
+    dplyr::mutate(
+      death_rate = dplyr::if_else(death_rate == 0, 
+                                  min(death_rate[death_rate>0]),
+                                  death_rate) ) %>%
+    
     # Rearrangement
     dplyr::arrange(county_fips) %>% 
     dplyr::select(
@@ -761,6 +766,8 @@ cdc.data.cardiovascular.fill <- cdc.fill.by.excl(cdc.data.cardiovascular, cdc.da
 cdc.data <- dplyr::bind_rows(cdc.data.despair.fill, cdc.data.assault.fill, cdc.data.cancer.fill, 
                              cdc.data.cardiovascular.fill, cdc.data.allcause) %>% 
   as.data.frame()
+
+saveRDS(cdc.data, "../data/CDC/cdc.data.fill.Rds")
 
 ######################
 
