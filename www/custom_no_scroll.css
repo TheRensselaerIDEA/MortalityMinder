@@ -85,8 +85,7 @@
   border:0;
   border-radius:0px;
   z-index: 999;
-  background-color: #F2EFE6;
-  background-image: url("tombstone.png");
+  background-color: #9ea2a2;
   position:fixed;
   /*top:20px;*/
   width:100%;
@@ -102,6 +101,7 @@
   height:20px;
   padding:14px;
   overflow:none;
+  font-weight: 800;
 }
 
 .title h1 {
