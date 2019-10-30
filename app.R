@@ -285,7 +285,6 @@ which are caused by:"),
             ),
             tags$p("The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. To represent premature death, the rate includes all deaths for the selected causes in individuals age 25 to 64."),
             
-            tags$hr(),
             tags$p("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed from 2000 to 2017. The map shows the changes by county. The graph shows the average mortality rate of the United States."),
             
             tags$p("To help address why rates are changing, MortalityMinder analyzes factors such as social determinants that are associated with increased mortality rates."),
@@ -1030,7 +1029,11 @@ server <- function(input, output, session) {
       tags$h3(
         paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$h4(paste0(names(which(cause.definitions == input$death_cause))))
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$h5("Mean Mortality Rate:"),
+      tags$h5("Highest Rate County:"),
+      tags$h5("Lowest Rate County:"),
+      tags$h5("National Mean:")
     )
   })
 
