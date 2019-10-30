@@ -445,8 +445,14 @@ which are caused by:"),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
-                   )
-        ) # Close outter fluidRow
+                   ),
+            tags$div(style="position:relative;width: 33%;left: 33%",
+              tags$img(
+                src="IDEA_logo_500.png", 
+                width="75%", 
+                style="bottom: 0; left: 0;")
+            )
+        )# Close outter fluidRow
                             ) # Close page 4 
   )
 )
