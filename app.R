@@ -223,12 +223,12 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
             ),
             tags$div(
               class = "page3_col2_top",
-              plotOutput("determinants_plot2",width="100%",height="85%")
+              plotOutput("determinants_plot2",width="100%",height="75%")
             ),
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="85%")
+              plotOutput("determinants_plot3",width="100%",height="75%")
             )
           ),
           tags$div(
@@ -242,7 +242,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
                 label = "Selected Determinant: ",
                 choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
                 selected = "Socio-Economic",
-                width = "auto",
+                width = "100%",
                 inline = TRUE,
                 options = list(
                   `live-search` = TRUE,
@@ -762,7 +762,7 @@ server <- function(input, output, session) {
         
         
         ggplot(aes(x = death_rate, y = VAR)) + 
-        geom_point(aes(color = cluster)) + 
+        geom_point(aes(fill = cluster)) + 
         labs(
           x = "Mortality Rate",
           y = input$determinant_choice
@@ -793,13 +793,17 @@ server <- function(input, output, session) {
       tidyr::drop_na() %>%
       
       ggplot(aes(x = death_rate, y = VAR)) + 
-      geom_point(aes(color = cluster)) + 
+      geom_point(colour="black", shape=21, size = 3, alpha = .8,
+          aes(fill = cluster)) + 
       labs(
         x = "Mortality Rate",
         y = input$determinant_choice
       ) +
       theme.line.mort() + 
-      color.line.cluster(input$state_choice, max(sd.select$cluster))
+      color.line.cluster(input$state_choice, max(sd.select$cluster)) + 
+      # scale_fill_viridis(discrete = TRUE) 
+      scale_fill_brewer(palette = "RdYlBu", direction = -1)
+      # scale_fill_brewer(palette = "YlOrRd", direction = 1)
     }
   })
   
