@@ -223,12 +223,12 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
             ),
             tags$div(
               class = "page3_col2_top",
-              plotOutput("determinants_plot2",width="100%",height="85%")
+              plotOutput("determinants_plot2",width="100%",height="75%")
             ),
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="85%")
+              plotOutput("determinants_plot3",width="100%",height="75%")
             )
           ),
           tags$div(
@@ -242,7 +242,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
                 label = "Selected Determinant: ",
                 choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
                 selected = "Socio-Economic",
-                width = "auto",
+                width = "100%",
                 inline = TRUE,
                 options = list(
                   `live-search` = TRUE,
@@ -705,8 +705,6 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>% 
       tidyr::drop_na()
     
-   # browser()
-    
     if (nrow(sd.select) <= 6){
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
@@ -751,12 +749,7 @@ server <- function(input, output, session) {
           
           legend.position = "none"
         ) + 
-        scale_fill_manual(
-          name = "Cluster",
-          values = colorRampPalette(
-            c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
-          )(max(sd.select$cluster))
-        ) 
+        scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
     }
     
@@ -785,7 +778,7 @@ server <- function(input, output, session) {
         
         
         ggplot(aes(x = death_rate, y = VAR)) + 
-        geom_point(aes(color = cluster)) + 
+        geom_point(aes(fill = cluster)) + 
         labs(
           x = "Mortality Rate",
           y = input$determinant_choice
@@ -818,7 +811,8 @@ server <- function(input, output, session) {
       tidyr::drop_na() %>%
       
       ggplot(aes(x = death_rate, y = VAR)) + 
-      geom_point(aes(color = cluster)) + 
+      geom_point(colour="black", shape=21, size = 3, alpha = .7,
+          aes(fill = factor(cluster))) + 
       labs(
         x = "Mortality Rate",
         y = input$determinant_choice
@@ -826,7 +820,9 @@ server <- function(input, output, session) {
       theme.line.mort() + 
       theme(legend.position = "top") + 
       guides(color = guide_legend(override.aes = list(shape = 15))) + 
-      color.line.cluster(input$state_choice, max(sd.select$cluster))
+      color.line.cluster(input$state_choice, max(sd.select$cluster)) +
+      scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+
     }
   })
   
@@ -866,7 +862,8 @@ server <- function(input, output, session) {
         geom_line(size = 1) + 
         geom_point(color = "black", shape = 21, fill = "white") + 
         labs.line.mort(input$state_choice, input$death_cause) + 
-        color.line.cluster("US", n.clusters.nation) +
+        scale_color_manual(
+          values = theme.categorical.colors.black(max(mort.cluster.ord()$cluster))) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
@@ -911,7 +908,8 @@ server <- function(input, output, session) {
           geom_line(size = 1) + 
           geom_point(color = "black", shape = 21, fill = "white") + 
           labs.line.mort(input$state_choice, input$death_cause) + 
-          color.line.cluster(input$state_choice, as.integer(nclusters) + 1) +
+          scale_color_manual(
+                values = theme.categorical.colors.black(nclusters)) +
           theme.line.mort() + 
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T))
@@ -949,7 +947,7 @@ server <- function(input, output, session) {
 
     tagList(
     tags$h4(
-      paste0("Morality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
+      paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
     ),
     tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
     tags$h5(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify indiviual counties. Zoom map with mouse wheel or zoom buttons.")),
@@ -1044,9 +1042,11 @@ correlation please navigate to...",
   output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(), 
+                       max(mort.cluster.ord()$cluster))
     }else{
-      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
+      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(), 
+                       max(mort.cluster.ord()$cluster))
     }
     
   })
@@ -1057,9 +1057,11 @@ correlation please navigate to...",
   output$geo_cluster_kmean_2 <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", input$death_cause, mort.cluster.ord())
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(),
+                       max(mort.cluster.ord()$cluster))
     }else{
-      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord())
+      draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(),
+                       max(mort.cluster.ord()$cluster))
     }
     
   })
@@ -1156,8 +1158,6 @@ correlation please navigate to...",
     
     point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
     
-    #browser()    
-    
     if (nrow(point) == 0) return(NULL)
     
     # calculate point position INSIDE the image as percent of total dimensions
@@ -1171,17 +1171,14 @@ correlation please navigate to...",
     # calculate distance from left and bottom side of the picture in pixels
     left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
     top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
-    #browser()
-    
+
     # create style property for tooltip
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
     style <- paste0("position:absolute; z-index:100; background-color: rgba(227, 216, 216, 1.00); ",
                     "left: ", left_px + 200, "px; top:", top_px + 2, "px; width: 250px;")
-    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
-    # browser()
     wellPanel(
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",

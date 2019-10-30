@@ -53,7 +53,7 @@ chr.rankedMeasure.namemap <- tibble(
            "years of potential life lost rate (Hispanic)", "years of potential life lost rate (White)", 
            "percentage of fair or poor", "physically unhealthy days", "mentally unhealthy days", "percentage of low birthweight",
            "percentage of low birthweight (Black)", "percentage of low birthweight (Hispanic)", "percentage of low birthweight (White)",
-           "percentage of adult smoking", "persentage of adult obesity", "food environment index", "percentage of physically inactive",
+           "percentage of adult smoking", "percentage of adult obesity", "food environment index", "percentage of physically inactive",
            "percentage of accessing to exercise opportunities", "percentage of excessive drinking", 
            "number of alcohol impaired driving deaths", "number of driving deaths", "percentage of alcohol impaired", 
            "number of chlamydia cases", "chlamydia rate", "teenagers birth rate", "teenagers birth rate (Black)", "teenagers birth rate (Hispanic)",
@@ -128,10 +128,18 @@ chr.namemap.2019 <- bind_rows(
       chr.rankedMeasure.namemap,
       chr.additionMeasure.namemap
     )
-  ) %>% 
+  )
+
+chr.namemap.2019 %>% 
   dplyr::mutate(name = stringr::str_to_title(name)) %>%
   as.data.frame() %>% 
-  textshape::column_to_rownames("code")
+  textshape::column_to_rownames("name") -> chr.namemap.inv.2019
+write_rds(chr.namemap.inv.2019, "chr.namemap.inv.2019.rds")
+
+chr.namemap.2019 %>% 
+  dplyr::mutate(name = stringr::str_to_title(name)) %>%
+  as.data.frame() %>% 
+  textshape::column_to_rownames("code") -> chr.namemap.2019
 
 # Write out binary version of dataframe to wd
 write_rds(chr.namemap.2019, "chr.namemap.2019.rds")
