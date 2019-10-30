@@ -554,7 +554,7 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------------
   # Functions for data download
   
-  # Outputs cdc.data as a zipped csv
+  # Outputs cdc.data as a csv
   output$downloadCDCData <- downloadHandler(
     filename = function() {
       "cdc_data.csv"
