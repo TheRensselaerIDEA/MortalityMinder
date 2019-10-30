@@ -939,7 +939,7 @@ server <- function(input, output, session) {
 
     tagList(
     tags$h4(
-      paste0("Morality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
+      paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
     ),
     tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
     tags$h5(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify indiviual counties. Zoom map with mouse wheel or zoom buttons.")),
