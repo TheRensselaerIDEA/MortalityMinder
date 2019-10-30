@@ -348,9 +348,9 @@ labs.geo.mort <- function(state.choice, period.choice, death.cause) {
 bin.geo.mort <- function(death.cause) {
   bin <- list(
     "Despair" = c(-1, 5, 10, 15, 25, 50, 100, 200, Inf),
-    "Cardiovascular" = c(seq(0, 360, 45), Inf),
-    "Assault" = c(seq(0, 40, 5), Inf),
-    "Cancer" = c(seq(0, 360, 45), Inf)
+    "Cardiovascular" = c(seq(0, 315, 45), Inf),
+    "Assault" = c(seq(0, 35, 5), Inf),
+    "Cancer" = c(seq(0, 315, 45), Inf)
   )
   return(bin[[death.cause]])
 }
@@ -468,6 +468,22 @@ getLatLong <- function(state.choice, dataset) {
   return(c(min.lat - padding, min.long - padding, max.lat + padding, max.long + padding))
 }
 
+geo.label <- function(death.cause) {
+  switch(death.cause,
+         "Despair" = return(
+           c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+         ),
+         "Assault" = return(
+           c("[0,5]", "[5,10]", "[10,15]", "[15,20]", "[20,25]", "[25,30]", "[30,35]", "[35,Inf]")
+         ),
+         "Cancer" = return(
+           c("[0,45]", "[45,90]", "[90,135]", "[135,180]", "[180,225]", "[225,270]", "[270,315]", "[315,Inf]")
+         ),
+         "Cardiovascular" = return(
+           c("[0,45]", "[45,90]", "[90,135]", "[135,180]", "[180,225]", "[225,270]", "[270,315]", "[315,Inf]")
+         ))
+}
+
 geo.plot <- function(state.choice, death.cause, mort.data, period) {
   dataset <- geo.map.fetch(state.choice, mort.data) %>% 
     dplyr::rename(VAR_ = death_rate)
@@ -476,7 +492,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
   colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
-  labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+  labels <- geo.label(death.cause)
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   dataset$county_fips <- substr(dataset$county_fips, 3, 5)
