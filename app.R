@@ -1030,10 +1030,10 @@ server <- function(input, output, session) {
         paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h5("Mean Mortality Rate:"),
-      tags$h5("Highest Rate County:"),
-      tags$h5("Lowest Rate County:"),
-      tags$h5("National Mean:")
+      tags$h4("Mean Mortality Rate:"),
+      tags$h4("Highest Rate County:"),
+      tags$h4("Lowest Rate County:"),
+      tags$h4("National Mean:")
     )
   })
 
@@ -1042,7 +1042,7 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h1(
-        paste0("National ",names(which(cause.list == input$death_cause)))
+        paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
       )
     )
   })
