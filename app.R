@@ -365,7 +365,7 @@ which are caused by:"),
           fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
             column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
                    fluidRow(
-                     tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
+                     # tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
                      column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
                                  has stagnated and even declined, reversing for the US the trend toward increased life
                                  expectancy that is still continuing in most nations. The goal of this project is 
@@ -413,7 +413,8 @@ which are caused by:"),
                                    offset=1) # Close Column
                    ) # Close inner fluidRow
                           ), # Close column
-                   column(3, tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                   column(3, 
+                          tags$p("Additional Resources",align="center"), tags$br(), offset=1,
                           "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
                           of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
                           Institute. Retrieved from ", tags$br(),
@@ -428,7 +429,16 @@ which are caused by:"),
                           tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
                           "Agency for Healthcare Research and Quality, US Dept. of Health and Human Services.", tags$br(),
                           tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
-                          "ZIP link for data*"
+                          tags$br(),
+                          
+                          tags$p("Download Data",align="center"), tags$br(),
+                          downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
+                          downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
+                          downloadButton("downloadCHRDesc", "County Health Rankings (CHR) Factor Descriptions"), tags$br(),
+                          downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
+                          downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
+                          downloadButton("downloadCorr", "Current Factor Correlations"), tags$br(),
+                          downloadButton("downloadAll", "Download All")
                    )
         ) # Close outter fluidRow
                             ) # Close page 4 
@@ -583,8 +593,21 @@ server <- function(input, output, session) {
     
   })
   
-  # -------------------------------------------------------------------------------------------------------------------------- #
+  # ----------------------------------------------------------------------
+  # Functions for data download
   
+  # Outputs cdc.data as a csv
+  output$downloadCDCData <- downloadHandler(
+    filename = function() {
+      "cdc_data.csv"
+    },
+    content = function(file) {
+      write.csv(cdc.data, file, row.names = FALSE)
+    }
+  )
+  
+  
+  # ----------------------------------------------------------------------
   output$determinants_plot1 <- renderPlot({
     
     # Sort by kendall.cor
