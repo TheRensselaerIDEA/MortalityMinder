@@ -1,168 +1,168 @@
-Code,Name,Definitions
-health_outcomes,Health Outcomes,General measure based on length and quality of life.
-health_factors,Health Overall Factors,"A combination of health behaviors, such as drug use and sexual activity, clinical (access and quality), socioeconomic factors, and physical environment factors."
-life_length,Length Of Life,"Measuring how long people in a community live tells us whether people are dying too early, and it prompts us to look at what’s driving premature deaths."
-life_quality,Quality Of Life,Quality of Life refers to how healthy people feel while alive.
-health_behavior,Health Behaviors,"Health behaviors are actions individuals take that affect their health; they include actions that lead to improved health, such as eating well and being physically active, and actions that increase one’s risk of disease, such as smoking, excessive alcohol intake, and risky sexual behavior."
-clinical_care,Clinical Care,"Access to affordable, quality, and timely health care can help prevent diseases and detect issues sooner, enabling individuals to live longer, healthier lives."
-socio_econ,Socio-Economic,"Social and economic factors, such as income, education, employment, community safety, and social supports can significantly affect how well and how long we live."
-physical_env,Physical Environment,"The general physical environment measure, including air and water quality, plus housing and transit measures."
-years_of_potential_life_lost_rate,Years Of Potential Life Lost Rate,"Years of potential life lost before age 75 per 100,000 population (age-adjusted)."
-ypll_rate_black,Years Of Potential Life Lost Rate (Black),"Years of potential life lost before age 75 per 100,000 population (age-adjusted) for blacks."
-ypll_rate_hispanic,Years Of Potential Life Lost Rate (Hispanic),"Years of potential life lost before age 75 per 100,000 population (age-adjusted) for hispanics."
-ypll_rate_white,Years Of Potential Life Lost Rate (White),"Years of potential life lost before age 75 per 100,000 population (age-adjusted) for whites."
-pct_fair_or_poor,Percentage Of Fair Or Poor,Percentage of adults reporting fair or poor health (age-adjusted).
-physically_unhealthy_days,Physically Unhealthy Days,Average number of physically unhealthy days reported in past 30 days (age-adjusted).
-mentally_unhealthy_days,Mentally Unhealthy Days,Average number of mentally unhealthy days reported in past 30 days (age-adjusted).
-pct_lbw,Percentage Of Low Birthweight,"Percentage of live births with low birthweight (< 2,500 grams)."
-pct_lbw_black,Percentage Of Low Birthweight (Black),"Percentage of live births with low birthweight (< 2,500 grams) for blacks."
-pct_lbw_hispanic,Percentage Of Low Birthweight (Hispanic),"Percentage of live births with low birthweight (< 2,500 grams) for hispanics."
-pct_lbw_white,Percentage Of Low Birthweight (White),"Percentage of live births with low birthweight (< 2,500 grams) for whites."
-pct_adult_smoking,Percentage Of Adult Smoking,Percentage of adults who are current smokers.
-pct_adult_obesity,Percentage Of Adult Obesity,Percentage of the adult population (age 20 and older) that reports a body mass index (BMI) greater than or equal to 30 kg/m2.
-food_environment_index,Food Environment Index,"Index of factors that contribute to a healthy food environment, 0 (worst) to 10 (best)."
-pct_physically_inactive,Percentage Of Physically Inactive,Percentage of adults age 20 and over reporting no leisure-time physical activity.
-pct_with_access,Percentage Of Accessing To Exercise Opportunities,Percentage of population with adequate access to locations for physical activity.
-pct_excessive_drinking,Percentage Of Excessive Drinking,Percentage of adults reporting binge or heavy drinking.
-num_alcohol_impaired_driving_deaths,Number Of Alcohol Impaired Driving Deaths,Number of driving deaths with alcohol involvement. 
-num_driving_deaths,Number Of Driving Deaths,"Number of motor vehicle crash deaths per 100,000 population."
-pct_alcohol_impaired,Percentage Of Alcohol Impaired,Percentage of driving deaths with alcohol involvement.
-num_chlamydia_cases,Number Of Chlamydia Cases,"Number of newly diagnosed chlamydia cases per 100,000 population."
-chlamydia_rate,Chlamydia Rate,"Number of newly diagnosed chlamydia cases per 100,000 population."
-teen_birth_rate,Teenagers Birth Rate,"Number of births per 1,000 female population ages 15-19."
-teen_birth_rate_black,Teenagers Birth Rate (Black),"Number of births per 1,000 female population ages 15-19 for blacks."
-teen_birth_rate_hispanic,Teenagers Birth Rate (Hispanic),"Number of births per 1,000 female population ages 15-19 for hispanics."
-teen_birth_rate_white,Teenagers Birth Rate (White),"Number of births per 1,000 female population ages 15-19 for whites."
-num_uninsured,Number Of Uninsured,Number of people under age 65 without health insurance.
-pct_uninsured,Percentage Of Uninsured,Percentage of population under age 65 without health insurance.
-num_primary_care_physicians,Number Of Primary Care Physicians,Number of primary care physicians.
-pcp_rate,Primary Care Physicians Rate,"Number of primary care physicians per 100,000 people."
-pcp_ratio,Primary Care Physicians Ratio,Ratio of population to primary care physicians.
-num_dentists,Number Of Dentists,Number of dentists.
-dentist_rate,Dentist Rate,"Number of dentists per 100,000 people."
-dentist_ratio,Dentist Ratio,Ratio of population to dentists.
-num_mental_health_providers,Number Of Mental Health Providers,Number of mental health providers.
-mhp_rate,Mental Health Providers Rate,"Number of mental health providers per 100,000 people."
-mhp_ratio,Mental Health Providers Ratio,Ratio of population to mental health providers.
-preventable_hosp_rate,Rate Of Preventable Hospital Stays,"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees."
-preventable_hosp_rate_black,Rate Of Preventable Hospital Stays (Black),"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees for blacks."
-preventable_hosp_rate_hispanic,Rate Of Preventable Hospital Stays (Hispanic),"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees for hispanics."
-preventable_hosp_rate_white,Rate Of Preventable Hospital Stays (White),"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees for whites."
-pct_screened,Percentage Of Screened,Percentage of female Medicare enrollees ages 65-74 that received an annual mammography screening.
-pct_screened_black,Percentage Of Screened (Black),Percentage of black female Medicare enrollees ages 65-74 that received an annual mammography screening.
-pct_screened_hispanic,Percentage Of Screened (Hispanic),Percentage of hispanic female Medicare enrollees ages 65-74 that received an annual mammography screening.
-pct_screened_white,Percentage Of Screened (White),Percentage of white female Medicare enrollees ages 65-74 that received an annual mammography screening.
-pct_vaccinated,Percentage Of Vaccinated,Percentage of fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.
-pct_vaccinated_black,Percentage Of Vaccinated (Black),Percentage of black fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.
-pct_vaccinated_hispanic,Percentage Of Vaccinated (Hispanic),Percentage of hispanic fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.
-pct_vaccinated_white,Percentage Of Vaccinated (White),Percentage of white fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.
-cohort_size,Cohort Size,Number of people who graduated high school in four years.
-graduation_rate,Graduation Rate,Percentage of ninth-grade cohort that graduates in four years.
-num_some_college,Number Of Some College,Number of adults ages 25-44 with some post-secondary education.
-some_collage_population,Some College Edu Population,Population of adults ages 25-44 with some post-secondary education.
-pct_some_college,Percentage Of Some College,Percentage of adults ages 25-44 with some post-secondary education.
-num_unemployed,Number Of Unemployed,Percentage of population ages 16 and older unemployed but seeking work.
-labor_force,Labor Force,"All the members of a particular organization or population who are able to work, viewed collectively."
-pct_unemployed,Percentage Of Unemployed,Percentage of population ages 16 and older unemployed but seeking work.
-pct_children_in_poverty,Percentage Of Children In Poverty,Percentage of people under age 18 in poverty.
-pct_children_in_poverty_black,Percentage Of Children In Poverty (Black),Percentage of black people under age 18 in poverty.
-pct_children_in_poverty_hispanic,Percentage Of Children In Poverty (Hispanic),Percentage of hispanic people under age 18 in poverty.
-pct_children_in_poverty_white,Percentage Of Children In Poverty (White),Percentage of white people under age 18 in poverty.
-80th_percentile_income,80th Percentile Income,Population of adults with Income in the 80th percentile.
-20th_percentile_income,20th Percentile Income,Population of adults with Income in the 20th percentile.
-income_ratio,Income Ratio,Ratio of household income at the 80th percentile to income at the 20th percentile.
-num_single_parent_households,Number Of Single Parent Households,Number of children that live in a household headed by single parent.
-num_households,Number Of Households,Number of total households.
-pct_single_parent_households,Percentage Of Single Parent Households,Percentage of children that live in a household headed by single parent.
-num_associations,Number Of Associations,"Number of membership associations per 10,000 population."
-association_rate,Association Rate,"Number of membership associations per 10,000 population."
-annual_average_violent_crimes,Annual Average Violent Crimes,Average number of violent crimes per year.
-violent_crime_rate,Violent Crime Rate,Percentage of adults reporting 14 or more days of poor physical health per month.
-num_injury_deaths,Number Of Injury Deaths,Number of deaths due to injury.
-injury_death_rate,Injury Death Rate,"Number of deaths due to injury per 100,000 population."
-average_daily_pm25,Air Quality,Average daily density of fine particulate matter in micrograms per cubic meter (PM2.5).
-presence_of_violation,Presence Of Violation,"Indicator of the presence of health-related drinking water violations. Yes indicates the presence of a violation, No indicates no violation."
-pct_severe_housing_problems,Percentage Of Severe Housing Problems,"Percentage of households with at least 1 of 4 housing problems: overcrowding, high housing costs, lack of kitchen facilities, or lack of plumbing facilities."
-severe_housing_cost_burden,Severe Housing Cost Burden,Percentage of households that spend 50% or more of their household income on housing.
-overcrowding,Overcrowding,Percentage of households with overcrowding.
-inadequate_facilities,Inadequate Facilities,Percentage of household with inadequate kitchen/plumbing facilities.
-pct_drive_alone,Percentage Of Driving Alone,Percentage of the workforce that drives alone to work.
-pct_drive_alone_black,Percentage Of Driving Alone (Balck),Percentage of the workforce that drives alone to work and is black.
-pct_drive_alone_hispanic,Percentage Of Driving Alone (Hispanic),Percentage of the workforce that drives alone to work and is hispanic.
-pct_drive_alone_white,Percentage Of Driving Alone (White),Percentage of the workforce that drives alone to work and is white.
-num_workers_who_drive_alone,Number Of Workers Who Drive Alone,Number of people in the workforce who drive alone.
-pct_long_commute_drives_alone,Percentage Of Workers Who Drive Alone In Long Commute,"Among workers who commute in their car alone, the percentage that commute more than 30 minutes."
-life_expectancy,Life Expectancy,Average number of years a person can expect to live.
-life_expectancy_black,Life Expectancy (Black),Average number of years a black person can expect to live.
-life_expectancy_hispanic,Life Expectancy (Hispanic),Average number of years a hispanic person can expect to live.
-life_expectancy_white,Life Expectancy (White),Average number of years a white person can expect to live.
-death_num_premature_age_adjusted_mortality,Premature Age-Adjusted Mortality,"Number of deaths among residents under age 75 per 100,000 population (age-adjusted)."
-age_adjusted_mortality,Age-Adjusted Mortality,"Number of deaths among residents per 100,000 population (age-adjusted)."
-age_adjusted_mortality_black,Age-Adjusted Mortality (Black),"Number of deaths among black residents per 100,000 population (age-adjusted)."
-age_adjusted_mortality_hispanic,Age-Adjusted Mortality (Hispanic),"Number of deaths among hispanic residents per 100,000 population (age-adjusted)."
-age_adjusted_mortality_white,Age-Adjusted Mortality (White),"Number of deaths among white residents per 100,000 population (age-adjusted)."
-death_num_child_mortality,Child Total Number Of Death,Total number of deaths among children under age 18.
-child_mortality_rate,Child Mortality Rate,"Number of deaths among children under age 18 per 100,000 population."
-child_mortality_rate_black,Child Mortality Rate (Black),"Number of deaths among black children under age 18 per 100,000 population."
-child_mortality_rate_hispanic,Child Mortality Rate (Hispanic),"Number of deaths among hispanic children under age 18 per 100,000 population."
-child_mortality_rate_white,Child Mortality Rate (White),"Number of deaths among white children under age 18 per 100,000 population."
-death_num_infant_mortality,Infant Total Number Of Death,Number of all infant deaths (within 1 year).
-infant_mortality_rate,Infant Mortality Rate,"Number of all infant deaths (within 1 year), per 1,000 live births."
-infant_mortality_rate_black,Infant Mortality Rate (Black),"Number of all black infant deaths (within 1 year), per 1,000 live births."
-infant_mortality_rate_hispanic,Infant Mortality Rate (Hispanic),"Number of all hispanic infant deaths (within 1 year), per 1,000 live births."
-infant_mortality_rate_white,Infant Mortality Rate (White),"Number of all white infant deaths (within 1 year), per 1,000 live births."
-pct_frequent_physical_distress,Frequent Physical Distress Percentage,Percentage of adults reporting 14 or more days of poor physical health per month.
-pct_frequent_mental_distress,Frequent Mental Distress	Percentage,Percentage of adults reporting 14 or more days of poor mental health per month.
-pct_diabetic,Diabetes Prevalence Percentage,Percentage of adults aged 20 and above with diagnosed diabetes.
-num_hiv_cases,Number Of Hiv Cases,Number of HIV cases.
-hiv_prevalence_rate,Hiv Prevalence Rate,"Number of newly diagnosed HIV cases per 100,000 population."
-num_food_insecure,Food Insecurity Number,Number of people who lack adequate access to food.
-pct_food_insecure,Food Insecure Percentage,Percentage of population who lack adequate access to food.
-num_limited_access,Total Number Of Limited Access To Healthy Foods,Number of people who are low-income and do not live close to a grocery store.
-pct_limited_access,Limited Access To Healthy Foods Percentage,Percentage of population who are low-income and do not live close to a grocery store.
-num_drug_overdose_deaths,Total Number Of Drug Overdose Deaths,
-drug_overdose_mortality_rate,Drug Overdose Deaths Rate,
-num_motor_vehicle_deaths,Total Number Of Motor Vehicle Crash Deaths,
-mv_mortality_rate,Motor Vehicle Crash Deaths Rate,
-pct_insufficient_sleep,Insufficient Sleep Percentage,Percentage of adults who report fewer than 7 hours of sleep on average.
-num_uninsured_adults,Total Number Of Uninsured Adults,
-pct_uninsured_adults,Uninsured Adults Percentage,Percentage of adults under age 65 without health insurance.
-num_uninsured_children,Total Number Of Uninsured Children,
-pct_uninsured_children,Uninsured Children Percentage,Percentage of children under age 19 without health insurance.
-other_pcp_rate,Other Primary Care Providers Rate,"Number of other primary care providers per 100, 000 people."
-other_pcp_ratio,Other Primary Care Providers Ratio,Ratio of population to other primary care providers.
-pct_disconnected_youth,Disconnected Youth Percentage,Percentage of teens and young adults ages 16-19 who are neither working nor in school.
-household_income,Median Household Income,The income where half of households in a county earn more and half of households earn less.
-household_income_black,Household Income (Black),The median household income for blacks.
-household_income_hispanic,Household Income (Hispanic),The median household income for hispanics.
-household_income_white,Household Income (White),The median household income for whites.
-pct_free_or_reduced_lunch,Children Eligible For Free Or Reduced Price Lunch Percentage,Percentage of children enrolled in public schools that are eligible for free or reduced price lunch.
-seg_idx_black_or_white,Residential Segregation - Black/White,Index of dissimilarity where higher values indicate greater residential segregation between black and white county residents.
-seg_idx_non_white_or_white,Residential Segregation - Non-White/White,Index of dissimilarity where higher values indicate greater residential segregation between non-white and white county residents.
-homicide_rate,Homicides Rate,"Number of deaths due to homicide per 100,000 population."
-num_firearm_fatalities,Total Number Of Firearm Fatalities,"Number of deaths due to firearms per 100,000 population."
-firearm_fatalities_rate,Firearm Fatalities Rate,"Number of deaths due to firearms per 100,000 population."
-num_homeowners,Total Number Of Homeowners,Number of homeowners.
-pct_homeowners,Homeownership Percentage,Percentage of occupied housing units that are owned.
-num_households_with_severe_cost_burden,Total Number Of Households With Severe Housing Cost Burden,Number of households that spend 50% or more of their household income on housing.
-pct_severe_housing_cost_burden,Households With Severe Housing Cost Burden Percentage,Percentage of households that spend 50% or more of their household income on housing.
-population,Population,Total population.
-pct_less_18,Percentage Younger Than 18,Percentage of the population younger than 18.
-pct_65_and_over,Percentage Older Than 65,Percentage of the population older than 65.
-num_african_american,Number Of African American,Total number of African Americans in the population.
-pct_african_american,African American Percentage,Percentage of the population that is African American.
-num_american_indian_or_alaskan_native,Number Of American Indian/Alaskan Native,Total number of American Indian/Alaskan Natives in the population.
-pct_american_indian_or_alaskan_native,American Indian/Alaskan Native Percentage,Percentage of the population that is American Indian/Alaskan Native.
-num_asian,Number Of Asian,Total number of asians in the population.
-pct_asian,Asian Percentage,Percentage of the population that is asian.
-num_native_hawaiian_or_other_pacific_islander,Number Of Native Hawaiian/Other Pacific Islander,Total number of Native Hawaiian/Other Pacific Islanders in the population.
-pct_native_hawaiian_or_other_pacific_islander,Native Hawaiian/Other Pacific Islander Percentage,Percentage of the population that is Native Hawaiian/Other Pacific Islander.
-num_hispanic,Number Of Hispanic,Total number of hispanics in the population.
-pct_hispanic,Hispanic Percentage,Percentage of the population that is hispanic.
-num_non_hispanic_white,Number Of Non-Hispanic White,Total number of non-hispanic whites in the population.
-pct_non_hispanic_white,Non-Hispanic White Percentage,Percentage of the population that is non-hispanic white.
-num_not_proficient_in_english,Number Of People Not Proficient In English,Total number of people not proficient in English in the population.
-pct_not_proficient_in_english,People Not Proficient In English Percentage,Percentage of the population that is not proficient in English.
-pct_female,Female Percentage,Percentage of the population that is female.
-num_rural,Number Of Rural,Total number of people who live rurally in the population.
-pct_rural,Rural Percentage,Percentage of the population that lives in rural areas.
+Code,Name,Definitions,URL
+health_outcomes,Health Outcomes,General measure based on length and quality of life.,http://bit.ly/36eMAaF
+health_factors,Health Overall Factors,"A combination of health behaviors, such as drug use and sexual activity, clinical (access and quality), socioeconomic factors, and physical environment factors.",http://bit.ly/2PsuxIe
+life_length,Length Of Life,"Measuring how long people in a community live tells us whether people are dying too early, and it prompts us to look at what’s driving premature deaths.",http://bit.ly/2PvZknq
+life_quality,Quality Of Life,Quality of Life refers to how healthy people feel while alive.,http://bit.ly/2q2NnLk
+health_behavior,Health Behaviors,"Health behaviors are actions individuals take that affect their health; they include actions that lead to improved health, such as eating well and being physically active, and actions that increase one’s risk of disease, such as smoking, excessive alcohol intake, and risky sexual behavior.",http://bit.ly/36jw1KQ
+clinical_care,Clinical Care,"Access to affordable, quality, and timely health care can help prevent diseases and detect issues sooner, enabling individuals to live longer, healthier lives.",http://bit.ly/2Jwv3B6
+socio_econ,Socio-Economic,"Social and economic factors, such as income, education, employment, community safety, and social supports can significantly affect how well and how long we live.",http://bit.ly/322sJIq
+physical_env,Physical Environment,"The general physical environment measure, including air and water quality, plus housing and transit measures.",http://bit.ly/2MX8CHn
+years_of_potential_life_lost_rate,Years Of Potential Life Lost Rate,"Years of potential life lost before age 75 per 100,000 population (age-adjusted).",http://bit.ly/2WtyDRD
+ypll_rate_black,Years Of Potential Life Lost Rate (Black),"Years of potential life lost before age 75 per 100,000 population (age-adjusted) for blacks.",http://bit.ly/2WtyDRD
+ypll_rate_hispanic,Years Of Potential Life Lost Rate (Hispanic),"Years of potential life lost before age 75 per 100,000 population (age-adjusted) for hispanics.",http://bit.ly/2WtyDRD
+ypll_rate_white,Years Of Potential Life Lost Rate (White),"Years of potential life lost before age 75 per 100,000 population (age-adjusted) for whites.",http://bit.ly/2WtyDRD
+pct_fair_or_poor,Percentage Of Fair Or Poor,Percentage of adults reporting fair or poor health (age-adjusted).,http://bit.ly/2BYrY8W
+physically_unhealthy_days,Physically Unhealthy Days,Average number of physically unhealthy days reported in past 30 days (age-adjusted).,http://bit.ly/32YsiAc
+mentally_unhealthy_days,Mentally Unhealthy Days,Average number of mentally unhealthy days reported in past 30 days (age-adjusted).,http://bit.ly/2BWkvHl
+pct_lbw,Percentage Of Low Birthweight,"Percentage of live births with low birthweight (< 2,500 grams).",http://bit.ly/2NoGvQu
+pct_lbw_black,Percentage Of Low Birthweight (Black),"Percentage of live births with low birthweight (< 2,500 grams) for blacks.",http://bit.ly/2NoGvQu
+pct_lbw_hispanic,Percentage Of Low Birthweight (Hispanic),"Percentage of live births with low birthweight (< 2,500 grams) for hispanics.",http://bit.ly/2NoGvQu
+pct_lbw_white,Percentage Of Low Birthweight (White),"Percentage of live births with low birthweight (< 2,500 grams) for whites.",http://bit.ly/2NoGvQu
+pct_adult_smoking,Percentage Of Adult Smoking,Percentage of adults who are current smokers.,http://bit.ly/2NtmiZR
+pct_adult_obesity,Percentage Of Adult Obesity,Percentage of the adult population (age 20 and older) that reports a body mass index (BMI) greater than or equal to 30 kg/m2.,http://bit.ly/2PwpFlq
+food_environment_index,Food Environment Index,"Index of factors that contribute to a healthy food environment, 0 (worst) to 10 (best).",http://bit.ly/2Nljs9a
+pct_physically_inactive,Percentage Of Physically Inactive,Percentage of adults age 20 and over reporting no leisure-time physical activity.,http://bit.ly/2BV8Jx1
+pct_with_access,Percentage Of Accessing To Exercise Opportunities,Percentage of population with adequate access to locations for physical activity.,http://bit.ly/2N0LI1S
+pct_excessive_drinking,Percentage Of Excessive Drinking,Percentage of adults reporting binge or heavy drinking.,http://bit.ly/2NpvVIP
+num_alcohol_impaired_driving_deaths,Number Of Alcohol Impaired Driving Deaths,Number of driving deaths with alcohol involvement. ,http://bit.ly/2MYWS77
+num_driving_deaths,Number Of Driving Deaths,"Number of motor vehicle crash deaths per 100,000 population.",
+pct_alcohol_impaired,Percentage Of Alcohol Impaired,Percentage of driving deaths with alcohol involvement.,
+num_chlamydia_cases,Number Of Chlamydia Cases,"Number of newly diagnosed chlamydia cases per 100,000 population.",http://bit.ly/2N1NTC8
+chlamydia_rate,Chlamydia Rate,"Number of newly diagnosed chlamydia cases per 100,000 population.",http://bit.ly/2N1NTC8
+teen_birth_rate,Teenagers Birth Rate,"Number of births per 1,000 female population ages 15-19.",http://bit.ly/2N0MTyk
+teen_birth_rate_black,Teenagers Birth Rate (Black),"Number of births per 1,000 female population ages 15-19 for blacks.",http://bit.ly/2N0MTyk
+teen_birth_rate_hispanic,Teenagers Birth Rate (Hispanic),"Number of births per 1,000 female population ages 15-19 for hispanics.",http://bit.ly/2N0MTyk
+teen_birth_rate_white,Teenagers Birth Rate (White),"Number of births per 1,000 female population ages 15-19 for whites.",http://bit.ly/2N0MTyk
+num_uninsured,Number Of Uninsured,Number of people under age 65 without health insurance.,http://bit.ly/2ox9hWL
+pct_uninsured,Percentage Of Uninsured,Percentage of population under age 65 without health insurance.,http://bit.ly/2ox9hWL
+num_primary_care_physicians,Number Of Primary Care Physicians,Number of primary care physicians.,http://bit.ly/2PuXnaU
+pcp_rate,Primary Care Physicians Rate,"Number of primary care physicians per 100,000 people.",http://bit.ly/2PuXnaU
+pcp_ratio,Primary Care Physicians Ratio,Ratio of population to primary care physicians.,http://bit.ly/2PuXnaU
+num_dentists,Number Of Dentists,Number of dentists.,http://bit.ly/34hcicV
+dentist_rate,Dentist Rate,"Number of dentists per 100,000 people.",http://bit.ly/34hcicV
+dentist_ratio,Dentist Ratio,Ratio of population to dentists.,http://bit.ly/34hcicV
+num_mental_health_providers,Number Of Mental Health Providers,Number of mental health providers.,http://bit.ly/2NtPHmw
+mhp_rate,Mental Health Providers Rate,"Number of mental health providers per 100,000 people.",http://bit.ly/2NtPHmw
+mhp_ratio,Mental Health Providers Ratio,Ratio of population to mental health providers.,http://bit.ly/2NtPHmw
+preventable_hosp_rate,Rate Of Preventable Hospital Stays,"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees.",http://bit.ly/2WoN1uE
+preventable_hosp_rate_black,Rate Of Preventable Hospital Stays (Black),"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees for blacks.",http://bit.ly/2WoN1uE
+preventable_hosp_rate_hispanic,Rate Of Preventable Hospital Stays (Hispanic),"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees for hispanics.",http://bit.ly/2WoN1uE
+preventable_hosp_rate_white,Rate Of Preventable Hospital Stays (White),"Rate of hospital stays for ambulatory-care sensitive conditions per 100,000 Medicare enrollees for whites.",http://bit.ly/2WoN1uE
+pct_screened,Percentage Of Screened,Percentage of female Medicare enrollees ages 65-74 that received an annual mammography screening.,http://bit.ly/2q8YOkt
+pct_screened_black,Percentage Of Screened (Black),Percentage of black female Medicare enrollees ages 65-74 that received an annual mammography screening.,http://bit.ly/2q8YOkt
+pct_screened_hispanic,Percentage Of Screened (Hispanic),Percentage of hispanic female Medicare enrollees ages 65-74 that received an annual mammography screening.,http://bit.ly/2q8YOkt
+pct_screened_white,Percentage Of Screened (White),Percentage of white female Medicare enrollees ages 65-74 that received an annual mammography screening.,http://bit.ly/2q8YOkt
+pct_vaccinated,Percentage Of Vaccinated,Percentage of fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.,http://bit.ly/334thyU
+pct_vaccinated_black,Percentage Of Vaccinated (Black),Percentage of black fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.,http://bit.ly/334thyU
+pct_vaccinated_hispanic,Percentage Of Vaccinated (Hispanic),Percentage of hispanic fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.,http://bit.ly/334thyU
+pct_vaccinated_white,Percentage Of Vaccinated (White),Percentage of white fee-for-service (FFS) Medicare enrollees that had an annual flu vaccination.,http://bit.ly/334thyU
+cohort_size,Cohort Size,Number of people who graduated high school in four years.,http://bit.ly/36kqjbu
+graduation_rate,Graduation Rate,Percentage of ninth-grade cohort that graduates in four years.,http://bit.ly/36kqjbu
+num_some_college,Number Of Some College,Number of adults ages 25-44 with some post-secondary education.,http://bit.ly/34hdiOd
+some_collage_population,Some College Edu Population,Population of adults ages 25-44 with some post-secondary education.,http://bit.ly/34hdiOd
+pct_some_college,Percentage Of Some College,Percentage of adults ages 25-44 with some post-secondary education.,http://bit.ly/34hdiOd
+num_unemployed,Number Of Unemployed,Percentage of population ages 16 and older unemployed but seeking work.,http://bit.ly/2N1WepD
+labor_force,Labor Force,"All the members of a particular organization or population who are able to work, viewed collectively.",
+pct_unemployed,Percentage Of Unemployed,Percentage of population ages 16 and older unemployed but seeking work.,http://bit.ly/2N1WepD
+pct_children_in_poverty,Percentage Of Children In Poverty,Percentage of people under age 18 in poverty.,http://bit.ly/2JzZoiq
+pct_children_in_poverty_black,Percentage Of Children In Poverty (Black),Percentage of black people under age 18 in poverty.,http://bit.ly/2JzZoiq
+pct_children_in_poverty_hispanic,Percentage Of Children In Poverty (Hispanic),Percentage of hispanic people under age 18 in poverty.,http://bit.ly/2JzZoiq
+pct_children_in_poverty_white,Percentage Of Children In Poverty (White),Percentage of white people under age 18 in poverty.,http://bit.ly/2JzZoiq
+80th_percentile_income,80th Percentile Income,Population of adults with Income in the 80th percentile.,http://bit.ly/332hHEj
+20th_percentile_income,20th Percentile Income,Population of adults with Income in the 20th percentile.,http://bit.ly/332hHEj
+income_ratio,Income Ratio,Ratio of household income at the 80th percentile to income at the 20th percentile.,http://bit.ly/2Wpv1QG
+num_single_parent_households,Number Of Single Parent Households,Number of children that live in a household headed by single parent.,http://bit.ly/2NtSeNy
+num_households,Number Of Households,Number of total households.,http://bit.ly/2Wrlpov
+pct_single_parent_households,Percentage Of Single Parent Households,Percentage of children that live in a household headed by single parent.,http://bit.ly/2NtSeNy
+num_associations,Number Of Associations,"Number of membership associations per 10,000 population.",http://bit.ly/34cZ4xK
+association_rate,Association Rate,"Number of membership associations per 10,000 population.",http://bit.ly/34cZ4xK
+annual_average_violent_crimes,Annual Average Violent Crimes,Average number of violent crimes per year.,http://bit.ly/2NoL1hL
+violent_crime_rate,Violent Crime Rate,Percentage of adults reporting 14 or more days of poor physical health per month.,http://bit.ly/2NoL1hL
+num_injury_deaths,Number Of Injury Deaths,Number of deaths due to injury.,http://bit.ly/34dIspz
+injury_death_rate,Injury Death Rate,"Number of deaths due to injury per 100,000 population.",http://bit.ly/34dIspz
+average_daily_pm25,Air Quality,Average daily density of fine particulate matter in micrograms per cubic meter (PM2.5).,http://bit.ly/330WScy
+presence_of_violation,Presence Of Violation,"Indicator of the presence of health-related drinking water violations. Yes indicates the presence of a violation, No indicates no violation.",http://bit.ly/2pq7Ppv
+pct_severe_housing_problems,Percentage Of Severe Housing Problems,"Percentage of households with at least 1 of 4 housing problems: overcrowding, high housing costs, lack of kitchen facilities, or lack of plumbing facilities.",http://bit.ly/2pq7Ppv
+severe_housing_cost_burden,Severe Housing Cost Burden,Percentage of households that spend 50% or more of their household income on housing.,http://bit.ly/2pq7Ppv
+overcrowding,Overcrowding,Percentage of households with overcrowding.,http://bit.ly/2pq7Ppv
+inadequate_facilities,Inadequate Facilities,Percentage of household with inadequate kitchen/plumbing facilities.,http://bit.ly/2pq7Ppv
+pct_drive_alone,Percentage Of Driving Alone,Percentage of the workforce that drives alone to work.,http://bit.ly/2puq4tM
+pct_drive_alone_black,Percentage Of Driving Alone (Balck),Percentage of the workforce that drives alone to work and is black.,http://bit.ly/2puq4tM
+pct_drive_alone_hispanic,Percentage Of Driving Alone (Hispanic),Percentage of the workforce that drives alone to work and is hispanic.,http://bit.ly/2puq4tM
+pct_drive_alone_white,Percentage Of Driving Alone (White),Percentage of the workforce that drives alone to work and is white.,http://bit.ly/2puq4tM
+num_workers_who_drive_alone,Number Of Workers Who Drive Alone,Number of people in the workforce who drive alone.,http://bit.ly/2puq4tM
+pct_long_commute_drives_alone,Percentage Of Workers Who Drive Alone In Long Commute,"Among workers who commute in their car alone, the percentage that commute more than 30 minutes.",http://bit.ly/2puq4tM
+life_expectancy,Life Expectancy,Average number of years a person can expect to live.,http://bit.ly/36gPj3q
+life_expectancy_black,Life Expectancy (Black),Average number of years a black person can expect to live.,http://bit.ly/36gPj3q
+life_expectancy_hispanic,Life Expectancy (Hispanic),Average number of years a hispanic person can expect to live.,http://bit.ly/36gPj3q
+life_expectancy_white,Life Expectancy (White),Average number of years a white person can expect to live.,http://bit.ly/36gPj3q
+death_num_premature_age_adjusted_mortality,Premature Age-Adjusted Mortality,"Number of deaths among residents under age 75 per 100,000 population (age-adjusted).",http://bit.ly/2WtyDRD
+age_adjusted_mortality,Age-Adjusted Mortality,"Number of deaths among residents per 100,000 population (age-adjusted).",http://bit.ly/2WtyDRD
+age_adjusted_mortality_black,Age-Adjusted Mortality (Black),"Number of deaths among black residents per 100,000 population (age-adjusted).",http://bit.ly/2WtyDRD
+age_adjusted_mortality_hispanic,Age-Adjusted Mortality (Hispanic),"Number of deaths among hispanic residents per 100,000 population (age-adjusted).",http://bit.ly/2WtyDRD
+age_adjusted_mortality_white,Age-Adjusted Mortality (White),"Number of deaths among white residents per 100,000 population (age-adjusted).",http://bit.ly/2WtyDRD
+death_num_child_mortality,Child Total Number Of Death,Total number of deaths among children under age 18.,http://bit.ly/2oryOAq
+child_mortality_rate,Child Mortality Rate,"Number of deaths among children under age 18 per 100,000 population.",http://bit.ly/2oryOAq
+child_mortality_rate_black,Child Mortality Rate (Black),"Number of deaths among black children under age 18 per 100,000 population.",http://bit.ly/2oryOAq
+child_mortality_rate_hispanic,Child Mortality Rate (Hispanic),"Number of deaths among hispanic children under age 18 per 100,000 population.",http://bit.ly/2oryOAq
+child_mortality_rate_white,Child Mortality Rate (White),"Number of deaths among white children under age 18 per 100,000 population.",http://bit.ly/2oryOAq
+death_num_infant_mortality,Infant Total Number Of Death,Number of all infant deaths (within 1 year).,http://bit.ly/3320dYG
+infant_mortality_rate,Infant Mortality Rate,"Number of all infant deaths (within 1 year), per 1,000 live births.",http://bit.ly/3320dYG
+infant_mortality_rate_black,Infant Mortality Rate (Black),"Number of all black infant deaths (within 1 year), per 1,000 live births.",http://bit.ly/3320dYG
+infant_mortality_rate_hispanic,Infant Mortality Rate (Hispanic),"Number of all hispanic infant deaths (within 1 year), per 1,000 live births.",http://bit.ly/3320dYG
+infant_mortality_rate_white,Infant Mortality Rate (White),"Number of all white infant deaths (within 1 year), per 1,000 live births.",http://bit.ly/3320dYG
+pct_frequent_physical_distress,Frequent Physical Distress Percentage,Percentage of adults reporting 14 or more days of poor physical health per month.,http://bit.ly/2WsYEAK
+pct_frequent_mental_distress,"Frequent Mental Distress	Percentage",Percentage of adults reporting 14 or more days of poor mental health per month.,http://bit.ly/31Zr1HN
+pct_diabetic,Diabetes Prevalence Percentage,Percentage of adults aged 20 and above with diagnosed diabetes.,http://bit.ly/2WrYLfP
+num_hiv_cases,Number Of Hiv Cases,Number of HIV cases.,http://bit.ly/332kxJt
+hiv_prevalence_rate,Hiv Prevalence Rate,"Number of newly diagnosed HIV cases per 100,000 population.",http://bit.ly/332kxJt
+num_food_insecure,Food Insecurity Number,Number of people who lack adequate access to food.,http://bit.ly/323tT6p
+pct_food_insecure,Food Insecure Percentage,Percentage of population who lack adequate access to food.,http://bit.ly/323tT6p
+num_limited_access,Total Number Of Limited Access To Healthy Foods,Number of people who are low-income and do not live close to a grocery store.,http://bit.ly/2puMgUP
+pct_limited_access,Limited Access To Healthy Foods Percentage,Percentage of population who are low-income and do not live close to a grocery store.,http://bit.ly/2puMgUP
+num_drug_overdose_deaths,Total Number Of Drug Overdose Deaths,,http://bit.ly/2qXPEYK
+drug_overdose_mortality_rate,Drug Overdose Deaths Rate,,http://bit.ly/2qXPEYK
+num_motor_vehicle_deaths,Total Number Of Motor Vehicle Crash Deaths,,http://bit.ly/2MZjV1F
+mv_mortality_rate,Motor Vehicle Crash Deaths Rate,,http://bit.ly/2MZjV1F
+pct_insufficient_sleep,Insufficient Sleep Percentage,Percentage of adults who report fewer than 7 hours of sleep on average.,http://bit.ly/321vvh2
+num_uninsured_adults,Total Number Of Uninsured Adults,,http://bit.ly/2q1FBS3
+pct_uninsured_adults,Uninsured Adults Percentage,Percentage of adults under age 65 without health insurance.,http://bit.ly/2q1FBS3
+num_uninsured_children,Total Number Of Uninsured Children,,http://bit.ly/36ffurr
+pct_uninsured_children,Uninsured Children Percentage,Percentage of children under age 19 without health insurance.,http://bit.ly/36ffurr
+other_pcp_rate,Other Primary Care Providers Rate,"Number of other primary care providers per 100, 000 people.",http://bit.ly/36lEuNp
+other_pcp_ratio,Other Primary Care Providers Ratio,Ratio of population to other primary care providers.,http://bit.ly/36lEuNp
+pct_disconnected_youth,Disconnected Youth Percentage,Percentage of teens and young adults ages 16-19 who are neither working nor in school.,http://bit.ly/331pH8P
+household_income,Median Household Income,The income where half of households in a county earn more and half of households earn less.,http://bit.ly/2Wrp5GP
+household_income_black,Household Income (Black),The median household income for blacks.,http://bit.ly/2Wrp5GP
+household_income_hispanic,Household Income (Hispanic),The median household income for hispanics.,http://bit.ly/2Wrp5GP
+household_income_white,Household Income (White),The median household income for whites.,http://bit.ly/2Wrp5GP
+pct_free_or_reduced_lunch,Children Eligible For Free Or Reduced Price Lunch Percentage,Percentage of children enrolled in public schools that are eligible for free or reduced price lunch.,http://bit.ly/2Pv3wUw
+seg_idx_black_or_white,Residential Segregation - Black/White,Index of dissimilarity where higher values indicate greater residential segregation between black and white county residents.,http://bit.ly/2JwNpSn
+seg_idx_non_white_or_white,Residential Segregation - Non-White/White,Index of dissimilarity where higher values indicate greater residential segregation between non-white and white county residents.,http://bit.ly/2WpXcio
+homicide_rate,Homicides Rate,"Number of deaths due to homicide per 100,000 population.",http://bit.ly/32YBdSc
+num_firearm_fatalities,Total Number Of Firearm Fatalities,"Number of deaths due to firearms per 100,000 population.",http://bit.ly/33227Zk
+firearm_fatalities_rate,Firearm Fatalities Rate,"Number of deaths due to firearms per 100,000 population.",http://bit.ly/33227Zk
+num_homeowners,Total Number Of Homeowners,Number of homeowners.,http://bit.ly/34evTdK
+pct_homeowners,Homeownership Percentage,Percentage of occupied housing units that are owned.,http://bit.ly/34evTdK
+num_households_with_severe_cost_burden,Total Number Of Households With Severe Housing Cost Burden,Number of households that spend 50% or more of their household income on housing.,http://bit.ly/3213uX9
+pct_severe_housing_cost_burden,Households With Severe Housing Cost Burden Percentage,Percentage of households that spend 50% or more of their household income on housing.,http://bit.ly/3213uX9
+population,Population,Total population.,http://bit.ly/2q7p4M8
+pct_less_18,Percentage Younger Than 18,Percentage of the population younger than 18.,http://bit.ly/2q7p4M8
+pct_65_and_over,Percentage Older Than 65,Percentage of the population older than 65.,http://bit.ly/2q7p4M8
+num_african_american,Number Of African American,Total number of African Americans in the population.,http://bit.ly/2q7p4M8
+pct_african_american,African American Percentage,Percentage of the population that is African American.,http://bit.ly/2q7p4M8
+num_american_indian_or_alaskan_native,Number Of American Indian/Alaskan Native,Total number of American Indian/Alaskan Natives in the population.,http://bit.ly/2q7p4M8
+pct_american_indian_or_alaskan_native,American Indian/Alaskan Native Percentage,Percentage of the population that is American Indian/Alaskan Native.,http://bit.ly/2q7p4M8
+num_asian,Number Of Asian,Total number of asians in the population.,http://bit.ly/2q7p4M8
+pct_asian,Asian Percentage,Percentage of the population that is asian.,http://bit.ly/2q7p4M8
+num_native_hawaiian_or_other_pacific_islander,Number Of Native Hawaiian/Other Pacific Islander,Total number of Native Hawaiian/Other Pacific Islanders in the population.,http://bit.ly/2q7p4M8
+pct_native_hawaiian_or_other_pacific_islander,Native Hawaiian/Other Pacific Islander Percentage,Percentage of the population that is Native Hawaiian/Other Pacific Islander.,http://bit.ly/2q7p4M8
+num_hispanic,Number Of Hispanic,Total number of hispanics in the population.,http://bit.ly/2q7p4M8
+pct_hispanic,Hispanic Percentage,Percentage of the population that is hispanic.,http://bit.ly/2q7p4M8
+num_non_hispanic_white,Number Of Non-Hispanic White,Total number of non-hispanic whites in the population.,http://bit.ly/2q7p4M8
+pct_non_hispanic_white,Non-Hispanic White Percentage,Percentage of the population that is non-hispanic white.,http://bit.ly/2q7p4M8
+num_not_proficient_in_english,Number Of People Not Proficient In English,Total number of people not proficient in English in the population.,http://bit.ly/2q7p4M8
+pct_not_proficient_in_english,People Not Proficient In English Percentage,Percentage of the population that is not proficient in English.,http://bit.ly/2q7p4M8
+pct_female,Female Percentage,Percentage of the population that is female.,http://bit.ly/2q7p4M8
+num_rural,Number Of Rural,Total number of people who live rurally in the population.,http://bit.ly/2q7p4M8
+pct_rural,Rural Percentage,Percentage of the population that lives in rural areas.,http://bit.ly/2q7p4M8
