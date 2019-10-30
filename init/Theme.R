@@ -1,3 +1,54 @@
+#' Gives the theme categorical colors in order for the given number
+#'  of clusters
+#'
+#' @param n_clusters 
+#'
+#' @return a vector of n_clusters hex values 
+#'
+#' @examples
+#' scale_fill_manual(values = theme.categorical.colors(3))
+#' 
+#' scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+#' 
+#' @author Ross DeVito
+#' @export
+theme.categorical.colors <- function(n_clusters) {
+  if (n_clusters == 3) {
+    return(c("#4575b4", "#fdae61", "#d73027"))
+  }
+  if (n_clusters == 4) {
+    return(c("#4575b4", "#fdae61", "#d73027", "#a50026"))
+  }
+  if (n_clusters == 5) {
+    return(c("#313695", "#4575b4",
+             "#fdae61", "#d73027", "#a50026"))
+  }
+  if (n_clusters == 6) {
+    return(c("#313695", "#4575b4", "#abd9e9",
+             "#fdae61", "#d73027", "#a50026"))
+  }
+}
+
+#' Gives the theme categorical colors with black appended
+#'
+#' @param n_clusters 
+#'
+#' @return a vector of (n_clusters + 1) hex values where the first n_clusters
+#'          values are the values that would be returned by 
+#'          theme.categorical.colors(n_clusters) and the last value is black
+#'
+#' @examples
+#' scale_fill_manual(values = theme.categorical.colors(3))
+#' 
+#' scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+#' 
+#' @author Ross DeVito
+#' @export
+theme.categorical.colors.black <- function(n_clusters) {
+  return(append(theme.categorical.colors(n_clusters), "#000000"))
+}
+
+
 theme.text <- function() {
   theme(
     text = element_text(family = "Bookman"),
@@ -142,14 +193,14 @@ to the rest of the state.",
 }
 
 # draw.geo.cluster: Used in app.R to draw state and US maps
-draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
+draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters) {
   
   dataset <- geo.map.fetch(state.choice, mort.cluster) %>% 
     dplyr::rename(VAR_ = cluster)
   lat_long <- getLatLong(state.choice, dataset)
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
-  colors <- c("#fef0d9","#fdcc8a","#fc8d59")
+  colors <- theme.categorical.colors(n_clusters)
   labels <- c("Low", "Medium", "High")
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
@@ -174,22 +225,23 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster) {
                           layerId = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
-                         className="map-title") %>%
-              addLegend("bottomleft",
-                        colors = colors[3],
-                        labels = labels[3],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[2],
-                        labels = labels[2],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[1],
-                        labels = labels[1],
-                        title = "Clusters:",
-                        opacity = 1))
+                         className="map-title") #%>%
+              # addLegend("bottomleft",
+              #           colors = colors[3],
+              #           labels = labels[3],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[2],
+              #           labels = labels[2],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[1],
+              #           labels = labels[1],
+              #           title = "Clusters:",
+              #           opacity = 1)
+            )
   }else{
     return (leaflet(shapes, 
                     options = leafletOptions(dragging = FALSE)) %>%
