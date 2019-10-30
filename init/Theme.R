@@ -29,13 +29,18 @@ theme.categorical.colors <- function(n_clusters) {
   }
 }
 
-#' Gives the theme categorical colors with black appended
+theme.cat.accent.color <- function() {
+  return ("#0571b0")
+}
+
+#' Gives the theme categorical colors with accent color appended
 #'
 #' @param n_clusters 
 #'
 #' @return a vector of (n_clusters + 1) hex values where the first n_clusters
 #'          values are the values that would be returned by 
-#'          theme.categorical.colors(n_clusters) and the last value is black
+#'          theme.categorical.colors(n_clusters) and the last value is 
+#'          theme.cat.accent.color()
 #'
 #' @examples
 #' scale_fill_manual(values = theme.categorical.colors(3))
@@ -44,8 +49,8 @@ theme.categorical.colors <- function(n_clusters) {
 #' 
 #' @author Ross DeVito
 #' @export
-theme.categorical.colors.black <- function(n_clusters) {
-  return(append(theme.categorical.colors(n_clusters), "#000000"))
+theme.categorical.colors.accent <- function(n_clusters) {
+  return(append(theme.categorical.colors(n_clusters), theme.cat.accent.color()))
 }
 
 

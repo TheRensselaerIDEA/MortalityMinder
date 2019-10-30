@@ -217,18 +217,15 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
           ),
           tags$div(
             class = "page3_col2",
-            tags$div(
-              class = "col2_title",
-              uiOutput("textDeterminants3")
-            ),
+            
             tags$div(
               class = "page3_col2_top",
-              plotOutput("determinants_plot2",width="100%",height="75%")
+              plotOutput("determinants_plot2",width="100%",height="85%")
             ),
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="75%")
+              plotOutput("determinants_plot3",width="100%",height="85%")
             )
           ),
           tags$div(
@@ -862,7 +859,7 @@ server <- function(input, output, session) {
       
       ggplot(aes(x = death_rate, y = VAR)) + 
       geom_point(colour="black", shape=21, size = 3, alpha = .7,
-          aes(fill = factor(cluster))) + 
+          aes(fill = cluster)) + 
       labs(
         x = "Mortality Rate",
         y = input$determinant_choice
@@ -909,11 +906,11 @@ server <- function(input, output, session) {
           color = cluster, group = cluster
         )
       ) + 
-        geom_line(size = 1) + 
-        geom_point(color = "black", shape = 21, fill = "white") + 
+        geom_line(size = 1.5) + 
+        geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
         labs.line.mort(input$state_choice, input$death_cause) + 
         scale_color_manual(
-          values = theme.categorical.colors.black(max(mort.cluster.ord()$cluster))) +
+          values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
@@ -955,11 +952,11 @@ server <- function(input, output, session) {
             color = cluster, group = cluster
           )
         ) + 
-          geom_line(size = 1) + 
-          geom_point(color = "black", shape = 21, fill = "white") + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
           labs.line.mort(input$state_choice, input$death_cause) + 
           scale_color_manual(
-                values = theme.categorical.colors.black(nclusters)) +
+                values = theme.categorical.colors.accent(nclusters)) +
           theme.line.mort() + 
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T))
@@ -975,15 +972,15 @@ server <- function(input, output, session) {
         line_plot + 
           geom_line(
             mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-            data = county_data, color = "black"
+            data = county_data, color = "black", size = 1.3
           ) +
           geom_point(
             mapping = aes(x = period, y = death_rate),
             data = county_data, color = "black", shape = 21, 
-            fill = "white", inherit.aes = FALSE
+            fill = "white", inherit.aes = FALSE, size = 2
           ) +
           scale_linetype_manual(name = "County",
-                                values = c(2),
+                                values = c("twodash"),
                                 guide = guide_legend(override.aes = list(color = c("black")))
                                 )
       }
