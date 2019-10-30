@@ -482,3 +482,6 @@ font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
 .info {
   width: 40px;
 }
+.leaflet-control-container .leaflet-bottom.leaflet-right {
+  display: none;
+}
