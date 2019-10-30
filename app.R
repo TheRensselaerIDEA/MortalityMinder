@@ -1408,6 +1408,7 @@ correlation please navigate to...",
                            weight = 2,
                            color="#000000",
                            data = polygon,
+                           group="highlighted_polygon",
                            dashArray = "4 2 4")
     
     county_choice(event$id)
