@@ -1402,7 +1402,11 @@ correlation please navigate to...",
     proxy %>% clearGroup("highlighted_polygon")
     
     #add a slightly thicker red polygon on top of the selected one
-    proxy %>% addPolylines(stroke=TRUE, weight = 3,color="#000000",data=polygon,group="highlighted_polygon")
+    proxy %>% addPolylines(stroke = TRUE, 
+                           weight = 2,
+                           color="#000000",
+                           data = polygon,
+                           dashArray = "4 2 4")
     
     county_choice(event$id)
   })
