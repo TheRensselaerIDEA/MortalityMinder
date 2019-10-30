@@ -721,7 +721,7 @@ server <- function(input, output, session) {
           axis.line.x = element_blank(), 
           axis.title.x = element_blank(),
           
-          legend.position = "top"
+          legend.position = "none"
         ) + 
         scale_fill_manual(
           name = "County",
@@ -747,7 +747,7 @@ server <- function(input, output, session) {
           axis.line.x = element_blank(), 
           axis.title.x = element_blank(),
           
-          legend.position = "top"
+          legend.position = "none"
         ) + 
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
@@ -784,6 +784,8 @@ server <- function(input, output, session) {
           y = input$determinant_choice
         ) +
         theme.line.mort() + 
+        theme(legend.position = "top") + 
+        guides(color = guide_legend(override.aes = list(shape = 15))) + 
         color.line.cluster(input$state_choice, max(sd.select$cluster)) + 
         scale_color_manual(
           name = "County",
@@ -816,8 +818,11 @@ server <- function(input, output, session) {
         y = input$determinant_choice
       ) +
       theme.line.mort() + 
+      theme(legend.position = "top") + 
+      guides(color = guide_legend(override.aes = list(shape = 15))) + 
       color.line.cluster(input$state_choice, max(sd.select$cluster)) +
       scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+
     }
   })
   
@@ -864,6 +869,7 @@ server <- function(input, output, session) {
           color = guide_legend(reverse = T)
         )
     } else {
+
         nclusters <- max(mort.cluster.raw()$cluster)
         
         switch(input$death_cause,
@@ -880,6 +886,8 @@ server <- function(input, output, session) {
                  death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
                })
         
+        # browser()
+        
         nation.dataframe <- data.frame(
           period = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"), 
           cluster = rep("National Average", 6), 
@@ -887,6 +895,8 @@ server <- function(input, output, session) {
           count = rep(NA, 6))
         
         total.data <- rbind(mort.avg.cluster.ord(), nation.dataframe)
+        
+        # browser()
         
         line_plot <- ggplot(
           total.data,
@@ -901,6 +911,7 @@ server <- function(input, output, session) {
           scale_color_manual(
                 values = theme.categorical.colors.black(nclusters)) +
           theme.line.mort() + 
+          theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T))
       
       if (is.null(county_choice())){
