@@ -2,8 +2,8 @@ $(document).ready(() => {
 var image = document.getElementById("national_map_new");
 var btn = document.getElementById("play");
 btn.innerHTML = "Play";
-var images = ["Despair/1.png","Despair/2.png","Despair/3.png",
-        "Despair/4.png","Despair/5.png" ,"Despair/6.png"];
+var images = ["Cancer/1.png","Cancer/2.png","Cancer/3.png",
+        "Cancer/4.png","Cancer/5.png" ,"Cancer/6.png"];
 var position = 0;
 var playing = true;
 
@@ -17,7 +17,6 @@ btn.onclick = function(){
     btn.innerHTML = "Stop";
   }
 }
-var interval = setInterval(changeImage, 1000);
 //different button of period
 var btn1 = document.getElementById("first_period");
 var btn2 = document.getElementById("second_period");
@@ -124,7 +123,7 @@ btn6.onclick = function(){
 }
 
 function changeImage(){
-    if(btn.innerHTML == "Stop"){
+    if(btn.innerHTML === "Stop"){
       if(position >= images.length){
         position = 0;
       }
@@ -142,4 +141,6 @@ function changeImage(){
     }
 }
 
+
+setInterval(changeImage, 1000);
 });

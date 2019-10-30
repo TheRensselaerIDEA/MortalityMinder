@@ -345,11 +345,12 @@ which are caused by:"),
             tags$div(
                 class = "page2_col2_down",
                 tags$img(
-                  id = "national_map",
+                  id = "national_map_new",
                   class = "landing_page_map",
                   src = "Despair/1.png",
-                  style = "width:760px;"
-                )
+                  style = "width:70%"
+                ),
+                uiOutput("national_map")
             )
           )
           
@@ -450,7 +451,6 @@ which are caused by:"),
 tags$script(src = "jquery-ui.min.js"),
 tags$script(src = "fullpage.js"),
 tags$script(src = "jquery.ba-outside-events.js"),
-includeScript(path = "national.js"),
 includeScript(path = "myscript.js")
 )
 
@@ -658,6 +658,16 @@ server <- function(input, output, session) {
   )
   
   # ----------------------------------------------------------------------
+  
+  
+  output$national_map<-renderUI({
+    if(input$death_cause == "Despair"){
+      includeScript(path = "national.js")
+    }
+    else if(input$death_cause == "Cancer"){
+      includeScript(path = "national2.js")
+    }
+  })
   output$determinants_plot1 <- renderPlot({
     
     # Sort by kendall.cor
