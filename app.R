@@ -437,8 +437,7 @@ which are caused by:"),
                           downloadButton("downloadCHRDesc", "County Health Rankings (CHR) Factor Descriptions"), tags$br(),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
-                          downloadButton("downloadCorr", "Current Factor Correlations"), tags$br(),
-                          downloadButton("downloadAll", "Download All")
+                          downloadButton("downloadCorr", "Current Factor Correlations")
                    )
         ) # Close outter fluidRow
                             ) # Close page 4 
@@ -606,6 +605,55 @@ server <- function(input, output, session) {
     }
   )
   
+  # Outputs chr.data.2019 as a csv
+  output$downloadCHRData <- downloadHandler(
+    filename = function() {
+      "chr_data_2019.csv"
+    },
+    content = function(file) {
+      write.csv(chr.data.2019, file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs chr.namemap.2019 as a csv
+  output$downloadCHRDesc <- downloadHandler(
+    filename = function() {
+      "chr_data_desc.csv"
+    },
+    content = function(file) {
+      write.csv(chr.namemap.2019, file, row.names = TRUE)
+    }
+  )
+  
+  # Outputs mort.cluster.ord as a csv
+  output$downloadClusters <- downloadHandler(
+    filename = function() {
+      paste0(input$state_choice, "_", input$death_cause, "_clusters.csv")
+    },
+    content = function(file) {
+      write.csv( mort.cluster.ord(), file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs mort.avg.cluster.ord as a csv
+  output$downloadClusterTime <- downloadHandler(
+    filename = function() {
+      paste0(input$state_choice, "_", input$death_cause, "_clusters_time_series.csv")
+    },
+    content = function(file) {
+      write.csv( mort.avg.cluster.ord(), file, row.names = FALSE)
+    }
+  )
+  
+  # Outputs kendall.cor as a csv
+  output$downloadCorr <- downloadHandler(
+    filename = function() {
+      paste0(input$state_choice, "_", input$death_cause, "_", input$determinant_choice , "_correlations.csv")
+    },
+    content = function(file) {
+      write.csv( kendall.cor(), file, row.names = FALSE)
+    }
+  )
   
   # ----------------------------------------------------------------------
   output$determinants_plot1 <- renderPlot({
