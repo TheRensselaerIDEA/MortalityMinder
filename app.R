@@ -601,6 +601,29 @@ server <- function(input, output, session) {
     
   })
   
+  #Calculate the mean mortality rate for a state
+  state.mean <- reactive({
+    
+   
+  })
+  
+  #Identifying a county with the highest mortality rate in the state between 2015-2017
+  high.rate.county <- reactive({
+    
+  })
+  
+  #Identifying a county with the lowest mortality rate in the state between 2015-2017
+  low.rate.county <- reactive({
+    
+  })
+  
+  #Extracting the national mean
+  national.mean <- reactive({
+    
+  })
+  
+  
+  
   # ----------------------------------------------------------------------
   # Functions for data download
   
