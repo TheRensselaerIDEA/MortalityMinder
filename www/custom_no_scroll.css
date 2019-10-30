@@ -490,3 +490,8 @@ font-family: 'Helvetica Neue,Helvetica,Arial,sans-serif';
 .info {
   width: 40px;
 }
+.prompt_text {
+  display: inline-block;
+  width: 280px;
+  margin-top: 5px;
+}
