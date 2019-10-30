@@ -300,7 +300,7 @@ which are caused by:"),
               class = "page2_col2_top",
               tags$div(
                 class = "National_title",
-                tags$b("National Death of Despair")
+                uiOutput("textNationalTitle")
               ),
               tags$div(
                 class = "explore_but",
@@ -352,6 +352,14 @@ which are caused by:"),
                 ),
                 uiOutput("national_map")
             )
+          ),
+          tags$div(
+            class = "page2_col3",
+            tags$div(
+              class = "page2_col3_text",
+              uiOutput("textMortFacts")
+            )
+            
           )
           
         )
@@ -1015,6 +1023,27 @@ server <- function(input, output, session) {
     )
   })
 
+  output$textMortFacts <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
+      ),
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause))))
+    )
+  })
+
+  output$textNationalTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h1(
+        paste0("National ",names(which(cause.list == input$death_cause)))
+      )
+    )
+  })
+  
   # Determinant Header (upper-right panel, Page 1)
   output$textDeterminants <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above

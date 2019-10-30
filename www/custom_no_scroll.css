@@ -345,7 +345,7 @@
 }
 
 .page2_col2 {
-  width:calc(80% - 1px);
+  width:calc(60% - 1px);
   height:100%;
   float:left;
   display:block;
