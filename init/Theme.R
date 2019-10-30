@@ -264,22 +264,23 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
                           label = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
-                         className="map-title") %>%
-              addLegend("bottomleft",
-                        colors = colors[3],
-                        labels = labels[3],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[2],
-                        labels = labels[2],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[1],
-                        labels = labels[1],
-                        title = "Clusters:",
-                        opacity = 1))
+                         className="map-title")# %>%
+              # addLegend("bottomleft",
+              #           colors = colors[3],
+              #           labels = labels[3],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[2],
+              #           labels = labels[2],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[1],
+              #           labels = labels[1],
+              #           title = "Clusters:",
+              #           opacity = 1)
+            )
   }
   
   
