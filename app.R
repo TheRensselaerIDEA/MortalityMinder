@@ -695,7 +695,7 @@ server <- function(input, output, session) {
         ) + 
         
         # Lolipop chart
-        geom_point(stat = 'identity', size = 8) + 
+        geom_point(stat = 'identity', size = 12) + 
         geom_segment(
           size = 1,
           aes(
@@ -720,7 +720,7 @@ server <- function(input, output, session) {
         geom_text(
           aes(label = round(kendall_cor, 2)), 
           color = "black", 
-          size = 2.5
+          size = 3
         ) +
         
         # Coordinates
@@ -1312,7 +1312,7 @@ correlation please navigate to...",
         ) + 
         
         # Lolipop chart
-        geom_point(stat = 'identity', size = 8) + 
+        geom_point(stat = 'identity', size = 12) + 
         geom_segment(
           size = 1,
           aes(
@@ -1337,7 +1337,7 @@ correlation please navigate to...",
         geom_text(
           aes(label = round(kendall_cor, 2)), 
           color = "black", 
-          size = 2.5
+          size = 3
         ) +
         
         # Coordinates
