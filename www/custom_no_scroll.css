@@ -297,6 +297,7 @@
   height:100%;
   float:left;
   display:block;
+  overflow-y:scroll;
 }
 
 .page2_col2_top{
@@ -317,7 +318,7 @@
 .page2_col1 p {
   margin:10px 10% 1px 15%;
   padding:5px 5px;
-  font-size: 20px;
+  font-size: 15px;
   line-height: 1.07143;
   font-weight: 200;
   letter-spacing: -.005em;
