@@ -347,10 +347,10 @@ which are caused by:"),
                   src = "Despair/1.png",
                   style = "width:70%"
                 ),
-                tags$div(class="IDEA Logo Wrapper",
+                tags$div(class="IDEA_Logo_Wrapper",
                          style="position:relative;width: 33%;left: 66%; bottom: 0;",
                          tags$img(
-                           class="Idea Logo",
+                           class="Idea_Logo",
                            src="IDEA_logo_500.png", 
                            width="75%", 
                            style="bottom: 0; left: 0;")
@@ -424,7 +424,15 @@ which are caused by:"),
                                    to discover counties with different patterns of mortality over time and associated social 
                                    determinants using cluster or supervised clustering.",
                                    offset=1) # Close Column
-                   ) # Close inner fluidRow
+                   ), tags$br(),# Close inner fluidRow,
+                   tags$div(class="IDEA_Logo_Wrapper",
+                            style="position:relative;width: 50%;left: 50%",
+                            tags$img(
+                              class="Idea_Logo",
+                              src="IDEA_logo_500.png", 
+                              width="100%", 
+                              style="bottom: 0; left: 0;")
+                   )
                           ), # Close column
                    column(3, 
                           tags$p("Additional Resources",align="center"), tags$br(), offset=1,
@@ -453,15 +461,7 @@ which are caused by:"),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
-                   ),
-            tags$div(class="IDEA Logo Wrapper",
-                     style="position:relative;width: 33%;left: 33%",
-              tags$img(
-                class="Idea Logo",
-                src="IDEA_logo_500.png", 
-                width="75%", 
-                style="bottom: 0; left: 0;")
-            )
+                   )
         )# Close outter fluidRow
                             ) # Close page 4 
   )
