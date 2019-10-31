@@ -626,7 +626,28 @@ server <- function(input, output, session) {
   })
   
   #Identifying a county with the lowest mortality rate in the state between 2015-2017
-  low.rate.county <- reactive({
+  low.rate.county.2000_2002 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    )
+    lowest.rate.county <- filtered.data$county_name[which.min(filtered.data$death_rate)]
+    
+  })
+  
+  #Identifying a county with the lowest mortality rate in the state between 2015-2017
+  low.rate.county.2015_2017 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    )
+    lowest.rate.county <- filtered.data$county_name[which.min(filtered.data$death_rate)]
     
   })
   
@@ -1068,8 +1089,8 @@ server <- function(input, output, session) {
       tags$h4("Mean Mortality Rate for 2015-2017:"),
       tags$h4("Highest Rate County for 2000-2002:"),
       tags$h4("Highest Rate County for 2015-2017:"),
-      tags$h4("Lowest Rate County for 2000-2002:"),
-      tags$h4("Lowest Rate County for 2015-2017:"),
+      tags$h4("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
+      tags$h4("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
       tags$h4("National Mean for 2000-2002:", national.mean()[national.mean()$period == "2000-2002",]$death_rate),
       tags$h4("National Mean for 2015-2017:", national.mean()[national.mean()$period == "2015-2017",]$death_rate)
     )
