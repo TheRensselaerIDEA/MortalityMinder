@@ -614,9 +614,33 @@ server <- function(input, output, session) {
     
   })
   
-  #Calculate the mean mortality rate for a state
-  state.mean <- reactive({
+  
+  #Calculate the mean mortality rate for a state  for 2000-2002
+  state.mean.2000_2002 <- reactive({
     
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    )
+  
+    state.mean <- mean(filtered.data$death_rate)
+    
+  })
+  
+  
+  #Calculate the mean mortality rate for a state  for 2015-2017
+  state.mean.2015_2017 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    )
+    
+    state.mean <- mean(filtered.data$death_rate)
    
   })
   
@@ -1104,14 +1128,14 @@ server <- function(input, output, session) {
         paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h4("Mean Mortality Rate for 2000-2002:"),
-      tags$h4("Mean Mortality Rate for 2015-2017:"),
+      tags$h4("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
+      tags$h4("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
       tags$h4("Highest Rate County for 2000-2002:", high.rate.county.2000_2002()),
       tags$h4("Highest Rate County for 2015-2017:", high.rate.county.2015_2017()),
       tags$h4("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
       tags$h4("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
-      tags$h4("National Mean for 2000-2002:", national.mean()[national.mean()$period == "2000-2002",]$death_rate),
-      tags$h4("National Mean for 2015-2017:", national.mean()[national.mean()$period == "2015-2017",]$death_rate)
+      tags$h4("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
+      tags$h4("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
     )
   })
 
