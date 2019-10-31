@@ -217,18 +217,15 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
           ),
           tags$div(
             class = "page3_col2",
-            tags$div(
-              class = "col2_title",
-              uiOutput("textDeterminants3")
-            ),
+            
             tags$div(
               class = "page3_col2_top",
-              plotOutput("determinants_plot2",width="100%",height="75%")
+              plotOutput("determinants_plot2",width="100%",height="85%")
             ),
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="75%")
+              plotOutput("determinants_plot3",width="100%",height="85%")
             )
           ),
           tags$div(
@@ -272,6 +269,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
         ),
         tags$div(
           class = "page2",
+          uiOutput("national_map"),
           tags$div(
             class = "page2_col1",
             tags$p("MortalityMinder analyzes trends of
@@ -349,7 +347,14 @@ which are caused by:"),
                   src = "Despair/1.png",
                   style = "width:70%"
                 ),
-                uiOutput("national_map")
+                tags$div(class="IDEA Logo Wrapper",
+                         style="position:relative;width: 33%;left: 66%; bottom: 0;",
+                         tags$img(
+                           class="Idea Logo",
+                           src="IDEA_logo_500.png", 
+                           width="75%", 
+                           style="bottom: 0; left: 0;")
+                )
             )
           ),
           tags$div(
@@ -370,8 +375,8 @@ which are caused by:"),
         ),
         tags$div(
           class = "page4",
-          fluidRow(style = "max-height: 90vh; overflow-y: auto;", 
-            column(3, tags$p("Project Overview",align="center"), tags$br(), offset=1,
+          fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
+            column(3, tags$p("Project Overview",align="center"), tags$br(), #offset=1,
                    fluidRow(
                      # tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
                      column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
@@ -448,8 +453,16 @@ which are caused by:"),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
-                   )
-        ) # Close outter fluidRow
+                   ),
+            tags$div(class="IDEA Logo Wrapper",
+                     style="position:relative;width: 33%;left: 33%",
+              tags$img(
+                class="Idea Logo",
+                src="IDEA_logo_500.png", 
+                width="75%", 
+                style="bottom: 0; left: 0;")
+            )
+        )# Close outter fluidRow
                             ) # Close page 4 
   )
 )
@@ -742,7 +755,7 @@ server <- function(input, output, session) {
         ) + 
         
         # Lolipop chart
-        geom_point(stat = 'identity', size = 8) + 
+        geom_point(stat = 'identity', size = 12) + 
         geom_segment(
           size = 1,
           aes(
@@ -767,7 +780,7 @@ server <- function(input, output, session) {
         geom_text(
           aes(label = round(kendall_cor, 2)), 
           color = "black", 
-          size = 2.5
+          size = 3
         ) +
         
         # Coordinates
@@ -793,7 +806,8 @@ server <- function(input, output, session) {
           axis.text.x = element_text(size = 12),
           axis.title.x = element_text(size = 12),
           panel.grid.major.y = element_blank()
-        )
+        ) + 
+        theme(legend.position="top")
     }
     
     #Display something else when there are no significant SD
@@ -923,7 +937,7 @@ server <- function(input, output, session) {
       
       ggplot(aes(x = death_rate, y = VAR)) + 
       geom_point(colour="black", shape=21, size = 3, alpha = .7,
-          aes(fill = factor(cluster))) + 
+          aes(fill = cluster)) + 
       labs(
         x = "Mortality Rate",
         y = input$determinant_choice
@@ -970,11 +984,11 @@ server <- function(input, output, session) {
           color = cluster, group = cluster
         )
       ) + 
-        geom_line(size = 1) + 
-        geom_point(color = "black", shape = 21, fill = "white") + 
+        geom_line(size = 1.5) + 
+        geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
         labs.line.mort(input$state_choice, input$death_cause) + 
         scale_color_manual(
-          values = theme.categorical.colors.black(max(mort.cluster.ord()$cluster))) +
+          values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
         theme.line.mort() + 
         guides(
           color = guide_legend(reverse = T)
@@ -992,11 +1006,11 @@ server <- function(input, output, session) {
             color = cluster, group = cluster
           )
         ) + 
-          geom_line(size = 1) + 
-          geom_point(color = "black", shape = 21, fill = "white") + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
           labs.line.mort(input$state_choice, input$death_cause) + 
           scale_color_manual(
-                values = theme.categorical.colors.black(nclusters)) +
+                values = theme.categorical.colors.accent(nclusters)) +
           theme.line.mort() + 
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T))
@@ -1012,15 +1026,15 @@ server <- function(input, output, session) {
         line_plot + 
           geom_line(
             mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-            data = county_data, color = "black"
+            data = county_data, color = "black", size = 1.3
           ) +
           geom_point(
             mapping = aes(x = period, y = death_rate),
             data = county_data, color = "black", shape = 21, 
-            fill = "white", inherit.aes = FALSE
+            fill = "white", inherit.aes = FALSE, size = 2
           ) +
           scale_linetype_manual(name = "County",
-                                values = c(2),
+                                values = c("twodash"),
                                 guide = guide_legend(override.aes = list(color = c("black")))
                                 )
       }
@@ -1334,7 +1348,7 @@ correlation please navigate to...",
         ) + 
         
         # Lolipop chart
-        geom_point(stat = 'identity', size = 8) + 
+        geom_point(stat = 'identity', size = 12) + 
         geom_segment(
           size = 1,
           aes(
@@ -1359,7 +1373,7 @@ correlation please navigate to...",
         geom_text(
           aes(label = round(kendall_cor, 2)), 
           color = "black", 
-          size = 2.5
+          size = 3
         ) +
         
         # Coordinates
@@ -1385,7 +1399,8 @@ correlation please navigate to...",
           axis.text.x = element_text(size = 12),
           axis.title.x = element_text(size = 12),
           panel.grid.major.y = element_blank()
-        )
+        ) + 
+        theme(legend.position="top")
     }
     #Display something else when there are no significant SD
     else {
@@ -1425,7 +1440,12 @@ correlation please navigate to...",
     proxy %>% clearGroup("highlighted_polygon")
     
     #add a slightly thicker red polygon on top of the selected one
-    proxy %>% addPolylines(stroke=TRUE, weight = 3,color="#000000",data=polygon,group="highlighted_polygon")
+    proxy %>% addPolylines(stroke = TRUE, 
+                           weight = 2,
+                           color="#000000",
+                           data = polygon,
+                           group="highlighted_polygon",
+                           dashArray = "4 2 4")
     
     county_choice(event$id)
   })
