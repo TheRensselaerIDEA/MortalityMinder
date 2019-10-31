@@ -1127,15 +1127,20 @@ server <- function(input, output, session) {
       tags$h3(
         paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
+      tags$br(),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h4("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
-      tags$h4("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
-      tags$h4("Highest Rate County for 2000-2002:", high.rate.county.2000_2002()),
-      tags$h4("Highest Rate County for 2015-2017:", high.rate.county.2015_2017()),
-      tags$h4("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
-      tags$h4("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
-      tags$h4("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
-      tags$h4("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
+      tags$br(),
+      tags$h5("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
+      tags$h5("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
+      tags$br(),
+      tags$h5("Highest Rate County for 2000-2002:", high.rate.county.2000_2002()),
+      tags$h5("Highest Rate County for 2015-2017:", high.rate.county.2015_2017()),
+      tags$br(),
+      tags$h5("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
+      tags$h5("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
+      tags$br(),
+      tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
+      tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
     )
   })
 
