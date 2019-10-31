@@ -269,6 +269,7 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
         ),
         tags$div(
           class = "page2",
+          uiOutput("national_map"),
           tags$div(
             class = "page2_col1",
             tags$p("MortalityMinder analyzes trends of
@@ -346,7 +347,14 @@ which are caused by:"),
                   src = "Despair/1.png",
                   style = "width:70%"
                 ),
-                uiOutput("national_map")
+                tags$div(class="IDEA Logo Wrapper",
+                         style="position:relative;width: 33%;left: 66%; bottom: 0;",
+                         tags$img(
+                           class="Idea Logo",
+                           src="IDEA_logo_500.png", 
+                           width="75%", 
+                           style="bottom: 0; left: 0;")
+                )
             )
           ),
           tags$div(
@@ -446,8 +454,10 @@ which are caused by:"),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
                    ),
-            tags$div(style="position:relative;width: 33%;left: 33%",
+            tags$div(class="IDEA Logo Wrapper",
+                     style="position:relative;width: 33%;left: 33%",
               tags$img(
+                class="Idea Logo",
                 src="IDEA_logo_500.png", 
                 width="75%", 
                 style="bottom: 0; left: 0;")
