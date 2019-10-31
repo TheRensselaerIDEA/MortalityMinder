@@ -347,10 +347,10 @@ which are caused by:"),
                   src = "Despair/1.png",
                   style = "width:70%"
                 ),
-                tags$div(class="IDEA Logo Wrapper",
+                tags$div(class="IDEA_Logo_Wrapper",
                          style="position:relative;width: 33%;left: 66%; bottom: 0;",
                          tags$img(
-                           class="Idea Logo",
+                           class="Idea_Logo",
                            src="IDEA_logo_500.png", 
                            width="75%", 
                            style="bottom: 0; left: 0;")
@@ -454,10 +454,10 @@ which are caused by:"),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
                    ),
-            tags$div(class="IDEA Logo Wrapper",
+            tags$div(class="IDEA_Logo_Wrapper",
                      style="position:relative;width: 33%;left: 33%",
               tags$img(
-                class="Idea Logo",
+                class="Idea_Logo",
                 src="IDEA_logo_500.png", 
                 width="75%", 
                 style="bottom: 0; left: 0;")
