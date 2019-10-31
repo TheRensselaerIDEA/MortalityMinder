@@ -136,7 +136,7 @@ kendall.cor <- mort.rate() %>%
           kendall_cor <= 0,
           "Protective",
           "Destructive"
-        )
+        ),
         #chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
       #dplyr::filter(kendall_p < 0.1) %>% 
@@ -622,3 +622,8 @@ chr.data.2019_fewer_SDs <- chr.data.2019 %>%
 head(chr.data.2019_fewer_SDs)
 saveRDS(chr.data.2019_fewer_SDs, "init/chr.data.2019.reduced.rds")
 ```
+
+```{r}
+selected_SDs_final[-1]
+```
+
