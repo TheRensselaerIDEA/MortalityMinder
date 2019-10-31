@@ -293,7 +293,7 @@
 }
 
 .page2_col1 {
-  width:20%;
+  width:30%;
   height:100%;
   float:left;
   display:block;
@@ -302,14 +302,14 @@
 
 .page2_col2_top{
   width:100%;
-  height:10%;
+  height:20%;
   float:left;
   display:block;
 }
 
 .page2_col2_down{
   width:100%;
-  height:90%;
+  height:80%;
   float:left;
   display:block;
 }
