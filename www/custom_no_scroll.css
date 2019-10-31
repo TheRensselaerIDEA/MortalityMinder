@@ -293,7 +293,7 @@
 }
 
 .page2_col1 {
-  width:30%;
+  width:25%;
   height:100%;
   float:left;
   display:block;
@@ -346,7 +346,14 @@
 }
 
 .page2_col2 {
-  width:calc(60% - 1px);
+  width:50%;
+  height:100%;
+  float:left;
+  display:block;
+}
+
+.page2_col3 {
+  width:20%;
   height:100%;
   float:left;
   display:block;
