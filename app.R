@@ -614,6 +614,114 @@ server <- function(input, output, session) {
     
   })
   
+  
+  #Calculate the mean mortality rate for a state  for 2000-2002
+  state.mean.2000_2002 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    )
+  
+    state.mean <- mean(filtered.data$death_rate)
+    
+  })
+  
+  
+  #Calculate the mean mortality rate for a state  for 2015-2017
+  state.mean.2015_2017 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    )
+    
+    state.mean <- mean(filtered.data$death_rate)
+   
+  })
+  
+  #Identifying a county with the highest mortality rate in the state between 2000-2002
+  high.rate.county.2000_2002 <- reactive({
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    )
+    highest.rate.county <- filtered.data$county_name[which.max(filtered.data$death_rate)]
+  })
+  
+  #Identifying a county with the highest mortality rate in the state between 2015-2017
+  high.rate.county.2015_2017 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    )
+    highest.rate.county <- filtered.data$county_name[which.max(filtered.data$death_rate)]
+    
+  })
+  
+  #Identifying a county with the lowest mortality rate in the state between 2015-2017
+  low.rate.county.2000_2002 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    )
+    lowest.rate.county <- filtered.data$county_name[which.min(filtered.data$death_rate)]
+    
+  })
+  
+  #Identifying a county with the lowest mortality rate in the state between 2015-2017
+  low.rate.county.2015_2017 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    )
+    lowest.rate.county <- filtered.data$county_name[which.min(filtered.data$death_rate)]
+    
+  })
+  
+  #Extracting the national mean
+  national.mean <- reactive({
+    switch(input$death_cause,
+           "Despair" = {
+             death_rate <- c(28.929453, 33.665595, 37.821445, 40.081486, 43.900063, 55.084642)
+           },
+           "Assault" = {
+             death_rate <- c(6.750937, 6.729051, 6.687417, 5.934990, 5.915201, 6.999898)
+           }, 
+           "Cancer" = {
+             death_rate <- c(107.637100, 107.638200, 106.628310, 106.949100, 105.219690, 101.169700)
+           },
+           "Cardiovascular" = {
+             death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
+           })
+    
+    
+    nation.dataframe <- data.frame(
+      period = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+      cluster = rep("National Average", 6),
+      death_rate,
+      count = rep(NA, 6))
+  })
+  
+  
+  
+ 
+  
   # ----------------------------------------------------------------------
   # Functions for data download
   
@@ -952,32 +1060,8 @@ server <- function(input, output, session) {
     } else {
 
         nclusters <- max(mort.cluster.raw()$cluster)
+        total.data <- rbind(mort.avg.cluster.ord(), national.mean())
         
-        switch(input$death_cause,
-               "Despair" = {
-                 death_rate <- c(28.929453, 33.665595, 37.821445, 40.081486, 43.900063, 55.084642)
-               },
-               "Assault" = {
-                 death_rate <- c(6.750937, 6.729051, 6.687417, 5.934990, 5.915201, 6.999898)
-               }, 
-               "Cancer" = {
-                 death_rate <- c(107.637100, 107.638200, 106.628310, 106.949100, 105.219690, 101.169700)
-               },
-               "Cardiovascular" = {
-                 death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
-               })
-        
-        # browser()
-        
-        nation.dataframe <- data.frame(
-          period = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"), 
-          cluster = rep("National Average", 6), 
-          death_rate, 
-          count = rep(NA, 6))
-        
-        total.data <- rbind(mort.avg.cluster.ord(), nation.dataframe)
-        
-        # browser()
         
         line_plot <- ggplot(
           total.data,
@@ -1043,11 +1127,20 @@ server <- function(input, output, session) {
       tags$h3(
         paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
+      tags$br(),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h5("Mean Mortality Rate:"),
-      tags$h5("Highest Rate County:"),
-      tags$h5("Lowest Rate County:"),
-      tags$h5("National Mean:")
+      tags$br(),
+      tags$h5("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
+      tags$h5("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
+      tags$br(),
+      tags$h5("Highest Rate County for 2000-2002:", high.rate.county.2000_2002()),
+      tags$h5("Highest Rate County for 2015-2017:", high.rate.county.2015_2017()),
+      tags$br(),
+      tags$h5("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
+      tags$h5("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
+      tags$br(),
+      tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
+      tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
     )
   })
 
@@ -1056,7 +1149,7 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h1(
-        paste0("National ",names(which(cause.list == input$death_cause)))
+        paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
       )
     )
   })
