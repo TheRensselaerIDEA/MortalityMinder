@@ -884,10 +884,21 @@ server <- function(input, output, session) {
     }
   })
   
+  update.county.fips <- function(value) {
+    if (!is.na(value) & nchar(value) == 4) {
+      return (
+        paste("0", value, sep = "")
+      )
+    } else {
+      return (value)
+    }
+  }
   
   output$determinants_plot2 <- renderPlot({
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -946,6 +957,8 @@ server <- function(input, output, session) {
   
   
   output$determinants_plot3 <- renderPlot({
+    
+    geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
