@@ -60,7 +60,7 @@ ui <- fluidPage(
       inputId = "state_choice",
       label = h4("State"), 
       choices = state.list,
-      selected = "NY",
+      selected = "CA",
       width = "200px",
       options = list(
         `live-search` = TRUE,
@@ -1209,18 +1209,18 @@ correlation please navigate to...",
   # Mortality Rate by County Period 2
   output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
-      mort.data <- dplyr::filter(
-        cdc.data,
-        death_cause == input$death_cause,
-        period == input$year_selector
-      ) %>% 
-        dplyr::mutate(
-          # death_rate = death_num / population * 10^5,
-          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-        ) %>%
-        dplyr::select(county_fips, death_rate, period)
-      
-      geo.plot("US", input$death_cause, mort.data, input$year_selector)
+      # mort.data <- dplyr::filter(
+      #   cdc.data,
+      #   death_cause == input$death_cause,
+      #   period == input$year_selector
+      # ) %>% 
+      #   dplyr::mutate(
+      #     # death_rate = death_num / population * 10^5,
+      #     death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+      #   ) %>%
+      #   dplyr::select(county_fips, death_rate, period)
+      # 
+      # geo.plot("US", input$death_cause, mort.data, input$year_selector)
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
