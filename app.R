@@ -1254,8 +1254,8 @@ correlation please navigate to...",
   output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(), 
-                       max(mort.cluster.ord()$cluster))
+      # draw.geo.cluster("US", input$death_cause, mort.cluster.ord(), 
+      #                  max(mort.cluster.ord()$cluster))
     }else{
       draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(), 
                        max(mort.cluster.ord()$cluster))
@@ -1269,8 +1269,8 @@ correlation please navigate to...",
   output$geo_cluster_kmean_2 <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(),
-                       max(mort.cluster.ord()$cluster))
+      # draw.geo.cluster("US", input$death_cause, mort.cluster.ord(),
+      #                  max(mort.cluster.ord()$cluster))
     }else{
       draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(),
                        max(mort.cluster.ord()$cluster))
