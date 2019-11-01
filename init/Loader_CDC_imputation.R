@@ -154,7 +154,7 @@ cdc.reader.state <- function(cdc.state.file, cdc.period, death.cause, suppress.s
     ## General tidying of data
     dplyr::mutate(
       state_name = stringr::str_trim(state_name, side = "both"),
-      state_abbr = as.character(state.name.appr[state_name])
+      state_abbr = as.character(state.name.abbr[state_name])
     ) %>%
     dplyr::select(
       # Rearrangement
@@ -257,6 +257,45 @@ cdc.pop.mat <- function(cdc.data.long, state.abbr, death.cause = "Despair") {
                     suffix = c(".death_num", ".population"))
 }
 
+cdc.fill.by.excl <- function(cdc.data.cause, cdc.data.allcause, cdc.data.excluded) {
+  
+  num.allcause <- cdc.data.allcause %>% dplyr::select(period, county_fips, death_num)
+  num.excluded <- cdc.data.excluded %>% dplyr::select(period, county_fips, death_num)
+  
+  mutate.cause <- cdc.data.cause %>% 
+    left_join(num.allcause, by = c("county_fips", "period"), suffix=c("", ".allcause")) %>% 
+    left_join(num.excluded, by = c("county_fips", "period"), suffix=c("", ".excluded"))
+  
+  # first, verify that the excluded data is mostly right (for non suppressed)
+  incorrect <- which( (mutate.cause$death_num.allcause - mutate.cause$death_num.excluded) != 
+                        mutate.cause$death_num )
+  
+  if (length(incorrect) > 0) {
+    stop("ERROR: The excluded data set does not match!")
+  }
+  
+  mutate.cause <- mutate.cause %>% 
+    dplyr::mutate( 
+      death_num = dplyr::if_else(is.na(death_num), 
+                                 death_num.allcause - death_num.excluded, 
+                                 death_num)) %>%
+    
+    dplyr::mutate( 
+      death_rate = dplyr::if_else(is.na(population), 
+                                  death_rate, 
+                                  death_num/population*10^5) ) %>%
+    
+    # Rearrangement
+    dplyr::arrange(county_fips) %>% 
+    
+    dplyr::select(-death_num.allcause, -death_num.excluded)
+  
+  return(mutate.cause)  
+
+}
+
+
+
 # the function that reads the county long data (and suppliments of state long data)
 cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cause = "Despair") {
   
@@ -271,8 +310,8 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
   
   cdc.data.state.wide <- cdc.mort.state.mat(cdc.data.state.long, state.abbr, death.cause)
   
-  county.data <- unique( cdc.data %>% 
-    dplyr::select(state_name, state_abbr, county_name, county_fips, urban_2013) 
+  county.data <- unique( cdc.data.long %>% 
+    dplyr::select(period, state_name, state_abbr, county_name, county_fips, urban_2013, population) 
     )
   
   rownames(cdc.data.state.wide) <- cdc.data.state.wide$state_abbr
@@ -285,7 +324,7 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
   random1 <- hi_bound
   random2 <- hi_bound
   
-  set.seed(123)
+  set.seed(88)
   
   miss_index <- which(is.na(cdc.data.wide[,-1]),arr.ind=TRUE)
   get_pop_index <- t(matrix(c(0,8), nrow=ncol(miss_index), ncol=nrow(miss_index)))
@@ -295,12 +334,12 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
     
   random1[miss_index] <- 
     dplyr::if_else( is.na(cdc.supp.wide[(miss_index+get_pop_index)]), Inf,
-                    sample(c(0:9), 1, replace=TRUE) / 
+                    sample(c(1:4), 1, replace=TRUE) / 
                       as.numeric( cdc.supp.wide[(miss_index+get_pop_index)] ) * 10^5)
 
   random2[miss_index] <- 
     dplyr::if_else( is.na(cdc.supp.wide[(miss_index+get_pop_index)]), Inf,
-                    sample(c(0:9), 1, replace=TRUE) / 
+                    sample(c(5:8), 1, replace=TRUE) / 
                       as.numeric( cdc.supp.wide[(miss_index+get_pop_index)] ) * 10^5)
   
   # imputation
@@ -314,17 +353,20 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
     
     state_name <- names(cdc.states.split[i])
     state <- cdc.states.split[[i]]
+    # state.mat <- data.matrix( state[, -1] )
     rownames(state) <- state$county_fips
+    
     
     # category a)
     
-    complt <- state[complete.cases(state), -1]
+    complt <- state[complete.cases(state), -1] 
     
     # category b)
     
-    part <- state[ !complete.cases(state) & rowSums(is.na(state)) <= 4 , -1] 
+    part <- state[ !complete.cases(state) & 
+                    rowSums(is.na(state)) <= 4 , -1] 
     
-    state_mean <- cdc.data.state.wide[state_name,c(-1,-2)]
+    state_mean <- cdc.data.state.wide[state_name,c(-1,-2)] 
     
     #if (nrow(complt) == nrow(state)) {
     #  complt.df <- rbind(complt.df, complt)
@@ -400,49 +442,46 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
         random_i <- which( is.na(county) & 
                              (state_mean > hi_bound[rownames(county),]) )
         county[,less_i] <- state_mean[,less_i]
+        
+        # county[,random_i] <- 
+        #   colMeans(rbind(random1[rownames(county),], 
+        #                  random2[rownames(county),])
+        #   )[random_i]
+          
         county[,random_i] <- 
-          colMeans(rbind(random1[rownames(county),], 
-                         random2[rownames(county),])
+          sapply(rbind(random1[rownames(county),], random2[rownames(county),]), 
+                 function(x) {
+                   x[ which( abs(x-rowMeans(state_mean)) == 
+                               min(abs(x-rowMeans(state_mean)) ) ) ]
+                 }
           )[random_i]
+        
         complt <- rbind(complt, county)
       }
     }
     
-    complt.df <- rbind(complt.df, complt)
+    complt.df <- rbind( complt.df, complt )
     print(i)
   }
     
-  final.df <- 
-    
-    # combine all info for counties (fips, state, death_num, population, etc.)
-    dplyr::mutate(complt.df,county_fips = rownames(complt.df)) %>% 
-    dplyr::inner_join(dplyr::select(cdc.supp.wide, -state_abbr), by="county_fips") %>%
-    dplyr::inner_join(county.data, by="county_fips") %>% 
-    
-    # before gather, combine all death info, easier to structure
-    tidyr::unite(`2000-2002`, `2000-2002`, `2000-2002.death_num`, `2000-2002.population`, sep=",") %>% 
-    tidyr::unite(`2003-2005`, `2003-2005`, `2003-2005.death_num`, `2003-2005.population`, sep=",") %>% 
-    tidyr::unite(`2006-2008`, `2006-2008`, `2006-2008.death_num`, `2006-2008.population`, sep=",") %>% 
-    tidyr::unite(`2009-2011`, `2009-2011`, `2009-2011.death_num`, `2009-2011.population`, sep=",") %>% 
-    tidyr::unite(`2012-2014`, `2012-2014`, `2012-2014.death_num`, `2012-2014.population`, sep=",") %>% 
-    tidyr::unite(`2015-2017`, `2015-2017`, `2015-2017.death_num`, `2015-2017.population`, sep=",") %>% 
-    
-    # gather we convert data from wide to long
-    tidyr::gather(key="period", value="death_info", 1:6) %>%    
-    
-    # seperate the death info so we have three columns
-    tidyr::separate("death_info", c("death_rate","death_num","population"), sep=",") %>% 
-    
-    # make int death_num
-    dplyr::mutate( death_rate = as.numeric(death_rate), 
-                   death_num = as.numeric(death_num), 
-                   population = as.numeric(population) ) %>%
+  final.df <- dplyr::mutate(complt.df, county_fips = rownames(complt.df)) %>% 
+    tidyr::gather(key="period", value="death_rate", 1:6) %>% 
+    dplyr::inner_join(county.data, by=c("period"="period", "county_fips"="county_fips")) %>%
     
     # convert the death_rate to the nearest integer num/pop rate
     dplyr::mutate( death_num = round(death_rate*population/10^5) ) %>%
+    
+    # dplyr::mutate( death_num =
+    #                  dplyr::if_else(round(death_rate*population/10^5) < 1,
+    #                                 1, round(death_rate*population/10^5) ) ) %>%
     dplyr::mutate( 
       death_rate = dplyr::if_else(is.na(population), death_rate, death_num/population*10^5),
       death_cause = death.cause ) %>%
+    
+    dplyr::mutate(
+      death_rate = dplyr::if_else(death_rate == 0, 
+                                  min(death_rate[death_rate>0]),
+                                  death_rate) ) %>%
     
     # Rearrangement
     dplyr::arrange(county_fips) %>% 
@@ -452,7 +491,52 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
       county_fips, urban_2013, population, death_num, death_rate, death_cause
     ) %>% 
     as.data.frame()
-
+  
+  # ================ older version ================== #
+  # final.df <- 
+  #   
+  #   # combine all info for counties (fips, state, death_num, population, etc.)
+  #   dplyr::mutate(complt.df,county_fips = rownames(complt.df)) %>% 
+  #   dplyr::inner_join(dplyr::select(cdc.supp.wide, -state_abbr), by="county_fips") %>%
+  #   dplyr::inner_join(county.data, by="county_fips") %>% 
+  #   
+  #   # before gather, combine all death info, easier to structure
+  #   tidyr::unite(`2000-2002`, `2000-2002`, `2000-2002.death_num`, `2000-2002.population`, sep=",") %>% 
+  #   tidyr::unite(`2003-2005`, `2003-2005`, `2003-2005.death_num`, `2003-2005.population`, sep=",") %>% 
+  #   tidyr::unite(`2006-2008`, `2006-2008`, `2006-2008.death_num`, `2006-2008.population`, sep=",") %>% 
+  #   tidyr::unite(`2009-2011`, `2009-2011`, `2009-2011.death_num`, `2009-2011.population`, sep=",") %>% 
+  #   tidyr::unite(`2012-2014`, `2012-2014`, `2012-2014.death_num`, `2012-2014.population`, sep=",") %>% 
+  #   tidyr::unite(`2015-2017`, `2015-2017`, `2015-2017.death_num`, `2015-2017.population`, sep=",") %>% 
+  #   
+  #   # gather we convert data from wide to long
+  #   tidyr::gather(key="period", value="death_info", 1:6) %>%    
+  #   
+  #   # seperate the death info so we have three columns
+  #   tidyr::separate("death_info", c("death_rate","death_num","population"), sep=",") %>% 
+  #   
+  #   # make int death_num
+  #   dplyr::mutate( death_rate = as.numeric(death_rate), 
+  #                  death_num = as.numeric(death_num), 
+  #                  population = as.numeric(population) ) %>%
+  #   
+  #   # convert the death_rate to the nearest integer num/pop rate
+  #   dplyr::mutate( death_num = 
+  #                    dplyr::if_else(round(death_rate*population/10^5) < 1,
+  #                                   1, round(death_rate*population/10^5) ) ) %>%
+  #   dplyr::mutate( 
+  #     death_rate = dplyr::if_else(is.na(population), death_rate, death_num/population*10^5),
+  #     death_cause = death.cause ) %>%
+  #   
+  #   # Rearrangement
+  #   dplyr::arrange(county_fips) %>% 
+  #   dplyr::select(
+  #     # Rearrangement
+  #     period, state_name, state_abbr, county_name, 
+  #     county_fips, urban_2013, population, death_num, death_rate, death_cause
+  #   ) %>% 
+  #   as.data.frame()
+  # ================================================= #
+  
 }
 
 cdc.periods <- c(
@@ -505,11 +589,9 @@ cdc.files.allcause <- c(
   "../data/CDC/all_cause/Underlying Cause of Death, 2015-2017.txt"
 )
 
-
-
 # state data name map #
 
-state.name.appr <- list(
+state.name.abbr <- list(
                 "Alabama"     =    "AL",
                  "Alaska"     =    "AK",
                 "Arizona"     =    "AZ",
@@ -610,6 +692,43 @@ cdc.files.allcause.state <- c(
   "../data/CDC/allcause_state/Underlying Cause of Death, All Causes, State, 2015-2017.txt"
 )
 
+# excluded data
+
+cdc.files.despair.excluded <- c(
+  "../data/CDC/CDC_excluded_data/excluded_Despair/Underlying Cause of Death, exclude Despair, 2000-2002.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Despair/Underlying Cause of Death, exclude Despair, 2003-2005.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Despair/Underlying Cause of Death, exclude Despair, 2006-2008.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Despair/Underlying Cause of Death, exclude Despair, 2009-2011.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Despair/Underlying Cause of Death, exclude Despair, 2012-2014.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Despair/Underlying Cause of Death, exclude Despair, 2015-2017.txt"
+)
+
+cdc.files.assault.excluded <- c(
+  "../data/CDC/CDC_excluded_data/excluded_Assault/Underlying Cause of Death, exclude Assault, 2000-2002.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Assault/Underlying Cause of Death, exclude Assault, 2003-2005.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Assault/Underlying Cause of Death, exclude Assault, 2006-2008.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Assault/Underlying Cause of Death, exclude Assault, 2009-2011.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Assault/Underlying Cause of Death, exclude Assault, 2012-2014.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Assault/Underlying Cause of Death, exclude Assault, 2015-2017.txt"
+)
+
+cdc.files.cancer.excluded <- c(
+  "../data/CDC/CDC_excluded_data/excluded_Cancer/Underlying Cause of Death, exclude Cancer, 2000-2002.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cancer/Underlying Cause of Death, exclude Cancer, 2003-2005.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cancer/Underlying Cause of Death, exclude Cancer, 2006-2008.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cancer/Underlying Cause of Death, exclude Cancer, 2009-2011.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cancer/Underlying Cause of Death, exclude Cancer, 2012-2014.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cancer/Underlying Cause of Death, exclude Cancer, 2015-2017.txt"
+)
+
+cdc.files.cardiovascular.excluded <- c(
+  "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2000-2002.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2003-2005.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2006-2008.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2009-2011.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2012-2014.txt", 
+  "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2015-2017.txt"
+)
 
 ######################
 
@@ -618,9 +737,7 @@ cdc.data.assault <- cdc.reader.batch(cdc.files.assault, cdc.periods, "Assault")
 cdc.data.cancer <- cdc.reader.batch(cdc.files.cancer, cdc.periods, "Cancer")
 cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.periods, "Cardiovascular")
 cdc.data.allcause <- cdc.reader.batch(cdc.files.allcause, cdc.periods, "All Cause")
-cdc.data <- dplyr::bind_rows(cdc.data.despair, cdc.data.assault, cdc.data.cancer, 
-                             cdc.data.cardiovascular, cdc.data.allcause) %>% 
-  as.data.frame()
+
 
 cdc.data.despair.state <- cdc.reader.state.batch(cdc.files.despair.state, cdc.periods, "Despair")
 cdc.data.assault.state <- cdc.reader.state.batch(cdc.files.assault.state, cdc.periods, "Assault")
@@ -632,6 +749,25 @@ cdc.data.state <-
   dplyr::bind_rows(cdc.data.despair.state, cdc.data.assault.state, cdc.data.cancer.state,
                    cdc.data.cardiovascular.state, cdc.data.allcause.state) %>% 
   as.data.frame()
+
+######################
+
+cdc.data.despair.excluded <- cdc.reader.batch(cdc.files.despair.excluded, cdc.periods, "-Despair")
+cdc.data.assault.excluded <- cdc.reader.batch(cdc.files.assault.excluded, cdc.periods, "-Assault")
+cdc.data.cancer.excluded <- cdc.reader.batch(cdc.files.cancer.excluded, cdc.periods, "-Cancer")
+cdc.data.cardiovascular.excluded <- cdc.reader.batch(cdc.files.cardiovascular.excluded, cdc.periods, "-Cardiovascular")
+
+cdc.data.despair.fill <- cdc.fill.by.excl(cdc.data.despair, cdc.data.allcause, cdc.data.despair.excluded)
+cdc.data.assault.fill <- cdc.fill.by.excl(cdc.data.assault, cdc.data.allcause, cdc.data.assault.excluded)
+cdc.data.cancer.fill <- cdc.fill.by.excl(cdc.data.cancer, cdc.data.allcause, cdc.data.cancer.excluded)
+cdc.data.cardiovascular.fill <- cdc.fill.by.excl(cdc.data.cardiovascular, cdc.data.allcause, cdc.data.cardiovascular.excluded)
+
+
+cdc.data <- dplyr::bind_rows(cdc.data.despair.fill, cdc.data.assault.fill, cdc.data.cancer.fill, 
+                             cdc.data.cardiovascular.fill, cdc.data.allcause) %>% 
+  as.data.frame()
+
+saveRDS(cdc.data, "../data/CDC/cdc.data.fill.Rds")
 
 ######################
 
@@ -655,15 +791,31 @@ saveRDS(cdc.data.imputed, "../data/CDC/cdc.data.imputed.Rds")
 rm(
   list = c(
     "cdc.periods", 
+    "state.name.abbr",
+    
     "cdc.files.despair", 
     "cdc.files.assault", 
     "cdc.files.cancer",
     "cdc.files.cardiovascular",
+    "cdc.files.allcause",
+    
+    "cdc.files.despair.state", 
+    "cdc.files.assault.state", 
+    "cdc.files.cancer.state",
+    "cdc.files.cardiovascular.state",
+    "cdc.files.allcause.state",
     
     # Comment out the three lines below to keep individual data frames
+    "cdc.data.despair",
     "cdc.data.assault",
     "cdc.data.cancer",
-    "cdc.data.despair",
-    "cdc.data.cardiovascular"
+    "cdc.data.cardiovascular",
+    "cdc.data.allcause", 
+    
+    "cdc.data.despair.state",
+    "cdc.data.assault.state",
+    "cdc.data.cancer.state",
+    "cdc.data.cardiovascular.state",
+    "cdc.data.allcause.state"
   )
 )

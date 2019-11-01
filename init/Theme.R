@@ -14,28 +14,33 @@
 #' @export
 theme.categorical.colors <- function(n_clusters) {
   if (n_clusters == 3) {
-    return(c("#4575b4", "#fdae61", "#d73027"))
+    return(c("#fed976", "#fd8d3c", "#bd0026"))
   }
   if (n_clusters == 4) {
-    return(c("#4575b4", "#fdae61", "#d73027", "#a50026"))
+    return(c("#fed976", "#fd8d3c", "#fc4e2a", "#bd0026"))
   }
   if (n_clusters == 5) {
-    return(c("#313695", "#4575b4",
-             "#fdae61", "#d73027", "#a50026"))
+    return(c("#fed976", "#fd8d3c", "#fc4e2a", 
+            "#e31a1c", "#bd0026"))
   }
   if (n_clusters == 6) {
-    return(c("#313695", "#4575b4", "#abd9e9",
-             "#fdae61", "#d73027", "#a50026"))
+    return(c("#fed976", "#fd8d3c", "#fc4e2a", 
+             "#e31a1c", "#bd0026", "#800026"))
   }
 }
 
-#' Gives the theme categorical colors with black appended
+theme.cat.accent.color <- function() {
+  return ("#0571b0")
+}
+
+#' Gives the theme categorical colors with accent color appended
 #'
 #' @param n_clusters 
 #'
 #' @return a vector of (n_clusters + 1) hex values where the first n_clusters
 #'          values are the values that would be returned by 
-#'          theme.categorical.colors(n_clusters) and the last value is black
+#'          theme.categorical.colors(n_clusters) and the last value is 
+#'          theme.cat.accent.color()
 #'
 #' @examples
 #' scale_fill_manual(values = theme.categorical.colors(3))
@@ -44,8 +49,8 @@ theme.categorical.colors <- function(n_clusters) {
 #' 
 #' @author Ross DeVito
 #' @export
-theme.categorical.colors.black <- function(n_clusters) {
-  return(append(theme.categorical.colors(n_clusters), "#000000"))
+theme.categorical.colors.accent <- function(n_clusters) {
+  return(append(theme.categorical.colors(n_clusters), theme.cat.accent.color()))
 }
 
 
@@ -209,7 +214,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(dragging = FALSE)) %>%
+                    options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 
@@ -244,7 +249,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
             )
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(dragging = FALSE)) %>%
+                    options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 
@@ -259,22 +264,23 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
                           label = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
-                         className="map-title") %>%
-              addLegend("bottomleft",
-                        colors = colors[3],
-                        labels = labels[3],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[2],
-                        labels = labels[2],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[1],
-                        labels = labels[1],
-                        title = "Clusters:",
-                        opacity = 1))
+                         className="map-title")# %>%
+              # addLegend("bottomleft",
+              #           colors = colors[3],
+              #           labels = labels[3],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[2],
+              #           labels = labels[2],
+              #           title = "&nbsp;",
+              #           opacity = 1) %>%
+              # addLegend("bottomleft",
+              #           colors = colors[1],
+              #           labels = labels[1],
+              #           title = "Clusters:",
+              #           opacity = 1)
+            )
   }
   
   
@@ -341,10 +347,10 @@ labs.geo.mort <- function(state.choice, period.choice, death.cause) {
 
 bin.geo.mort <- function(death.cause) {
   bin <- list(
-    "Despair" = c(0, 5, 10, 15, 25, 50, 100, 200, Inf),
-    "Cardiovascular" = c(seq(0, 360, 45), Inf),
-    "Assault" = c(seq(0, 40, 5), Inf),
-    "Cancer" = c(seq(0, 360, 45), Inf)
+    "Despair" = c(-1, 5, 10, 15, 25, 50, 100, 200, Inf),
+    "Cardiovascular" = c(seq(0, 315, 45), Inf),
+    "Assault" = c(seq(0, 35, 5), Inf),
+    "Cancer" = c(seq(0, 315, 45), Inf)
   )
   return(bin[[death.cause]])
 }
@@ -462,6 +468,22 @@ getLatLong <- function(state.choice, dataset) {
   return(c(min.lat - padding, min.long - padding, max.lat + padding, max.long + padding))
 }
 
+geo.label <- function(death.cause) {
+  switch(death.cause,
+         "Despair" = return(
+           c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+         ),
+         "Assault" = return(
+           c("[0,5]", "[5,10]", "[10,15]", "[15,20]", "[20,25]", "[25,30]", "[30,35]", "[35,Inf]")
+         ),
+         "Cancer" = return(
+           c("[0,45]", "[45,90]", "[90,135]", "[135,180]", "[180,225]", "[225,270]", "[270,315]", "[315,Inf]")
+         ),
+         "Cardiovascular" = return(
+           c("[0,45]", "[45,90]", "[90,135]", "[135,180]", "[180,225]", "[225,270]", "[270,315]", "[315,Inf]")
+         ))
+}
+
 geo.plot <- function(state.choice, death.cause, mort.data, period) {
   dataset <- geo.map.fetch(state.choice, mort.data) %>% 
     dplyr::rename(VAR_ = death_rate)
@@ -470,7 +492,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
   colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
-  labels <- c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+  labels <- geo.label(death.cause)
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   dataset$county_fips <- substr(dataset$county_fips, 3, 5)
@@ -478,8 +500,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
-                    options = leafletOptions(
-                      dragging = FALSE)) %>%
+                    options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 

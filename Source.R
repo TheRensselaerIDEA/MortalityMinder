@@ -1,7 +1,7 @@
 setwd("init")
 source("Curl_fixer.R")
 source("Librarian.R")
-
+library(withr)
 # Separated out function definitions 10/01/2019
 #source("Loader_CHR2019.R") # Added write_rds 9/27/2019
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
@@ -16,7 +16,7 @@ source("CDC_Lib.R")         # Function definitions from Loader_CDC.R
 # cdc.data <- readRDS("../data/CDC/cdc.data.imputed.Rds")
 cdc.data <- readRDS("cdc.data.dev.rds")
 # need impute non zero death_rate
-cdc.data$death_rate[cdc.data$death_rate < 1] <- 1
+# cdc.data$death_rate[cdc.data$death_rate < 1] <- 1
 # Separated out function definitions 10/01/2019
 #source("Loader_GEO.R")     # Added write_rds 9/27/2019
 source("GEO_Lib.R")         # Function definitions from Loader_GEO.R
