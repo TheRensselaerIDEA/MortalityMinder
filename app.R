@@ -251,7 +251,8 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
               style = "padding: 20px; height: 50%",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
-              tags$h4(textOutput("determinant_text"))
+              tags$h4(textOutput("determinant_text")),
+              tags$h4(uiOutput("determinant_link"))
             ),
             tags$div(
               class = "col1_bot",
@@ -718,9 +719,11 @@ server <- function(input, output, session) {
       count = rep(NA, 6))
   })
   
-  
-  
- 
+  #Extracting the national mean
+  determinant.url <- reactive({
+    return(as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"URL"))
+  })
   
   # ----------------------------------------------------------------------
   # Functions for data download
@@ -1042,7 +1045,18 @@ server <- function(input, output, session) {
   })
   
   output$determinant_text <- renderText({
-    SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definition"
+    as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
+  })
+  
+  output$determinant_link <- renderUI({
+    tagList(
+      tags$a(
+        "Click here for more information",
+        href = determinant.url(),
+        target="_blank"
+      )
+    )
   })
   
   output$determinants_plot4 <- renderPlot({
