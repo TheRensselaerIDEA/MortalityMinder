@@ -922,7 +922,7 @@ server <- function(input, output, session) {
           axis.title.x = element_blank(),
           
           legend.position = "none"
-        ) +
+        ) + ggtitle(paste(input$determinant_choice, "and Risk County Relationship"))+
         scale_fill_manual(
           name = "County",
           labels = sd.select$county_name,  
@@ -948,7 +948,7 @@ server <- function(input, output, session) {
           axis.title.x = element_blank(),
           
           legend.position = "none"
-        ) + ggtitle(paste(input$determinant_choice, " and Risk Cluster Relationship"))+
+        ) + ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
     }
@@ -984,7 +984,7 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate",
           y = input$determinant_choice
-        ) +
+        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -1000,7 +1000,31 @@ server <- function(input, output, session) {
           guide = guide_legend(reverse = T)
         )
       
-    } else{
+    } else if(input$state_choice == "United States"){
+      dplyr::filter(
+        cdc.data,
+        period == "2015-2017", 
+        death_cause == input$death_cause
+      ) %>% 
+        dplyr::select(county_fips, death_rate) %>% 
+        dplyr::inner_join(sd.select, by = "county_fips") %>% 
+        tidyr::drop_na() %>%
+        
+        ggplot(aes(x = death_rate, y = VAR)) + 
+        #geom_point(colour="black", shape=21, size = 3, alpha = .7,
+        #aes(fill = cluster)) + 
+        stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
+        labs(
+          x = "Mortality Rate (2015-2017)",
+          y = input$determinant_choice
+        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
+        theme.line.mort() + 
+        theme(legend.position = "top") + 
+        guides(color = guide_legend(override.aes = list(shape = 15))) + 
+        color.line.cluster(input$state_choice, max(sd.select$cluster)) +
+        scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+      
+    } else {
       
       
       dplyr::filter(
@@ -1013,14 +1037,13 @@ server <- function(input, output, session) {
         tidyr::drop_na() %>%
         
         ggplot(aes(x = death_rate, y = VAR)) + 
-        #geom_point(colour="black", shape=21, size = 3, alpha = .7,
-                   #aes(fill = cluster)) + 
-        stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
-        #browser()
+        geom_point(colour="black", shape=21, size = 3, alpha = .7,
+                   aes(fill = cluster)) + 
+        #stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, " and Mortality Relationship"))+
+        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
