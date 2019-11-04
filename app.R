@@ -337,36 +337,31 @@ which are caused by:"),
                     id = "sixth_period",
                     class = "period_text",
                     "2015-2017"
-                  ))
-              
+                  )
+                  )
             )),
+            tags$hr(),
             tags$div(
-                class = "page2_col2_down",
+                class = "page2_col2_middle",
                 tags$img(
                   id = "national_map_new",
                   class = "landing_page_map",
                   src = "Despair/1.png",
-                  style = "width:70%"
-                ),
-                tags$div(class="IDEA_Logo_Wrapper",
-                         style="position:relative;width: 33%;left: 66%; bottom: 0;",
-                         tags$img(
-                           class="Idea_Logo",
-                           src="IDEA_logo_500.png", 
-                           width="75%", 
-                           style="bottom: 0; left: 0;")
+                #  style = "width:70%"
+                  style = "height:80%"
                 )
-            )
-          ),
-          tags$div(
-            class = "page2_col3",
+                ),
             tags$div(
-              class = "page2_col3_text",
-              uiOutput("textMortFacts")
-            )
-            
+              class = "page2_col2_bottom",
+                tags$div(
+                  class = "page2_col3_text_1",
+                  uiOutput("textMortFacts1")
+                ), tags$div(
+                  class = "page2_col3_text_2",
+                  uiOutput("textMortFacts2")
+                )
+              )
           )
-          
         )
       ),
       tags$div(
@@ -1147,30 +1142,38 @@ server <- function(input, output, session) {
     )
   })
 
-  output$textMortFacts <- renderUI({
+  output$textMortFacts1 <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
       tags$h3(
         paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$br(),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$br(),
       tags$h5("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
       tags$h5("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
-      tags$br(),
-      tags$h5("Highest Rate County for 2000-2002:", high.rate.county.2000_2002()),
-      tags$h5("Highest Rate County for 2015-2017:", high.rate.county.2015_2017()),
-      tags$br(),
-      tags$h5("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
-      tags$h5("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
-      tags$br(),
       tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
       tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
     )
   })
 
+  output$textMortFacts2 <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        paste0(" ")
+      ),
+      tags$h3(
+        paste0(" ")
+      ),
+      tags$h5("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
+      tags$h5("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
+      tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
+      tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
+    )
+  })
+  
   output$textNationalTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
