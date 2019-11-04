@@ -119,8 +119,8 @@ color.line.cluster <- function(state.choice, n.clusters) {
 labs.line.mort <- function(state.choice, death.cause) {
   labs(
     title = paste(
-      state.choice, 
-      paste("Death of", death.cause, "Trend"), 
+      state.choice,
+      paste("Death of", death.cause, "Trend"),
       sep = ' - '
     ),
     caption = "Data Source: CDCWONDER Multi-Cause of Death",

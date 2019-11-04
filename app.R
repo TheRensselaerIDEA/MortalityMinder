@@ -714,7 +714,7 @@ server <- function(input, output, session) {
     
     nation.dataframe <- data.frame(
       period = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-      cluster = rep("National Average", 6),
+      cluster = rep("National", 6),
       death_rate,
       count = rep(NA, 6))
   })
@@ -1135,7 +1135,8 @@ server <- function(input, output, session) {
           values = theme.categorical.colors.accent(nclusters)) +
         theme.line.mort() + 
         theme(legend.position = "left") + 
-        guides(color = guide_legend(reverse = T))
+        guides(color = guide_legend(reverse = T)) +
+        labs(fill = "Cluster \n Average", color = "Cluster \n Average")
       
       if (is.null(county_choice())){
         line_plot 
