@@ -251,7 +251,8 @@ ui <- fluidPage(
               style = "padding: 20px; height: 50%",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
-              tags$h4(textOutput("determinant_text"))
+              tags$h4(textOutput("determinant_text")),
+              tags$h4(uiOutput("determinant_link"))
             ),
             tags$div(
               class = "col1_bot",
@@ -276,10 +277,10 @@ ui <- fluidPage(
                    premature death in the United States
                    which are caused by:"),
             tags$ul(
-              tags$li("Deaths of Despair: Deaths due to suicide, overdose, substance abuse and poisonings."),
-              tags$li("Assault Deaths: Deaths due to intentional injuries inflicted by another person."),
-              tags$li("Cardiovascular Disease Deaths: Deaths due to diseases of the circulatory systems such as heart disease and stroke."),
-              tags$li("Cancer Deaths: Deaths due to cancer and neoplasm.")
+              tags$li("Deaths of Despair"),
+              tags$li("Assault Deaths"),
+              tags$li("Cardiovascular Disease"),
+              tags$li("Cancer")
             ),
             tags$p("The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. To represent premature death, the rate includes all deaths for the selected causes in individuals age 25 to 64."),
             
@@ -718,9 +719,17 @@ server <- function(input, output, session) {
       count = rep(NA, 6))
   })
   
+<<<<<<< HEAD
   
   
   
+=======
+  #Extracting the national mean
+  determinant.url <- reactive({
+    return(as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"URL"))
+  })
+>>>>>>> 15c69da3bc4565e2f141b250f5a38da1f0e46644
   
   # ----------------------------------------------------------------------
   # Functions for data download
@@ -1071,7 +1080,18 @@ server <- function(input, output, session) {
   })
   
   output$determinant_text <- renderText({
-    SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definition"
+    as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
+  })
+  
+  output$determinant_link <- renderUI({
+    tagList(
+      tags$a(
+        "Click here for more information",
+        href = determinant.url(),
+        target="_blank"
+      )
+    )
   })
   
   output$determinants_plot4 <- renderPlot({
