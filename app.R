@@ -719,17 +719,12 @@ server <- function(input, output, session) {
       count = rep(NA, 6))
   })
   
-<<<<<<< HEAD
-  
-  
-  
-=======
   #Extracting the national mean
   determinant.url <- reactive({
     return(as.character(
       SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"URL"))
   })
->>>>>>> 15c69da3bc4565e2f141b250f5a38da1f0e46644
+
   
   # ----------------------------------------------------------------------
   # Functions for data download
@@ -863,13 +858,13 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          title = "Most Influential Social Determinants",
-          subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+          title = "Most Related Factors",
+          subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster",
           caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
-          y = "Correlation (tau)",
+          y = "Correlation",
           x = NULL,
-          fill = "Direction",
-          color = "Direction"
+          fill = "Relationship",
+          color = "Relationship"
         ) + 
         theme_minimal() +
         theme.text() + 
@@ -958,11 +953,12 @@ server <- function(input, output, session) {
           legend.position = "none"
         ) + 
         labs(
-          x = "Clusters",
+          x = "Cluster",
           y = input$determinant_choice
-          #caption = "Clusters"
+         
         ) + ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+      
       
     }
     
@@ -1223,7 +1219,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("What are the factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice)), "?"), tags$div(
+        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
           title="Each factor is rated as Destructive, meaning 
           that it has a positive correlation with the 
           death rate; or Protective, meaning it has a 
@@ -1246,7 +1242,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("Factors contributing to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
+        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
           title="Each factor is rated as Destructive, meaning 
           that it has a positive correlation with the 
           death rate; or Protective, meaning it has a 
@@ -1518,14 +1514,14 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          title = "Most Influential Social Determinants",
-          subtitle = "Kendall Correlation: SD - Mortality Trend Cluster",
+          title = "Most Related Factors",
+          subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster",
           caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
-          y = "Correlation (tau)",
+          y = "Correlation",
           x = NULL,
-          fill = "Direction",
-          color = "Direction"
-        ) + 
+          fill = "Relationship",
+          color = "Relationship"
+         ) + 
         theme_minimal() +
         theme.text() + 
         theme.background() + 
