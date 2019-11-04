@@ -935,7 +935,6 @@ server <- function(input, output, session) {
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
-        labs(y = input$determinant_choice) + 
         theme.background() + 
         theme.text() + 
         theme(
@@ -948,6 +947,11 @@ server <- function(input, output, session) {
           axis.title.x = element_blank(),
           
           legend.position = "none"
+        ) + 
+        labs(
+          x = "Clusters",
+          y = input$determinant_choice
+          #caption = "Clusters"
         ) + ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
@@ -982,7 +986,7 @@ server <- function(input, output, session) {
         ggplot(aes(x = death_rate, y = VAR)) + 
         geom_point(aes(fill = cluster)) + 
         labs(
-          x = "Mortality Rate",
+          x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
         ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
