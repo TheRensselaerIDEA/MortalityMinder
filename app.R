@@ -277,10 +277,10 @@ premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-c
 premature death in the United States
 which are caused by:"),
             tags$ul(
-              tags$li("Deaths of Despair: Deaths due to suicide, overdose, substance abuse and poisonings."),
-              tags$li("Assault Deaths: Deaths due to intentional injuries inflicted by another person."),
-              tags$li("Cardiovascular Disease Deaths: Deaths due to diseases of the circulatory systems such as heart disease and stroke."),
-              tags$li("Cancer Deaths: Deaths due to cancer and neoplasm.")
+              tags$li("Deaths of Despair"),
+              tags$li("Assault Deaths"),
+              tags$li("Cardiovascular Disease"),
+              tags$li("Cancer")
             ),
             tags$p("The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. To represent premature death, the rate includes all deaths for the selected causes in individuals age 25 to 64."),
             
