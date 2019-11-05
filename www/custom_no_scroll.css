@@ -111,6 +111,11 @@
   font-size:30px;
 }
 
+.landing_page_map {
+  display: block;
+  margin: auto;
+}
+
 .prompt_text {
   position:fixed;
   top:15px;

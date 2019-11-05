@@ -311,13 +311,17 @@ ui <- fluidPage(
               ),
               tags$div(
                 class = "explore_but",
-                style = "padding-right: 20px; padding-left: 20px",
+                style = "padding-right: 20px; padding-left: 20px; text-align: center;",
                 tags$button(
                   id = "play",
                   "Stop"
                 ),
                 tags$ul(
                   class = "ul_period",
+                  # tags$button(
+                  #   id = "play",
+                  #   "Stop"
+                  # ),
                   tags$button(
                     id = "first_period",
                     class = "period_text",
