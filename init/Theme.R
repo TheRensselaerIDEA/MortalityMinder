@@ -378,7 +378,8 @@ bin.geo.mort <- function(death.cause) {
     "Despair" = c(-1, 5, 10, 15, 25, 50, 100, 200, Inf),
     "Cardiovascular" = c(seq(0, 315, 45), Inf),
     "Assault" = c(seq(0, 35, 5), Inf),
-    "Cancer" = c(seq(0, 315, 45), Inf)
+    "Cancer" = c(seq(0, 315, 45), Inf),
+    "All Cause" = c(seq(0, 560, 80), Inf)
   )
   return(bin[[death.cause]])
 }
@@ -520,6 +521,9 @@ geo.label <- function(death.cause) {
          ),
          "Cardiovascular" = return(
            c("[0,45]", "[45,90]", "[90,135]", "[135,180]", "[180,225]", "[225,270]", "[270,315]", "[315,Inf]")
+         ),
+         "All Cause" = return(
+           c("[0,80]", "[80,160]", "[160,240]", "[240,320]", "[320,400]", "[400,480]", "[480,560]", "[560,Inf]")
          ))
 }
 
@@ -527,7 +531,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   dataset <- geo.map.fetch(state.choice, mort.data) %>% 
     dplyr::rename(VAR_ = death_rate)
   lat_long <- getLatLong(state.choice, dataset)
-
+  
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
   # These only make sense for categorical!
