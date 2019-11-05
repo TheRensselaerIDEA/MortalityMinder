@@ -273,20 +273,28 @@ ui <- fluidPage(
           uiOutput("national_map"),
           tags$div(
             class = "page2_col1",
-            tags$p("MortalityMinder analyzes trends of
-                   premature death in the United States
-                   which are caused by:"),
+            style = "height: auto;",
+            tags$h3("Since 2010, Mortality Rates in the United States have stopped decreasing and are even increasing.",
+                    style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
+            tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
             tags$ul(
-              tags$li("Deaths of Despair"),
-              tags$li("Assault Deaths"),
-              tags$li("Cardiovascular Disease"),
-              tags$li("Cancer")
+              style = "font-weight: bold;",
+              tags$li("Deaths of Despair",
+                      style = "font-weight: inherit;"),
+              tags$li("Cardiovascular Disease",
+                      style = "font-weight: inherit;"),
+              tags$li("Cancer",
+                      style = "font-weight: inherit;"),
+              tags$li("Assault Deaths",
+                      style = "font-weight: inherit;"),
+              tags$li("All Causes",
+                      style = "font-weight: inherit;")
             ),
-            tags$p("The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. To represent premature death, the rate includes all deaths for the selected causes in individuals age 25 to 64."),
+            tags$p("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a given county during a three year period fora given cause and for a region:  county, state or nationwide."),
             
-            tags$p("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed from 2000 to 2017. The map shows the changes by county. The graph shows the average mortality rate of the United States."),
+            tags$p("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed from 2000 to 2017."),
             
-            tags$p("To help address why rates are changing, MortalityMinder analyzes factors such as social determinants that are associated with increased mortality rates."),
+            tags$p("To understand why rates are changing, MortalityMinder analyzes factors that are related with increased mortality rates at the county level."),
             tags$p(tags$i("Click right and left to investigate more."))          
             ),
           tags$div(
@@ -298,10 +306,12 @@ ui <- fluidPage(
               class = "page2_col2_top",
               tags$div(
                 class = "National_title",
+                style = "padding-right: 20px; padding-left: 20px",
                 uiOutput("textNationalTitle")
               ),
               tags$div(
                 class = "explore_but",
+                style = "padding-right: 20px; padding-left: 20px",
                 tags$button(
                   id = "play",
                   "Stop"
@@ -343,6 +353,7 @@ ui <- fluidPage(
             tags$hr(),
             tags$div(
                 class = "page2_col2_middle",
+                style = "padding-right: 20px; padding-left: 20px",
                 tags$img(
                   id = "national_map_new",
                   class = "landing_page_map",
@@ -353,13 +364,10 @@ ui <- fluidPage(
                 ),
             tags$div(
               class = "page2_col2_bottom",
-                tags$div(
-                  class = "page2_col3_text_1",
-                  uiOutput("textMortFacts1")
-                ), tags$div(
-                  class = "page2_col3_text_2",
-                  uiOutput("textMortFacts2")
-                )
+              style = "padding-right: 20px; padding-left: 20px",
+              uiOutput("textMortFactsTitle"),
+              uiOutput("textMortFacts"),
+              uiOutput("textMortFactsClosing")
               )
           )
         )
@@ -625,6 +633,17 @@ server <- function(input, output, session) {
     
   })
   
+  # Calculate national mean mortality for 2000-2002
+  national.mean.2000_2002 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      death_cause == input$death_cause,
+      period == "2000-2002"
+    )
+    
+    national.mean <- mean(filtered.data$death_rate)
+  })
   
   #Calculate the mean mortality rate for a state  for 2015-2017
   state.mean.2015_2017 <- reactive({
@@ -640,7 +659,47 @@ server <- function(input, output, session) {
     
   })
   
-  #Identifying a county with the highest mortality rate in the state between 2000-2002
+  # Calculate national mean mortality for 2015-2017
+  national.mean.2015_2017 <- reactive({
+    
+    filtered.data <- dplyr::filter(
+      cdc.data,
+      death_cause == input$death_cause,
+      period == "2015-2017"
+    )
+    
+    national.mean <- mean(filtered.data$death_rate)
+  })
+  
+  # finds states with lowest and highest death rates and returns them
+  #   and their respective rates
+  #
+  # Returns a list in form (lowest death rate, lowest death rate state,
+  #   highest death rate, highest death rate state)
+  low.high.states.2015_2017 <- reactive({
+    
+    grouped.data <- dplyr::filter(
+        cdc.data,
+        death_cause == input$death_cause,
+        period == "2015-2017"
+      ) %>%
+      group_by(state_name) %>%
+      summarise(death_rate = mean(death_rate))
+    
+    return(
+      c(
+        min(grouped.data$death_rate),
+        grouped.data$state_name[which.min(grouped.data$death_rate)],
+        max(grouped.data$death_rate),
+        grouped.data$state_name[which.max(grouped.data$death_rate)]
+      )
+    )
+  })
+  
+  # Identifying a county with the highest mortality rate in the state between 2000-2002
+  #  
+  # Returns a list of length 2, where the item at index 1 is the death rate and the
+  #   item at index 2 is the county name
   high.rate.county.2000_2002 <- reactive({
     filtered.data <- dplyr::filter(
       cdc.data,
@@ -648,10 +707,19 @@ server <- function(input, output, session) {
       death_cause == input$death_cause,
       period == "2000-2002"
     )
-    highest.rate.county <- filtered.data$county_name[which.max(filtered.data$death_rate)]
+    
+    return(
+      c(
+        max(filtered.data$death_rate),
+        filtered.data$county_name[which.max(filtered.data$death_rate)]
+      )
+    )
   })
   
-  #Identifying a county with the highest mortality rate in the state between 2015-2017
+  # Identifying a county with the highest mortality rate in the state between 2015-2017
+  #  
+  # Returns a list of length 2, where the item at index 1 is the death rate and the
+  #   item at index 2 is the county name
   high.rate.county.2015_2017 <- reactive({
     
     filtered.data <- dplyr::filter(
@@ -660,11 +728,19 @@ server <- function(input, output, session) {
       death_cause == input$death_cause,
       period == "2015-2017"
     )
-    highest.rate.county <- filtered.data$county_name[which.max(filtered.data$death_rate)]
     
+    return(
+      c(
+        max(filtered.data$death_rate),
+        filtered.data$county_name[which.max(filtered.data$death_rate)]
+      )
+    )
   })
   
-  #Identifying a county with the lowest mortality rate in the state between 2015-2017
+  # Identifying a county with the lowest mortality rate in the state between 2000-2002
+  #  
+  # Returns a list of length 2, where the item at index 1 is the death rate and the
+  #   item at index 2 is the county name
   low.rate.county.2000_2002 <- reactive({
     
     filtered.data <- dplyr::filter(
@@ -673,11 +749,19 @@ server <- function(input, output, session) {
       death_cause == input$death_cause,
       period == "2000-2002"
     )
-    lowest.rate.county <- filtered.data$county_name[which.min(filtered.data$death_rate)]
     
+    return(
+      c(
+        min(filtered.data$death_rate),
+        filtered.data$county_name[which.min(filtered.data$death_rate)]
+      )
+    )
   })
   
-  #Identifying a county with the lowest mortality rate in the state between 2015-2017
+  # Identifying a county with the lowest mortality rate in the state between 2015-2017
+  #  
+  # Returns a list of length 2, where the item at index 1 is the death rate and the
+  #   item at index 2 is the county name
   low.rate.county.2015_2017 <- reactive({
     
     filtered.data <- dplyr::filter(
@@ -686,8 +770,13 @@ server <- function(input, output, session) {
       death_cause == input$death_cause,
       period == "2015-2017"
     )
-    lowest.rate.county <- filtered.data$county_name[which.min(filtered.data$death_rate)]
     
+    return(
+      c(
+        min(filtered.data$death_rate),
+        filtered.data$county_name[which.min(filtered.data$death_rate)]
+      )
+    )
   })
   
   #Extracting the national mean
@@ -1174,31 +1263,125 @@ server <- function(input, output, session) {
     )
   })
 
+  output$textMortFactsTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+    }
+    else {
+      location_str <- names(which(state.list == input$state_choice))
+    }
+    tagList(
+      tags$h3(
+        paste0("Premature Mortality Rates for ",
+               names(which(cause.list == input$death_cause)), 
+               " in ", 
+               location_str,
+               ":")
+      )
+    )
+  })
+  
+  output$textMortFactsClosing <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause))))
+    )
+  })
+  
+  # for a state or the US, creates the bulleted facts at the bottom of nationwide 
+  #  page
+  output$textMortFacts <- renderUI({
+    if(input$state_choice == "United States") {
+      # percent change for first bullet
+      change_text <- "remained the same"
+      
+      percent_change <- round(
+        abs(national.mean.2015_2017() - national.mean.2000_2002()) / national.mean.2000_2002() * 100,
+        1
+      )
+      
+      if (percent_change > 0) {
+        change_text <- paste0("increased ", percent_change, "%")
+      }
+      else if (percent_change < 0) {
+        change_text <- paste0("decreased ", percent_change, "%")
+      }
+      
+      tagList(
+        tags$ul(
+          style = "font-size: 18px;",
+          tags$li(paste0("have ", change_text, " from 2000 to 2017")),
+          tags$li(paste0("range from ", 
+                         round(as.numeric(low.high.states.2015_2017()[1]), 1),
+                         " per 100k in ",
+                         low.high.states.2015_2017()[2],
+                         " to ",
+                         round(as.numeric(low.high.states.2015_2017()[3]), 1),
+                         " per 100k in ",
+                         low.high.states.2015_2017()[4],
+                         " 2015-2017")
+          )
+        )
+      )
+    }
+    else {
+      # percent change for first bullet
+      change_text <- "remained the same"
+      
+      percent_change <- round(
+        abs(state.mean.2015_2017() - state.mean.2000_2002()) / state.mean.2000_2002() * 100,
+        1
+      )
+      
+      if (percent_change > 0) {
+        change_text <- paste0("increased ", percent_change, "%")
+      }
+      else if (percent_change < 0) {
+        change_text <- paste0("decreased ", percent_change, "%")
+      }
+      
+      # comparison wish national average
+      
+      comparison_text <- "the same as"
+      
+      if (national.mean.2015_2017() > state.mean.2015_2017()) {
+        comparison_text <- "lower than"
+      }
+      else if (national.mean.2015_2017() < state.mean.2015_2017()) {
+        comparison_text <- "greater than"
+      }
+      
+      tagList(
+        tags$ul(
+          style = "font-size: 18px;",
+          tags$li(paste0("have ", change_text, " from 2000 to 2017")),
+          tags$li(paste0("were ", comparison_text, " the national mean in 2015-2017")),
+          tags$li(paste0("range from ", 
+                         round(as.numeric(low.rate.county.2015_2017()[1]), 1),
+                         " per 100k in ",
+                         low.rate.county.2015_2017()[2],
+                         " to ",
+                         round(as.numeric(high.rate.county.2015_2017()[1]), 1),
+                         " per 100k in ",
+                         high.rate.county.2015_2017()[2],
+                         " 2015-2017")
+                  )
+        )
+      )
+    }
+  })
+  
   output$textMortFacts1 <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
-        paste0("Mortality Facts for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
-      ),
-      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
       tags$h5("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
       tags$h5("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
       tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
-      tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
-    )
-  })
-
-  output$textMortFacts2 <- renderUI({
-    # We reference state.list, cause.list and cause.definitions defined above
-    
-    tagList(
-      tags$h3(
-        paste0(" ")
-      ),
-      tags$h3(
-        paste0(" ")
-      ),
+      tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2)),
       tags$h5("Lowest Rate County for 2000-2002:", low.rate.county.2000_2002()),
       tags$h5("Lowest Rate County for 2015-2017:", low.rate.county.2015_2017()),
       tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
