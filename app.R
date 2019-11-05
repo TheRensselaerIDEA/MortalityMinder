@@ -256,8 +256,8 @@ ui <- fluidPage(
             ),
             tags$div(
               class = "col1_bot",
-              leafletOutput("geo_cluster_kmean_2"),
-              tags$h5(tags$i("Replace this with a social determinant geo-distribution"))
+              leafletOutput("determinants_plot5"),
+              tags$h5(tags$i("Social determinant geo-distribution"))
             )
           )
         )
@@ -1123,7 +1123,7 @@ server <- function(input, output, session) {
       
     } else {
       
-      
+#      browser()
       dplyr::filter(
         cdc.data,
         period == "2015-2017", 
@@ -1148,6 +1148,90 @@ server <- function(input, output, session) {
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
     }
+  })
+
+  # Geo-plot of selected determinant for selected county
+  # Based on scatterplot
+  output$determinants_plot5 <- renderLeaflet({
+    
+    geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>%
+      dplyr::select(county_fips, VAR = sd.code) %>%
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>%
+      dplyr::inner_join(geo.namemap, by = "county_fips") %>%
+      tidyr::drop_na()
+    
+    if (nrow(sd.select) <= 6){
+      
+      dplyr::filter(
+        cdc.data,
+        period == "2015-2017", 
+        death_cause == input$death_cause
+      ) %>% 
+        dplyr::select(county_fips, death_rate) %>% 
+        dplyr::inner_join(sd.select, by = "county_fips") %>% 
+        tidyr::drop_na() 
+
+    } else if(input$state_choice == "United States"){
+      dplyr::filter(
+        cdc.data,
+        period == "2015-2017", 
+        death_cause == input$death_cause
+      ) %>% 
+        dplyr::select(county_fips, death_rate) %>% 
+        dplyr::inner_join(sd.select, by = "county_fips") %>% 
+        tidyr::drop_na() 
+
+    } else {
+      
+      sd.data <- dplyr::filter(
+        cdc.data,
+        period == "2015-2017", 
+        death_cause == input$death_cause
+      ) %>% 
+        dplyr::select(county_fips, death_rate) %>% 
+        dplyr::inner_join(sd.select, by = "county_fips") %>% 
+        tidyr::drop_na()
+        
+      # NOTE: The column we care about is now called VAR
+      geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017")
+      
+    }
+    
+    
+# # Mortality Rate by County Period 2
+#       if(input$state_choice == "United States"){
+#         # mort.data <- dplyr::filter(
+#         #   cdc.data,
+#         #   death_cause == input$death_cause,
+#         #   period == input$year_selector
+#         # ) %>% 
+#         #   dplyr::mutate(
+#         #     # death_rate = death_num / population * 10^5,
+#         #     death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+#         #   ) %>%
+#         #   dplyr::select(county_fips, death_rate, period)
+#         # 
+#         # geo.plot("US", input$death_cause, mort.data, input$year_selector)
+#       } else{
+#         sd.data <- dplyr::filter(
+#           cdc.data,
+#           state_abbr == input$state_choice,
+#           death_cause == input$death_cause,
+#           period == input$year_selector
+#         ) %>% 
+#           dplyr::mutate(
+#             # death_rate = death_num / population * 10^5,
+#             death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+#           ) %>%
+#           dplyr::select(county_fips, death_rate, period)
+#         
+#         geo.plot(input$state_choice, input$death_cause, sd.data, input$year_selector)
+#       }
+
+    
   })
   
   output$determinant_title <- renderText({
