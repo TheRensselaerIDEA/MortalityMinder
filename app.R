@@ -312,16 +312,12 @@ ui <- fluidPage(
               tags$div(
                 class = "explore_but",
                 style = "padding-right: 20px; padding-left: 20px; text-align: center;",
-                tags$button(
-                  id = "play",
-                  "Stop"
-                ),
+                # tags$button(
+                #   id = "play",
+                #   "Stop"
+                # ),
                 tags$ul(
                   class = "ul_period",
-                  # tags$button(
-                  #   id = "play",
-                  #   "Stop"
-                  # ),
                   tags$button(
                     id = "first_period",
                     class = "period_text",
@@ -882,10 +878,10 @@ server <- function(input, output, session) {
   
   output$national_map<-renderUI({
     if(input$death_cause == "Despair"){
-      includeScript(path = "national.js")
+      includeScript(path = "Despair.js")
     }
     else if(input$death_cause == "Cancer"){
-      includeScript(path = "national2.js")
+      includeScript(path = "Cancer.js")
     }
   })
   output$determinants_plot1 <- renderPlot({
@@ -1483,7 +1479,8 @@ server <- function(input, output, session) {
     tagList(
       tags$h1(
         paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
-      )
+      ),
+      tags$h5(tags$i("Click on time period to select national map for that period"))
     )
   })
   
