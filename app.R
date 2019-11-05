@@ -1284,9 +1284,13 @@ server <- function(input, output, session) {
           color = guide_legend(reverse = T)
         )
     } else {
-      
+
       nclusters <- max(mort.cluster.raw()$cluster)
-      total.data <- rbind(mort.avg.cluster.ord(), national.mean())
+      if (input$death_cause != "All Cause") {
+        total.data <- rbind(mort.avg.cluster.ord(), national.mean())
+      } else {
+        total.data <- mort.avg.cluster.ord()
+      }
       
       
       line_plot <- ggplot(
