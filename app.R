@@ -660,7 +660,7 @@ server <- function(input, output, session) {
   })
   
   # Calculate national mean mortality for 2015-2017
-  national.mean.2015.2017 <- reactive({
+  national.mean.2015_2017 <- reactive({
     
     filtered.data <- dplyr::filter(
       cdc.data,
@@ -669,6 +669,31 @@ server <- function(input, output, session) {
     )
     
     national.mean <- mean(filtered.data$death_rate)
+  })
+  
+  # finds states with lowest and highest death rates and returns them
+  #   and their respective rates
+  #
+  # Returns a list in form (lowest death rate, lowest death rate state,
+  #   highest death rate, highest death rate state)
+  low.high.states.2015_2017 <- reactive({
+    
+    grouped.data <- dplyr::filter(
+        cdc.data,
+        death_cause == input$death_cause,
+        period == "2015-2017"
+      ) %>%
+      group_by(state_name) %>%
+      summarise(death_rate = mean(death_rate))
+    
+    return(
+      c(
+        min(grouped.data$death_rate),
+        grouped.data$state_name[which.min(grouped.data$death_rate)],
+        max(grouped.data$death_rate),
+        grouped.data$state_name[which.max(grouped.data$death_rate)]
+      )
+    )
   })
   
   # Identifying a county with the highest mortality rate in the state between 2000-2002
@@ -686,7 +711,7 @@ server <- function(input, output, session) {
     return(
       c(
         max(filtered.data$death_rate),
-        filtered.data$county_name[which.min(filtered.data$death_rate)]
+        filtered.data$county_name[which.max(filtered.data$death_rate)]
       )
     )
   })
@@ -707,7 +732,7 @@ server <- function(input, output, session) {
     return(
       c(
         max(filtered.data$death_rate),
-        filtered.data$county_name[which.min(filtered.data$death_rate)]
+        filtered.data$county_name[which.max(filtered.data$death_rate)]
       )
     )
   })
@@ -1241,12 +1266,18 @@ server <- function(input, output, session) {
   output$textMortFactsTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+    }
+    else {
+      location_str <- names(which(state.list == input$state_choice))
+    }
     tagList(
       tags$h3(
         paste0("Premature Mortality Rates for ",
                names(which(cause.list == input$death_cause)), 
                " in ", 
-               names(which(state.list == input$state_choice)),
+               location_str,
                ":")
       )
     )
@@ -1264,11 +1295,36 @@ server <- function(input, output, session) {
   #  page
   output$textMortFacts <- renderUI({
     if(input$state_choice == "United States") {
+      # percent change for first bullet
+      change_text <- "remained the same"
+      
+      percent_change <- round(
+        abs(national.mean.2015_2017() - national.mean.2000_2002()) / national.mean.2000_2002() * 100,
+        1
+      )
+      
+      if (percent_change > 0) {
+        change_text <- paste0("increased ", percent_change, "%")
+      }
+      else if (percent_change < 0) {
+        change_text <- paste0("decreased ", percent_change, "%")
+      }
+      
       tagList(
-        tags$h5("Mean Mortality Rate for 2000-2002:", round(state.mean.2000_2002(),2)),
-        tags$h5("Mean Mortality Rate for 2015-2017:", round(state.mean.2015_2017(),2)),
-        tags$h5("National Mean for 2000-2002:", round(national.mean()[national.mean()$period == "2000-2002",]$death_rate,2)),
-        tags$h5("National Mean for 2015-2017:", round(national.mean()[national.mean()$period == "2015-2017",]$death_rate,2))
+        tags$ul(
+          style = "font-size: 18px;",
+          tags$li(paste0("have ", change_text, " from 2000 to 2017")),
+          tags$li(paste0("range from ", 
+                         round(as.numeric(low.high.states.2015_2017()[1]), 1),
+                         " per 100k in ",
+                         low.high.states.2015_2017()[2],
+                         " to ",
+                         round(as.numeric(low.high.states.2015_2017()[3]), 1),
+                         " per 100k in ",
+                         low.high.states.2015_2017()[4],
+                         " 2015-2017")
+          )
+        )
       )
     }
     else {
@@ -1291,10 +1347,10 @@ server <- function(input, output, session) {
       
       comparison_text <- "the same as"
       
-      if (national.mean.2015.2017() > state.mean.2015_2017()) {
+      if (national.mean.2015_2017() > state.mean.2015_2017()) {
         comparison_text <- "lower than"
       }
-      else if (national.mean.2015.2017() < state.mean.2015_2017()) {
+      else if (national.mean.2015_2017() < state.mean.2015_2017()) {
         comparison_text <- "greater than"
       }
       
