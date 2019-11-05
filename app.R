@@ -20,7 +20,7 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
-cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular")
+cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
 cause.definitions <- c("Deaths of Despair are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
                        "Deaths due to Assault are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
                        "Cardiovascular Disease are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
