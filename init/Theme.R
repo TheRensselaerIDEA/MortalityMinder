@@ -556,7 +556,8 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                           color = "white",
                           opacity = 1,
                           fillColor = colors[as.numeric(dataset$VAR_)],
-                          label = dataset$county_name) %>%
+                          label = dataset$county_name,
+                          layerId = dataset$county_name) %>%
               addControl(get_title(state.choice, death.cause, period), 
                          position = "topleft", 
                          className="map-title") %>%
