@@ -266,7 +266,7 @@ ui <- fluidPage(
                 leafletOutput("geo_mort_change2",width="100%",height="85%"), 
                 radioButtons("year_selector", 
                              label = "Select years:",
-                             selected = "2000-2002", 
+                             selected = "2015-2017", 
                              choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                              choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                              inline = TRUE)

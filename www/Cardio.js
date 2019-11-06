@@ -5,7 +5,7 @@ var image = document.getElementById("national_map_new");
 var images = ["National_image/Cardio/1.png","National_image/Cardio/2.png","National_image/Cardio/3.png","National_image/Cardio/4.png","National_image/Cardio/5.png" ,"National_image/Cardio/6.png"];
 var position = 0;
 var playing = false;
-image.src = images[0];
+image.src = images[5];
 /*
 btn.onclick = function(){
   if(playing === true){

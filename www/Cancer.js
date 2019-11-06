@@ -5,7 +5,7 @@ var image = document.getElementById("national_map_new");
 var images = ["National_image/Cancer/1.png","National_image/Cancer/2.png","National_image/Cancer/3.png","National_image/Cancer/4.png","National_image/Cancer/5.png" ,"National_image/Cancer/6.png"];
 var position = 0;
 var playing = false;
-image.src = images[0];
+image.src = images[5];
 /*
 btn.onclick = function(){
   if(playing === true){

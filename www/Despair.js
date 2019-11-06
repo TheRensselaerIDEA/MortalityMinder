@@ -5,7 +5,7 @@ var image = document.getElementById("national_map_new");
 var images = ["National_image/Despair/1.png","National_image/Despair/2.png","National_image/Despair/3.png","National_image/Despair/4.png","National_image/Despair/5.png" ,"National_image/Despair/6.png"];
 var position = 0;
 var playing = false;
-image.src = images[0];
+image.src = images[5];
 /*
 btn.onclick = function(){
   if(playing === true){
