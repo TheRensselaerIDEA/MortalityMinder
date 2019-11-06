@@ -21,10 +21,10 @@ names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
 cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
-cause.definitions <- c("Deaths of Despair are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
-                       "Deaths due to Assault are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
-                       "Cardiovascular Disease are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
-                       "Deaths due to Cancer deaths due to cancer and neoplasm"="Cancer")
+cause.definitions <- c("*\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
+                       "*\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
+                       "*\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
+                       "*\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 
 
 n.clusters.state = 3
@@ -34,11 +34,11 @@ jscode <- "shinyjs.nextpage = function(){$('.fp-next').click();}"
 ui <- fluidPage(
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
-  # include css
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
   tags$head(includeCSS("geoattr.css")),
+  tags$head(includeCSS("font.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -91,46 +91,58 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        tags$div(
+        #tags$div(
+        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page2",
           uiOutput("national_map"),
-          tags$div(
-            class = "page2_col1",
-            style = "height: auto;",
-            tags$h3("Since 2010, Mortality Rates in the United States have stopped decreasing and are even increasing.",
-                    style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
-            tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
-            tags$ul(
-              style = "font-weight: bold;",
-              tags$li("Deaths of Despair",
-                      style = "font-weight: inherit;"),
-              tags$li("Cardiovascular Disease",
-                      style = "font-weight: inherit;"),
-              tags$li("Cancer",
-                      style = "font-weight: inherit;"),
-              tags$li("Assault Deaths",
-                      style = "font-weight: inherit;"),
-              tags$li("All Causes",
-                      style = "font-weight: inherit;")
-            ),
-            tags$p("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a given county during a three year period fora given cause and for a region:  county, state or nationwide."),
-            
-            tags$p("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed from 2000 to 2017."),
-            
-            tags$p("To understand why rates are changing, MortalityMinder analyzes factors that are related with increased mortality rates at the county level."),
-            tags$p(tags$i("Click right and left to investigate more."))          
-          ),
+          #tags$div(
+          #  class = "page2_col1",
+          #  style = "height: auto;",
+          #  tags$h4("Since 2010, mortality rates in the United States have steadily increased year over year.",
+          #          style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
+          #  tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
+          #  tags$ul(
+          #    tags$li("Deaths of Despair"),
+          #    tags$li("Cardiovascular Disease"),
+          #    tags$li("Cancer"),
+          #    tags$li("Assault Deaths"),
+          #    tags$li("All Causes")
+          #  ),
+          #fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
+          column(3, class="page2_col1", 
+                   #column(3, class="page2_col1", 
+                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
+                  "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
+                    tags$ul(
+                      tags$li("Deaths of Despair"),
+                      tags$li("Cardiovascular Disease"),
+                      tags$li("Cancer"),
+                      tags$li("Assault Deaths"),
+                      tags$li("All Causes")
+                    ), # End List
+            "The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
+            given county during a three year period fora given cause and for a region:  county, state or nationwide.\n", tags$br(),
+            "Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
+            from 2000 to 2017.\n", tags$br(),
+            "To understand why rates are changing, MortalityMinder analyzes factors that are related with 
+            increased mortality rates at the county level.", tags$br(),
+            tags$i("Click right and left to investigate more.\n")   
+          ), # End Column
           tags$div(
             class = "vl"
           ),
-          tags$div(
-            class = "page2_col2",
-            tags$div(
+          #tags$div(
+          #  class = "page2_col2",
+          column(6,
+            #tags$div(
+            fluidRow(
               class = "page2_col2_top",
               tags$div(
                 class = "National_title",
                 style = "padding-right: 20px; padding-left: 20px",
-                uiOutput("textNationalTitle")
+                uiOutput("textNationalTitle"),
+                uiOutput("textMortFactsClosing"),
+                tags$h5(tags$i("Click on time period to select national map for that period"))
               ),
               tags$div(
                 class = "explore_but",
@@ -174,27 +186,32 @@ ui <- fluidPage(
                 
               )),
             tags$hr(),
-            tags$div(
+            #tags$div(
+            fluidRow(
               class = "page2_col2_middle",
-              style = "padding-right: 20px; padding-left: 20px",
+              style = "padding-right: 20px; padding-left: 20px; height=50%",
+              tags$div(class="NationalMapContainer",
+                       style="position:relative;width: 90%;left: 33%",
               tags$img(
                 id = "national_map_new",
                 class = "landing_page_map",
                 src = "Despair/1.png",
                 #  style = "width:70%"
-                style = "height:80%"
-              )
+                width="100%",
+                style = "bottom: 0; left:0;"
+              ))
             ),
-            tags$div(
+            #tags$div(
+            fluidRow(
               class = "page2_col2_bottom",
               style = "padding-right: 20px; padding-left: 20px",
               uiOutput("textMortFactsTitle"),
-              uiOutput("textMortFacts"),
-              uiOutput("textMortFactsClosing")
-            )
-          )
-        )
-      ),
+              uiOutput("textMortFacts")#,
+              #uiOutput("textMortFactsClosing")
+            ) # Close Row
+      ) #Close Column
+      ) #Close Outter Row
+      ), # Close div
       
       tags$div(
         class = "slide",
@@ -211,12 +228,8 @@ ui <- fluidPage(
                 class = "col1_top_left",
                 style = "padding-right: 20px; padding-left: 20px",
                 tags$div(
-                  title="The mortality rate used in the app is the number
-                  of people per 100,000 that died prematurely in a given 
-                  county during a three year period. A premature death is 
-                  considered anyone that dies between the ages of 25 to 64 
-                  as a result of the selected cause.",
-                  tags$h3("Exploring Causes of Premature Death",  icon("info-circle"))
+                  title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
+                  tags$h1("Exploring Causes of Premature Death",  icon("info-circle"))
                 ),
                 uiOutput("textDescription")
               ),
@@ -389,7 +402,7 @@ ui <- fluidPage(
         tags$div(
           class = "page4",
           fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
-                   column(3, tags$p("Project Overview",align="center"), tags$br(), #offset=1,
+                   column(3, tags$h3("Project Overview",align="center"), tags$br(), #offset=1,
                           fluidRow(
                             # tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
                             column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
@@ -397,7 +410,7 @@ ui <- fluidPage(
                                    expectancy that is still continuing in most nations. The goal of this project is 
                                    to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
                                    and identify their associated community level social determinants.", offset=1), # Close column,
-                            column(11, tags$p("AHRQ Contest Synopsis",align="center"), tags$br(),
+                            column(11, tags$h3("AHRQ Contest Synopsis",align="center"), tags$br(),
                                    "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
                                    seeks tools that support visualizing such data clusters to enhance the research and analysis 
                                    of community-level health services.", tags$br(),
@@ -414,7 +427,7 @@ ui <- fluidPage(
                                      ), offset=1) # Close column
                                    ) # Close inner fluidRow
                             ), # Close outter column
-                   column(3, tags$p("Methodology",align="center"), tags$br(),  offset=1,
+                   column(3, tags$h3("Methodology",align="center"), tags$br(),  offset=1,
                           fluidRow(
                             column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
                                    It looks at premature deaths, that is deaths in adults from 15 to 64 
@@ -448,7 +461,7 @@ ui <- fluidPage(
                    )
                           ), # Close column
                    column(3, 
-                          tags$p("Additional Resources",align="center"), tags$br(), offset=1,
+                          tags$h3("Additional Resources",align="center"), tags$br(), offset=1,
                           "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
                           of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
                           Institute. Retrieved from ", tags$br(),
@@ -465,12 +478,12 @@ ui <- fluidPage(
                           tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
                           tags$br(),
                           
-                          tags$p("Download Data",align="center"), tags$br(),
+                          tags$h3("Download Data",align="center"), tags$br(),
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
                           downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
                           tags$br(),
-                          tags$p("Download Current Results",align="center"), tags$br(),
+                          tags$h3("Download Current Results",align="center"), tags$br(),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
@@ -480,7 +493,6 @@ ui <- fluidPage(
         )
       )
     ),
-  
   tags$script(src = "jquery-ui.min.js"),
   tags$script(src = "fullpage.js"),
   tags$script(src = "jquery.ba-outside-events.js"),
@@ -1374,10 +1386,10 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h5(
         paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$h5(paste0(names(which(cause.definitions == input$death_cause)))),
       tags$h5(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify indiviual counties. Zoom map with mouse wheel or zoom buttons.")),
       NULL
     )
@@ -1433,14 +1445,14 @@ server <- function(input, output, session) {
       tagList(
         tags$ul(
           style = "font-size: 18px;",
-          tags$li(paste0("have ", change_text, " from 2000 to 2017")),
-          tags$li(paste0("range from ", 
+          tags$li(paste0("Have ", change_text, " from 2000 to 2017")),
+          tags$li(paste0("Range from ", 
                          round(as.numeric(low.high.states.2015_2017()[1]), 1),
-                         " per 100k in ",
+                         " per 100k people in ",
                          low.high.states.2015_2017()[2],
                          " to ",
                          round(as.numeric(low.high.states.2015_2017()[3]), 1),
-                         " per 100k in ",
+                         " per 100k people in ",
                          low.high.states.2015_2017()[4],
                          " 2015-2017")
           )
@@ -1476,18 +1488,18 @@ server <- function(input, output, session) {
       
       tagList(
         tags$ul(
-          style = "font-size: 18px;",
-          tags$li(paste0("have ", change_text, " from 2000 to 2017")),
-          tags$li(paste0("were ", comparison_text, " the national mean in 2015-2017")),
-          tags$li(paste0("range from ", 
+          #style = "font-size: 18px;",
+          tags$li(paste0("Have ", change_text, " from 2000 to 2017")),
+          tags$li(paste0("Were ", comparison_text, " the national mean in 2015-2017")),
+          tags$li(paste0("Range from ", 
                          round(as.numeric(low.rate.county.2015_2017()[1]), 1),
-                         " per 100k in ",
+                         " per 100k people in ",
                          low.rate.county.2015_2017()[2],
                          " to ",
                          round(as.numeric(high.rate.county.2015_2017()[1]), 1),
-                         " per 100k in ",
+                         " per 100k people in ",
                          high.rate.county.2015_2017()[2],
-                         " 2015-2017")
+                         "from 2015-2017")
                   )
         )
       )
@@ -1515,8 +1527,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h1(
         paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
-      ),
-      tags$h5(tags$i("Click on time period to select national map for that period"))
+      )
     )
   })
   
@@ -1525,18 +1536,10 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h1(
         style = "padding-right: 20px; padding-left: 20px",
         paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
-          title="Each factor is rated as Destructive, meaning 
-          that it has a positive correlation with the 
-          death rate; or Protective, meaning it has a 
-          negative correlation with the death rate. 
-          MortalityMinder shows those factors which have 
-          the highest absolute correlation with mortality. 
-          For more information on the method of determining
-          correlation please navigate to...",
-          icon("info-circle")
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", icon("info-circle")
         )
       ),
       NULL
@@ -1548,7 +1551,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), tags$div(
           title="This plot represents the average premature death trends for each cluster.",
