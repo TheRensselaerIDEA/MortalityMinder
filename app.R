@@ -367,8 +367,8 @@ ui <- fluidPage(
               tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text")),
-              tags$h5(textOutput("determinant_corr")),
-              tags$h5(textOutput("determinant_dir")),
+              tags$h5(htmlOutput("determinant_corr")),
+              tags$h5(htmlOutput("determinant_dir")),
               tags$h4(uiOutput("determinant_link"))
             ),
             tags$div(
@@ -1277,22 +1277,37 @@ server <- function(input, output, session) {
   })
   
   output$determinant_corr <- renderText({
-    if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
-      return(paste0("Not statistically significantly correlated with ", 
-                    input$death_cause, 
-                    " mortality rate (p-value = .05)"))
+    if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
+      return(paste0("Kendal Correlation with ",
+                    input$death_cause,
+                    " mortality: <span style=\"color:	#f8766d\"> <strong> ",
+                    round(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor, 4),
+                    "</strong> </span>"))
     }
     else {
       return(paste0("Kendal Correlation with ",
                     input$death_cause,
-                    " mortality: ",
-                    round(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor, 4)))
+                    " mortality: <span style=\"color: #00bfc4\"> <strong>",
+                    round(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor, 4),
+                    "</strong> </span>"))
     }
   })
   
   output$determinant_dir <- renderText({
-    paste0(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR),
-           " factor")
+    if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
+      return(paste0("<strong>No</strong> statistically significant ",
+                    " relationship with mortality (p-value = .05)"))
+    }
+    else if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
+      return(paste0("Statistically significant <strong> <span style=\"color:	#f8766d\">",
+                     tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
+                     "</span> </strong> relationship with mortality (p-value = .05)"))
+    }
+    else {
+      return(paste0("Statistically significant <strong> <span style=\"color:	#00bfc4\">",
+                    tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
+                    "</span> </strong> relationship with mortality (p-value = .05)"))
+    }
   })
   
   output$determinants_plot4 <- renderPlot({
