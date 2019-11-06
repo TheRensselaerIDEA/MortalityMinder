@@ -375,7 +375,7 @@ labs.geo.mort <- function(state.choice, period.choice, death.cause) {
 
 bin.geo.mort <- function(death.cause) {
   bin <- list(
-    "Despair" = c(-1, 5, 10, 15, 25, 50, 100, 200, Inf),
+    "Despair" = c(-1, 5, 10, 15, 25, 50, 75, 100, Inf),
     "Cardiovascular" = c(seq(0, 315, 45), Inf),
     "Assault" = c(seq(0, 35, 5), Inf),
     "Cancer" = c(seq(0, 315, 45), Inf),
@@ -511,7 +511,7 @@ getLatLong <- function(state.choice, dataset) {
 geo.label <- function(death.cause) {
   switch(death.cause,
          "Despair" = return(
-           c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,100]", "[100,200]", "[200,Inf]")
+           c("[0,5]", "[5,10]", "[10,15]", "[15,25]", "[25,50]", "[50,75]", "[75,100]", "[100,Inf]")
          ),
          "Assault" = return(
            c("[0,5]", "[5,10]", "[10,15]", "[15,20]", "[20,25]", "[25,30]", "[30,35]", "[35,Inf]")
@@ -539,8 +539,9 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   labels <- geo.label(death.cause) 
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
-  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
-  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
+  shapes.data <- as.data.frame(shapes)
+  shapes.data$county_fips <- paste(as.data.frame(shapes)$STATEFP, as.data.frame(shapes)$COUNTYFP, sep = '')
+  dataset <- left_join(shapes.data, dataset, by = c("county_fips" = "county_fips"))
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
