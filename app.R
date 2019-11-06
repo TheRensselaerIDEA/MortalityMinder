@@ -85,6 +85,117 @@ ui <- fluidPage(
     id = "fullpage",
     tags$div(
       class = "section s1",
+      
+      tags$div(
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
+        ),
+        tags$div(
+          class = "page2",
+          uiOutput("national_map"),
+          tags$div(
+            class = "page2_col1",
+            style = "height: auto;",
+            tags$h3("Since 2010, Mortality Rates in the United States have stopped decreasing and are even increasing.",
+                    style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
+            tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
+            tags$ul(
+              style = "font-weight: bold;",
+              tags$li("Deaths of Despair",
+                      style = "font-weight: inherit;"),
+              tags$li("Cardiovascular Disease",
+                      style = "font-weight: inherit;"),
+              tags$li("Cancer",
+                      style = "font-weight: inherit;"),
+              tags$li("Assault Deaths",
+                      style = "font-weight: inherit;"),
+              tags$li("All Causes",
+                      style = "font-weight: inherit;")
+            ),
+            tags$p("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a given county during a three year period fora given cause and for a region:  county, state or nationwide."),
+            
+            tags$p("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed from 2000 to 2017."),
+            
+            tags$p("To understand why rates are changing, MortalityMinder analyzes factors that are related with increased mortality rates at the county level."),
+            tags$p(tags$i("Click right and left to investigate more."))          
+          ),
+          tags$div(
+            class = "vl"
+          ),
+          tags$div(
+            class = "page2_col2",
+            tags$div(
+              class = "page2_col2_top",
+              tags$div(
+                class = "National_title",
+                style = "padding-right: 20px; padding-left: 20px",
+                uiOutput("textNationalTitle")
+              ),
+              tags$div(
+                class = "explore_but",
+                style = "padding-right: 20px; padding-left: 20px; text-align: center;",
+                # tags$button(
+                #   id = "play",
+                #   "Stop"
+                # ),
+                tags$ul(
+                  class = "ul_period",
+                  tags$button(
+                    id = "first_period",
+                    class = "period_text",
+                    "2000-2002"
+                  ),
+                  tags$button(
+                    id = "second_period",
+                    class = "period_text",
+                    "2003-2005"
+                  ),
+                  tags$button(
+                    id = "third_period",
+                    class = "period_text",
+                    "2006-2008"
+                  ),
+                  tags$button(
+                    id = "forth_period",
+                    class = "period_text",
+                    "2009-2011"
+                  ),
+                  tags$button(
+                    id = "fifth_period",
+                    class = "period_text",
+                    "2012-2014"
+                  ),
+                  tags$button(
+                    id = "sixth_period",
+                    class = "period_text",
+                    "2015-2017"
+                  ))
+                
+              )),
+            tags$hr(),
+            tags$div(
+              class = "page2_col2_middle",
+              style = "padding-right: 20px; padding-left: 20px",
+              tags$img(
+                id = "national_map_new",
+                class = "landing_page_map",
+                src = "Despair/1.png",
+                #  style = "width:70%"
+                style = "height:80%"
+              )
+            ),
+            tags$div(
+              class = "page2_col2_bottom",
+              style = "padding-right: 20px; padding-left: 20px",
+              uiOutput("textMortFactsTitle"),
+              uiOutput("textMortFacts"),
+              uiOutput("textMortFactsClosing")
+            )
+          )
+        )
+      ),
+      
       tags$div(
         class = "slide",
         tags$div(
@@ -263,115 +374,7 @@ ui <- fluidPage(
         )
         
       ),
-      tags$div(
-        class = "slide",
-        tags$div(
-          class = "nav_bar_blank"
-        ),
-        tags$div(
-          class = "page2",
-          uiOutput("national_map"),
-          tags$div(
-            class = "page2_col1",
-            style = "height: auto;",
-            tags$h3("Since 2010, Mortality Rates in the United States have stopped decreasing and are even increasing.",
-                    style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
-            tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
-            tags$ul(
-              style = "font-weight: bold;",
-              tags$li("Deaths of Despair",
-                      style = "font-weight: inherit;"),
-              tags$li("Cardiovascular Disease",
-                      style = "font-weight: inherit;"),
-              tags$li("Cancer",
-                      style = "font-weight: inherit;"),
-              tags$li("Assault Deaths",
-                      style = "font-weight: inherit;"),
-              tags$li("All Causes",
-                      style = "font-weight: inherit;")
-            ),
-            tags$p("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a given county during a three year period fora given cause and for a region:  county, state or nationwide."),
-            
-            tags$p("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed from 2000 to 2017."),
-            
-            tags$p("To understand why rates are changing, MortalityMinder analyzes factors that are related with increased mortality rates at the county level."),
-            tags$p(tags$i("Click right and left to investigate more."))          
-            ),
-          tags$div(
-            class = "vl"
-          ),
-          tags$div(
-            class = "page2_col2",
-            tags$div(
-              class = "page2_col2_top",
-              tags$div(
-                class = "National_title",
-                style = "padding-right: 20px; padding-left: 20px",
-                uiOutput("textNationalTitle")
-              ),
-              tags$div(
-                class = "explore_but",
-                style = "padding-right: 20px; padding-left: 20px; text-align: center;",
-                # tags$button(
-                #   id = "play",
-                #   "Stop"
-                # ),
-                tags$ul(
-                  class = "ul_period",
-                  tags$button(
-                    id = "first_period",
-                    class = "period_text",
-                    "2000-2002"
-                  ),
-                  tags$button(
-                    id = "second_period",
-                    class = "period_text",
-                    "2003-2005"
-                  ),
-                  tags$button(
-                    id = "third_period",
-                    class = "period_text",
-                    "2006-2008"
-                  ),
-                  tags$button(
-                    id = "forth_period",
-                    class = "period_text",
-                    "2009-2011"
-                  ),
-                  tags$button(
-                    id = "fifth_period",
-                    class = "period_text",
-                    "2012-2014"
-                  ),
-                  tags$button(
-                    id = "sixth_period",
-                    class = "period_text",
-                    "2015-2017"
-                  ))
-                
-              )),
-            tags$hr(),
-            tags$div(
-                class = "page2_col2_middle",
-                style = "padding-right: 20px; padding-left: 20px",
-                tags$img(
-                  id = "national_map_new",
-                  class = "landing_page_map",
-                  src = "Despair/1.png",
-                #  style = "width:70%"
-                  style = "height:80%"
-                )
-                ),
-            tags$div(
-              class = "page2_col2_bottom",
-              style = "padding-right: 20px; padding-left: 20px",
-              uiOutput("textMortFactsTitle"),
-              uiOutput("textMortFacts"),
-              uiOutput("textMortFactsClosing")
-              )
-          )
-        )
-      ),
+      
       tags$div(
         class = "slide",
         tags$div(
