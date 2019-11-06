@@ -16,7 +16,8 @@ To run a local instance of the application, follow the steps below:
 If you use **Mortality Minder** in your work, please use the following reference
 
 ```
-Bennett, Kristin P, and Erickson S John. “Mortality Minder.” Rensselaer Institute for Data Exploration and Applications, 1 Nov. 2019, https://lp01.idea.rpi.edu/shiny/erickj4/MortalityMinder/.
+Bennett, Kristin P, and Erickson S John. “Mortality Minder.” Rensselaer Institute for 
+Data Exploration and Applications, 1 Nov. 2019, https://lp01.idea.rpi.edu/shiny/erickj4/MortalityMinder/.
 ```
 
 ## Development
