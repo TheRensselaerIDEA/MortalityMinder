@@ -1846,9 +1846,7 @@ server <- function(input, output, session) {
   })
   
   
-  # click on geo cluster map shows county data on mort_line
-  observe({
-    event <- input$geo_cluster_kmean_shape_click
+  highlight_county <- function(event){
     if (is.null(event))
       return()
     county_name <- sub(event$id, pattern = " [[:alpha:]]*$", replacement = "")
@@ -1868,18 +1866,41 @@ server <- function(input, output, session) {
       }
     }
     
-    proxy <- leafletProxy("geo_cluster_kmean")
+    cluster_proxy <- leafletProxy("geo_cluster_kmean")
     #remove any previously highlighted polygon
-    proxy %>% clearGroup("highlighted_polygon")
+    cluster_proxy %>% clearGroup("highlighted_polygon")
     
     #add a slightly thicker red polygon on top of the selected one
-    proxy %>% addPolylines(stroke = TRUE, 
-                           weight = 2,
-                           color="#000000",
-                           data = polygon,
-                           group="highlighted_polygon",
-                           dashArray = "4 2 4")
+    cluster_proxy %>% addPolylines(stroke = TRUE, 
+                                   weight = 2,
+                                   color="#000000",
+                                   data = polygon,
+                                   group="highlighted_polygon",
+                                   dashArray = "4 2 4")
     
+    change_proxy <- leafletProxy("geo_mort_change2")
+    #remove any previously highlighted polygon
+    change_proxy %>% clearGroup("highlighted_polygon")
+    
+    #add a slightly thicker red polygon on top of the selected one
+    change_proxy %>% addPolylines(stroke = TRUE, 
+                                  weight = 2,
+                                  color="#000000",
+                                  data = polygon,
+                                  group="highlighted_polygon",
+                                  dashArray = "4 2 4")
+  }
+  
+  # click on geo cluster map shows county data on mort_line
+  observe({
+    event <- input$geo_cluster_kmean_shape_click
+    highlight_county(event)
+    county_choice(event$id)
+  })
+  
+  observe({
+    event <- input$geo_mort_change2_shape_click
+    highlight_county(event)
     county_choice(event$id)
   })
   
