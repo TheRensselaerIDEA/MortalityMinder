@@ -799,6 +799,9 @@ server <- function(input, output, session) {
            },
            "Cardiovascular" = {
              death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
+           },
+           "All Cause" = {
+             death_rate <- c(366.07178, 373.10366, 373.65807, 373.40143, 379.60383, 395.93077)
            })
     
     
@@ -844,7 +847,7 @@ server <- function(input, output, session) {
     filename = function() {
       "chr_data_desc.csv"
     },
-    content = function(file) {
+    content = function(file) {z
       write.csv(SocialDeterminants, file, row.names = FALSE)
     }
   )
@@ -1298,12 +1301,7 @@ server <- function(input, output, session) {
     } else {
 
       nclusters <- max(mort.cluster.raw()$cluster)
-      if (input$death_cause != "All Cause") {
-        total.data <- rbind(mort.avg.cluster.ord(), national.mean())
-      } else {
-        total.data <- mort.avg.cluster.ord()
-      }
-      
+      total.data <- rbind(mort.avg.cluster.ord(), national.mean())
       
       line_plot <- ggplot(
         total.data,
