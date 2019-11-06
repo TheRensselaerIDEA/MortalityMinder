@@ -361,6 +361,7 @@ ui <- fluidPage(
           tags$div(
             class = "page3_col3",
             tags$div(
+              style = "padding-top: 10px;",
               pickerInput(
                 inputId = "determinant_choice",
                 label = "Selected Determinant: ",
@@ -377,9 +378,11 @@ ui <- fluidPage(
             tags$div(
               style = "padding: 20px; height: 50%",
               tags$br(),
-              tags$h3(textOutput("determinant_title")),
-              tags$h5(textOutput("determinant_text")),
-              tags$h5(uiOutput("determinant_link"))
+              tags$h2(textOutput("determinant_title")),
+              tags$h4(textOutput("determinant_text")),
+              tags$h5(textOutput("determinant_corr")),
+              tags$h5(textOutput("determinant_dir")),
+              tags$h4(uiOutput("determinant_link"))
             ),
             tags$div(
               class = "col1_bot",
@@ -811,6 +814,9 @@ server <- function(input, output, session) {
            },
            "Cardiovascular" = {
              death_rate <- c(96.830591, 95.807343, 92.915303, 90.702418, 91.232679, 93.598232)
+           },
+           "All Cause" = {
+             death_rate <- c(366.07178, 373.10366, 373.65807, 373.40143, 379.60383, 395.93077)
            })
     
     
@@ -856,7 +862,7 @@ server <- function(input, output, session) {
     filename = function() {
       "chr_data_desc.csv"
     },
-    content = function(file) {
+    content = function(file) {z
       write.csv(SocialDeterminants, file, row.names = FALSE)
     }
   )
@@ -1282,6 +1288,25 @@ server <- function(input, output, session) {
     )
   })
   
+  output$determinant_corr <- renderText({
+    if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
+      return(paste0("Not statistically significantly correlated with ", 
+                    input$death_cause, 
+                    " mortality rate (p-value = .05)"))
+    }
+    else {
+      return(paste0("Kendal Correlation with ",
+                    input$death_cause,
+                    " mortality: ",
+                    round(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor, 4)))
+    }
+  })
+  
+  output$determinant_dir <- renderText({
+    paste0(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR),
+           " factor")
+  })
+  
   output$determinants_plot4 <- renderPlot({
     
   })
@@ -1310,12 +1335,7 @@ server <- function(input, output, session) {
     } else {
 
       nclusters <- max(mort.cluster.raw()$cluster)
-      if (input$death_cause != "All Cause") {
-        total.data <- rbind(mort.avg.cluster.ord(), national.mean())
-      } else {
-        total.data <- mort.avg.cluster.ord()
-      }
-      
+      total.data <- rbind(mort.avg.cluster.ord(), national.mean())
       
       line_plot <- ggplot(
         total.data,
@@ -1606,8 +1626,8 @@ server <- function(input, output, session) {
   output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      # draw.geo.cluster("US", input$death_cause, mort.cluster.ord(), 
-      #                  max(mort.cluster.ord()$cluster))
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(),
+                       max(mort.cluster.ord()$cluster))
     }else{
       draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(), 
                        max(mort.cluster.ord()$cluster))
@@ -1667,18 +1687,17 @@ server <- function(input, output, session) {
   # Mortality Rate by County Period 2
   output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
-      # mort.data <- dplyr::filter(
-      #   cdc.data,
-      #   death_cause == input$death_cause,
-      #   period == input$year_selector
-      # ) %>% 
-      #   dplyr::mutate(
-      #     # death_rate = death_num / population * 10^5,
-      #     death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-      #   ) %>%
-      #   dplyr::select(county_fips, death_rate, period)
-      # 
-      # geo.plot("US", input$death_cause, mort.data, input$year_selector)
+      mort.data <- dplyr::filter(
+        cdc.data,
+        death_cause == input$death_cause,
+        period == input$year_selector
+      ) %>%
+        dplyr::mutate(
+          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+        ) %>%
+        dplyr::select(county_fips, death_rate, period)
+
+      geo.plot("US", input$death_cause, mort.data, input$year_selector)
     } else{
       mort.data <- dplyr::filter(
         cdc.data,

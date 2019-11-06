@@ -1,4 +1,4 @@
-Code,Name,Definitions,URL
+Code,Name,Definitions,URL,Source,Source_url,Reason,Keep
 health_outcomes,Health Outcomes,General measure based on length and quality of life.,http://bit.ly/36eMAaF
 health_factors,Health Overall Factors,"A combination of health behaviors, such as drug use and sexual activity, clinical (access and quality), socioeconomic factors, and physical environment factors.",http://bit.ly/2PsuxIe
 life_length,Length Of Life,"Measuring how long people in a community live tells us whether people are dying too early, and it prompts us to look at what’s driving premature deaths.",http://bit.ly/2PvZknq
