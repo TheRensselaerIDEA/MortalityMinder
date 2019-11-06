@@ -1,9 +1,9 @@
 <img src="www/IDEA_logo_500.png"  height="120"/>
 
-# Mortality Minder
+# MortalityMinder
 
 ## About
-**Mortality Minder** is a web application built on the [R Shiny](https://shiny.rstudio.com/) application framework, written primarily in R, with some functionality written in javascript. It creates highly visual analysis of mortality data provided by [CDCWonder](https://wonder.cdc.gov/) and [County Health Rankings](http://www.countyhealthrankings.org/). You may find a live version of the app here: https://lp01.idea.rpi.edu/shiny/erickj4/MortalityMinder/
+**MortalityMinder** is a web application built on the [R Shiny](https://shiny.rstudio.com/) application framework, written primarily in R, with some functionality written in javascript. It creates highly visual analysis of mortality data provided by [CDCWonder](https://wonder.cdc.gov/) and [County Health Rankings](http://www.countyhealthrankings.org/). You may find a live version of the app here: https://lp01.idea.rpi.edu/shiny/erickj4/MortalityMinder/
 
 ## Local Setup
 To run a local instance of the application, follow the steps below:
@@ -13,7 +13,7 @@ To run a local instance of the application, follow the steps below:
 3. Open app.R and select `Run App` on the top-right corner of the code window.
 
 ## Reference
-If you use **Mortality Minder** in your work, please use the following reference
+If you use **MortalityMinder** in your work, please use the following reference
 
 ```
 Bennett, Kristin P, and Erickson S John. “Mortality Minder.” Rensselaer Institute for 
@@ -21,7 +21,7 @@ Data Exploration and Applications, 1 Nov. 2019, https://lp01.idea.rpi.edu/shiny/
 ```
 
 ## Development
-The **Mortality Minder** app is in active development and undergoes daily updates. Please be sure to consistently pull from master in your local setup. If you notice any bugs, create an issue. Please ensure issues have a descriptive title, and the comment should describe where the bug was found and how you were using the application. 
+The **MortalityMinder** app is in active development and undergoes daily updates. Please be sure to consistently pull from master in your local setup. If you notice any bugs, create an issue. Please ensure issues have a descriptive title, and the comment should describe where the bug was found and how you were using the application. 
 
 For all contributors, **any** changes made to the application should be written in a separate branch, and sent as a pull request. Please refrain from pushing changes directly to master, as we must ensure a working copy of the app at all times. When in doubt, follow this protocol:
 
