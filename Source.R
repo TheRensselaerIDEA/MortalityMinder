@@ -6,7 +6,18 @@ library(withr)
 #source("Loader_CHR2019.R") # Added write_rds 9/27/2019
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
   
-chr.data.2019 <- readRDS("chr.data.2019.reduced.rds")
+#chr.data.2019 <- readRDS("chr.data.2019.reduced.rds")
+chr.data.2019 <- readRDS("chr.data.2019.rds")
+reduced.chr.list <- readRDS("reduced.chr.list")
+
+#Filtering out the social determinants that we don't want; making chr.data.2019 only contain the few selected social determinants that are relevant
+
+reduced.chr.list <- readRDS("reduced.chr.list")
+reduced.chr.list <- append(reduced.chr.list, "county_fips", after = 0)
+
+chr.data.2019 <- chr.data.2019 %>%
+  as_data_frame %>%
+  select(reduced.chr.list)
   
 chr.namemap.2019 <- readRDS("chr.namemap.2019.rds")
 chr.namemap.inv.2019 <- readRDS("chr.namemap.inv.2019.rds")
