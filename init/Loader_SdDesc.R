@@ -19,6 +19,7 @@
 #       - URL: link to the social determinants definition
 #       - Source: name of the source website (like CDC)
 #       - Source_url: link to source website
+#       - Reason: reason for ranking
 #       - Keep: need the social determinant or not.
 
 read_csv(
@@ -30,6 +31,7 @@ read_csv(
       "URL" = col_character(),
       "Source" = col_character(),
       "Source_url" = col_character(),
+      "Reason" = col_character(),
       "Keep" = col_logical()
     )
   ) %>% 
