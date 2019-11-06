@@ -51,7 +51,7 @@ chr.rankedMeasure.namemap <- tibble(
   
   name = c("years of potential life lost rate", "years of potential life lost rate (Black)", 
            "years of potential life lost rate (Hispanic)", "years of potential life lost rate (White)", 
-           "percentage of fair or poor", "physically unhealthy days", "mentally unhealthy days", "percentage of low birthweight",
+           "percentage of fair or poor health", "physically unhealthy days", "mentally unhealthy days", "percentage of low birthweight",
            "percentage of low birthweight (Black)", "percentage of low birthweight (Hispanic)", "percentage of low birthweight (White)",
            "percentage of adult smoking", "percentage of adult obesity", "food environment index", "percentage of physically inactive",
            "percentage of accessing to exercise opportunities", "percentage of excessive drinking", 
@@ -63,7 +63,7 @@ chr.rankedMeasure.namemap <- tibble(
            "rate of preventable hospital stays (Black)", "rate of preventable hospital stays (Hispanic)", "rate of preventable hospital stays (White)",
            "percentage of screened", "percentage of screened (Black)", "percentage of screened (Hispanic)", "percentage of screened (White)",
            "percentage of vaccinated", "percentage of vaccinated (Balck)", "percentage of vaccinated (Hispanic)", "percentage of vaccinated (White)",
-           "cohort size", "graduation rate", "number of some college", "Some Collage Edu Population", "percentage of some college", "number of unemployed",
+           "cohort size", "graduation rate", "number of some college", "Some College Edu Population", "percentage of some college", "number of unemployed",
            "labor force", "percentage of unemployed", "percentage of children in poverty", "percentage of children in poverty (Black)",
            "percentage of children in poverty (Hispanic)", "percentage of children in poverty (White)", "80th percentile income", "20th percentile income",
            "income ratio", "number of single parent households", "number of households", "percentage of single parent households", 
@@ -205,7 +205,7 @@ chr.header.sheet4.2019 <- function(chr.file) {
     dplyr::select(V1 = V1, V2 = V2) %>% 
     dplyr::mutate(
       # Manual cleaning of complex name
-      # Some collage population
+      # Some college population
       V2 = if_else(
         str_detect(V2, "Population"),
         paste("some_collage", "population", sep = '_'),
