@@ -1676,7 +1676,7 @@ server <- function(input, output, session) {
   output$hover_info <- renderUI({
     req(input$plot_hover) # Same as if-not-NULL
     hover <- input$plot_hover
-    
+
     #   Replaced with new definition (from above) 
     kendall.cor.new <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
@@ -1715,16 +1715,14 @@ server <- function(input, output, session) {
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
                     "left:", left_px + 2, "px; top:", top_px + 2, "px;")
     
-    
+    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
-                    #                    "<b> kendall_cor: </b>", round(point$kendall_cor,2), "<br/>",
-                    #                   "<b> kendall_p: </b>", round(point$kendall_p,2), "<br/>",
                     "<i>", point$DIR, "</i>","<br/>",
-                    SocialDeterminants[SocialDeterminants$Name == point$chr_code,]$Definition[[1]],
+                    SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definition[[1]],
                     NULL
       )))
     )
