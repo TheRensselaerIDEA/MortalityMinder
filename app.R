@@ -281,8 +281,11 @@ ui <- fluidPage(
                 class = "col1_bot_left",leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
-                class = "col1_bot_right", tags$div(title="This plot represents the average
-                                                   premature deaths for each cluster.",tags$p("Premature Death Trends",icon("info-circle"))),
+                class = "col1_bot_right", 
+                tags$div(
+                  class="col1_bot_right_title",
+                  uiOutput("textDeathTrends")
+                ),
                 plotOutput("mort_line",width="100%",height="90%")
                 )
             )
@@ -633,8 +636,8 @@ server <- function(input, output, session) {
     )
     
     state.mean <- mean(filtered.data$death_rate)
-    
   })
+    
   
   # Calculate national mean mortality for 2000-2002
   national.mean.2000_2002 <- reactive({
@@ -1285,7 +1288,7 @@ server <- function(input, output, session) {
       ) + 
         geom_line(size = 1.5) + 
         geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
-        labs.line.mort(input$state_choice, input$death_cause) + 
+        # labs.line.mort(input$state_choice, input$death_cause) + 
         scale_color_manual(
           values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
         theme.line.mort() + 
@@ -1311,7 +1314,7 @@ server <- function(input, output, session) {
       ) + 
         geom_line(size = 1.5) + 
         geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
-        labs.line.mort(input$state_choice, input$death_cause) + 
+        # labs.line.mort(input$state_choice, input$death_cause) + 
         scale_color_manual(
           values = theme.categorical.colors.accent(nclusters)) +
         theme.line.mort() + 
@@ -1518,6 +1521,22 @@ server <- function(input, output, session) {
       ),
       NULL
       )
+  })
+
+  # Death Trends Header (Page 2 lower middle)
+  output$textDeathTrends <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), tags$div(
+          title="This plot represents the average premature death trends for each cluster.",
+          icon("info-circle")
+        )
+      ),
+      NULL
+    )
   })
   
   # Determinant Header (upper-left panel, Page 2)
