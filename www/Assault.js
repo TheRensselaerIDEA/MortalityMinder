@@ -5,7 +5,7 @@ var image = document.getElementById("national_map_new");
 var images = ["National_image/Assault/1.png","National_image/Assault/2.png","National_image/Assault/3.png","National_image/Assault/4.png","National_image/Assault/5.png" ,"National_image/Assault/6.png"];
 var position = 0;
 var playing = false;
-image.src = images[0];
+image.src = images[5];
 /*
 btn.onclick = function(){
   if(playing === true){
