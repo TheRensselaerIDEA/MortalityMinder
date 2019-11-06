@@ -210,8 +210,9 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   labels <- c("Low", "Medium", "High")
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
-  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
-  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
+  shapes.data <- as.data.frame(shapes)
+  shapes.data$county_fips <- paste(as.data.frame(shapes)$STATEFP, as.data.frame(shapes)$COUNTYFP, sep = '')
+  dataset <- left_join(shapes.data, dataset, by = c("county_fips" = "county_fips"))
   
   if (state.choice != "US"){
     return (leaflet(shapes, 
