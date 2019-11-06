@@ -1,4 +1,4 @@
-<img src="www/IDEA_logo_500.png"  height="75"/>
+<img src="www/IDEA_logo_500.png"  height="120"/>
 
 # Mortality Minder
 
