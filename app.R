@@ -1603,8 +1603,8 @@ server <- function(input, output, session) {
   output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      # draw.geo.cluster("US", input$death_cause, mort.cluster.ord(), 
-      #                  max(mort.cluster.ord()$cluster))
+      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(),
+                       max(mort.cluster.ord()$cluster))
     }else{
       draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(), 
                        max(mort.cluster.ord()$cluster))
@@ -1664,18 +1664,17 @@ server <- function(input, output, session) {
   # Mortality Rate by County Period 2
   output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
-      # mort.data <- dplyr::filter(
-      #   cdc.data,
-      #   death_cause == input$death_cause,
-      #   period == input$year_selector
-      # ) %>% 
-      #   dplyr::mutate(
-      #     # death_rate = death_num / population * 10^5,
-      #     death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-      #   ) %>%
-      #   dplyr::select(county_fips, death_rate, period)
-      # 
-      # geo.plot("US", input$death_cause, mort.data, input$year_selector)
+      mort.data <- dplyr::filter(
+        cdc.data,
+        death_cause == input$death_cause,
+        period == input$year_selector
+      ) %>%
+        dplyr::mutate(
+          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+        ) %>%
+        dplyr::select(county_fips, death_rate, period)
+
+      geo.plot("US", input$death_cause, mort.data, input$year_selector)
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
