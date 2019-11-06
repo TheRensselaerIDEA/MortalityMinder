@@ -13,7 +13,7 @@
 # Date:
 #   06-11-2019
 
-sd <- read_csv(
+read_csv(
     file = "SocialDeterminants.csv",
     col_types = cols(
       "Code" = col_character(),
@@ -22,5 +22,4 @@ sd <- read_csv(
       "URL" = col_character()
     )
   ) %>% 
-  # saveRDS("SocialDeterminants.rds") %>% 
-  as.data.frame()
+  saveRDS("SocialDeterminants.rds")
