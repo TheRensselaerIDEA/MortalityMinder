@@ -348,6 +348,7 @@ ui <- fluidPage(
           tags$div(
             class = "page3_col3",
             tags$div(
+              style = "padding-top: 10px;",
               pickerInput(
                 inputId = "determinant_choice",
                 label = "Selected Determinant: ",
@@ -366,6 +367,8 @@ ui <- fluidPage(
               tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text")),
+              tags$h5(textOutput("determinant_corr")),
+              tags$h5(textOutput("determinant_dir")),
               tags$h4(uiOutput("determinant_link"))
             ),
             tags$div(
@@ -1268,6 +1271,25 @@ server <- function(input, output, session) {
         target="_blank"
       )
     )
+  })
+  
+  output$determinant_corr <- renderText({
+    if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
+      return(paste0("Not statistically significantly correlated with ", 
+                    input$death_cause, 
+                    " mortality rate (p-value = .05)"))
+    }
+    else {
+      return(paste0("Kendal Correlation with ",
+                    input$death_cause,
+                    " mortality: ",
+                    round(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor, 4)))
+    }
+  })
+  
+  output$determinant_dir <- renderText({
+    paste0(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR),
+           " factor")
   })
   
   output$determinants_plot4 <- renderPlot({
