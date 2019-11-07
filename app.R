@@ -91,26 +91,13 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        #tags$div(
+        # Div tag functions as outter "shell" to pull from fullpage.css
+        # Each page is a row, of columns, of rows, etc.
+        
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page2",
+          class = "page2", # National Map Page
           uiOutput("national_map"),
-          #tags$div(
-          #  class = "page2_col1",
-          #  style = "height: auto;",
-          #  tags$h4("Since 2010, mortality rates in the United States have steadily increased year over year.",
-          #          style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
-          #  tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
-          #  tags$ul(
-          #    tags$li("Deaths of Despair"),
-          #    tags$li("Cardiovascular Disease"),
-          #    tags$li("Cancer"),
-          #    tags$li("Assault Deaths"),
-          #    tags$li("All Causes")
-          #  ),
-          #fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
           column(3, class="page2_col1", 
-                   #column(3, class="page2_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -119,22 +106,20 @@ ui <- fluidPage(
                       tags$li("Cancer"),
                       tags$li("Assault Deaths"),
                       tags$li("All Causes")
-                    ), # End List
-            "The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
-            given county during a three year period fora given cause and for a region:  county, state or nationwide.\n", tags$br(),
-            "Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
-            from 2000 to 2017.\n", tags$br(),
-            "To understand why rates are changing, MortalityMinder analyzes factors that are related with 
-            increased mortality rates at the county level.", tags$br(),
-            tags$i("Click right and left to investigate more.\n")   
-          ), # End Column
+                       ), # End List
+                    "The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
+                    given county during a three year period fora given cause and for a region:  county, state or nationwide.\n", tags$br(),
+                    "Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
+                    from 2000 to 2017.\n", tags$br(),
+                    "To understand why rates are changing, MortalityMinder analyzes factors that are related with 
+                    increased mortality rates at the county level.", tags$br(),
+                    tags$i("Click right and left to investigate more.\n")   
+          ), # End Column 1
           tags$div(
             class = "vl"
           ),
-          #tags$div(
-          #  class = "page2_col2",
           column(6,
-            #tags$div(
+            class = "page2_col2",
             fluidRow(
               class = "page2_col2_top",
               tags$div(
@@ -143,14 +128,10 @@ ui <- fluidPage(
                 uiOutput("textNationalTitle"),
                 uiOutput("textMortFactsClosing"),
                 tags$h5(tags$i("Click on time period to select national map for that period"))
-              ),
+                ),
               tags$div(
                 class = "explore_but",
                 style = "padding-right: 20px; padding-left: 20px; text-align: center;",
-                # tags$button(
-                #   id = "play",
-                #   "Stop"
-                # ),
                 tags$ul(
                   class = "ul_period",
                   tags$button(
@@ -162,31 +143,31 @@ ui <- fluidPage(
                     id = "second_period",
                     class = "period_text",
                     "2003-2005"
-                  ),
+                    ),
                   tags$button(
                     id = "third_period",
                     class = "period_text",
                     "2006-2008"
-                  ),
+                    ),
                   tags$button(
                     id = "forth_period",
                     class = "period_text",
                     "2009-2011"
-                  ),
+                    ),
                   tags$button(
                     id = "fifth_period",
                     class = "period_text",
                     "2012-2014"
-                  ),
+                    ),
                   tags$button(
                     id = "sixth_period",
                     class = "period_text",
                     "2015-2017"
-                  ))
-                
-              )),
+                    )
+                  ) # End List of buttons
+                ) # End Button Functionality
+              ), # End of inner FluidRow (Column 2 top)
             tags$hr(),
-            #tags$div(
             fluidRow(
               class = "page2_col2_middle",
               style = "padding-right: 20px; padding-left: 20px; height=50%",
@@ -196,22 +177,20 @@ ui <- fluidPage(
                 id = "national_map_new",
                 class = "landing_page_map",
                 src = "Despair/1.png",
-                #  style = "width:70%"
                 width="100%",
                 style = "bottom: 0; left:0;"
-              ))
-            ),
-            #tags$div(
+                )
+              ) # End of Image DIV container
+            ), # End of inner Fluid Row (Column 2 Middle)
             fluidRow(
               class = "page2_col2_bottom",
               style = "padding-right: 20px; padding-left: 20px",
               uiOutput("textMortFactsTitle"),
-              uiOutput("textMortFacts")#,
-              #uiOutput("textMortFactsClosing")
-            ) # Close Row
-      ) #Close Column
-      ) #Close Outter Row
-      ), # Close div
+              uiOutput("textMortFacts")
+              ) # Close inner FluidRow (Column 2 Bottom)
+            ) #Close Column 2
+          ) #Close Outter Row (National Map Page)
+      ), # Close div tag "slide"
       
       tags$div(
         class = "slide",
