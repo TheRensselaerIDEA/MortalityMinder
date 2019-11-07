@@ -1556,9 +1556,9 @@ server <- function(input, output, session) {
     tagList(
       tags$h1(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", icon("info-circle")
-        )
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
+        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
+          icon("info-circle")
       ),
       NULL
       )
@@ -1571,10 +1571,9 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), tags$div(
-          title="This plot represents the average premature death trends for each cluster.",
+        title="This plot represents the average premature death trends for each cluster.",
+        paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
-        )
       ),
       NULL
     )
@@ -1587,17 +1586,14 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), tags$div(
-          title="Each factor is rated as Destructive, meaning 
-          that it has a positive correlation with the 
-          death rate; or Protective, meaning it has a 
-          negative correlation with the death rate. 
-          MortalityMinder shows those factors which have 
-          the highest absolute correlation with mortality. 
-          For more information on the method of determining
-          correlation please navigate to...",
+        title="Each factor is rated as Destructive, meaning 
+that it has a positive correlation with the 
+death rate; or Protective, meaning it has a 
+negative correlation with the death rate. 
+MortalityMinder shows those factors which have 
+the highest absolute correlation with mortality.",
+        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
-        )
       ),
       NULL
       )
@@ -1610,10 +1606,9 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), tags$div(
-          title="Help text for cluster distribution bar plots",
+        title="Help text for cluster distribution bar plots",
+        paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
-        )
       ),
       NULL
     )
