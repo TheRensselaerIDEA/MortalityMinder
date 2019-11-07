@@ -199,11 +199,11 @@ ui <- fluidPage(
         ),
         fluidRow( 
           class = "page1",
-            column(6,
+            column(5,
                    class="col1",
                    fluidRow(
                      class="col1_top",
-                       column(6,
+                       column(5,
                               class = "col1_top_left",
                               #style = "padding-right: 20px; padding-left: 20px",
                               tags$div(
@@ -216,7 +216,7 @@ ui <- fluidPage(
                               uiOutput("textDescription")
                               
                              ), # End of inner Column (Column 1 Top Left)
-                       column(6,
+                       column(5,
                               class = "col1_top_right",
                               tags$style(
                                       HTML(
@@ -279,126 +279,43 @@ ui <- fluidPage(
                            ),
                    fluidRow(
                      class = "col1_bot",
+                         column(5,
+                           class = "col1_bot_left",
+                           tags$div(
+                             class="col1_bot_left_title",
+                             uiOutput("textClusterGeo")
+                                   ), # End of title div container
+                             leafletOutput("geo_cluster_kmean",width="100%",height="90%")
+                               ), # End of inner Column (Bottom Left)
+                         column(5, 
+                           class = "col1_bot_right", 
+                           tags$div(
+                             class="col1_bot_right_title",
+                             uiOutput("textDeathTrends")
+                                   ), # End of title div container
+                             plotOutput("mort_line",width="100%",height="90%")
+                                ) # End of inner Column (Bottom Right)
                      
                             ) #End of inner fluidRow (Column 1 Bottom)
-                  ) # End of Column 1
-                ),# End of FluidRow (Page1, State Analysis) 
+                  ), # End of Column 1
+            column(5,
+              class = "col2",
+              tags$div(
+                class = "col2_title",
+                uiOutput("textDeterminants")
+                      ), # End of title container
+              tags$div(
+                class = "col2_plot",
+                plotOutput("page1.bar.cor1",width="100%",height="90%", 
+                           hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
+                           click = clickOpts("page1_bar_plot_click")),
+                uiOutput("hover_info")
+                      ) # End of plot div container
+                  ) # End of Column 2
+                )# End of FluidRow (Page1, State Analysis) 
+      ), # End of slide div tag
         ######################### OLDER CODE UNDER HERE ##########################
-        tags$div(
-          class = "page1",
-          tags$div(
-            class = "col1",
-            tags$div(
-              class = "col1_top",
-              tags$div(
-                class = "col1_top_left",
-                style = "padding-right: 20px; padding-left: 20px",
-                tags$div(
-                  title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
-                  tags$h1("Exploring Causes of Premature Death",  icon("info-circle"))
-                ),
-                uiOutput("textDescription")
-              ),
-              tags$div(
-                tags$style(HTML(
-                  "
-                  #year_selector {
-                  width: 100%;
-                  text-align: center;
-                  }
-                  #year_selector .control-label {
-                  width: 100%;
-                  text-align: left;
-                  font-size: 12px;
-                  display: block;
-                  }
-                  .radio-inline {
-                  padding: 0;
-                  margin: 0 2px;
-                  }
-                  .radio-inline+.radio-inline {
-                  margin: 0;
-                  }
-                  .radio-inline input[type=radio] {
-                  display: none;
-                  }
-                  .radio-inline input[type=radio]:checked + span {
-                  padding: 0 2px;
-                  border: 2px solid black;
-                  border-radius: 3px;
-                  }
-                  @media screen and (min-width : 1601px)
-                  {
-                  .radio-inline {
-                  font-size: 16px;
-                  }
-                  }
-                  @media screen and (max-width : 1600px)
-                  {
-                  .radio-inline {
-                  font-size: 10px;
-                  }
-                  }
-                  "
-                )),
-                class = "col1_top_right",
-                tags$div(
-                  class="col1_top_right_title",
-                  uiOutput("textMortRateGeo")
-                ),
-                
-                leafletOutput("geo_mort_change2",width="100%",height="85%"), 
-                radioButtons("year_selector", 
-                             label = "Select years:",
-                             selected = "2015-2017", 
-                             choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                             choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                             inline = TRUE)
-                )
-                ),
-            tags$div(
-              class = "hr"
-            ),
-            tags$div(
-              class = "col1_bot",
-              tags$div(
-                class = "col1_bot_left",
-                tags$div(
-                  class="col1_bot_left_title",
-                  uiOutput("textClusterGeo")
-                ),
-                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
-              ),
-              tags$div(
-                class = "col1_bot_right", 
-                tags$div(
-                  class="col1_bot_right_title",
-                  uiOutput("textDeathTrends")
-                ),
-                plotOutput("mort_line",width="100%",height="90%")
-                )
-            )
-            ),
-          tags$div(
-            class = "vl"
-          ),
-          tags$div(
-            class = "col2",
-            tags$div(
-              class = "col2_title",
-              uiOutput("textDeterminants")
-            ),
-            tags$div(
-              class = "col2_plot",
-              plotOutput("page1.bar.cor1",width="100%",height="90%", 
-                         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
-                         click = clickOpts("page1_bar_plot_click")),
-              uiOutput("hover_info")
-            )
-          )
-              )
-              ),
-      
+
       tags$div(
         class = "slide",
         tags$div(
