@@ -276,6 +276,11 @@ ui <- fluidPage(
                   "
                 )),
                 class = "col1_top_right",
+                tags$div(
+                  class="col1_top_right_title",
+                  uiOutput("textMortRateGeo")
+                ),
+                
                 leafletOutput("geo_mort_change2",width="100%",height="85%"), 
                 radioButtons("year_selector", 
                              label = "Select years:",
@@ -291,7 +296,12 @@ ui <- fluidPage(
             tags$div(
               class = "col1_bot",
               tags$div(
-                class = "col1_bot_left",leafletOutput("geo_cluster_kmean",width="100%",height="90%")
+                class = "col1_bot_left",
+                tags$div(
+                  class="col1_bot_left_title",
+                  uiOutput("textClusterGeo")
+                ),
+                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
                 class = "col1_bot_right", 
@@ -1554,7 +1564,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h1(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
         paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
@@ -1569,11 +1579,62 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average premature death trends for each cluster.",
-        paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), 
+        paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Cluster Geo Header (Page 2 lower left)
+  output$textClusterGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This map visualizes the counties 
+within the selected state and 
+divides them into three clusters 
+of counties that have similar 
+rates of premature deaths. The 
+Low cluster is the grouping of 
+counties that have relatively lower 
+deaths compared to the rest of the 
+state. The Medium cluster is the 
+grouping of counties that have average 
+premature deaths compared to the 
+rest of the state. The High cluster 
+is the grouping of counties that 
+have relatively higher deaths compared 
+to the rest of the state.",
+        paste0(names(which(cause.list == input$death_cause)), " Cluster Distribution for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Mort Rate geo Header (Page 2 lower left)
+  output$textMortRateGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This map is a visualization of each
+of the individual counties within
+the selected state. Lighter colors
+indicate lower premature deaths, 
+darker colors are higher. The key 
+for each of the colors appears beneath 
+the map of the state. The desired time 
+range can be selected beneath the key.",
+        paste0(names(which(cause.list == input$death_cause)), " Rates for ", names(which(state.list == input$state_choice)), " for ",input$year_selector), 
+        icon("info-circle")
       ),
       NULL
     )
