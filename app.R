@@ -118,8 +118,7 @@ ui <- fluidPage(
           tags$div(
             class = "vl"
           ),
-          column(6,
-            class = "page2_col2",
+          column(8,
             fluidRow(
               class = "page2_col2_top",
               tags$div(
@@ -172,7 +171,7 @@ ui <- fluidPage(
               class = "page2_col2_middle",
               style = "padding-right: 20px; padding-left: 20px; height=50%",
               tags$div(class="NationalMapContainer",
-                       style="position:relative;width: 90%;left: 33%",
+                       style="position:relative;width: 90%;left: 10%",
               tags$img(
                 id = "national_map_new",
                 class = "landing_page_map",
