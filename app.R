@@ -339,7 +339,9 @@ ui <- fluidPage(
             tags$div(class = "hr"),
             tags$div(
               class = "page3_col2_bot",
-              plotOutput("determinants_plot3",width="100%",height="85%")
+              style = "position: relative",
+              uiOutput("determinants_plot3_county_name"),
+              plotOutput("determinants_plot3",width="100%",height="85%", click = clickOpts("determinants_plot3_click"))
             )
           ),
           tags$div(
@@ -1320,7 +1322,8 @@ server <- function(input, output, session) {
         theme.line.mort() + 
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
-        labs(fill = "Cluster \n Average", color = "Cluster \n Average")
+        labs(fill = "Cluster \n Average", color = "Cluster \n Average") + 
+        ylab("Mortality Rate (# per 100k)")
       
       if (is.null(county_choice())){
         line_plot 
@@ -1751,7 +1754,58 @@ server <- function(input, output, session) {
     
   })
   
-  
+  output$determinants_plot3_county_name <- renderUI({
+    req(input$determinants_plot3_click) # Same as if-not-NULL
+    click <- input$determinants_plot3_click
+    
+    geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      dplyr::inner_join(geo.namemap, by = "county_fips") %>%
+      tidyr::drop_na()
+    
+      
+    data <- dplyr::filter(
+      cdc.data,
+      period == "2015-2017", 
+      death_cause == input$death_cause
+    ) %>% 
+      dplyr::select(county_fips, death_rate) %>% 
+      dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      tidyr::drop_na()
+    
+    
+    point <- nearPoints(data, click, threshold = 5, maxpoints = 1, addDist = TRUE)
+    
+    if (nrow(point) == 0) return(NULL)
+    
+    
+    # calculate point position INSIDE the image as percent of total dimensions
+    # from left (horizontal) and from top (vertical)
+    left_pct <- (click$x - click$domain$left) / (click$domain$right - click$domain$left)
+    top_pct <- (click$domain$top - click$y) / (click$domain$top - click$domain$bottom)
+    
+    # calculate distance from left and bottom side of the picture in pixels
+    left_px <- click$range$left + left_pct * (click$range$right - click$range$left)
+    top_px <- click$range$top + top_pct * (click$range$bottom - click$range$top)
+    
+    # create style property fot tooltip
+    # background color is set so tooltip is a bit transparent
+    # z-index is set so we are sure are tooltip will be on top
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+                    "left:", left_px + 10, "px; top:", top_px - 30, "px; font-size: 7px")
+    
+    #browser()
+    # actual tooltip created as wellPanel
+    # TODO: Change these variables based on `kendall.cor`
+    tags$div(
+      style = style,
+      h5(point$county_name)
+    )
+    
+  })
   
   # Kendall Correlation Between Cluster and CHR-SD
   output$page1.bar.cor1 <- renderPlot({
@@ -1904,6 +1958,66 @@ server <- function(input, output, session) {
     county_choice(event$id)
   })
   
+  observe({
+    event <- input$determinants_plot3_click
+    req(event)
+    
+    geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
+    sd.select <- chr.data.2019 %>% 
+      dplyr::select(county_fips, VAR = sd.code) %>% 
+      dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
+      dplyr::inner_join(geo.namemap, by = "county_fips") %>%
+      tidyr::drop_na()
+    
+    
+    data <- dplyr::filter(
+      cdc.data,
+      period == "2015-2017", 
+      death_cause == input$death_cause
+    ) %>% 
+      dplyr::select(county_fips, death_rate) %>% 
+      dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      tidyr::drop_na()
+    
+    
+    point <- nearPoints(data, event, threshold = 5, maxpoints = 1, addDist = TRUE)
+    
+    if (nrow(point) == 0) return(NULL)
+    
+    county_name = point$county_name
+    
+    county_indices <- which(state_map@data$NAME %in% c(county_name))
+    
+    if (length(county_indices) == 0) return(NULL)
+    
+    if (length(county_indices) == 1){
+      polygon <- state_map@polygons[[county_indices[[1]]]]
+    } else {
+      # TODO
+      polygon <- state_map@polygons[[county_indices[[1]]]]
+      # for (index in county_indices){
+      #   current_polygon <- state_map@polygons[[index]]
+      #   current_coords <- current_polygon@Polygons[[1]]@coords
+      #   if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
+      #     polygon = current_polygon
+      #     break
+      #   }
+      # }
+    }
+    
+    cluster_proxy <- leafletProxy("determinants_plot5")
+    #remove any previously highlighted polygon
+    cluster_proxy %>% clearGroup("highlighted_polygon")
+    
+    #add a slightly thicker red polygon on top of the selected one
+    cluster_proxy %>% addPolylines(stroke = TRUE, 
+                                   weight = 2,
+                                   color="#000000",
+                                   data = polygon,
+                                   group="highlighted_polygon",
+                                   dashArray = "4 2 4")
+  })
   
   # click on bar plot triggers page change
   observe({
