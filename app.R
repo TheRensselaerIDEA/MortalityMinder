@@ -243,7 +243,7 @@ ui <- fluidPage(
                   #year_selector .control-label {
                   width: 100%;
                   text-align: left;
-                  font-size: 12px;
+                  font-size: 10px;
                   display: block;
                   }
                   .radio-inline {
@@ -264,7 +264,7 @@ ui <- fluidPage(
                   @media screen and (min-width : 1601px)
                   {
                   .radio-inline {
-                  font-size: 16px;
+                  font-size: 10px;
                   }
                   }
                   @media screen and (max-width : 1600px)
@@ -281,13 +281,13 @@ ui <- fluidPage(
                   uiOutput("textMortRateGeo")
                 ),
                 
-                leafletOutput("geo_mort_change2",width="100%",height="85%"), 
                 radioButtons("year_selector", 
-                             label = "Select years:",
+                             label = "Click on time period to select state map for that period",
                              selected = "2015-2017", 
                              choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                              choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                             inline = TRUE)
+                             inline = TRUE),
+                leafletOutput("geo_mort_change2",width="100%",height="80%")
                 )
                 ),
             tags$div(
@@ -301,7 +301,7 @@ ui <- fluidPage(
                   class="col1_bot_left_title",
                   uiOutput("textClusterGeo")
                 ),
-                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
+                leafletOutput("geo_cluster_kmean",width="100%",height="80%")
               ),
               tags$div(
                 class = "col1_bot_right", 
@@ -309,7 +309,7 @@ ui <- fluidPage(
                   class="col1_bot_right_title",
                   uiOutput("textDeathTrends")
                 ),
-                plotOutput("mort_line",width="100%",height="90%")
+                plotOutput("mort_line",width="100%",height="80%")
                 )
             )
             ),
