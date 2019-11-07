@@ -703,7 +703,13 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
                           label = dataset$county_name) %>%
               addControl(get_sd_title(state.choice, sd.choice, period), 
                          position = "topleft", 
-                         className="map-title")
+                         className="map-title") %>%
+              addLegend("bottomleft",
+                        pal = pal,
+                        values = ~dataset$VAR,
+                        title = "Rate",
+                        opacity = 1)
+              
               )
   }else{
     return (leaflet(shapes, 
