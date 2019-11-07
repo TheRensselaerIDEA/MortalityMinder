@@ -401,17 +401,15 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
 }
 
 get_title <- function(state.choice, death.cause, period) {
-  return (tags$div())
+  return (
+    tags$div()
+    )
 }
 
 get_sd_title <- function(state.choice, sd.choice, period) {
-  return (tags$div(title="This map is a visualization of each
-of the individual counties within
-the selected state. Lighter colors
-indicate lower values for the selected
-determinant, darker colors are higher. 
-Values for 2015-2017 are shown",
-                   HTML(paste(state.choice, " - ", sd.choice, "Rate", period)),icon("info-circle")))
+  return (
+    tags$div()
+    )
 }
 
 getLatLong <- function(state.choice, dataset) {
