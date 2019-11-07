@@ -97,7 +97,8 @@ ui <- fluidPage(
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page2", # National Map Page
           uiOutput("national_map"),
-          column(3, class="page2_col1", 
+          column(3, 
+                  class="page2_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -119,76 +120,76 @@ ui <- fluidPage(
             class = "vl"
           ),
           column(8,
-            fluidRow(
-              class = "page2_col2_top",
-              tags$div(
-                class = "National_title",
-                style = "padding-right: 20px; padding-left: 20px",
-                uiOutput("textNationalTitle"),
-                uiOutput("textMortFactsClosing"),
-                tags$h5(tags$i("Click on time period to select national map for that period"))
-                ),
-              tags$div(
-                class = "explore_but",
-                style = "padding-right: 20px; padding-left: 20px; text-align: center;",
-                tags$ul(
-                  class = "ul_period",
-                  tags$button(
-                    id = "first_period",
-                    class = "period_text",
-                    "2000-2002"
-                  ),
-                  tags$button(
-                    id = "second_period",
-                    class = "period_text",
-                    "2003-2005"
+                fluidRow(
+                  class = "page2_col2_top",
+                  tags$div(
+                    class = "National_title",
+                    style = "padding-right: 20px; padding-left: 20px",
+                    uiOutput("textNationalTitle"),
+                    uiOutput("textMortFactsClosing"),
+                    tags$h5(tags$i("Click on time period to select national map for that period"))
                     ),
-                  tags$button(
-                    id = "third_period",
-                    class = "period_text",
-                    "2006-2008"
-                    ),
-                  tags$button(
-                    id = "forth_period",
-                    class = "period_text",
-                    "2009-2011"
-                    ),
-                  tags$button(
-                    id = "fifth_period",
-                    class = "period_text",
-                    "2012-2014"
-                    ),
-                  tags$button(
-                    id = "sixth_period",
-                    class = "period_text",
-                    "2015-2017"
+                  tags$div(
+                    class = "explore_but",
+                    style = "padding-right: 20px; padding-left: 20px; text-align: center;",
+                    tags$ul(
+                      class = "ul_period",
+                      tags$button(
+                        id = "first_period",
+                        class = "period_text",
+                        "2000-2002"
+                      ),
+                      tags$button(
+                        id = "second_period",
+                        class = "period_text",
+                        "2003-2005"
+                        ),
+                      tags$button(
+                        id = "third_period",
+                        class = "period_text",
+                        "2006-2008"
+                        ),
+                      tags$button(
+                        id = "forth_period",
+                        class = "period_text",
+                        "2009-2011"
+                        ),
+                      tags$button(
+                        id = "fifth_period",
+                        class = "period_text",
+                        "2012-2014"
+                        ),
+                      tags$button(
+                        id = "sixth_period",
+                        class = "period_text",
+                        "2015-2017"
+                        )
+                      ) # End List of buttons
+                    ) # End Button Functionality
+                  ), # End of inner FluidRow (Column 2 top)
+                tags$hr(),
+                fluidRow(
+                  class = "page2_col2_middle",
+                  style = "padding-right: 20px; padding-left: 20px; height=50%",
+                  tags$div(class="NationalMapContainer",
+                           style="position:relative;width: 90%;left: 10%",
+                  tags$img(
+                    id = "national_map_new",
+                    class = "landing_page_map",
+                    src = "Despair/1.png",
+                    width="100%",
+                    style = "bottom: 0; left:0;"
                     )
-                  ) # End List of buttons
-                ) # End Button Functionality
-              ), # End of inner FluidRow (Column 2 top)
-            tags$hr(),
-            fluidRow(
-              class = "page2_col2_middle",
-              style = "padding-right: 20px; padding-left: 20px; height=50%",
-              tags$div(class="NationalMapContainer",
-                       style="position:relative;width: 90%;left: 10%",
-              tags$img(
-                id = "national_map_new",
-                class = "landing_page_map",
-                src = "Despair/1.png",
-                width="100%",
-                style = "bottom: 0; left:0;"
-                )
-              ) # End of Image DIV container
-            ), # End of inner Fluid Row (Column 2 Middle)
-            fluidRow(
-              class = "page2_col2_bottom",
-              style = "padding-right: 20px; padding-left: 20px",
-              uiOutput("textMortFactsTitle"),
-              uiOutput("textMortFacts")
-              ) # Close inner FluidRow (Column 2 Bottom)
-            ) #Close Column 2
-          ) #Close Outter Row (National Map Page)
+                  ) # End of Image DIV container
+                ), # End of inner Fluid Row (Column 2 Middle)
+                fluidRow(
+                  class = "page2_col2_bottom",
+                  style = "padding-right: 20px; padding-left: 20px",
+                  uiOutput("textMortFactsTitle"),
+                  uiOutput("textMortFacts")
+                  ) # Close inner FluidRow (Column 2 Bottom)
+                ) #Close Column 2
+              ) #Close Outter Row (National Map Page)
       ), # Close div tag "slide"
       
       tags$div(
@@ -196,6 +197,93 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
+        fluidRow( 
+          class = "page1",
+            column(6,
+                   class="col1",
+                   fluidRow(
+                     class="col1_top",
+                       column(6,
+                              class = "col1_top_left",
+                              #style = "padding-right: 20px; padding-left: 20px",
+                              tags$div(
+                                title="The mortality rate used in the app is the number of people per 100,000\ 
+                                that died prematurely in a given county during a three year period. A premature\ 
+                                death is considered anyone that dies between the ages of 25 to 64 as a result of\ 
+                                the selected cause.",
+                                tags$h1("Exploring Causes of Premature Death",  icon("info-circle"))
+                                      ), # End of Heading Conrainer
+                              uiOutput("textDescription")
+                              
+                             ), # End of inner Column (Column 1 Top Left)
+                       column(6,
+                              class = "col1_top_right",
+                              tags$style(
+                                      HTML(
+                                      "
+                                      #year_selector {
+                                      width: 100%;
+                                      text-align: center;
+                                      }
+                                      #year_selector .control-label {
+                                      width: 100%;
+                                      text-align: left;
+                                      font-size: 12px;
+                                      display: block;
+                                      }
+                                      .radio-inline {
+                                      padding: 0;
+                                      margin: 0 2px;
+                                      }
+                                      .radio-inline+.radio-inline {
+                                      margin: 0;
+                                      }
+                                      .radio-inline input[type=radio] {
+                                      display: none;
+                                      }
+                                      .radio-inline input[type=radio]:checked + span {
+                                      padding: 0 2px;
+                                      border: 2px solid black;
+                                      border-radius: 3px;
+                                      }
+                                      @media screen and (min-width : 1601px)
+                                      {
+                                      .radio-inline {
+                                      font-size: 16px;
+                                      }
+                                      }
+                                      @media screen and (max-width : 1600px)
+                                      {
+                                      .radio-inline {
+                                      font-size: 10px;
+                                      }
+                                      }
+                                      "
+                                          ) #End of HTML Block
+                                        ), # End of Style block
+                              tags$div(
+                                class="col1_top_right_title",
+                                uiOutput("textMortRateGeo")
+                                      ), # End of title div container
+                              leafletOutput("geo_mort_change2",width="100%",height="85%"), 
+                              radioButtons("year_selector", 
+                                           label = "Select years:",
+                                           selected = "2015-2017", 
+                                           choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           inline = TRUE)
+                              ) # End of inner Column (Column 1 top right)
+                           ), # End of inner FluidRow (Column1 Top)
+                   tags$div(
+                     class = "hr"
+                           ),
+                   fluidRow(
+                     class = "col1_bot",
+                     
+                            ) #End of inner fluidRow (Column 1 Bottom)
+                  ) # End of Column 1
+                ),# End of FluidRow (Page1, State Analysis) 
+        ######################### OLDER CODE UNDER HERE ##########################
         tags$div(
           class = "page1",
           tags$div(
