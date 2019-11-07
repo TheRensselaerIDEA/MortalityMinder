@@ -398,8 +398,11 @@ ui <- fluidPage(
             ),
             tags$div(
               class = "col1_bot",
-              leafletOutput("determinants_plot5"),
-              tags$h5(tags$i("Social determinant geo-distribution"))
+              tags$div(
+                class = "col1_bot_title",
+                uiOutput("textDeterminantsGeo")
+              ),
+              leafletOutput("determinants_plot5")
             )
           )
         )
@@ -1670,6 +1673,21 @@ the highest absolute correlation with mortality.",
         title="Help text for cluster distribution bar plots",
         paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Determinant geo Header (upper-center panel, Page 2)
+  output$textDeterminantsGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="Geographic distribution of selected determinant across selected state",
+        paste0("Distribution of '",input$determinant_choice, "' for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
       ),
       NULL
     )
