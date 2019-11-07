@@ -197,21 +197,22 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        fluidRow( 
+        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page1",
-            column(5,
+            column(8,
                    class="col1",
-                   fluidRow(
+                   fluidRow(style = "height:425px; max-height: 110vh; overflow-y: auto;",
                      class="col1_top",
                        column(5,
-                              class = "col1_top_left",
+                              #class = "col1_top_left",
                               #style = "padding-right: 20px; padding-left: 20px",
                               tags$div(
-                                title="The mortality rate used in the app is the number of people per 100,000\ 
-                                that died prematurely in a given county during a three year period. A premature\ 
-                                death is considered anyone that dies between the ages of 25 to 64 as a result of\ 
-                                the selected cause.",
-                                tags$h1("Exploring Causes of Premature Death",  icon("info-circle"))
+                                title="The mortality rate used in the app is the number
+of people per 100,000 that died prematurely in a given 
+county during a three year period. A premature death is 
+considered anyone that dies between the ages of 25 to 64
+as a result of the selected cause.",
+                                tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
                                       ), # End of Heading Conrainer
                               uiOutput("textDescription")
                               
@@ -223,7 +224,9 @@ ui <- fluidPage(
                                       "
                                       #year_selector {
                                       width: 100%;
-                                      text-align: center;
+                                      text-align: left;
+                                      overflow-x: auto;
+                                      overflow-y: visible;
                                       }
                                       #year_selector .control-label {
                                       width: 100%;
@@ -265,13 +268,13 @@ ui <- fluidPage(
                                 class="col1_top_right_title",
                                 uiOutput("textMortRateGeo")
                                       ), # End of title div container
-                              leafletOutput("geo_mort_change2",width="100%",height="85%"), 
                               radioButtons("year_selector", 
-                                           label = "Select years:",
+                                           label = "Click on time period to select state map for that period",
                                            selected = "2015-2017", 
                                            choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                                           inline = TRUE)
+                                           inline = TRUE),
+                              leafletOutput("geo_mort_change2",width="100%",height="75%")
                               ) # End of inner Column (Column 1 top right)
                            ), # End of inner FluidRow (Column1 Top)
                    tags$div(
@@ -298,7 +301,7 @@ ui <- fluidPage(
                      
                             ) #End of inner fluidRow (Column 1 Bottom)
                   ), # End of Column 1
-            column(5,
+            column(3,
               class = "col2",
               tags$div(
                 class = "col2_title",
@@ -306,7 +309,7 @@ ui <- fluidPage(
                       ), # End of title container
               tags$div(
                 class = "col2_plot",
-                plotOutput("page1.bar.cor1",width="100%",height="90%", 
+                plotOutput("page1.bar.cor1",width="90%",height="100%", 
                            hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
                            click = clickOpts("page1_bar_plot_click")),
                 uiOutput("hover_info")
@@ -1610,7 +1613,7 @@ to the rest of the state.",
     
     tagList(
       tags$h4(
-        style = "padding-right: 20px; padding-left: 20px",
+        style = "padding-right: 10px; padding-left: 10px",
         title="This map is a visualization of each
 of the individual counties within
 the selected state. Lighter colors
