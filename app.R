@@ -86,6 +86,8 @@ ui <- fluidPage(
     tags$div(
       class = "section s1",
       
+##################### PAGE 1, NATIONWIDE ANALYSIS #####################
+
       tags$div(
         class = "slide",
         tags$div(
@@ -192,6 +194,8 @@ ui <- fluidPage(
               ) #Close Outter Row (National Map Page)
       ), # Close div tag "slide"
       
+##################### PAGE 2, INDIVIDUAL STATE ANALYSIS #####################
+
       tags$div(
         class = "slide",
         tags$div(
@@ -208,10 +212,10 @@ ui <- fluidPage(
                               #style = "padding-right: 20px; padding-left: 20px",
                               tags$div(
                                 title="The mortality rate used in the app is the number
-of people per 100,000 that died prematurely in a given 
-county during a three year period. A premature death is 
-considered anyone that dies between the ages of 25 to 64
-as a result of the selected cause.",
+                                      of people per 100,000 that died prematurely in a given 
+                                      county during a three year period. A premature death is 
+                                      considered anyone that dies between the ages of 25 to 64
+                                      as a result of the selected cause.",
                                 tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
                                       ), # End of Heading Conrainer
                               uiOutput("textDescription")
@@ -288,7 +292,7 @@ as a result of the selected cause.",
                              class="col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
-                             leafletOutput("geo_cluster_kmean",width="100%",height="90%")
+                             leafletOutput("geo_cluster_kmean",width="100%",height="80%")
                                ), # End of inner Column (Bottom Left)
                          column(5, 
                            class = "col1_bot_right", 
@@ -317,7 +321,8 @@ as a result of the selected cause.",
                   ) # End of Column 2
                 )# End of FluidRow (Page1, State Analysis) 
       ), # End of slide div tag
-        ######################### OLDER CODE UNDER HERE ##########################
+
+##################### PAGE 3, INDIVIDUAL DETERMINANT ANALYSIS #####################
 
       tags$div(
         class = "slide",
@@ -394,7 +399,8 @@ as a result of the selected cause.",
         )
         
       ),
-      
+##################### PAGE 4, ABOUT PAGE #####################
+
       tags$div(
         class = "slide",
         tags$div(
