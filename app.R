@@ -278,7 +278,7 @@ ui <- fluidPage(
                                            choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
-                              leafletOutput("geo_mort_change2",width="100%",height="75%")
+                              leafletOutput("geo_mort_change2",width="100%",height="90%")
                               ) # End of inner Column (Column 1 top right)
                            ), # End of inner FluidRow (Column1 Top)
                    tags$div(
