@@ -86,31 +86,21 @@ ui <- fluidPage(
     tags$div(
       class = "section s1",
       
+##################### PAGE 1, NATIONWIDE ANALYSIS #####################
+
       tags$div(
         class = "slide",
         tags$div(
           class = "nav_bar_blank"
         ),
-        #tags$div(
+        # Div tag functions as outter "shell" to pull from fullpage.css
+        # Each page is a row, of columns, of rows, etc.
+        
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page2",
+          class = "page2", # National Map Page
           uiOutput("national_map"),
-          #tags$div(
-          #  class = "page2_col1",
-          #  style = "height: auto;",
-          #  tags$h4("Since 2010, mortality rates in the United States have steadily increased year over year.",
-          #          style = "margin: 10px 10% 1px 15%; padding: 5px 5px;"),
-          #  tags$p("MortalityMinder analyzes trends of premature death in the United States which are caused by:"),
-          #  tags$ul(
-          #    tags$li("Deaths of Despair"),
-          #    tags$li("Cardiovascular Disease"),
-          #    tags$li("Cancer"),
-          #    tags$li("Assault Deaths"),
-          #    tags$li("All Causes")
-          #  ),
-          #fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
-          column(3, class="page2_col1", 
-                   #column(3, class="page2_col1", 
+          column(3, 
+                  class="page2_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -119,220 +109,222 @@ ui <- fluidPage(
                       tags$li("Cancer"),
                       tags$li("Assault Deaths"),
                       tags$li("All Causes")
-                    ), # End List
-            "The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
-            given county during a three year period fora given cause and for a region:  county, state or nationwide.\n", tags$br(),
-            "Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
-            from 2000 to 2017.\n", tags$br(),
-            "To understand why rates are changing, MortalityMinder analyzes factors that are related with 
-            increased mortality rates at the county level.", tags$br(),
-            tags$i("Click right and left to investigate more.\n")   
-          ), # End Column
+                       ), # End List
+                    "The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
+                    given county during a three year period fora given cause and for a region:  county, state or nationwide.\n", tags$br(),
+                    "Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
+                    from 2000 to 2017.\n", tags$br(),
+                    "To understand why rates are changing, MortalityMinder analyzes factors that are related with 
+                    increased mortality rates at the county level.", tags$br(),
+                    tags$i("Click right and left to investigate more.\n")   
+          ), # End Column 1
           tags$div(
             class = "vl"
           ),
-          #tags$div(
-          #  class = "page2_col2",
-          column(6,
-            #tags$div(
-            fluidRow(
-              class = "page2_col2_top",
-              tags$div(
-                class = "National_title",
-                style = "padding-right: 20px; padding-left: 20px",
-                uiOutput("textNationalTitle"),
-                uiOutput("textMortFactsClosing"),
-                tags$h5(tags$i("Click on time period to select national map for that period"))
-              ),
-              tags$div(
-                class = "explore_but",
-                style = "padding-right: 20px; padding-left: 20px; text-align: center;",
-                # tags$button(
-                #   id = "play",
-                #   "Stop"
-                # ),
-                tags$ul(
-                  class = "ul_period",
-                  tags$button(
-                    id = "first_period",
-                    class = "period_text",
-                    "2000-2002"
-                  ),
-                  tags$button(
-                    id = "second_period",
-                    class = "period_text",
-                    "2003-2005"
-                  ),
-                  tags$button(
-                    id = "third_period",
-                    class = "period_text",
-                    "2006-2008"
-                  ),
-                  tags$button(
-                    id = "forth_period",
-                    class = "period_text",
-                    "2009-2011"
-                  ),
-                  tags$button(
-                    id = "fifth_period",
-                    class = "period_text",
-                    "2012-2014"
-                  ),
-                  tags$button(
-                    id = "sixth_period",
-                    class = "period_text",
-                    "2015-2017"
-                  ))
-                
-              )),
-            tags$hr(),
-            #tags$div(
-            fluidRow(
-              class = "page2_col2_middle",
-              style = "padding-right: 20px; padding-left: 20px; height=50%",
-              tags$div(class="NationalMapContainer",
-                       style="position:relative;width: 90%;left: 33%",
-              tags$img(
-                id = "national_map_new",
-                class = "landing_page_map",
-                src = "Despair/1.png",
-                #  style = "width:70%"
-                width="100%",
-                style = "bottom: 0; left:0;"
-              ))
-            ),
-            #tags$div(
-            fluidRow(
-              class = "page2_col2_bottom",
-              style = "padding-right: 20px; padding-left: 20px",
-              uiOutput("textMortFactsTitle"),
-              uiOutput("textMortFacts")#,
-              #uiOutput("textMortFactsClosing")
-            ) # Close Row
-      ) #Close Column
-      ) #Close Outter Row
-      ), # Close div
+          column(8,
+                fluidRow(
+                  class = "page2_col2_top",
+                  tags$div(
+                    class = "National_title",
+                    style = "padding-right: 20px; padding-left: 20px",
+                    uiOutput("textNationalTitle"),
+                    uiOutput("textMortFactsClosing"),
+                    tags$h5(tags$i("Click on time period to select national map for that period"))
+                    ),
+                  tags$div(
+                    class = "explore_but",
+                    style = "padding-right: 20px; padding-left: 20px; text-align: center;",
+                    tags$ul(
+                      class = "ul_period",
+                      tags$button(
+                        id = "first_period",
+                        class = "period_text",
+                        "2000-2002"
+                      ),
+                      tags$button(
+                        id = "second_period",
+                        class = "period_text",
+                        "2003-2005"
+                        ),
+                      tags$button(
+                        id = "third_period",
+                        class = "period_text",
+                        "2006-2008"
+                        ),
+                      tags$button(
+                        id = "forth_period",
+                        class = "period_text",
+                        "2009-2011"
+                        ),
+                      tags$button(
+                        id = "fifth_period",
+                        class = "period_text",
+                        "2012-2014"
+                        ),
+                      tags$button(
+                        id = "sixth_period",
+                        class = "period_text",
+                        "2015-2017"
+                        )
+                      ) # End List of buttons
+                    ) # End Button Functionality
+                  ), # End of inner FluidRow (Column 2 top)
+                tags$hr(),
+                fluidRow(
+                  class = "page2_col2_middle",
+                  style = "padding-right: 20px; padding-left: 20px; height=50%",
+                  tags$div(class="NationalMapContainer",
+                           style="position:relative;width: 90%;left: 10%",
+                  tags$img(
+                    id = "national_map_new",
+                    class = "landing_page_map",
+                    src = "Despair/1.png",
+                    width="100%",
+                    style = "bottom: 0; left:0;"
+                    )
+                  ) # End of Image DIV container
+                ), # End of inner Fluid Row (Column 2 Middle)
+                fluidRow(
+                  class = "page2_col2_bottom",
+                  style = "padding-right: 20px; padding-left: 20px",
+                  uiOutput("textMortFactsTitle"),
+                  uiOutput("textMortFacts")
+                  ) # Close inner FluidRow (Column 2 Bottom)
+                ) #Close Column 2
+              ) #Close Outter Row (National Map Page)
+      ), # Close div tag "slide"
       
+##################### PAGE 2, INDIVIDUAL STATE ANALYSIS #####################
+
       tags$div(
         class = "slide",
         tags$div(
           class = "nav_bar_blank"
         ),
-        tags$div(
+        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page1",
-          tags$div(
-            class = "col1",
-            tags$div(
-              class = "col1_top",
+            column(8,
+                   class="col1",
+                   fluidRow(style = "height:425px; max-height: 110vh; overflow-y: auto;",
+                     class="col1_top",
+                       column(5,
+                              #class = "col1_top_left",
+                              #style = "padding-right: 20px; padding-left: 20px",
+                              tags$div(
+                                title="The mortality rate used in the app is the number
+                                      of people per 100,000 that died prematurely in a given 
+                                      county during a three year period. A premature death is 
+                                      considered anyone that dies between the ages of 25 to 64
+                                      as a result of the selected cause.",
+                                tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
+                                      ), # End of Heading Conrainer
+                              uiOutput("textDescription")
+                              
+                             ), # End of inner Column (Column 1 Top Left)
+                       column(5,
+                              class = "col1_top_right",
+                              tags$style(
+                                      HTML(
+                                      "
+                                      #year_selector {
+                                      width: 100%;
+                                      text-align: left;
+                                      overflow-x: auto;
+                                      overflow-y: visible;
+                                      }
+                                      #year_selector .control-label {
+                                      width: 100%;
+                                      text-align: left;
+                                      font-size: 12px;
+                                      display: block;
+                                      }
+                                      .radio-inline {
+                                      padding: 0;
+                                      margin: 0 2px;
+                                      }
+                                      .radio-inline+.radio-inline {
+                                      margin: 0;
+                                      }
+                                      .radio-inline input[type=radio] {
+                                      display: none;
+                                      }
+                                      .radio-inline input[type=radio]:checked + span {
+                                      padding: 0 2px;
+                                      border: 2px solid black;
+                                      border-radius: 3px;
+                                      }
+                                      @media screen and (min-width : 1601px)
+                                      {
+                                      .radio-inline {
+                                      font-size: 16px;
+                                      }
+                                      }
+                                      @media screen and (max-width : 1600px)
+                                      {
+                                      .radio-inline {
+                                      font-size: 10px;
+                                      }
+                                      }
+                                      "
+                                          ) #End of HTML Block
+                                        ), # End of Style block
+                              tags$div(
+                                class="col1_top_right_title",
+                                uiOutput("textMortRates")
+                                      ), # End of title div container
+                              radioButtons("year_selector", 
+                                           label = "Click on time period to select state map for that period",
+                                           selected = "2015-2017", 
+                                           choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           inline = TRUE),
+                              leafletOutput("geo_mort_change2",width="100%",height="90%")
+                              ) # End of inner Column (Column 1 top right)
+                           ), # End of inner FluidRow (Column1 Top)
+                   tags$div(
+                     class = "hr"
+                           ),
+                   fluidRow(
+                     class = "col1_bot",
+                         column(5,
+                           class = "col1_bot_left",
+                           tags$div(
+                             class="col1_bot_left_title",
+                             uiOutput("textClusterGeo")
+                                   ), # End of title div container
+                             leafletOutput("geo_cluster_kmean",width="100%",height="80%")
+                               ), # End of inner Column (Bottom Left)
+                         column(5, 
+                           class = "col1_bot_right", 
+                           tags$div(
+                             class="col1_bot_right_title",
+                             uiOutput("textDeathTrends")
+                                   ), # End of title div container
+                             plotOutput("mort_line",width="100%",height="90%")
+                                ) # End of inner Column (Bottom Right)
+                     
+                            ) #End of inner fluidRow (Column 1 Bottom)
+                  ), # End of Column 1
+            column(3,
+              class = "col2",
               tags$div(
-                class = "col1_top_left",
-                style = "padding-right: 20px; padding-left: 20px",
-                tags$div(
-                  title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
-                  tags$h1("Exploring Causes of Premature Death",  icon("info-circle"))
-                ),
-                uiOutput("textDescription")
-              ),
+                class = "col2_title",
+                uiOutput("textDeterminants")
+                      ), # End of title container
+
               tags$div(
-                tags$style(HTML(
-                  "
-                  #year_selector {
-                  width: 100%;
-                  text-align: center;
-                  }
-                  #year_selector .control-label {
-                  width: 100%;
-                  text-align: left;
-                  font-size: 12px;
-                  display: block;
-                  }
-                  .radio-inline {
-                  padding: 0;
-                  margin: 0 2px;
-                  }
-                  .radio-inline+.radio-inline {
-                  margin: 0;
-                  }
-                  .radio-inline input[type=radio] {
-                  display: none;
-                  }
-                  .radio-inline input[type=radio]:checked + span {
-                  padding: 0 2px;
-                  border: 2px solid black;
-                  border-radius: 3px;
-                  }
-                  @media screen and (min-width : 1601px)
-                  {
-                  .radio-inline {
-                  font-size: 16px;
-                  }
-                  }
-                  @media screen and (max-width : 1600px)
-                  {
-                  .radio-inline {
-                  font-size: 10px;
-                  }
-                  }
-                  "
-                )),
-                class = "col1_top_right",
-                tags$div(
-                  class="col1_top_right_title",
-                  uiOutput("textMortRates")
-                ),
-                radioButtons("year_selector", 
-                             label = "Select years:",
-                             selected = "2015-2017", 
-                             choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                             choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
-                             inline = TRUE),
-                leafletOutput("geo_mort_change2",width="100%",height="80%")
-                )
-                ),
-            tags$div(
-              class = "hr"
-            ),
-            tags$div(
-              class = "col1_bot",
-              tags$div(
-                class = "col1_bot_left",
-                tags$div(
-                  class="col1_bot_left_title",
-                  uiOutput("textClusterGeo")
-                ),
-                
-                leafletOutput("geo_cluster_kmean",width="100%",height="80%")
-              ),
-              tags$div(
-                class = "col1_bot_right", 
-                tags$div(
-                  class="col1_bot_right_title",
-                  uiOutput("textDeathTrends")
-                ),
-                plotOutput("mort_line",width="100%",height="90%")
-                )
-            )
-            ),
-          tags$div(
-            class = "vl"
-          ),
-          tags$div(
-            class = "col2",
-            tags$div(
-              class = "col2_title",
-              uiOutput("textDeterminants")
-            ),
-            tags$div(
-              class = "col2_plot",
-              plotOutput("page1.bar.cor1",width="100%",height="90%", 
-                         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
-                         click = clickOpts("page1_bar_plot_click")),
-              uiOutput("hover_info")
-            )
-          )
-              )
-              ),
-      
+                class = "col2_plot",
+                plotOutput("page1.bar.cor1",width="90%",height="100%", 
+                           hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
+                           click = clickOpts("page1_bar_plot_click")),
+                uiOutput("hover_info")
+                      ) # End of plot div container
+                  ) # End of Column 2
+                )# End of FluidRow (Page1, State Analysis) 
+      ), # End of slide div tag
+
+##################### PAGE 3, INDIVIDUAL DETERMINANT ANALYSIS #####################
+
       tags$div(
         class = "slide",
         tags$div(
@@ -408,7 +400,8 @@ ui <- fluidPage(
         )
         
       ),
-      
+##################### PAGE 4, ABOUT PAGE #####################
+
       tags$div(
         class = "slide",
         tags$div(
@@ -1567,7 +1560,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h1(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
         paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
@@ -1585,7 +1578,7 @@ server <- function(input, output, session) {
       tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average premature death trends for each cluster.",
-        paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), 
+        paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
       NULL
@@ -1667,6 +1660,21 @@ the highest absolute correlation with mortality.",
         title="Help text for cluster distribution bar plots",
         paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Determinant geo Header (upper-center panel, Page 2)
+  output$textDeterminantsGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="Geographic distribution of selected determinant across selected state",
+        paste0("Distribution of '",input$determinant_choice, "' for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
       ),
       NULL
     )
