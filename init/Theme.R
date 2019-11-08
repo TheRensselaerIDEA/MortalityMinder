@@ -179,23 +179,27 @@ labs.geo.cluster <- function(state.choice) {
   )
 }
 
+# geoTitle <- function(state.choice, death.cause) {
+#   return (tags$div(title="This map visualizes the counties 
+# within the selected state and 
+# divides them into three clusters 
+# of counties that have similar 
+# rates of premature deaths. The 
+# Low cluster is the grouping of 
+# counties that have relatively lower 
+# deaths compared to the rest of the 
+# state. The Medium cluster is the 
+# grouping of counties that have average 
+# premature deaths compared to the 
+# rest of the state. The High cluster 
+# is the grouping of counties that 
+# have relatively higher deaths compared 
+# to the rest of the state.",
+#     HTML(paste0(state.choice, "Trend Cluster<br/>Geo Distribution", sep = " ")),icon("info-circle")))
+# }
+
 geoTitle <- function(state.choice, death.cause) {
-  return (tags$div(title="This map visualizes the counties 
-within the selected state and 
-divides them into three clusters 
-of counties that have similar 
-rates of premature deaths. The 
-Low cluster is the grouping of 
-counties that have relatively lower 
-deaths compared to the rest of the 
-state. The Medium cluster is the 
-grouping of counties that have average 
-premature deaths compared to the 
-rest of the state. The High cluster 
-is the grouping of counties that 
-have relatively higher deaths compared 
-to the rest of the state.",
-    HTML(paste0(state.choice, "Trend Cluster<br/>Geo Distribution", sep = " ")),icon("info-circle")))
+  return (tags$div())
 }
 
 # draw.geo.cluster: Used in app.R to draw state and US maps
@@ -415,26 +419,34 @@ draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
   
 }
 
+# get_title <- function(state.choice, death.cause, period) {
+#   return (tags$div(title="This map is a visualization of each
+# of the individual counties within
+# the selected state. Lighter colors
+# indicate lower premature deaths, 
+# darker colors are higher. The key 
+# for each of the colors appears beneath 
+# the map of the state. The desired time 
+# range can be selected beneath the key.",
+#     HTML(paste(state.choice, " - Death of", death.cause, "Rate", period)),icon("info-circle")))
+# }
+
 get_title <- function(state.choice, death.cause, period) {
-  return (tags$div(title="This map is a visualization of each
-of the individual counties within
-the selected state. Lighter colors
-indicate lower premature deaths, 
-darker colors are higher. The key 
-for each of the colors appears beneath 
-the map of the state. The desired time 
-range can be selected beneath the key.",
-    HTML(paste(state.choice, " - Death of", death.cause, "Rate", period)),icon("info-circle")))
+  return (tags$div())
 }
 
+# get_sd_title <- function(state.choice, sd.choice, period) {
+#   return (tags$div(title="This map is a visualization of each
+# of the individual counties within
+# the selected state. Lighter colors
+# indicate lower values for the selected
+# determinant, darker colors are higher. 
+# Values for 2015-2017 are shown",
+#                    HTML(paste(state.choice, " - ", sd.choice, "Rate", period)),icon("info-circle")))
+# }
+
 get_sd_title <- function(state.choice, sd.choice, period) {
-  return (tags$div(title="This map is a visualization of each
-of the individual counties within
-the selected state. Lighter colors
-indicate lower values for the selected
-determinant, darker colors are higher. 
-Values for 2015-2017 are shown",
-                   HTML(paste(state.choice, " - ", sd.choice, "Rate", period)),icon("info-circle")))
+  return (tags$div())
 }
 
 getLatLong <- function(state.choice, dataset) {
