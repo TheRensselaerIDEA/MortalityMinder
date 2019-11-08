@@ -270,7 +270,7 @@ ui <- fluidPage(
                                         ), # End of Style block
                               tags$div(
                                 class="col1_top_right_title",
-                                uiOutput("textMortRateGeo")
+                                uiOutput("textMortRates")
                                       ), # End of title div container
                               radioButtons("year_selector", 
                                            label = "Click on time period to select state map for that period",
@@ -311,6 +311,7 @@ ui <- fluidPage(
                 class = "col2_title",
                 uiOutput("textDeterminants")
                       ), # End of title container
+
               tags$div(
                 class = "col2_plot",
                 plotOutput("page1.bar.cor1",width="90%",height="100%", 
@@ -391,7 +392,7 @@ ui <- fluidPage(
               class = "col1_bot",
               tags$div(
                 class = "col1_bot_title",
-                uiOutput("textDeterminantsGeo")
+                uiOutput("textSDGeo")
               ),
               leafletOutput("determinants_plot5")
             )
@@ -1584,51 +1585,45 @@ server <- function(input, output, session) {
     )
   })
 
-  # Cluster Geo Header (Page 2 lower left)
-  output$textClusterGeo <- renderUI({
+  # Mortality Rates Header (Page 2 lower middle)
+  output$textMortRates <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
       tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
-        title="This map visualizes the counties 
-within the selected state and 
-divides them into three clusters 
-of counties that have similar 
-rates of premature deaths. The 
-Low cluster is the grouping of 
-counties that have relatively lower 
-deaths compared to the rest of the 
-state. The Medium cluster is the 
-grouping of counties that have average 
-premature deaths compared to the 
-rest of the state. The High cluster 
-is the grouping of counties that 
-have relatively higher deaths compared 
-to the rest of the state.",
-        paste0(names(which(cause.list == input$death_cause)), " Cluster Distribution for ", names(which(state.list == input$state_choice))), 
+        title="This plot represents the distribution of mortality rates for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Mortality rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
         icon("info-circle")
       ),
       NULL
     )
   })
 
-  # Mort Rate geo Header (Page 2 lower left)
-  output$textMortRateGeo <- renderUI({
+  # Cluster geo Header (Page 2 lower middle)
+  output$textClusterGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
       tags$h4(
-        style = "padding-right: 10px; padding-left: 10px",
-        title="This map is a visualization of each
-of the individual counties within
-the selected state. Lighter colors
-indicate lower premature deaths, 
-darker colors are higher. The key 
-for each of the colors appears beneath 
-the map of the state. The desired time 
-range can be selected beneath the key.",
-        paste0(names(which(cause.list == input$death_cause)), " Rates for ", names(which(state.list == input$state_choice)), " for ",input$year_selector), 
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This plot represents the geographic distribution of clusters for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Clusters for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Cluster geo Header (Page 2 lower middle)
+  output$textSDGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This plot represents the geographic distribution of the selected determinant for the selected state.",
+        paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
       NULL
