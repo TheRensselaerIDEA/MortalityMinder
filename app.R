@@ -276,6 +276,10 @@ ui <- fluidPage(
                   "
                 )),
                 class = "col1_top_right",
+                tags$div(
+                  class="col1_top_right_title",
+                  uiOutput("textMortRates")
+                ),
                 leafletOutput("geo_mort_change2",width="100%",height="85%"), 
                 radioButtons("year_selector", 
                              label = "Select years:",
@@ -291,7 +295,13 @@ ui <- fluidPage(
             tags$div(
               class = "col1_bot",
               tags$div(
-                class = "col1_bot_left",leafletOutput("geo_cluster_kmean",width="100%",height="90%")
+                class = "col1_bot_left",
+                tags$div(
+                  class="col1_bot_left_title",
+                  uiOutput("textClusterGeo")
+                ),
+                
+                leafletOutput("geo_cluster_kmean",width="100%",height="90%")
               ),
               tags$div(
                 class = "col1_bot_right", 
@@ -388,8 +398,11 @@ ui <- fluidPage(
             ),
             tags$div(
               class = "col1_bot",
-              leafletOutput("determinants_plot5"),
-              tags$h5(tags$i("Social determinant geo-distribution"))
+              tags$div(
+                class = "col1_bot_title",
+                uiOutput("textSDGeo")
+              ),
+              leafletOutput("determinants_plot5")
             )
           )
         )
@@ -1569,11 +1582,56 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h4(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average premature death trends for each cluster.",
         paste0(names(which(cause.list == input$death_cause)), " trends for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Mortality Rates Header (Page 2 lower middle)
+  output$textMortRates <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This plot represents the distribution of mortality rates for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Mortality rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Cluster geo Header (Page 2 lower middle)
+  output$textClusterGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This plot represents the geographic distribution of clusters for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Clusters for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Cluster geo Header (Page 2 lower middle)
+  output$textSDGeo <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h4(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="This plot represents the geographic distribution of the selected determinant for the selected state.",
+        paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
       ),
       NULL
     )
