@@ -2005,7 +2005,17 @@ the highest absolute correlation with mortality.",
     
     county_indices <- which(state_map@data$NAME %in% c(county_name))
     
-    if (length(county_indices) == 1){
+    if (length(county_indices) == 0){
+      for (current_polygons in state_map@polygons){
+        for (current_polygon in current_polygons@Polygons){
+          current_coords <- current_polygon@coords
+          if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
+            polygon = current_polygons
+            break
+          }
+        }
+      }
+    }else if (length(county_indices) == 1){
       polygon <- state_map@polygons[[county_indices[[1]]]]
     } else {
       for (index in county_indices){
