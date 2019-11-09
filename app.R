@@ -104,8 +104,8 @@ ui <- fluidPage(
           uiOutput("national_map"),
           column(3, 
                   class="page1_col page1_col1", 
-                  tags$h2("Since 2010, mortality rates in the United States have steadily increased year over year."),
-                  "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
+                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
+                  "MortalityMinder analyzes trends of premature death in the United States which are caused by:\n",tags$br(),
                     tags$ul(
                       tags$li("Deaths of Despair"),
                       tags$li("Cardiovascular Disease"),
@@ -189,7 +189,7 @@ ui <- fluidPage(
                   ), # End of Middle inner Column
                   column(6,
                          class = "page1_col page1_col2_middle_right",
-                         tags$h2("Mortality Trend Plot"),
+                         tags$h3("Mortality Trend Plot"),
                          tags$div(
                            style="position:relative;width: 100%;left: 0",
                            tags$img(
@@ -402,10 +402,10 @@ ui <- fluidPage(
               class = "page3_col3_top",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
-              tags$h4(textOutput("determinant_text")),
+              tags$p(textOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
-              tags$h4(uiOutput("determinant_link"))
+              tags$p(uiOutput("determinant_link"))
                     ), # End of Column 3 top
             fluidRow(
               class = "page3_col3_bot",
@@ -427,14 +427,14 @@ ui <- fluidPage(
         ),
           fluidRow(
                   class = "page page4",
-                   column(3, tags$h3("Project Overview",align="center"), tags$br(), #offset=1,
+                   column(3, tags$h2("Project Overview",align="center"), tags$br(), #offset=1,
                           fluidRow(
                             column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
                                    has stagnated and even declined, reversing for the US the trend toward increased life
                                    expectancy that is still continuing in most nations. The goal of this project is 
                                    to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
                                    and identify their associated community level social determinants.", offset=1), # Close column,
-                            column(11, tags$h3("AHRQ Contest Synopsis",align="center"), tags$br(),
+                            column(11, tags$h2("AHRQ Contest Synopsis",align="center"), tags$br(),
                                    "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
                                    seeks tools that support visualizing such data clusters to enhance the research and analysis 
                                    of community-level health services.", tags$br(),
@@ -451,7 +451,7 @@ ui <- fluidPage(
                                      ), offset=1) # Close column
                                    ) # Close inner fluidRow
                             ), # Close outter column
-                   column(3, tags$h3("Methodology",align="center"), tags$br(),  offset=1,
+                   column(3, tags$h2("Methodology",align="center"), tags$br(),  offset=1,
                           fluidRow(
                             column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
                                    It looks at premature deaths, that is deaths in adults from 15 to 64 
@@ -485,7 +485,7 @@ ui <- fluidPage(
                    )
                           ), # Close column
                    column(3, 
-                          tags$h3("Additional Resources",align="center"), tags$br(), offset=1,
+                          tags$h2("Additional Resources",align="center"), tags$br(), offset=1,
                           "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
                           of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
                           Institute. Retrieved from ", tags$br(),
@@ -502,12 +502,12 @@ ui <- fluidPage(
                           tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
                           tags$br(),
                           
-                          tags$h3("Download Data",align="center"), tags$br(),
+                          tags$h2("Download Data",align="center"), tags$br(),
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
                           downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
                           tags$br(),
-                          tags$h3("Download Current Results",align="center"), tags$br(),
+                          tags$h2("Download Current Results",align="center"), tags$br(),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
@@ -1590,7 +1590,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average premature death trends for each cluster.",
         paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
@@ -1605,7 +1605,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the distribution of mortality rates for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Mortality rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
@@ -1620,7 +1620,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Clusters for ", names(which(state.list == input$state_choice))), 
@@ -1635,7 +1635,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of the selected determinant for the selected state.",
         paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
@@ -1670,7 +1670,7 @@ the highest absolute correlation with mortality.",
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h2(
         style = "padding-right: 20px; padding-left: 20px",
         title="Help text for cluster distribution bar plots",
         paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), 
