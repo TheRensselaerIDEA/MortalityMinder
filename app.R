@@ -32,6 +32,9 @@ n.clusters.nation = 6
 jscode <- "shinyjs.nextpage = function(){$('.fp-next').click();}"
 
 ui <- fluidPage(
+
+##################### CSS Imports #####################  
+
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
   tags$head(includeCSS("custom_no_scroll.css")),
@@ -43,13 +46,13 @@ ui <- fluidPage(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
   
-  # navbar
+##################### NAV BAR #####################
   tags$div(
     class = "navbar",
     tags$div(
       class = "title",
       h1("MortalityMinder")
-    ),
+            ),
     
     tags$div(
       class = "prompt_text",
@@ -100,7 +103,7 @@ ui <- fluidPage(
           class = "page2", # National Map Page
           uiOutput("national_map"),
           column(3, 
-                  class="page2_col1", 
+                  #class="page2_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -126,14 +129,20 @@ ui <- fluidPage(
                   class = "page2_col2_top",
                   tags$div(
                     class = "National_title",
-                    style = "padding-right: 20px; padding-left: 20px",
+                    style = "padding-left: 20px",
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing"),
                     tags$h5(tags$i("Click on time period to select national map for that period"))
-                    ),
+                    )
+                  ), # End of inner FluidRow (Column 2 top)
+                tags$hr(),
+                fluidRow(
+                  column(6,
+                  #class = "page2_col2_middle",
+                  #style = "padding-left: 20px; height=50%",
                   tags$div(
                     class = "explore_but",
-                    style = "padding-right: 20px; padding-left: 20px; text-align: center;",
+                    style = "text-align: center;",
                     tags$ul(
                       class = "ul_period",
                       tags$button(
@@ -145,36 +154,31 @@ ui <- fluidPage(
                         id = "second_period",
                         class = "period_text",
                         "2003-2005"
-                        ),
+                      ),
                       tags$button(
                         id = "third_period",
                         class = "period_text",
                         "2006-2008"
-                        ),
+                      ),
                       tags$button(
                         id = "forth_period",
                         class = "period_text",
                         "2009-2011"
-                        ),
+                      ),
                       tags$button(
                         id = "fifth_period",
                         class = "period_text",
                         "2012-2014"
-                        ),
+                      ),
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
                         "2015-2017"
-                        )
-                      ) # End List of buttons
-                    ) # End Button Functionality
-                  ), # End of inner FluidRow (Column 2 top)
-                tags$hr(),
-                fluidRow(
-                  class = "page2_col2_middle",
-                  style = "padding-right: 20px; padding-left: 20px; height=50%",
+                      )
+                    ) # End List of buttons
+                  ), # End Button Functionality
                   tags$div(class="NationalMapContainer",
-                           style="position:relative;width: 90%;left: 10%",
+                           style="position:relative;width: 100%;left: 0",
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
@@ -183,10 +187,21 @@ ui <- fluidPage(
                     style = "bottom: 0; left:0;"
                     )
                   ) # End of Image DIV container
+                  ), # End of Middle inner Column
+                  column(6,
+                         tags$h2("Mortality Trend Plot"),
+                         tags$div(
+                           style="position:relative;width: 100%;left: 0",
+                           tags$img(
+                             style="width: 100%",
+                             src="temp_chart.png"
+                             )
+                         )
+                         )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page2_col2_bottom",
-                  style = "padding-right: 20px; padding-left: 20px",
+                  style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
                   ) # Close inner FluidRow (Column 2 Bottom)
@@ -512,9 +527,9 @@ ui <- fluidPage(
   includeScript(path = "myscript.js")
   )
 
-#------------------
 
-#-----------------
+
+##################### Server Code #####################
 
 server <- function(input, output, session) {
   county_choice <- reactiveVal()
