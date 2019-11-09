@@ -2,8 +2,33 @@
 
 .col_fonts body, p, li {
  font-family: 'Work Sans', sans-serif;
+ font-size: 18px;
 }
 
 .col_fonts h1, h2, h3, h4, h5, h6 {
  font-family: 'Crimson Text', serif;
+}
+
+.col_fonts h1{
+ font-size: 48px;
+}
+
+.col_fonts h2{
+ font-size: 36px;
+}
+
+.col_fonts h3{
+ font-size: 24px;
+}
+
+.col_fonts h4{
+ font-size: 18px;
+}
+
+.col_fonts h5{
+ font-size: 16px;
+}
+
+.col_fonts h6{
+ font-size: 15px;
 }

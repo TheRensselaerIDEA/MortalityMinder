@@ -97,7 +97,7 @@ ui <- fluidPage(
         # Each page is a row, of columns, of rows, etc.
         
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page2", # National Map Page
+          class = "page page2", # National Map Page
           uiOutput("national_map"),
           column(3, 
                   class="page2_col1", 
@@ -202,7 +202,7 @@ ui <- fluidPage(
           class = "nav_bar_blank"
         ),
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page1",
+          class = "page page1",
             column(8,
                    class="col1",
                    fluidRow(style = "height:425px; max-height: 110vh; overflow-y: auto;",
@@ -331,7 +331,7 @@ ui <- fluidPage(
           class = "nav_bar_blank"
         ),
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page3",
+          class = "page page3",
           column(3,
             class = "page3_col1",
             tags$div(
@@ -413,7 +413,7 @@ ui <- fluidPage(
           class = "nav_bar_blank"
         ),
         tags$div(
-          class = "page4",
+          class = "page page4",
           fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
                    column(3, tags$h3("Project Overview",align="center"), tags$br(), #offset=1,
                           fluidRow(

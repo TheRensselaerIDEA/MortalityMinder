@@ -199,12 +199,14 @@
   display:block;
 }
 
-.page1 {
+.page {
   width:100%;
   height:calc(100% - 50px);
   float:left;
   display:block;
 }
+
+.page1 {}
 
 .col1 {
   width:50%;
@@ -290,12 +292,8 @@
   height:100vh;
 }
 
-.page2 {
-  width:100%;
-  height:calc(100% - 50px);
-  float:left;
-  display:block;
-}
+
+.page2 {}
 
 .page2_col1 {
   width:25%;
@@ -387,12 +385,7 @@
   
 }
 
-.page3 {
-  width:100%;
-  height:calc(100% - 50px);
-  float:left;
-  display:block;
-}
+.page3 {}
 
 .page3_col1 {
   width:calc(100% / 3);
@@ -442,12 +435,7 @@
   border:2px dashed black;
 }
 
-.page4 {
-  width:100%;
-  height:calc(100% - 50px);
-  float:left;
-  display:block;
-}
+.page4 {}
 
 .page4 p {
   width:90%;
