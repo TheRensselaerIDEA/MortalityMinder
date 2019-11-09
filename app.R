@@ -337,31 +337,36 @@ ui <- fluidPage(
             tags$div(
               class = "col1_title",
               uiOutput("textDeterminants2")
-            ),
+                    ), # End title div container
             plotOutput("determinants_plot1", height = "85%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
-          ),
+                ), # End Column 1
+          
           tags$div(
             class = "vl"
-          ),
+                  ),
           column(3,
             class = "page3_col2",
             
-            tags$div(
+            fluidRow(
               class = "page3_col2_top",
               plotOutput("determinants_plot2",width="100%",height="85%")
-            ),
+                    ), #End of Column 2 Top
+            
             tags$div(class = "hr"),
-            tags$div(
+            
+            fluidRow(
               class = "page3_col2_bot",
               style = "position: relative",
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%", click = clickOpts("determinants_plot3_click"))
-            )
-          ),
+                    ) # End of Column 2 Bottom
+                ), # End of Column 2
+          
           tags$div(
             class = "vl"
-          ),
+                  ),
+          
           column(3,
             class = "page3_col3",
             tags$div(
@@ -376,30 +381,30 @@ ui <- fluidPage(
                 options = list(
                   `live-search` = TRUE,
                   "dropup-auto" = TRUE
-                )
-              )
-            ),
-            tags$div(
-              style = "padding: 20px; height: 50%",
+                              ) # End of Options
+                          ) # End of pickerInput
+                    ), # End of pickerInput container
+            
+            fluidRow(
+              style = "padding: 20px; height: 50%; margin-right: 20px;",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
               tags$h4(uiOutput("determinant_link"))
-            ),
-            tags$div(
+                    ), # End of Column 3 top
+            fluidRow(
               class = "col1_bot",
               tags$div(
                 class = "col1_bot_title",
                 uiOutput("textSDGeo")
-              ),
+                      ),
               leafletOutput("determinants_plot5")
-            )
-          )
-        )
-        
-      ),
+                    ) # End of inner Column 3 bottom
+                ) # End of Column 3
+                ) # End of Fluid Row
+      ), # End of Page 3
 ##################### PAGE 4, ABOUT PAGE #####################
 
       tags$div(
