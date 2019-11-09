@@ -215,14 +215,15 @@
   overflow-y: auto;
 }
 
-.col {
+
+.page1 {}
+
+.page1_col {
   width:50%;
   height:100%;
   float:left;
   display:block;
 }
-
-.page1 {}
 
 .col1 {
   width:60%;
