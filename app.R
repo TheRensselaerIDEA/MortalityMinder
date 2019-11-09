@@ -32,6 +32,9 @@ n.clusters.nation = 6
 jscode <- "shinyjs.nextpage = function(){$('.fp-next').click();}"
 
 ui <- fluidPage(
+
+##################### CSS Imports #####################  
+
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
   tags$head(includeCSS("custom_no_scroll.css")),
@@ -43,13 +46,13 @@ ui <- fluidPage(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
   
-  # navbar
+##################### NAV BAR #####################
   tags$div(
     class = "navbar",
     tags$div(
       class = "title",
       h1("MortalityMinder")
-    ),
+            ),
     
     tags$div(
       class = "prompt_text",
@@ -100,7 +103,7 @@ ui <- fluidPage(
           class = "page2", # National Map Page
           uiOutput("national_map"),
           column(3, 
-                  class="page2_col1", 
+                  #class="page2_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -126,14 +129,20 @@ ui <- fluidPage(
                   class = "page2_col2_top",
                   tags$div(
                     class = "National_title",
-                    style = "padding-right: 20px; padding-left: 20px",
+                    style = "padding-left: 20px",
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing"),
                     tags$h5(tags$i("Click on time period to select national map for that period"))
-                    ),
+                    )
+                  ), # End of inner FluidRow (Column 2 top)
+                tags$hr(),
+                fluidRow(
+                  column(6,
+                  #class = "page2_col2_middle",
+                  #style = "padding-left: 20px; height=50%",
                   tags$div(
                     class = "explore_but",
-                    style = "padding-right: 20px; padding-left: 20px; text-align: center;",
+                    style = "text-align: center;",
                     tags$ul(
                       class = "ul_period",
                       tags$button(
@@ -145,36 +154,31 @@ ui <- fluidPage(
                         id = "second_period",
                         class = "period_text",
                         "2003-2005"
-                        ),
+                      ),
                       tags$button(
                         id = "third_period",
                         class = "period_text",
                         "2006-2008"
-                        ),
+                      ),
                       tags$button(
                         id = "forth_period",
                         class = "period_text",
                         "2009-2011"
-                        ),
+                      ),
                       tags$button(
                         id = "fifth_period",
                         class = "period_text",
                         "2012-2014"
-                        ),
+                      ),
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
                         "2015-2017"
-                        )
-                      ) # End List of buttons
-                    ) # End Button Functionality
-                  ), # End of inner FluidRow (Column 2 top)
-                tags$hr(),
-                fluidRow(
-                  class = "page2_col2_middle",
-                  style = "padding-right: 20px; padding-left: 20px; height=50%",
+                      )
+                    ) # End List of buttons
+                  ), # End Button Functionality
                   tags$div(class="NationalMapContainer",
-                           style="position:relative;width: 90%;left: 10%",
+                           style="position:relative;width: 100%;left: 0",
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
@@ -183,10 +187,21 @@ ui <- fluidPage(
                     style = "bottom: 0; left:0;"
                     )
                   ) # End of Image DIV container
+                  ), # End of Middle inner Column
+                  column(6,
+                         tags$h2("Mortality Trend Plot"),
+                         tags$div(
+                           style="position:relative;width: 100%;left: 0",
+                           tags$img(
+                             style="width: 100%",
+                             src="temp_chart.png"
+                             )
+                         )
+                         )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page2_col2_bottom",
-                  style = "padding-right: 20px; padding-left: 20px",
+                  style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
                   ) # Close inner FluidRow (Column 2 Bottom)
@@ -324,46 +339,50 @@ ui <- fluidPage(
       ), # End of slide div tag
 
 ##################### PAGE 3, INDIVIDUAL DETERMINANT ANALYSIS #####################
-
+      
       tags$div(
         class = "slide",
         tags$div(
           class = "nav_bar_blank"
         ),
-        tags$div(
+        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page3",
-          tags$div(
+          column(3,
             class = "page3_col1",
             tags$div(
               class = "col1_title",
               uiOutput("textDeterminants2")
-            ),
+                    ), # End title div container
             plotOutput("determinants_plot1", height = "85%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
-          ),
+                ), # End Column 1
+          
           tags$div(
             class = "vl"
-          ),
-          tags$div(
+                  ),
+          column(3,
             class = "page3_col2",
             
-            tags$div(
+            fluidRow(
               class = "page3_col2_top",
               plotOutput("determinants_plot2",width="100%",height="85%")
-            ),
+                    ), #End of Column 2 Top
+            
             tags$div(class = "hr"),
-            tags$div(
+            
+            fluidRow(
               class = "page3_col2_bot",
               style = "position: relative",
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%",
                          click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
-            )
-          ),
+            ) # End of Column 2 Bottom
+          ), # End of Column 2
           tags$div(
             class = "vl"
-          ),
-          tags$div(
+                  ),
+          
+          column(3,
             class = "page3_col3",
             tags$div(
               style = "padding-top: 10px;",
@@ -377,30 +396,30 @@ ui <- fluidPage(
                 options = list(
                   `live-search` = TRUE,
                   "dropup-auto" = TRUE
-                )
-              )
-            ),
-            tags$div(
-              style = "padding: 20px; height: 50%",
+                              ) # End of Options
+                          ) # End of pickerInput
+                    ), # End of pickerInput container
+            
+            fluidRow(
+              style = "padding: 20px; height: 50%; margin-right: 20px;",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
               tags$h4(uiOutput("determinant_link"))
-            ),
-            tags$div(
+                    ), # End of Column 3 top
+            fluidRow(
               class = "col1_bot",
               tags$div(
                 class = "col1_bot_title",
                 uiOutput("textSDGeo")
-              ),
+                      ),
               leafletOutput("determinants_plot5")
-            )
-          )
-        )
-        
-      ),
+                    ) # End of inner Column 3 bottom
+                ) # End of Column 3
+                ) # End of Fluid Row
+      ), # End of Page 3
 ##################### PAGE 4, ABOUT PAGE #####################
 
       tags$div(
@@ -508,9 +527,9 @@ ui <- fluidPage(
   includeScript(path = "myscript.js")
   )
 
-#------------------
 
-#-----------------
+
+##################### Server Code #####################
 
 server <- function(input, output, session) {
   county_choice <- reactiveVal()
