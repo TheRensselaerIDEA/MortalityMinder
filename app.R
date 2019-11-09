@@ -332,7 +332,7 @@ ui <- fluidPage(
         ),
         fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page3",
-          tags$div(
+          column(3,
             class = "page3_col1",
             tags$div(
               class = "col1_title",
@@ -344,7 +344,7 @@ ui <- fluidPage(
           tags$div(
             class = "vl"
           ),
-          tags$div(
+          column(3,
             class = "page3_col2",
             
             tags$div(
@@ -362,7 +362,7 @@ ui <- fluidPage(
           tags$div(
             class = "vl"
           ),
-          tags$div(
+          column(3,
             class = "page3_col3",
             tags$div(
               style = "padding-top: 10px;",
