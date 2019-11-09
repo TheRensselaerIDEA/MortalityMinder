@@ -324,13 +324,13 @@ ui <- fluidPage(
       ), # End of slide div tag
 
 ##################### PAGE 3, INDIVIDUAL DETERMINANT ANALYSIS #####################
-
+      
       tags$div(
         class = "slide",
         tags$div(
           class = "nav_bar_blank"
         ),
-        tags$div(
+        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
           class = "page3",
           tags$div(
             class = "page3_col1",
