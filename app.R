@@ -129,14 +129,20 @@ ui <- fluidPage(
                   class = "page2_col2_top",
                   tags$div(
                     class = "National_title",
-                    style = "padding-right: 20px; padding-left: 20px",
+                    style = "padding-left: 20px",
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing"),
                     tags$h5(tags$i("Click on time period to select national map for that period"))
-                    ),
+                    )
+                  ), # End of inner FluidRow (Column 2 top)
+                tags$hr(),
+                fluidRow(
+                  column(6,
+                  #class = "page2_col2_middle",
+                  #style = "padding-left: 20px; height=50%",
                   tags$div(
                     class = "explore_but",
-                    style = "padding-right: 20px; padding-left: 20px; text-align: center;",
+                    style = "text-align: center;",
                     tags$ul(
                       class = "ul_period",
                       tags$button(
@@ -148,35 +154,29 @@ ui <- fluidPage(
                         id = "second_period",
                         class = "period_text",
                         "2003-2005"
-                        ),
+                      ),
                       tags$button(
                         id = "third_period",
                         class = "period_text",
                         "2006-2008"
-                        ),
+                      ),
                       tags$button(
                         id = "forth_period",
                         class = "period_text",
                         "2009-2011"
-                        ),
+                      ),
                       tags$button(
                         id = "fifth_period",
                         class = "period_text",
                         "2012-2014"
-                        ),
+                      ),
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
                         "2015-2017"
-                        )
-                      ) # End List of buttons
-                    ) # End Button Functionality
-                  ), # End of inner FluidRow (Column 2 top)
-                tags$hr(),
-                fluidRow(
-                  column(5,
-                  #class = "page2_col2_middle",
-                  style = "padding-right: 20px; padding-left: 20px; height=50%",
+                      )
+                    ) # End List of buttons
+                  ), # End Button Functionality
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 100%;left: 0",
                   tags$img(
@@ -188,13 +188,20 @@ ui <- fluidPage(
                     )
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
-                  column(5,
-                         tags$h1("Insert content here")
+                  column(6,
+                         tags$h1("Insert content here please"),
+                         tags$div(
+                           style="position:relative;width: 100%;left: 0",
+                           tags$img(
+                             style="width: 100%",
+                             src="us_map.png"
+                             )
+                         )
                          )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page2_col2_bottom",
-                  style = "padding-right: 20px; padding-left: 20px",
+                  style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
                   ) # Close inner FluidRow (Column 2 Bottom)
