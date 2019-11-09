@@ -101,7 +101,7 @@ ui <- fluidPage(
           uiOutput("national_map"),
           column(3, 
                   class="page2_col1", 
-                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
+                  tags$h2("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
                       tags$li("Deaths of Despair"),
@@ -172,7 +172,6 @@ ui <- fluidPage(
                 tags$hr(),
                 fluidRow(
                   class = "page2_col2_middle",
-                  style = "padding-right: 20px; padding-left: 20px; height=50%",
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 90%;left: 10%",
                   tags$img(
@@ -356,7 +355,6 @@ ui <- fluidPage(
             
             fluidRow(
               class = "page3_col2_bot",
-              style = "position: relative",
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%", click = clickOpts("determinants_plot3_click"))
                     ) # End of Column 2 Bottom
@@ -385,7 +383,7 @@ ui <- fluidPage(
                     ), # End of pickerInput container
             
             fluidRow(
-              style = "padding: 20px; height: 50%; margin-right: 20px;",
+              class = "page3_col3_top",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$h4(textOutput("determinant_text")),
@@ -394,7 +392,7 @@ ui <- fluidPage(
               tags$h4(uiOutput("determinant_link"))
                     ), # End of Column 3 top
             fluidRow(
-              class = "col1_bot",
+              class = "page3_col3_bot",
               tags$div(
                 class = "col1_bot_title",
                 uiOutput("textSDGeo")
