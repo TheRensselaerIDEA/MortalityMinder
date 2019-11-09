@@ -103,7 +103,7 @@ ui <- fluidPage(
           class = "page page2", # National Map Page
           uiOutput("national_map"),
           column(3, 
-                  class="page2_col1", 
+                  class="page2_col page2_col1", 
                   tags$h2("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -126,7 +126,7 @@ ui <- fluidPage(
           ),
           column(8,
                 fluidRow(
-                  class = "page2_col2_top",
+                  class = "page2_col page2_col2_top",
                   tags$div(
                     class = "National_title",
                     style = "padding-left: 20px",
@@ -138,8 +138,7 @@ ui <- fluidPage(
                 tags$hr(),
                 fluidRow(
                   column(6,
-                  #class = "page2_col2_middle",
-                  #style = "padding-left: 20px; height=50%",
+                  class = "page2_col page2_col2_middle_left",
                   tags$div(
                     class = "explore_but",
                     style = "text-align: center;",
@@ -189,6 +188,7 @@ ui <- fluidPage(
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
                   column(6,
+                         class = "page2_col page2_col2_middle_right",
                          tags$h2("Mortality Trend Plot"),
                          tags$div(
                            style="position:relative;width: 100%;left: 0",
@@ -200,7 +200,7 @@ ui <- fluidPage(
                          )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
-                  class = "page2_col2_bottom",
+                  class = "page2_col page2_col2_bottom",
                   style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
