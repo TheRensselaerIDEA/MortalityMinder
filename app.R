@@ -100,10 +100,10 @@ ui <- fluidPage(
         # Each page is a row, of columns, of rows, etc.
         
         fluidRow(
-          class = "page page2", # National Map Page
+          class = "page page1", # National Map Page
           uiOutput("national_map"),
           column(3, 
-                  class="page2_col page2_col1", 
+                  class="page1_col page1_col1", 
                   tags$h2("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -126,7 +126,7 @@ ui <- fluidPage(
           ),
           column(8,
                 fluidRow(
-                  class = "page2_col page2_col2_top",
+                  class = "page1_col page1_col2_top",
                   tags$div(
                     class = "National_title",
                     style = "padding-left: 20px",
@@ -138,7 +138,7 @@ ui <- fluidPage(
                 tags$hr(),
                 fluidRow(
                   column(6,
-                  class = "page2_col page2_col2_middle_left",
+                  class = "page1_col page1_col2_middle_left",
                   tags$div(
                     class = "explore_but",
                     style = "text-align: center;",
@@ -188,7 +188,7 @@ ui <- fluidPage(
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
                   column(6,
-                         class = "page2_col page2_col2_middle_right",
+                         class = "page1_col page1_col2_middle_right",
                          tags$h2("Mortality Trend Plot"),
                          tags$div(
                            style="position:relative;width: 100%;left: 0",
@@ -200,7 +200,7 @@ ui <- fluidPage(
                          )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
-                  class = "page2_col page2_col2_bottom",
+                  class = "page1_col page1_col2_bottom",
                   style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
@@ -217,13 +217,13 @@ ui <- fluidPage(
           class = "nav_bar_blank"
         ),
         fluidRow(
-          class = "page page1",
+          class = "page page2",
             column(7,
-                   class="page1_col page1_col1",
+                   class="page2_col page2_col1",
                    fluidRow(
-                     class="page1_col page1_col1_top",
+                     class="page2_col page2_col1_top",
                        column(5,
-                              class = "page1_col page1_col1_top_left",
+                              class = "page2_col page2_col1_top_left",
                               tags$div(
                                 title="The mortality rate used in the app is the number
                                       of people per 100,000 that died prematurely in a given 
@@ -236,7 +236,7 @@ ui <- fluidPage(
                               
                              ), # End of inner Column (Column 1 Top Left)
                        column(5,
-                              class = "page1_col page1_col1_top_right",
+                              class = "page2_col page2_col1_top_right",
                               tags$style(
                                       HTML(
                                       "
@@ -283,7 +283,7 @@ ui <- fluidPage(
                                           ) #End of HTML Block
                                         ), # End of Style block
                               tags$div(
-                                class="page1_col1_top_right_title",
+                                class="page2_col1_top_right_title",
                                 uiOutput("textMortRates")
                                       ), # End of title div container
                               radioButtons("year_selector", 
@@ -299,19 +299,19 @@ ui <- fluidPage(
                      class = "hr"
                            ),
                    fluidRow(
-                     class = "page1_col page1_col1_bot",
+                     class = "page2_col page2_col1_bot",
                          column(5,
-                           class = "page1_col page1_col1_bot_left",
+                           class = "page2_col page2_col1_bot_left",
                            tags$div(
-                             class="page1_col1_bot_left_title",
+                             class="page2_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
                              leafletOutput("geo_cluster_kmean",width="100%",height="80%")
                                ), # End of inner Column (Bottom Left)
                          column(5, 
-                           class = "page1_col page1_col1_bot_right", 
+                           class = "page2_col page2_col1_bot_right", 
                            tags$div(
-                             class="page1_col1_bot_right_title",
+                             class="page2_col1_bot_right_title",
                              uiOutput("textDeathTrends")
                                    ), # End of title div container
                              plotOutput("mort_line",width="100%",height="90%")
@@ -320,14 +320,14 @@ ui <- fluidPage(
                             ) #End of inner fluidRow (Column 1 Bottom)
                   ), # End of Column 1
             column(3,
-              class = "page1_col page1_col2",
+              class = "page2_col page2_col2",
               tags$div(
-                class = "page1_col2_title",
+                class = "page2_col2_title",
                 uiOutput("textDeterminants")
                       ), # End of title container
 
               tags$div(
-                class = "page1_col2_plot",
+                class = "page2_col2_plot",
                 plotOutput("page1.bar.cor1",width="90%",height="100%", 
                            hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
                            click = clickOpts("page1_bar_plot_click")),
@@ -429,7 +429,6 @@ ui <- fluidPage(
                   class = "page page4",
                    column(3, tags$h3("Project Overview",align="center"), tags$br(), #offset=1,
                           fluidRow(
-                            # tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
                             column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
                                    has stagnated and even declined, reversing for the US the trend toward increased life
                                    expectancy that is still continuing in most nations. The goal of this project is 

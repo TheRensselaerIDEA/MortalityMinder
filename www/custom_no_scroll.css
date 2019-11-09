@@ -216,30 +216,30 @@
 }
 
 
-.page1 {}
+.page2 {}
 
-.page1_col {
+.page2_col {
   width:50%;
   height:100%;
   float:left;
   display:block;
 }
 
-.page1_col1 {
+.page2_col1 {
   width:60%;
 }
 
-.page1_col1_top {
+.page2_col1_top {
   width:100%;
   height:60%;
   overflow-y: auto;
 }
 
-.page1_col1_top_left {}
+.page2_col1_top_left {}
 
-.page1_col1_top_right {}
+.page2_col1_top_right {}
 
-.page1_col1_top_right_title{}
+.page2_col1_top_right_title{}
 
 .hr {
   width:100%;
@@ -250,26 +250,26 @@
   
 }
 
-.page1_col1_bot {
+.page2_col1_bot {
   width:100%;
   height:calc(50% - 1px);
 }
 
-.page1_col1_bot_left {}
+.page2_col1_bot_left {}
 
-.page1_col1_bot_left_title{}
+.page2_col1_bot_left_title{}
 
-.page1_col1_bot_right {}
+.page2_col1_bot_right {}
 
-.page1_col1_bot_right_title{}
+.page2_col1_bot_right_title{}
 
-.page1_col2 {
+.page2_col2 {
   width:40%;
 }
 
-.page1_col2_title {}
+.page2_col2_title {}
 
-.page1_col2_plot {
+.page2_col2_plot {
   width:100%;
   height:90%;
   float:left;
@@ -281,48 +281,49 @@
   height:100vh;
 }
 
+/****** THIS IS THE CUT OFF FOR PAGE2 ***********/
 
-.page2 {}
+.page1 {}
 
-.page2_col{
+.page1_col{
   height:100%;
   float:left;
   display:block;
 }
 
-.page2_col1 {
+.page1_col1 {
   width:25%;
   overflow-y:scroll;
 }
 
-.page2_col2 {}
+.page1_col2 {}
 
-.page2_col2_top{
+.page1_col2_top{
   width:100%;
   height:15%;
 }
 
-.page2_text {
+.page1_text {
   width:45%;
   float:left;
   display:block;
 }
 
-.page2_col3_text_1{}
+.page1_col3_text_1{}
 
-.page2_col3_text_2{}
+.page1_col3_text_2{}
 
-.page2_col2_middle_left{}
+.page1_col2_middle_left{}
 
-.page2_col2_middle_right{}
+.page1_col2_middle_right{}
 
-.page2_col2_bottom{
+.page1_col2_bottom{
   width:100%;
   height:35%;
   position: relative;
 }
 
-.page2_col3 {
+.page1_col3 {
   width:20%;
 }
 
@@ -330,6 +331,7 @@
   
 }
 
+/********** THIS IS THE END OF PAGE 1 ***********/
 .page3 {}
 
 .page3_col {
@@ -377,17 +379,6 @@
 
 .page4 {}
 
-.page4 p {
-  width:90%;
-  height:90%;
-  margin:10px 5% 1px 5%;
-  padding:5px 5px;
-  /*font-size: 20px;*/
-  line-height: 1.07143;
-  font-weight: 200;
-  letter-spacing: -.005em;
-  /*font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;*/
-}
 
 /*----------------------------------------*/
 .fp-controlArrow.fp-prev {
