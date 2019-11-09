@@ -219,11 +219,11 @@ ui <- fluidPage(
         fluidRow(
           class = "page page1",
             column(7,
-                   class="page1_col col1",
+                   class="page1_col page1_col1",
                    fluidRow(
-                     class="page1_col col1_top",
+                     class="page1_col page1_col1_top",
                        column(5,
-                              class = "page1_col col1_top_left",
+                              class = "page1_col page1_col1_top_left",
                               tags$div(
                                 title="The mortality rate used in the app is the number
                                       of people per 100,000 that died prematurely in a given 
@@ -236,7 +236,7 @@ ui <- fluidPage(
                               
                              ), # End of inner Column (Column 1 Top Left)
                        column(5,
-                              class = "page1_col col1_top_right",
+                              class = "page1_col page1_col1_top_right",
                               tags$style(
                                       HTML(
                                       "
@@ -283,7 +283,7 @@ ui <- fluidPage(
                                           ) #End of HTML Block
                                         ), # End of Style block
                               tags$div(
-                                class="col1_top_right_title",
+                                class="page1_col1_top_right_title",
                                 uiOutput("textMortRates")
                                       ), # End of title div container
                               radioButtons("year_selector", 
@@ -299,19 +299,19 @@ ui <- fluidPage(
                      class = "hr"
                            ),
                    fluidRow(
-                     class = "page1_col col1_bot",
+                     class = "page1_col page1_col1_bot",
                          column(5,
-                           class = "page1_col col1_bot_left",
+                           class = "page1_col page1_col1_bot_left",
                            tags$div(
-                             class="col1_bot_left_title",
+                             class="page1_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
                              leafletOutput("geo_cluster_kmean",width="100%",height="80%")
                                ), # End of inner Column (Bottom Left)
                          column(5, 
-                           class = "page1_col col1_bot_right", 
+                           class = "page1_col page1_col1_bot_right", 
                            tags$div(
-                             class="col1_bot_right_title",
+                             class="page1_col1_bot_right_title",
                              uiOutput("textDeathTrends")
                                    ), # End of title div container
                              plotOutput("mort_line",width="100%",height="90%")
@@ -320,14 +320,14 @@ ui <- fluidPage(
                             ) #End of inner fluidRow (Column 1 Bottom)
                   ), # End of Column 1
             column(3,
-              class = "page1_col col2",
+              class = "page1_col page1_col2",
               tags$div(
-                class = "col2_title",
+                class = "page1_col2_title",
                 uiOutput("textDeterminants")
                       ), # End of title container
 
               tags$div(
-                class = "col2_plot",
+                class = "page1_col2_plot",
                 plotOutput("page1.bar.cor1",width="90%",height="100%", 
                            hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
                            click = clickOpts("page1_bar_plot_click")),
