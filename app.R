@@ -32,6 +32,9 @@ n.clusters.nation = 6
 jscode <- "shinyjs.nextpage = function(){$('.fp-next').click();}"
 
 ui <- fluidPage(
+
+##################### CSS Imports #####################  
+
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
   tags$head(includeCSS("custom_no_scroll.css")),
@@ -43,13 +46,13 @@ ui <- fluidPage(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
   
-  # navbar
+##################### NAV BAR #####################
   tags$div(
     class = "navbar",
     tags$div(
       class = "title",
       h1("MortalityMinder")
-    ),
+            ),
     
     tags$div(
       class = "prompt_text",
@@ -512,9 +515,9 @@ ui <- fluidPage(
   includeScript(path = "myscript.js")
   )
 
-#------------------
 
-#-----------------
+
+##################### Server Code #####################
 
 server <- function(input, output, session) {
   county_choice <- reactiveVal()
