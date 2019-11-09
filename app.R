@@ -189,12 +189,12 @@ ui <- fluidPage(
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
                   column(6,
-                         tags$h1("Insert content here please"),
+                         tags$h2("Mortality Trend Plot"),
                          tags$div(
                            style="position:relative;width: 100%;left: 0",
                            tags$img(
                              style="width: 100%",
-                             src="us_map.png"
+                             src="temp_chart.png"
                              )
                          )
                          )
