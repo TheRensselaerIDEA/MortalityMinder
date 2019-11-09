@@ -96,7 +96,7 @@ ui <- fluidPage(
         # Div tag functions as outter "shell" to pull from fullpage.css
         # Each page is a row, of columns, of rows, etc.
         
-        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
+        fluidRow(
           class = "page page2", # National Map Page
           uiOutput("national_map"),
           column(3, 
@@ -201,7 +201,7 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
+        fluidRow(
           class = "page page1",
             column(8,
                    class="col1",
@@ -330,7 +330,7 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
+        fluidRow(
           class = "page page3",
           column(3,
             class = "page3_col1",
@@ -412,9 +412,8 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        tags$div(
-          class = "page page4",
-          fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
+          fluidRow(
+                  class = "page page4",
                    column(3, tags$h3("Project Overview",align="center"), tags$br(), #offset=1,
                           fluidRow(
                             # tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
@@ -502,8 +501,7 @@ ui <- fluidPage(
                           downloadButton("downloadCorr", "Current Factor Correlations")
                    )
         )# Close outter fluidRow
-        ) # Close page 4 
-        )
+        ) # Close Page 4
       )
     ),
   tags$script(src = "jquery-ui.min.js"),

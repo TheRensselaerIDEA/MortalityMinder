@@ -204,6 +204,9 @@
   height:calc(100% - 50px);
   float:left;
   display:block;
+  max-height: 90vh;
+  margin-left: 25px; 
+  overflow-y: auto;
 }
 
 .page1 {}
