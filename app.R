@@ -203,13 +203,12 @@ ui <- fluidPage(
         ),
         fluidRow(
           class = "page page1",
-            column(8,
-                   class="col1",
-                   fluidRow(style = "height:425px; max-height: 110vh; overflow-y: auto;",
-                     class="col1_top",
+            column(7,
+                   class="col col1",
+                   fluidRow(
+                     class="col col1_top",
                        column(5,
-                              #class = "col1_top_left",
-                              #style = "padding-right: 20px; padding-left: 20px",
+                              class = "col col1_top_left",
                               tags$div(
                                 title="The mortality rate used in the app is the number
                                       of people per 100,000 that died prematurely in a given 
@@ -222,7 +221,7 @@ ui <- fluidPage(
                               
                              ), # End of inner Column (Column 1 Top Left)
                        column(5,
-                              class = "col1_top_right",
+                              class = "col col1_top_right",
                               tags$style(
                                       HTML(
                                       "
@@ -285,9 +284,9 @@ ui <- fluidPage(
                      class = "hr"
                            ),
                    fluidRow(
-                     class = "col1_bot",
+                     class = "col col1_bot",
                          column(5,
-                           class = "col1_bot_left",
+                           class = "col col1_bot_left",
                            tags$div(
                              class="col1_bot_left_title",
                              uiOutput("textClusterGeo")
@@ -295,7 +294,7 @@ ui <- fluidPage(
                              leafletOutput("geo_cluster_kmean",width="100%",height="80%")
                                ), # End of inner Column (Bottom Left)
                          column(5, 
-                           class = "col1_bot_right", 
+                           class = "col col1_bot_right", 
                            tags$div(
                              class="col1_bot_right_title",
                              uiOutput("textDeathTrends")
@@ -306,7 +305,7 @@ ui <- fluidPage(
                             ) #End of inner fluidRow (Column 1 Bottom)
                   ), # End of Column 1
             column(3,
-              class = "col2",
+              class = "col col2",
               tags$div(
                 class = "col2_title",
                 uiOutput("textDeterminants")
