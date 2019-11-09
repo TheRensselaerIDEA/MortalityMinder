@@ -332,25 +332,21 @@
 
 .page3 {}
 
-.page3_col1 {
+.page3_col {
   width:calc(100% / 3);
   height:100%;
   float:left;
-  display:block;
+  display:block;  
 }
+
+.page3_col1 {}
 
 .page3_col2 {
   width:calc(100% / 3 - 1px);
-  height:100%;
-  float:left;
-  display:block;
 }
 
 .page3_col3 {
   width:calc(100% / 3 - 1px);
-  height:100%;
-  float:left;
-  display:block;
 }
 
 .page3_col3_top {
@@ -377,21 +373,6 @@
   height:calc(50% - 1px);
   float:left;
   display:block;
-}
-
-
-
-.page3 p {
-  width:90%;
-  height:90%;
-  margin:10px 5% 1px 5%;
-  padding:5px 5px;
-  /*font-size: 20px;*/
-  line-height: 1.07143;
-  font-weight: 200;
-  letter-spacing: -.005em;
-  /*font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;*/
-  border:2px dashed black;
 }
 
 .page4 {}

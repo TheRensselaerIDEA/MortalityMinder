@@ -347,7 +347,7 @@ ui <- fluidPage(
         fluidRow(
           class = "page page3",
           column(3,
-            class = "page3_col1",
+            class = "page3_col page3_col1",
             tags$div(
               class = "col1_title",
               uiOutput("textDeterminants2")
@@ -360,7 +360,7 @@ ui <- fluidPage(
             class = "vl"
                   ),
           column(3,
-            class = "page3_col2",
+            class = "page3_col page3_col2",
             
             fluidRow(
               class = "page3_col2_top",
@@ -381,7 +381,7 @@ ui <- fluidPage(
                   ),
           
           column(3,
-            class = "page3_col3",
+            class = "page3_col page3_col3",
             tags$div(
               style = "padding-top: 10px;",
               pickerInput(
