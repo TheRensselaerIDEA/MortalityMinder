@@ -103,7 +103,7 @@ ui <- fluidPage(
           class = "page2", # National Map Page
           uiOutput("national_map"),
           column(3, 
-                  class="page2_col1", 
+                  #class="page2_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
                   "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
                     tags$ul(
@@ -174,10 +174,11 @@ ui <- fluidPage(
                   ), # End of inner FluidRow (Column 2 top)
                 tags$hr(),
                 fluidRow(
-                  class = "page2_col2_middle",
+                  column(5,
+                  #class = "page2_col2_middle",
                   style = "padding-right: 20px; padding-left: 20px; height=50%",
                   tags$div(class="NationalMapContainer",
-                           style="position:relative;width: 90%;left: 10%",
+                           style="position:relative;width: 100%;left: 0",
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
@@ -186,6 +187,10 @@ ui <- fluidPage(
                     style = "bottom: 0; left:0;"
                     )
                   ) # End of Image DIV container
+                  ), # End of Middle inner Column
+                  column(5,
+                         tags$h1("Insert content here")
+                         )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page2_col2_bottom",
