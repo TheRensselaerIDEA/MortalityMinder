@@ -699,30 +699,40 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
   pal <- colorNumeric("Blues", domain = dataset$VAR)
     
   if (state.choice != "US"){
-    return (leaflet(shapes, 
+    plot <- leaflet(shapes, 
                     options = leafletOptions()) %>%
-              fitBounds(lat1 = lat_long[1], 
-                        lng1 = lat_long[2], 
-                        lat2 = lat_long[3], 
-                        lng2 = lat_long[4]) %>%
-              addPolygons(stroke = TRUE, 
-                          smoothFactor = 0.1, 
-                          fillOpacity = 1,
-                          weight = 1,
-                          color = ~pal(dataset$VAR),
-                          opacity = 1,
-                          # fillColor = ~pal(VAR),
-                          label = dataset$county_name) %>%
-              addControl(get_sd_title(state.choice, sd.choice, period), 
-                         position = "topleft", 
-                         className="map-title") %>%
-              addLegend("bottomleft",
-                        pal = pal,
-                        values = ~dataset$VAR,
-                        title = "Rate",
-                        opacity = 1)
-              
-              )
+                    fitBounds(lat1 = lat_long[1], 
+                              lng1 = lat_long[2], 
+                              lat2 = lat_long[3], 
+                              lng2 = lat_long[4]) %>%
+                    addPolygons(stroke = TRUE, 
+                                smoothFactor = 0.1, 
+                                fillOpacity = 1,
+                                weight = 1,
+                                color = ~pal(dataset$VAR),
+                                opacity = 1,
+                                # fillColor = ~pal(VAR),
+                                label = dataset$county_name,
+                                layerId = dataset$county_name) %>%
+                    addControl(get_sd_title(state.choice, sd.choice, period), 
+                               position = "topleft", 
+                               className="map-title") %>%
+                    addLegend("bottomleft",
+                              pal = pal,
+                              values = ~dataset$VAR,
+                              title = "Rate",
+                              opacity = 1)
+    if (is.null(county_polygon)){
+      return(plot)
+    }
+    return(
+      plot %>% addPolylines(stroke = TRUE, 
+                            weight = 2,
+                            color="#000000",
+                            data = county_polygon,
+                            group="highlighted_polygon",
+                            dashArray = "4 2 4")
+    )
   }else{
     return (leaflet(shapes, 
                     options = leafletOptions(dragging = FALSE)) %>%

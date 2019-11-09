@@ -356,7 +356,8 @@ ui <- fluidPage(
               class = "page3_col2_bot",
               style = "position: relative",
               uiOutput("determinants_plot3_county_name"),
-              plotOutput("determinants_plot3",width="100%",height="85%", click = clickOpts("determinants_plot3_click"))
+              plotOutput("determinants_plot3",width="100%",height="85%",
+                         click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
             )
           ),
           tags$div(
@@ -516,6 +517,7 @@ server <- function(input, output, session) {
   
   mort.rate <- reactive({
     county_choice(NULL)
+    assign("county_polygon", NULL, envir = .GlobalEnv)
     if(input$state_choice == "United States"){
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
@@ -1158,15 +1160,16 @@ server <- function(input, output, session) {
     } else {
       
 #      browser()
-      dplyr::filter(
+      data <- dplyr::filter(
         cdc.data,
         period == "2015-2017", 
         death_cause == input$death_cause
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
-        tidyr::drop_na() %>%
-        
+        tidyr::drop_na()
+      
+      plot <- data %>%  
         ggplot(aes(x = death_rate, y = VAR)) + 
         geom_point(colour="black", shape=21, size = 3, alpha = .7,
                    aes(fill = cluster)) + 
@@ -1181,6 +1184,23 @@ server <- function(input, output, session) {
         color.line.cluster(input$state_choice, max(sd.select$cluster)) +
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
+      if (is.null(county_choice())){
+        plot
+      }else{
+        county_data <- dplyr::filter(
+                        data,
+                        county_name == substr(county_choice(), 0, nchar(county_choice())-7)
+                      )
+        plot + 
+          geom_point(
+            mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
+            data = county_data, color="black", size = 5, alpha = .7, inherit.aes = FALSE
+          ) + 
+          scale_shape_manual(name = "County",
+                             values = c(18), 
+                             guide = guide_legend(override.aes = list(color = c("black")))
+          )
+      }
     }
   })
 
@@ -1233,7 +1253,6 @@ server <- function(input, output, session) {
       geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017")
       
     }
-    
     
 # # Mortality Rate by County Period 2
 #       if(input$state_choice == "United States"){
@@ -1853,8 +1872,8 @@ the highest absolute correlation with mortality.",
   })
   
   output$determinants_plot3_county_name <- renderUI({
-    req(input$determinants_plot3_click) # Same as if-not-NULL
-    click <- input$determinants_plot3_click
+    req(input$determinants_plot3_hover) # Same as if-not-NULL
+    hover <- input$determinants_plot3_hover
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
@@ -1875,25 +1894,15 @@ the highest absolute correlation with mortality.",
       tidyr::drop_na()
     
     
-    point <- nearPoints(data, click, threshold = 5, maxpoints = 1, addDist = TRUE)
+    point <- nearPoints(data, hover, threshold = 5, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
-    
-    
-    # calculate point position INSIDE the image as percent of total dimensions
-    # from left (horizontal) and from top (vertical)
-    left_pct <- (click$x - click$domain$left) / (click$domain$right - click$domain$left)
-    top_pct <- (click$domain$top - click$y) / (click$domain$top - click$domain$bottom)
-    
-    # calculate distance from left and bottom side of the picture in pixels
-    left_px <- click$range$left + left_pct * (click$range$right - click$range$left)
-    top_px <- click$range$top + top_pct * (click$range$bottom - click$range$top)
     
     # create style property fot tooltip
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
-    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
-                    "left:", left_px + 10, "px; top:", top_px - 30, "px; font-size: 7px")
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); pointer-events:none;",
+                    "left:", hover$coords_css$x + 10, "px; top:", hover$coords_css$y - 30, "px; font-size: 7px")
     
     #browser()
     # actual tooltip created as wellPanel
@@ -1997,10 +2006,21 @@ the highest absolute correlation with mortality.",
     }
   })
   
+  draw_border <- function(plot.name, border){
+    proxy <- leafletProxy(plot.name)
+    #remove any previously highlighted polygon
+    proxy %>% clearGroup("highlighted_polygon")
+    
+    #add a slightly thicker red polygon on top of the selected one
+    proxy %>% addPolylines(stroke = TRUE, 
+                                   weight = 2,
+                                   color="#000000",
+                                   data = border,
+                                   group="highlighted_polygon",
+                                   dashArray = "4 2 4")
+  }
   
   highlight_county <- function(event){
-    if (is.null(event))
-      return()
     county_name <- sub(event$id, pattern = " [[:alpha:]]*$", replacement = "")
     
     county_indices <- which(state_map@data$NAME %in% c(county_name))
@@ -2010,60 +2030,66 @@ the highest absolute correlation with mortality.",
         for (current_polygon in current_polygons@Polygons){
           current_coords <- current_polygon@coords
           if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
-            polygon = current_polygons
+            assign("county_polygon", current_polygons, envir = .GlobalEnv)
             break
           }
         }
       }
     }else if (length(county_indices) == 1){
-      polygon <- state_map@polygons[[county_indices[[1]]]]
+      assign("county_polygon", state_map@polygons[[county_indices[[1]]]], envir = .GlobalEnv)
     } else {
       for (index in county_indices){
         current_polygon <- state_map@polygons[[index]]
         current_coords <- current_polygon@Polygons[[1]]@coords
         if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
-          polygon = current_polygon
+          assign("county_polygon", current_polygon, envir = .GlobalEnv)
           break
         }
       }
     }
-    
-    cluster_proxy <- leafletProxy("geo_cluster_kmean")
-    #remove any previously highlighted polygon
-    cluster_proxy %>% clearGroup("highlighted_polygon")
-    
-    #add a slightly thicker red polygon on top of the selected one
-    cluster_proxy %>% addPolylines(stroke = TRUE, 
-                                   weight = 2,
-                                   color="#000000",
-                                   data = polygon,
-                                   group="highlighted_polygon",
-                                   dashArray = "4 2 4")
-    
-    change_proxy <- leafletProxy("geo_mort_change2")
-    #remove any previously highlighted polygon
-    change_proxy %>% clearGroup("highlighted_polygon")
-    
-    #add a slightly thicker red polygon on top of the selected one
-    change_proxy %>% addPolylines(stroke = TRUE, 
-                                  weight = 2,
-                                  color="#000000",
-                                  data = polygon,
-                                  group="highlighted_polygon",
-                                  dashArray = "4 2 4")
+    draw_border("geo_cluster_kmean", county_polygon)
+    draw_border("geo_mort_change2", county_polygon)
+    draw_border("determinants_plot5", county_polygon)
   }
   
   # click on geo cluster map shows county data on mort_line
   observe({
     event <- input$geo_cluster_kmean_shape_click
+    if (is.null(event))
+      return()
     highlight_county(event)
     county_choice(event$id)
   })
   
   observe({
     event <- input$geo_mort_change2_shape_click
+    if (is.null(event))
+      return()
     highlight_county(event)
     county_choice(event$id)
+  })
+  
+  observe({
+    event <- input$determinants_plot5_shape_click
+    if (is.null(event))
+      return()
+    highlight_county(event)
+    county_choice(paste0(event$id," County"))
+  })
+  
+  observe({
+    county_name <- sub(county_choice(), pattern = " [[:alpha:]]*$", replacement = "")
+    req(county_name)
+    county_indices <- which(state_map@data$NAME %in% c(county_name))
+    
+    if (length(county_indices) != 1){
+      return()
+    }
+    polygon <- state_map@polygons[[county_indices[[1]]]]
+    
+    draw_border("geo_cluster_kmean", polygon)
+    draw_border("geo_mort_change2", polygon)
+    draw_border("determinants_plot5", polygon)
   })
   
   observe({
@@ -2094,37 +2120,7 @@ the highest absolute correlation with mortality.",
     if (nrow(point) == 0) return(NULL)
     
     county_name = point$county_name
-    
-    county_indices <- which(state_map@data$NAME %in% c(county_name))
-    
-    if (length(county_indices) == 0) return(NULL)
-    
-    if (length(county_indices) == 1){
-      polygon <- state_map@polygons[[county_indices[[1]]]]
-    } else {
-      # TODO
-      polygon <- state_map@polygons[[county_indices[[1]]]]
-      # for (index in county_indices){
-      #   current_polygon <- state_map@polygons[[index]]
-      #   current_coords <- current_polygon@Polygons[[1]]@coords
-      #   if (sp::point.in.polygon(c(event$lng), c(event$lat), current_coords[,1], current_coords[,2])){
-      #     polygon = current_polygon
-      #     break
-      #   }
-      # }
-    }
-    
-    cluster_proxy <- leafletProxy("determinants_plot5")
-    #remove any previously highlighted polygon
-    cluster_proxy %>% clearGroup("highlighted_polygon")
-    
-    #add a slightly thicker red polygon on top of the selected one
-    cluster_proxy %>% addPolylines(stroke = TRUE, 
-                                   weight = 2,
-                                   color="#000000",
-                                   data = polygon,
-                                   group="highlighted_polygon",
-                                   dashArray = "4 2 4")
+    county_choice(paste0(county_name, " County"))
   })
   
   # click on bar plot triggers page change
