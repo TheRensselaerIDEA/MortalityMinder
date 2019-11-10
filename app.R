@@ -371,6 +371,7 @@ ui <- fluidPage(
             
             fluidRow(
               class = "page3_col2_bot",
+              style = "position: relative",
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%",
                          click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
