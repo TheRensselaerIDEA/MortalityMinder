@@ -99,13 +99,13 @@ ui <- fluidPage(
         # Div tag functions as outter "shell" to pull from fullpage.css
         # Each page is a row, of columns, of rows, etc.
         
-        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page2", # National Map Page
+        fluidRow(
+          class = "page page1", # National Map Page
           uiOutput("national_map"),
           column(3, 
-                  #class="page2_col1", 
+                  class="page1_col page1_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
-                  "MortalityMinder analyzes trends of premature death in the United States which are caused by:",
+                  "MortalityMinder analyzes trends of premature death in the United States which are caused by:\n",tags$br(),
                     tags$ul(
                       tags$li("Deaths of Despair"),
                       tags$li("Cardiovascular Disease"),
@@ -126,7 +126,7 @@ ui <- fluidPage(
           ),
           column(8,
                 fluidRow(
-                  class = "page2_col2_top",
+                  class = "page1_col page1_col2_top",
                   tags$div(
                     class = "National_title",
                     style = "padding-left: 20px",
@@ -138,8 +138,7 @@ ui <- fluidPage(
                 tags$hr(),
                 fluidRow(
                   column(6,
-                  #class = "page2_col2_middle",
-                  #style = "padding-left: 20px; height=50%",
+                  class = "page1_col page1_col2_middle_left",
                   tags$div(
                     class = "explore_but",
                     style = "text-align: center;",
@@ -189,7 +188,8 @@ ui <- fluidPage(
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
                   column(6,
-                         tags$h2("Mortality Trend Plot"),
+                         class = "page1_col page1_col2_middle_right",
+                         tags$h3("Mortality Trend Plot"),
                          tags$div(
                            style="position:relative;width: 100%;left: 0",
                            tags$img(
@@ -200,7 +200,7 @@ ui <- fluidPage(
                          )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
-                  class = "page2_col2_bottom",
+                  class = "page1_col page1_col2_bottom",
                   style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
@@ -216,15 +216,14 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page1",
-            column(8,
-                   class="col1",
-                   fluidRow(style = "height:425px; max-height: 110vh; overflow-y: auto;",
-                     class="col1_top",
+        fluidRow(
+          class = "page page2",
+            column(7,
+                   class="page2_col page2_col1",
+                   fluidRow(
+                     class="page2_col page2_col1_top",
                        column(5,
-                              #class = "col1_top_left",
-                              #style = "padding-right: 20px; padding-left: 20px",
+                              class = "page2_col page2_col1_top_left",
                               tags$div(
                                 title="The mortality rate used in the app is the number
                                       of people per 100,000 that died prematurely in a given 
@@ -237,7 +236,7 @@ ui <- fluidPage(
                               
                              ), # End of inner Column (Column 1 Top Left)
                        column(5,
-                              class = "col1_top_right",
+                              class = "page2_col page2_col1_top_right",
                               tags$style(
                                       HTML(
                                       "
@@ -284,7 +283,7 @@ ui <- fluidPage(
                                           ) #End of HTML Block
                                         ), # End of Style block
                               tags$div(
-                                class="col1_top_right_title",
+                                class="page2_col1_top_right_title",
                                 uiOutput("textMortRates")
                                       ), # End of title div container
                               radioButtons("year_selector", 
@@ -300,19 +299,19 @@ ui <- fluidPage(
                      class = "hr"
                            ),
                    fluidRow(
-                     class = "col1_bot",
+                     class = "page2_col page2_col1_bot",
                          column(5,
-                           class = "col1_bot_left",
+                           class = "page2_col page2_col1_bot_left",
                            tags$div(
-                             class="col1_bot_left_title",
+                             class="page2_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
                              leafletOutput("geo_cluster_kmean",width="100%",height="80%")
                                ), # End of inner Column (Bottom Left)
                          column(5, 
-                           class = "col1_bot_right", 
+                           class = "page2_col page2_col1_bot_right", 
                            tags$div(
-                             class="col1_bot_right_title",
+                             class="page2_col1_bot_right_title",
                              uiOutput("textDeathTrends")
                                    ), # End of title div container
                              plotOutput("mort_line",width="100%",height="90%")
@@ -321,14 +320,14 @@ ui <- fluidPage(
                             ) #End of inner fluidRow (Column 1 Bottom)
                   ), # End of Column 1
             column(3,
-              class = "col2",
+              class = "page2_col page2_col2",
               tags$div(
-                class = "col2_title",
+                class = "page2_col2_title",
                 uiOutput("textDeterminants")
                       ), # End of title container
 
               tags$div(
-                class = "col2_plot",
+                class = "page2_col2_plot",
                 plotOutput("page1.bar.cor1",width="90%",height="100%", 
                            hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
                            click = clickOpts("page1_bar_plot_click")),
@@ -345,10 +344,10 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;",
-          class = "page3",
+        fluidRow(
+          class = "page page3",
           column(3,
-            class = "page3_col1",
+            class = "page3_col page3_col1",
             tags$div(
               class = "col1_title",
               uiOutput("textDeterminants2")
@@ -361,7 +360,7 @@ ui <- fluidPage(
             class = "vl"
                   ),
           column(3,
-            class = "page3_col2",
+            class = "page3_col page3_col2",
             
             fluidRow(
               class = "page3_col2_top",
@@ -372,7 +371,6 @@ ui <- fluidPage(
             
             fluidRow(
               class = "page3_col2_bot",
-              style = "position: relative",
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%", click = clickOpts("determinants_plot3_click"))
                     ) # End of Column 2 Bottom
@@ -383,7 +381,7 @@ ui <- fluidPage(
                   ),
           
           column(3,
-            class = "page3_col3",
+            class = "page3_col page3_col3",
             tags$div(
               style = "padding-top: 10px;",
               pickerInput(
@@ -401,16 +399,16 @@ ui <- fluidPage(
                     ), # End of pickerInput container
             
             fluidRow(
-              style = "padding: 20px; height: 50%; margin-right: 20px;",
+              class = "page3_col3_top",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
-              tags$h4(textOutput("determinant_text")),
+              tags$p(textOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
-              tags$h4(uiOutput("determinant_link"))
+              tags$p(uiOutput("determinant_link"))
                     ), # End of Column 3 top
             fluidRow(
-              class = "col1_bot",
+              class = "page3_col3_bot",
               tags$div(
                 class = "col1_bot_title",
                 uiOutput("textSDGeo")
@@ -427,18 +425,16 @@ ui <- fluidPage(
         tags$div(
           class = "nav_bar_blank"
         ),
-        tags$div(
-          class = "page4",
-          fluidRow(style = "max-height: 90vh; margin-left: 25px; overflow-y: auto;", 
-                   column(3, tags$h3("Project Overview",align="center"), tags$br(), #offset=1,
+          fluidRow(
+                  class = "page page4",
+                   column(3, tags$h2("Project Overview",align="center"), tags$br(), #offset=1,
                           fluidRow(
-                            # tags$p(tags$img(src="https://i.imgflip.com/t5jc4.jpg", width="75%", height="75%"),align="center"),
                             column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
                                    has stagnated and even declined, reversing for the US the trend toward increased life
                                    expectancy that is still continuing in most nations. The goal of this project is 
                                    to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
                                    and identify their associated community level social determinants.", offset=1), # Close column,
-                            column(11, tags$h3("AHRQ Contest Synopsis",align="center"), tags$br(),
+                            column(11, tags$h2("AHRQ Contest Synopsis",align="center"), tags$br(),
                                    "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
                                    seeks tools that support visualizing such data clusters to enhance the research and analysis 
                                    of community-level health services.", tags$br(),
@@ -455,7 +451,7 @@ ui <- fluidPage(
                                      ), offset=1) # Close column
                                    ) # Close inner fluidRow
                             ), # Close outter column
-                   column(3, tags$h3("Methodology",align="center"), tags$br(),  offset=1,
+                   column(3, tags$h2("Methodology",align="center"), tags$br(),  offset=1,
                           fluidRow(
                             column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
                                    It looks at premature deaths, that is deaths in adults from 15 to 64 
@@ -489,7 +485,7 @@ ui <- fluidPage(
                    )
                           ), # Close column
                    column(3, 
-                          tags$h3("Additional Resources",align="center"), tags$br(), offset=1,
+                          tags$h2("Additional Resources",align="center"), tags$br(), offset=1,
                           "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
                           of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
                           Institute. Retrieved from ", tags$br(),
@@ -506,19 +502,18 @@ ui <- fluidPage(
                           tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
                           tags$br(),
                           
-                          tags$h3("Download Data",align="center"), tags$br(),
+                          tags$h2("Download Data",align="center"), tags$br(),
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
                           downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
                           tags$br(),
-                          tags$h3("Download Current Results",align="center"), tags$br(),
+                          tags$h2("Download Current Results",align="center"), tags$br(),
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")
                    )
         )# Close outter fluidRow
-        ) # Close page 4 
-        )
+        ) # Close Page 4
       )
     ),
   tags$script(src = "jquery-ui.min.js"),
@@ -1595,7 +1590,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average premature death trends for each cluster.",
         paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
@@ -1610,7 +1605,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the distribution of mortality rates for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Mortality rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
@@ -1625,7 +1620,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Clusters for ", names(which(state.list == input$state_choice))), 
@@ -1640,7 +1635,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of the selected determinant for the selected state.",
         paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
@@ -1675,7 +1670,7 @@ the highest absolute correlation with mortality.",
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h2(
         style = "padding-right: 20px; padding-left: 20px",
         title="Help text for cluster distribution bar plots",
         paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), 
