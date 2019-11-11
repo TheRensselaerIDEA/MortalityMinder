@@ -1879,7 +1879,7 @@ the highest absolute correlation with mortality.",
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
                     "<i>", point$DIR, "</i>","<br/>",
-                    SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definition[[1]],
+                    SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definitions[[1]],
                     NULL
       )))
     )
