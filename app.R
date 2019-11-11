@@ -1872,7 +1872,7 @@ the highest absolute correlation with mortality.",
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
                     "left:", left_px + 2, "px; top:", top_px + 2, "px;")
     
-    browser()
+    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
