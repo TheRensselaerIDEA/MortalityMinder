@@ -236,7 +236,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
                           layerId = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause),
                          position = "topleft",
-                         className="map-title") 
+                         className="map-title") %>%
+              clearBounds()
             )
   }else{
     return (leaflet(shapes, 
@@ -255,7 +256,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
                           label = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause),
                          position = "topleft",
-                         className="map-title") 
+                         className="map-title") %>%
+              clearBounds()
             )
   }
 
@@ -294,7 +296,8 @@ draw.sd.geo <- function(sd.rates, state.choice, death.cause) {
                           layerId = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
-                         className="map-title") #%>%
+                         className="map-title") %>%
+              clearBounds()
     )
   }else{
     return (leaflet(shapes, 
@@ -313,7 +316,8 @@ draw.sd.geo <- function(sd.rates, state.choice, death.cause) {
                           label = dataset$county_name) %>%
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
-                         className="map-title")# %>%
+                         className="map-title") %>%
+              clearBounds()
     )
   }
 }
@@ -614,7 +618,9 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         colors = colors[1],
                         labels = labels[1],
                         title = "Rate;",
-                        opacity = 1))
+                        opacity = 1) %>% 
+              clearBounds()
+            ) 
   }else{
     return (leaflet(shapes, 
                     options = leafletOptions(dragging = FALSE)) %>%
@@ -672,7 +678,9 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         colors = colors[1],
                         labels = labels[1],
                         title = "Rate;",
-                        opacity = 1))
+                        opacity = 1) %>% 
+              clearBounds()
+            )
   }
   
   

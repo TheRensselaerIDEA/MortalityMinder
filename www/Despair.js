@@ -5,6 +5,7 @@ var image = document.getElementById("national_map_new");
 var images = ["National_image/Despair/1.png","National_image/Despair/2.png","National_image/Despair/3.png","National_image/Despair/4.png","National_image/Despair/5.png" ,"National_image/Despair/6.png"];
 var position = 0;
 var playing = false;
+
 image.src = images[5];
 /*
 btn.onclick = function(){
@@ -28,6 +29,7 @@ var btn4 = document.getElementById("forth_period");
 var btn5 = document.getElementById("fifth_period");
 var btn6 = document.getElementById("sixth_period");
 var btn_list = [btn1,btn2,btn3,btn4,btn5,btn6];
+
 btn1.onclick = function(){
   if(playing === true){
     playing = false;
