@@ -1872,14 +1872,14 @@ the highest absolute correlation with mortality.",
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
                     "left:", left_px + 2, "px; top:", top_px + 2, "px;")
     
-    #browser()
+    browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
       style = style,
       p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
                     "<i>", point$DIR, "</i>","<br/>",
-                    SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definition[[1]],
+                    SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definitions[[1]],
                     NULL
       )))
     )
