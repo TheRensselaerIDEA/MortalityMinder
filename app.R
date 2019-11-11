@@ -172,6 +172,7 @@ ui <- fluidPage(
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
+                        style= "background-color: red",
                         "2015-2017"
                       )
                     ) # End List of buttons
@@ -292,7 +293,7 @@ ui <- fluidPage(
                                            choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
-                              leafletOutput("geo_mort_change2",width="100%",height="90%")
+                              leafletOutput("geo_mort_change2",width="100%",height="80%")
                               ) # End of inner Column (Column 1 top right)
                            ), # End of inner FluidRow (Column1 Top)
                    tags$div(
@@ -314,7 +315,7 @@ ui <- fluidPage(
                              class="page2_col1_bot_right_title",
                              uiOutput("textDeathTrends")
                                    ), # End of title div container
-                             plotOutput("mort_line",width="100%",height="90%")
+                             plotOutput("mort_line",width="100%",height="80%")
                                 ) # End of inner Column (Bottom Right)
                      
                             ) #End of inner fluidRow (Column 1 Bottom)
