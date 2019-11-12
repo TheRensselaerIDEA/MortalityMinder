@@ -105,21 +105,21 @@ ui <- fluidPage(
           column(3, 
                   class="page1_col page1_col1", 
                   tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
-                  "MortalityMinder analyzes trends of premature death in the United States which are caused by:\n",tags$br(),
+                 tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
-                      tags$li("Deaths of Despair"),
-                      tags$li("Cardiovascular Disease"),
-                      tags$li("Cancer"),
-                      tags$li("Assault Deaths"),
-                      tags$li("All Causes")
+                      tags$li(tags$h4("Deaths of Despair")),
+                      tags$li(tags$h4("Cardiovascular Disease")),
+                      tags$li(tags$h4("Cancer")),
+                      tags$li(tags$h4("Assault Deaths")),
+                      tags$li(tags$h4("All Causes"))
                        ), # End List
-                    "The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
-                    given county during a three year period fora given cause and for a region:  county, state or nationwide.\n", tags$br(),
-                    "Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
-                    from 2000 to 2017.\n", tags$br(),
-                    "To understand why rates are changing, MortalityMinder analyzes factors that are related with 
-                    increased mortality rates at the county level.", tags$br(),
-                    tags$i("Click right and left to investigate more.\n")   
+                      tags$h4("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
+                    given county during a three year period fora given cause and for a region:  county, state or nationwide.\n"), 
+                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
+                    from 2000 to 2017.\n"), 
+                      tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
+                    increased mortality rates at the county level."), tags$br(),
+                      tags$h4(tags$i("Click right and left to investigate more.\n"))   
           ), # End Column 1
           tags$div(
             class = "vl"
@@ -1665,9 +1665,8 @@ server <- function(input, output, session) {
       
       tagList(
         tags$ul(
-          style = "font-size: 18px;",
-          tags$li(paste0("Have ", change_text, " from 2000 to 2017")),
-          tags$li(paste0("Range from ", 
+          tags$li(tags$h4(paste0("Have ", change_text, " from 2000 to 2017"))),
+          tags$li(tags$h4(paste0("Range from ", 
                          round(as.numeric(low.high.states.2015_2017()[1]), 1),
                          " per 100k people in ",
                          low.high.states.2015_2017()[2],
@@ -1675,7 +1674,7 @@ server <- function(input, output, session) {
                          round(as.numeric(low.high.states.2015_2017()[3]), 1),
                          " per 100k people in ",
                          low.high.states.2015_2017()[4],
-                         " 2015-2017")
+                         " 2015-2017"))
           )
         )
       )
@@ -1710,9 +1709,9 @@ server <- function(input, output, session) {
       tagList(
         tags$ul(
           #style = "font-size: 18px;",
-          tags$li(paste0("Have ", change_text, " from 2000 to 2017")),
-          tags$li(paste0("Were ", comparison_text, " the national mean in 2015-2017")),
-          tags$li(paste0("Range from ", 
+          tags$li(tags$h4(paste0("Have ", change_text, " from 2000 to 2017"))),
+          tags$li(tags$h4(paste0("Were ", comparison_text, " the national mean in 2015-2017"))),
+          tags$li(tags$h4(paste0("Range from ", 
                          round(as.numeric(low.rate.county.2015_2017()[1]), 1),
                          " per 100k people in ",
                          low.rate.county.2015_2017()[2],
@@ -1721,7 +1720,7 @@ server <- function(input, output, session) {
                          " per 100k people in ",
                          high.rate.county.2015_2017()[2],
                          "from 2015-2017")
-                  )
+                  ))
         )
       )
     }
