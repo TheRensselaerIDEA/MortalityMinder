@@ -660,56 +660,37 @@ server <- function(input, output, session) {
   })
   
   
-  #Calculate the mean mortality rate for a state  for 2000-2002
+  # Return the mean mortality rate for a state  for 2000-2002
   state.mean.2000_2002 <- reactive({
-    
-    filtered.data <- dplyr::filter(
-      cdc.data,
-      state_abbr == input$state_choice,
-      death_cause == input$death_cause,
-      period == "2000-2002"
-    )
-    
-    state.mean <- mean(filtered.data$death_rate)
+    as.numeric(dplyr::filter(state_natl_death_rates,
+                    State == names(state.list)[which(state.list == input$state_choice)],
+                    Cause == input$death_cause,
+                    Years == '2000-2002')$Crude.Rate)
   })
     
   
   # Calculate national mean mortality for 2000-2002
   national.mean.2000_2002 <- reactive({
-    
-    filtered.data <- dplyr::filter(
-      cdc.data,
-      death_cause == input$death_cause,
-      period == "2000-2002"
-    )
-    
-    national.mean <- mean(filtered.data$death_rate)
+    as.numeric(dplyr::filter(state_natl_death_rates,
+                             State == 'United States',
+                             Cause == input$death_cause,
+                             Years == '2000-2002')$Crude.Rate)
   })
   
   #Calculate the mean mortality rate for a state  for 2015-2017
   state.mean.2015_2017 <- reactive({
-    
-    filtered.data <- dplyr::filter(
-      cdc.data,
-      state_abbr == input$state_choice,
-      death_cause == input$death_cause,
-      period == "2015-2017"
-    )
-    
-    state.mean <- mean(filtered.data$death_rate)
-    
+    as.numeric(dplyr::filter(state_natl_death_rates,
+                             State == names(state.list)[which(state.list == input$state_choice)],
+                             Cause == input$death_cause,
+                             Years == '2015-2017')$Crude.Rate)
   })
   
   # Calculate national mean mortality for 2015-2017
   national.mean.2015_2017 <- reactive({
-    
-    filtered.data <- dplyr::filter(
-      cdc.data,
-      death_cause == input$death_cause,
-      period == "2015-2017"
-    )
-    
-    national.mean <- mean(filtered.data$death_rate)
+    as.numeric(dplyr::filter(state_natl_death_rates,
+                             State == 'United States',
+                             Cause == input$death_cause,
+                             Years == '2015-2017')$Crude.Rate)
   })
   
   # finds states with lowest and highest death rates and returns them
@@ -720,19 +701,19 @@ server <- function(input, output, session) {
   low.high.states.2015_2017 <- reactive({
     
     grouped.data <- dplyr::filter(
-        cdc.data,
-        death_cause == input$death_cause,
-        period == "2015-2017"
-      ) %>%
-      group_by(state_name) %>%
-      summarise(death_rate = mean(death_rate))
+        state_natl_death_rates,
+        State != 'United States',
+        State != 'District of Columbia',
+        Cause == input$death_cause,
+        Years == "2015-2017"
+      )
     
     return(
       c(
-        min(grouped.data$death_rate),
-        grouped.data$state_name[which.min(grouped.data$death_rate)],
-        max(grouped.data$death_rate),
-        grouped.data$state_name[which.max(grouped.data$death_rate)]
+        min(as.numeric(grouped.data$Crude.Rate)),
+        grouped.data$State[which.min(as.numeric(grouped.data$Crude.Rate))],
+        max(as.numeric(grouped.data$Crude.Rate)),
+        grouped.data$State[which.max(as.numeric(grouped.data$Crude.Rate))]
       )
     )
   })
