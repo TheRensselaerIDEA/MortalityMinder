@@ -398,7 +398,7 @@ ui <- fluidPage(
               class = "page3_col3_top",
               tags$br(),
               tags$h2(textOutput("determinant_title")),
-              tags$p(textOutput("determinant_text")),
+              tags$p(htmlOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
               tags$p(uiOutput("determinant_link"))
@@ -1310,18 +1310,27 @@ server <- function(input, output, session) {
     }
   })
   
-  output$determinant_text <- renderText({
-    as.character(
+  # output$determinant_text <- renderText({
+  #   as.character(
+  #     SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
+  # })
+
+  output$determinant_text <- renderUI({
+    tagList(tags$h4(
+      as.character(
       SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
+    )
+    )
   })
   
   output$determinant_link <- renderUI({
-    tagList(
+    tagList(tags$h4(
       tags$a(
         "Click here for more information",
         href = determinant.url(),
         target="_blank"
       )
+    )
     )
   })
   
