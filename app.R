@@ -1425,16 +1425,16 @@ server <- function(input, output, session) {
   })
   
   generate_text <- function(name, diff_pct){
-    change_text <- paste0("The mortality rate has ")
+    change_text <- paste0("The mortality rate \nhas ")
     
     if (diff_pct > 0) {
-      change_text <- paste0(change_text, "increased\n ")
+      change_text <- paste0(change_text, "increased ")
     }
     else {
-      change_text <- paste0(change_text, "decreased\n ")
+      change_text <- paste0(change_text, "decreased ")
     }
     
-    change_text <- paste0(change_text, "in ", name, " by ", abs(round(diff_pct,1)), "%")
+    change_text <- paste0(change_text, "in \n", name, " by ", abs(round(diff_pct,1)), "%")
     change_text
   }
   
@@ -1452,19 +1452,21 @@ server <- function(input, output, session) {
     label_data$x[label_data$x=="2015-2017"] <- 6
     label_data$x <- as.numeric(as.character(label_data$x))
     n <- 10
-    d <- 0
+    d_max <- 0
     for (i in 1:5){
       r1 <- label_data[label_data$x==i,]
       r2 <- label_data[label_data$x==i+1,]
       for (j in 1:n-1){
-        label_data <- rbind(label_data, data.frame("x" = i+j/n,
-                                                   "death_rate" = r2$death_rate*j/n+r1$death_rate*(n-j)/n-d,
-                                                   "label" = c("",""),
-                                                   "group" = c(input$state_choice, "United States")))
-        label_data <- rbind(label_data, data.frame("x" = i+j/n,
-                                                   "death_rate" = r2$death_rate*j/n+r1$death_rate*(n-j)/n+d,
-                                                   "label" = c("",""),
-                                                   "group" = c(input$state_choice, "United States")))
+        for (d in 0:d_max){
+          label_data <- rbind(label_data, data.frame("x" = i+j/n,
+                                                     "death_rate" = r2$death_rate*j/n+r1$death_rate*(n-j)/n-d,
+                                                     "label" = c("",""),
+                                                     "group" = c(input$state_choice, "United States")))
+          label_data <- rbind(label_data, data.frame("x" = i+j/n,
+                                                     "death_rate" = r2$death_rate*j/n+r1$death_rate*(n-j)/n+d,
+                                                     "label" = c("",""),
+                                                     "group" = c(input$state_choice, "United States")))
+        }
       }
     }
     state_diff <- (state_end - state_begin) / state_begin * 100
@@ -1472,16 +1474,49 @@ server <- function(input, output, session) {
     nation_diff <- (nation_end - nation_begin) / nation_begin * 100
     nation_text <- generate_text("United States", nation_diff)
     
-    if (state_end > nation_end){
-      x <- c(1.1, 5.9)
+    if (xor(nation_end < state_end, state_end < state_begin)){
+      x <- c(1.0, 6.0)
     } else {
-      x <- c(5.9, 1.1)
+      x <- c(6.0, 1.0)
     }
     label_data <- rbind(label_data,
                         data.frame("x" = x, 
                                    "death_rate" = c(state_y, nation_y),
                                    "label" = c(state_text, nation_text),
                                    "group" = c(input$state_choice, "United States")))
+    label_data
+  }
+  
+  draw_reference <- function(line_plot, l_start, l_end, r_start, r_end){
+    line_plot +
+      geom_segment(aes(x='2000-2002', xend='2015-2017', y=l_end, yend=l_end),
+                   color = 'black', linetype=2) +
+      geom_segment(aes(x='2000-2002', xend='2015-2017', y=r_start, yend=r_start),
+                   color = 'black', linetype=2) +
+      geom_segment(aes(x='2000-2002', xend='2000-2002', y=l_start, yend=l_end),
+                   color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
+      geom_segment(aes(x='2015-2017', xend='2015-2017', y=r_start, yend=r_end),
+                   color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm")))
+  }
+  
+  add_reference_point <- function(label_data, l_start, l_end, r_start, r_end){
+    
+    # label_data <- rbind(label_data, data.frame("x" = 1:6,
+    #                                            "death_rate" = rep(c(l_end), times = 6),
+    #                                            "label" = rep(c(""), times = 6),
+    #                                            "group" = rep(c("United States"), times = 6)))
+    # label_data <- rbind(label_data, data.frame("x" = 1:6,
+    #                                            "death_rate" = rep(c(r_start), times = 6),
+    #                                            "label" = rep(c(""), times = 6),
+    #                                            "group" = rep(c("United States"), times = 6)))
+    label_data <- rbind(label_data, data.frame("x" = rep(c(1), times = 6),
+                                               "death_rate" = seq(l_start, l_end, length.out = 6),
+                                               "label" = rep(c(""), times = 6),
+                                               "group" = rep(c("United States"), times = 6)))
+    label_data <- rbind(label_data, data.frame("x" = rep(c(6), times = 6),
+                                               "death_rate" = seq(r_start, r_end, length.out = 6),
+                                               "label" = rep(c(""), times = 6),
+                                               "group" = rep(c("United States"), times = 6)))
     label_data
   }
   
@@ -1540,6 +1575,10 @@ server <- function(input, output, session) {
       nation_lo <- min(nation_begin, nation_end)
       
       data <- bind_rows(state_data, nation_data)
+      hi <- max(data$death_rate)
+      lo <- min(data$death_rate)
+      range <- hi - lo 
+      ylim <- c(lo - 0.1 * range, hi + 0.1 * range)
       
       line_plot <- ggplot(
                       data,
@@ -1552,42 +1591,33 @@ server <- function(input, output, session) {
                       geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
                       theme.line.mort() + 
                       theme(legend.position = "bottom", legend.title = element_blank()) + 
-                      ylab("Mortality Rate (# per 100k)") 
+                      ylab("Mortality Rate (# per 100k)") +
+                      ylim(ylim)
       
-      u <- 0.8
+      u <- 0.65
       v <- 1 - u
-      if (nation_end < state_end){
+      if (xor(nation_end < state_end, state_end < state_begin)){
         label_data <- generate_label_data(data, state_begin, state_end, nation_begin, nation_end, 
                                           u*state_hi+v*state_lo, u*nation_lo+v*nation_hi)
-        line_plot +
-          geom_segment(aes(x='2000-2002', xend='2015-2017', y=state_end, yend=state_end),
-                       color = 'black', linetype=2) +
-          geom_segment(aes(x='2000-2002', xend='2000-2002', y=state_begin, yend=state_end),
-                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
-          geom_segment(aes(x='2000-2002', xend='2015-2017', y=nation_begin, yend=nation_begin),
-                       color = 'black', linetype=2) +
-          geom_segment(aes(x='2015-2017', xend='2015-2017', y=nation_begin, yend=nation_end),
-                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
-          geom_label_repel(data = label_data, mapping = aes(x = x, y = death_rate, label = label, fill = group),
-                           inherit.aes = FALSE, hjust = "inward", vjust = "inward", direction = "y", seed = 1234) + 
-          guides(fill = "none")
-          
+        label_data <- add_reference_point(label_data, state_begin, state_end, nation_begin, nation_end)
+        line_plot <- draw_reference(line_plot, state_begin, state_end, nation_begin, nation_end)
       } else {
         label_data <- generate_label_data(data, state_begin, state_end, nation_begin, nation_end, 
                                           v*state_hi+u*state_lo, v*nation_lo+u*nation_hi)
-        line_plot +
-          geom_segment(aes(x='2000-2002', xend='2015-2017', y=state_begin, yend=state_begin), 
-                       color = 'black', linetype=2) + 
-          geom_segment(aes(x='2015-2017', xend='2015-2017', y=state_begin, yend=state_end), 
-                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) + 
-          geom_segment(aes(x='2000-2002', xend='2015-2017', y=nation_end, yend=nation_end), 
-                       color = 'black', linetype=2) + 
-          geom_segment(aes(x='2000-2002', xend='2000-2002', y=nation_begin, yend=nation_end), 
-                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
-          geom_label_repel(data = label_data, mapping = aes(x = x, y = death_rate, label = label, fill = group),
-                           inherit.aes = FALSE, hjust = "inward", vjust = "inward", direction = "y", seed = 1234) +
-          guides(fill = "none")
+        label_data <- add_reference_point(label_data, nation_begin, nation_end, state_begin, state_end)
+        line_plot <- draw_reference(line_plot, nation_begin, nation_end, state_begin, state_end)
       }
+      line_plot +
+        coord_cartesian(clip = "off") +
+        geom_label_repel(data = label_data, mapping = aes(x = x, y = death_rate, label = label, fill = group),
+                         inherit.aes = FALSE,
+                         #hjust = "inward", vjust = "inward",
+                         #point.padding = 0.5,
+                         direction = "both",
+                         xlim = c(1.5, 5.5),
+                         ylim = ylim,
+                         show.legend = FALSE) 
+        # geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = 'black')
     }
     
   })
