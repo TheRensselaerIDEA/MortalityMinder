@@ -423,52 +423,52 @@ ui <- fluidPage(
         ),
           fluidRow(
                   class = "page page4",
-                   column(3, tags$h2("Project Overview",align="center"), tags$br(), #offset=1,
+                   column(3, tags$h3("Project Overview",align="center"),  #offset=1,
                           fluidRow(
-                            column(11, "Since 2010 the rate of increase in life expectancy in the United States (US) 
+                            column(11, tags$h4("Since 2010 the rate of increase in life expectancy in the United States (US) 
                                    has stagnated and even declined, reversing for the US the trend toward increased life
                                    expectancy that is still continuing in most nations. The goal of this project is 
                                    to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
-                                   and identify their associated community level social determinants.", offset=1), # Close column,
-                            column(11, tags$h2("AHRQ Contest Synopsis",align="center"), tags$br(),
-                                   "The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
+                                   and identify their associated community level social determinants."), offset=1), # Close column,
+                            column(11, tags$h3("AHRQ Contest Synopsis",align="center"), 
+                                   tags$h4("The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
                                    seeks tools that support visualizing such data clusters to enhance the research and analysis 
-                                   of community-level health services.", tags$br(),
-                                   "Challenge participants must develop visualization tools that can augment the insights drawn 
+                                   of community-level health services."), 
+                                   tags$h4("Challenge participants must develop visualization tools that can augment the insights drawn 
                                    from the analysis of medical expenditure and health care utilization data at the community 
                                    level. Tools must use publicly available and free SDOH data from at least three of the 
-                                   following data sources: ", tags$br(),
+                                   following data sources: "), 
                                    tags$ul(
-                                     tags$li("Federal databases."),
-                                     tags$li("State databases."),
+                                     tags$li(tags$h4("Federal databases")),
+                                     tags$li(tags$h4("State databases")),
                                      tags$li(
-                                       "Other locally available data sources, such as SDOH data from voice, digital, and 
-                                       social medical requests via service lines.")
+                                       tags$h4("Other locally available data sources, such as SDOH data from voice, digital, and 
+                                       social medical requests via service lines"))
                                      ), offset=1) # Close column
                                    ) # Close inner fluidRow
                             ), # Close outter column
-                   column(3, tags$h2("Methodology",align="center"), tags$br(),  offset=1,
+                   column(3, tags$h3("Methodology",align="center"),   offset=1,
                           fluidRow(
-                            column(11, "MortalityMinder finds trends in Mortality Rates in the United States. 
+                            column(11, tags$h4("MortalityMinder finds trends in Mortality Rates in the United States. 
                                    It looks at premature deaths, that is deaths in adults from 15 to 64 
-                                   caused by: ", tags$br(),
+                                   caused by: "), 
                                    tags$ul(
-                                     tags$li(tags$b("Deaths of Despair: "), 
-                                             "deaths due to suicide, overdose, substance abuse and poisonings"),
-                                     tags$li(tags$b("Assault: "), 
+                                     tags$li(tags$h4(tags$b("Deaths of Despair: "), 
+                                             "deaths due to suicide, overdose, substance abuse and poisonings")),
+                                     tags$li(tags$h4(tags$b("Assault: "), 
                                              "deaths due injuries inflicted by another person with intent to injure or kill, 
-                                             by any means"),
-                                     tags$li(tags$b("Cardiovascular Disease: "), 
-                                             "diseases of the circulatory systems such as heart disease and stroke"),
-                                     tags$li(tags$b("Cancer: "), 
-                                             "deaths due to cancer and neoplasm"),
-                                     tags$li(tags$b("All Cause: "), 
-                                             "deaths due to any cause")
-                                     ), tags$br(),
-                                   "Machine learning and statistics methods are used for analysis and data visualization. 
+                                             by any means")),
+                                     tags$li(tags$h4(tags$b("Cardiovascular Disease: "), 
+                                             "diseases of the circulatory systems such as heart disease and stroke")),
+                                     tags$li(tags$h4(tags$b("Cancer: "), 
+                                             "deaths due to cancer and neoplasm")),
+                                     tags$li(tags$h4(tags$b("All Cause: "), 
+                                             "deaths due to any cause"))
+                                     ), 
+                                   tags$h4("Machine learning and statistics methods are used for analysis and data visualization. 
                                    We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
                                    to discover counties with different patterns of mortality over time and associated social 
-                                   determinants using cluster or supervised clustering.",
+                                   determinants using cluster or supervised clustering."),
                                    offset=1) # Close Column
                    ), tags$br(),# Close inner fluidRow,
                    tags$div(class="IDEA_Logo_Wrapper",
@@ -481,8 +481,8 @@ ui <- fluidPage(
                    )
                           ), # Close column
                    column(3, 
-                          tags$h2("Additional Resources",align="center"), tags$br(), offset=1,
-                          "Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
+                          tags$h3("Additional Resources",align="center"),  offset=1,
+                          tags$h4("Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
                           of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
                           Institute. Retrieved from ", tags$br(),
                           tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
@@ -495,15 +495,15 @@ ui <- fluidPage(
                           "Small Area Health Insurance Estimates (SAHIE) Program.", tags$br(),
                           tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
                           "Agency for Healthcare Research and Quality, US Dept. of Health and Human Services.", tags$br(),
-                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page"),tags$br(),
-                          tags$br(),
+                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page")),tags$br(),
                           
-                          tags$h2("Download Data",align="center"), tags$br(),
+                          
+                          tags$h3("Download Data",align="center"), 
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
                           downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
                           tags$br(),
-                          tags$h2("Download Current Results",align="center"), tags$br(),
+                          tags$h3("Download Current Results",align="center"), 
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
                           downloadButton("downloadCorr", "Current Factor Correlations")

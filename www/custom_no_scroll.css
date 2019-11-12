@@ -220,7 +220,7 @@
 
 .page2_col {
   width:50%;
-  height:100%;
+  height:95%;
   float:left;
   display:block;
 }
@@ -286,7 +286,7 @@
 .page1 {}
 
 .page1_col{
-  height:100%;
+  height:95%;
   float:left;
   display:block;
 }
@@ -336,7 +336,7 @@
 
 .page3_col {
   width:calc(100% / 3);
-  height:100%;
+  height:95%;
   float:left;
   display:block;  
 }
@@ -377,7 +377,9 @@
   display:block;
 }
 
-.page4 {}
+.page4 {
+  height:95%;
+}
 
 
 /*----------------------------------------*/
