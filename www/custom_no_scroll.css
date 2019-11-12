@@ -231,7 +231,7 @@
 
 .page2_col1_top {
   width:100%;
-  height:60%;
+  height:calc(50% - 1px);
   overflow-y: auto;
 }
 
