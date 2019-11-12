@@ -381,6 +381,30 @@
   height:95%;
 }
 
+.page1 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
+.page1 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
+.page1 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
+.page1 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
+.page1 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
+.page1 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
+.page1 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
+
+.page2 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
+.page2 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
+.page2 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
+.page2 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
+.page2 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
+.page2 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
+.page2 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
+
+.page3 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
+.page3 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
+.page3 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
+.page3 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
+.page3 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
+.page3 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
+.page3 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
+
 .page4 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
 .page4 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
 .page4 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
