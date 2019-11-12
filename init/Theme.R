@@ -701,16 +701,13 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
   
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
-  # These only make sense for categorical!
-  # colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
-  # labels <- geo.label(death.cause) 
-  
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
-  dataset$county_fips <- substr(dataset$county_fips, 3, 5)
-  dataset <- left_join(as.data.frame(shapes)['COUNTYFP'], dataset, by = c("COUNTYFP" = "county_fips"))
+  shapes.data <- as.data.frame(shapes)
+  shapes.data$county_fips <- paste(as.data.frame(shapes)$STATEFP, as.data.frame(shapes)$COUNTYFP, sep = '')
+  dataset <- left_join(shapes.data, dataset, by = c("county_fips" = "county_fips"))
   
-  # Palette function for our continous colors
-  pal <- colorNumeric("Blues", domain = dataset$VAR)
+  pal <- colorBin(c("#7ccaf2", "#2a9df4", "#0277bd", "#03254c"), 
+                  domain = dataset$VAR, bins = 3)
     
   if (state.choice != "US"){
     plot <- leaflet(shapes, 
@@ -723,9 +720,9 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
                                 smoothFactor = 0.1, 
                                 fillOpacity = 1,
                                 weight = 1,
-                                color = ~pal(dataset$VAR),
+                                color = "white",
                                 opacity = 1,
-                                # fillColor = ~pal(VAR),
+                                fillColor = ~pal(dataset$VAR),
                                 label = dataset$county_name,
                                 layerId = dataset$county_name) %>%
                     addControl(get_sd_title(state.choice, sd.choice, period), 
