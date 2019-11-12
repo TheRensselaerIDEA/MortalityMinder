@@ -191,14 +191,8 @@ ui <- fluidPage(
                   column(6,
                          class = "page1_col page1_col2_middle_right",
                          tags$h3("Mortality Trend Plot"),
-                         tags$div(
-                           style="position:relative;width: 100%;left: 0",
-                           tags$img(
-                             style="width: 100%",
-                             src="temp_chart.png"
-                             )
-                         )
-                         )
+                         plotOutput("nation_state_infographic")
+                  )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
@@ -1435,6 +1429,174 @@ server <- function(input, output, session) {
                                 values = c("twodash"),
                                 guide = guide_legend(override.aes = list(color = c("black")))
           )
+      }
+    }
+    
+  })
+  
+  generate_text <- function(name, diff_pct){
+    change_text <- paste0("The mortality rate has ")
+    
+    if (diff_pct > 0) {
+      change_text <- paste0(change_text, "increased\n ")
+    }
+    else {
+      change_text <- paste0(change_text, "decreased\n ")
+    }
+    
+    change_text <- paste0(change_text, "in ", name, " by ", abs(round(diff_pct,1)), "%")
+    change_text
+  }
+  
+  generate_label_data <- function(data, state_begin, state_end, nation_begin, nation_end, state_y, nation_y){
+    label_data <- data.frame(data)
+    label_data <- label_data %>% 
+      mutate(label = "") %>% 
+      rename(x = period)
+    
+    label_data$x[label_data$x=="2000-2002"] <- 1
+    label_data$x[label_data$x=="2003-2005"] <- 2
+    label_data$x[label_data$x=="2006-2008"] <- 3
+    label_data$x[label_data$x=="2009-2011"] <- 4
+    label_data$x[label_data$x=="2012-2014"] <- 5
+    label_data$x[label_data$x=="2015-2017"] <- 6
+    label_data$x <- as.numeric(as.character(label_data$x))
+    n <- 10
+    d <- 0
+    for (i in 1:5){
+      r1 <- label_data[label_data$x==i,]
+      r2 <- label_data[label_data$x==i+1,]
+      for (j in 1:n-1){
+        label_data <- rbind(label_data, data.frame("x" = i+j/n,
+                                                   "death_rate" = r2$death_rate*j/n+r1$death_rate*(n-j)/n-d,
+                                                   "label" = c("",""),
+                                                   "group" = c(input$state_choice, "United States")))
+        label_data <- rbind(label_data, data.frame("x" = i+j/n,
+                                                   "death_rate" = r2$death_rate*j/n+r1$death_rate*(n-j)/n+d,
+                                                   "label" = c("",""),
+                                                   "group" = c(input$state_choice, "United States")))
+      }
+    }
+    state_diff <- (state_end - state_begin) / state_begin * 100
+    state_text <- generate_text(input$state_choice, state_diff) 
+    nation_diff <- (nation_end - nation_begin) / nation_begin * 100
+    nation_text <- generate_text("United States", nation_diff)
+    
+    if (state_end > nation_end){
+      x <- c(1.1, 5.9)
+    } else {
+      x <- c(5.9, 1.1)
+    }
+    label_data <- rbind(label_data,
+                        data.frame("x" = x, 
+                                   "death_rate" = c(state_y, nation_y),
+                                   "label" = c(state_text, nation_text),
+                                   "group" = c(input$state_choice, "United States")))
+    label_data
+  }
+  
+  # Mortality Rate Trend Line Graph
+  output$nation_state_infographic <- renderPlot({
+    
+    if (input$state_choice == "United States"){
+      
+      ggplot(
+        mort.avg.cluster.ord(),
+        aes(
+          x = period, y = death_rate, 
+          color = cluster, group = cluster
+        )
+      ) + 
+        geom_line(size = 1.5) + 
+        geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+        # labs.line.mort(input$state_choice, input$death_cause) + 
+        scale_color_manual(
+          values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
+        theme.line.mort() + 
+        guides(
+          color = guide_legend(reverse = T)
+        )
+    } else {
+      state_data <- dplyr::filter(
+                      cdc.data,
+                      state_abbr == input$state_choice,
+                      death_cause == input$death_cause
+                    ) %>% 
+                    drop_na() %>%
+                    group_by(period) %>% 
+                    summarise(population = sum(population), death_num = sum(death_num)) %>%
+                    mutate(death_rate = death_num/population*100000, group = input$state_choice) %>%
+                    select(period, death_rate, group)
+      
+      state_begin <- state_data[state_data$period=="2000-2002",]$death_rate
+      state_end <- state_data[state_data$period=="2015-2017",]$death_rate
+      state_hi <- max(state_begin, state_end)
+      state_lo <- min(state_begin, state_end)
+      
+      
+      nation_data <- dplyr::filter(
+                      cdc.data,
+                      death_cause == input$death_cause
+                    ) %>% 
+                      drop_na() %>%
+                      group_by(period) %>% 
+                      summarise(population = sum(population), death_num = sum(death_num)) %>%
+                      mutate(death_rate = death_num/population*100000, group = "United States") %>%
+                      select(period, death_rate, group)
+
+      nation_begin <- nation_data[nation_data$period=="2000-2002",]$death_rate
+      nation_end <- nation_data[nation_data$period=="2015-2017",]$death_rate
+      nation_hi <- max(nation_begin, nation_end)
+      nation_lo <- min(nation_begin, nation_end)
+      
+      data <- bind_rows(state_data, nation_data)
+      
+      line_plot <- ggplot(
+                      data,
+                      aes(
+                        x = period, y = death_rate, 
+                        color = group, group = group
+                      )
+                    ) + 
+                      geom_line(size = 1.5) + 
+                      geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+                      theme.line.mort() + 
+                      theme(legend.position = "bottom", legend.title = element_blank()) + 
+                      ylab("Mortality Rate (# per 100k)") 
+      
+      u <- 0.8
+      v <- 1 - u
+      if (nation_end < state_end){
+        label_data <- generate_label_data(data, state_begin, state_end, nation_begin, nation_end, 
+                                          u*state_hi+v*state_lo, u*nation_lo+v*nation_hi)
+        line_plot +
+          geom_segment(aes(x='2000-2002', xend='2015-2017', y=state_end, yend=state_end),
+                       color = 'black', linetype=2) +
+          geom_segment(aes(x='2000-2002', xend='2000-2002', y=state_begin, yend=state_end),
+                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
+          geom_segment(aes(x='2000-2002', xend='2015-2017', y=nation_begin, yend=nation_begin),
+                       color = 'black', linetype=2) +
+          geom_segment(aes(x='2015-2017', xend='2015-2017', y=nation_begin, yend=nation_end),
+                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
+          geom_label_repel(data = label_data, mapping = aes(x = x, y = death_rate, label = label, fill = group),
+                           inherit.aes = FALSE, hjust = "inward", vjust = "inward", direction = "y", seed = 1234) + 
+          guides(fill = "none")
+          
+      } else {
+        label_data <- generate_label_data(data, state_begin, state_end, nation_begin, nation_end, 
+                                          v*state_hi+u*state_lo, v*nation_lo+u*nation_hi)
+        line_plot +
+          geom_segment(aes(x='2000-2002', xend='2015-2017', y=state_begin, yend=state_begin), 
+                       color = 'black', linetype=2) + 
+          geom_segment(aes(x='2015-2017', xend='2015-2017', y=state_begin, yend=state_end), 
+                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) + 
+          geom_segment(aes(x='2000-2002', xend='2015-2017', y=nation_end, yend=nation_end), 
+                       color = 'black', linetype=2) + 
+          geom_segment(aes(x='2000-2002', xend='2000-2002', y=nation_begin, yend=nation_end), 
+                       color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm"))) +
+          geom_label_repel(data = label_data, mapping = aes(x = x, y = death_rate, label = label, fill = group),
+                           inherit.aes = FALSE, hjust = "inward", vjust = "inward", direction = "y", seed = 1234) +
+          guides(fill = "none")
       }
     }
     

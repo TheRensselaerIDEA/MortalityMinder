@@ -41,7 +41,7 @@ LIBS_SHINYAPP <- c(
 #   - e.g.`ggplot2`
 # Note: DO NOT PUT SHINY PACKAGES HERE
 LIBS_PLOT <- c(
-  "ggplot2", "plotly",
+  "ggplot2", "plotly", "ggrepel", 
   
   # Choropleth plot
   "RUnit", "mapproj", "maps", "leaflet", "leaflet.extras"
