@@ -18,6 +18,9 @@ reduced.chr.list <- append(reduced.chr.list, "county_fips", after = 0)
 chr.data.2019 <- chr.data.2019 %>%
   as_data_frame %>%
   select(reduced.chr.list)
+
+# Load state and national mortality rate data
+state_natl_death_rates <- readRDS("../data/CDC/state_natl_death_rates.Rds")
   
 chr.namemap.2019 <- readRDS("chr.namemap.2019.rds")
 chr.namemap.inv.2019 <- readRDS("chr.namemap.inv.2019.rds")
