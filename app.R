@@ -1543,6 +1543,8 @@ server <- function(input, output, session) {
                       )
                     ) + 
                       geom_line(size = 1.5) + 
+                      scale_fill_brewer(palette="Pastel2") +
+                      scale_color_brewer(palette="Dark2") +
                       geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
                       theme.line.mort() + 
                       theme(legend.position = "bottom", legend.title = element_blank()) + 
