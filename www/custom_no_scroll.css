@@ -308,6 +308,50 @@ pre {
 .page2_col1_top_left {}
 
 .page2_col1_top_right {}
+#year_selector {
+  width: 100%;
+  text-align: left;
+  }
+#year_selector .control-label {
+  width: 100%;
+  text-align: left;
+  font-size: 10px;
+  display: block;
+  }
+  .radio-inline {
+  padding: 0;
+  margin: 0 2px;
+  }
+  .radio-inline+.radio-inline {
+  margin: 0;
+  }
+  .radio-inline input[type=radio] {
+  display: none;
+  }
+  .radio-inline input[type=radio]:checked + span {
+  padding: 0 2px;
+  border: 2px solid black;
+  border-radius: 3px;
+  }
+  @media screen and (min-width : 1601px)
+  {
+  .radio-inline {
+  font-size: 14px;
+            }
+  }
+  @media screen and (max-width : 1600px)
+  {
+  .radio-inline {
+  font-size: 10px;
+         }
+  }
+  @media screen and (max-width : 1200px)
+  {
+  .radio-inline {
+  font-size: 8px;
+         }
+  }
+
 
 .page2_col1_top_right_title{}
 
@@ -350,21 +394,6 @@ pre {
   width:100vw;
   height:100vh;
 }
-/*
-.year_selector {
-  width: 100%;
-  text-align: left;
-  overflow-x: auto;
-  overflow-y: visible;
-}
-
-.control-label {
-  width: 100%;
-  text-align: left;
-  font-size: 12px;
-  display: block;
-}
-*.
 
 /********** PAGE 3 ***********/
 .page3 {}
