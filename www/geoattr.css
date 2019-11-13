@@ -47,10 +47,6 @@
 #clock {
 	left: 65px;
 }
-.period_text{
-  font-size:12px;
-  
-}
 
 .ul_period {
   list-style-type: none;
@@ -62,15 +58,15 @@
 
 
 .period_text {
+  font-size:10px;
   float: left;
   background-color: white; /* Green */
   border: none;
   color: black;
-  padding: 15px 32px;
+  /*padding: 15px 32px;*/
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
 }
 
 
