@@ -131,14 +131,14 @@ ui <- fluidPage(
                     class = "National_title",
                     style = "padding-left: 20px",
                     uiOutput("textNationalTitle"),
-                    uiOutput("textMortFactsClosing"),
-                    tags$h5(tags$i("Click on time period to select national map for that period"))
+                    uiOutput("textMortFactsClosing")
                     )
                   ), # End of inner FluidRow (Column 2 top)
                 tags$hr(),
                 fluidRow(
                   column(6,
                   class = "page1_col page1_col2_middle_left",
+                  tags$h5(tags$i("Click on time period to select national map for that period")),
                   tags$div(
                     class = "explore_but",
                     style = "text-align: center;",
@@ -178,7 +178,7 @@ ui <- fluidPage(
                     ) # End List of buttons
                   ), # End Button Functionality
                   tags$div(class="NationalMapContainer",
-                           style="position:relative;width: 100%;left: 0",
+                           style="position:relative;width: 100%;left: 0;",
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
