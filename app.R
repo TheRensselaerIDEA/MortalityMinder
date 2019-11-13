@@ -115,7 +115,7 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
                     given county during a three year period fora given cause and for a region:  county, state or nationwide.\n"), 
-                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
+                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed 
                     from 2000 to 2017.\n"), 
                       tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
                     increased mortality rates at the county level."), tags$br(),
@@ -956,7 +956,7 @@ server <- function(input, output, session) {
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
       
     }
-  })
+  }, bg="transparent")
   
   update.county.fips <- function(value) {
     if (!is.na(value) & nchar(value) == 4) {
@@ -1019,7 +1019,7 @@ server <- function(input, output, session) {
           
           axis.line.x = element_blank(), 
           axis.title.x = element_blank(),
-          
+          rect = element_blank(),
           legend.position = "none"
         ) + 
         labs(
@@ -1032,7 +1032,7 @@ server <- function(input, output, session) {
       
     }
     
-  })
+  }, bg = "transparent")
   
   
   output$determinants_plot3 <- renderPlot({
@@ -1148,7 +1148,7 @@ server <- function(input, output, session) {
           )
       }
     }
-  })
+  }, bg = "transparent")
 
   # Geo-plot of selected determinant for selected county
   # Based on scatterplot
@@ -1350,7 +1350,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster \n Average", color = "Cluster \n Average") + 
-        ylab("Mortality Rate (# per 100k)")
+        ylab("Mortality Rate (# per 100k)") 
       
       if (is.null(county_choice())){
         line_plot 
@@ -1377,7 +1377,7 @@ server <- function(input, output, session) {
       }
     }
     
-  })
+  },bg="transparent")
   
   generate_text <- function(name, diff_pct){
     change_text <- paste0("The mortality rate \nhas ")
@@ -1575,7 +1575,7 @@ server <- function(input, output, session) {
         # geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = 'black')
     }
     
-  })
+  }, bg="transparent")
   
   # Textual description box (upper-left panel, Page 1)
   output$textDescription <- renderUI({
@@ -2161,7 +2161,7 @@ the highest absolute correlation with mortality.",
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
       
     }
-  })
+  }, bg = "transparent")
   
   draw_border <- function(plot.name, border){
     proxy <- leafletProxy(plot.name)
