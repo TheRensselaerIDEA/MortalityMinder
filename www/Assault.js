@@ -28,6 +28,7 @@ var btn4 = document.getElementById("forth_period");
 var btn5 = document.getElementById("fifth_period");
 var btn6 = document.getElementById("sixth_period");
 var btn_list = [btn1,btn2,btn3,btn4,btn5,btn6];
+
 btn1.onclick = function(){
   if(playing === true){
     playing = false;
@@ -38,6 +39,7 @@ btn1.onclick = function(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
@@ -56,6 +58,7 @@ btn2.onclick = function(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
@@ -74,6 +77,7 @@ btn3.onclick = function(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
@@ -92,6 +96,7 @@ btn4.onclick = function(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
@@ -110,6 +115,7 @@ btn5.onclick = function(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
@@ -128,6 +134,7 @@ btn6.onclick = function(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
@@ -148,6 +155,7 @@ function changeImage(){
       //btn_list[i].style.backgroundColor = "red";
       btn_list[i].style.border = "solid";
       btn_list[i].style.borderWidth = "1px";
+      btn_list[i].style.borderRadius = "3px";
     }
     else{
       btn_list[i].style.border = "none";
