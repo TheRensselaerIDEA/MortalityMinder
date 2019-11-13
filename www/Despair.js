@@ -30,6 +30,13 @@ var btn5 = document.getElementById("fifth_period");
 var btn6 = document.getElementById("sixth_period");
 var btn_list = [btn1,btn2,btn3,btn4,btn5,btn6];
 
+// Set buttons as transparent .style.background = "none";
+btn1.style.background = "none";
+btn2.style.background = "none";
+btn3.style.background = "none";
+btn4.style.background = "none";
+btn5.style.background = "none";
+btn6.style.background = "none";
 
 btn1.onclick = function(){
   if(playing === true){

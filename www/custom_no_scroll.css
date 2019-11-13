@@ -418,13 +418,11 @@ pre {
 
 .page3_col3_top {
   padding: 20px; 
-  height: 50%; 
   margin-right: 20px;
 }
 
 .page3_col3_bot {
   width:100%;
-  height:calc(50% - 1px);
 }
 
 

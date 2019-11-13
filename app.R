@@ -41,7 +41,6 @@ ui <- fluidPage(
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
   tags$head(includeCSS("geoattr.css")),
-  tags$head(includeCSS("font.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -220,11 +219,7 @@ ui <- fluidPage(
                        column(5,
                               class = "page2_col page2_col1_top_left",
                               tags$div(
-                                title="The mortality rate used in the app is the number
-                                      of people per 100,000 that died prematurely in a given 
-                                      county during a three year period. A premature death is 
-                                      considered anyone that dies between the ages of 25 to 64
-                                      as a result of the selected cause.",
+                                title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
                                 tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
                                       ), # End of Heading Conrainer
                               uiOutput("textDescription")
@@ -1585,8 +1580,8 @@ server <- function(input, output, session) {
       tags$h5(
         paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$h5(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h5(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify indiviual counties. Zoom map with mouse wheel or zoom buttons.")),
+      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$p(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
       NULL
     )
   })
