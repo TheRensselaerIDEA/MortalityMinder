@@ -169,7 +169,7 @@
 }
 
 /********** FONTS ***********/
-p, blockquote, pre {
+p, blockquote, pre, .radio-inline{
  font-family: Georgia, Times, "Times New Roman", serif;
  font-variant: normal; 
  font-weight: 400;
@@ -330,7 +330,7 @@ pre {
   }
   .radio-inline input[type=radio]:checked + span {
   padding: 0 2px;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 3px;
   }
   @media screen and (min-width : 1601px)
