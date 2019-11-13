@@ -1657,6 +1657,7 @@ server <- function(input, output, session) {
     else {
       # percent change for first bullet
       change_text <- "remained the same"
+      vals_text <- paste0("at ", round(state.mean.2015_2017(), 1), " per 100k people")
       
       percent_change <- round(
         (state.mean.2015_2017() - state.mean.2000_2002()) / state.mean.2000_2002() * 100,
@@ -1664,10 +1665,14 @@ server <- function(input, output, session) {
       )
       
       if (percent_change > 0) {
-        change_text <- paste0("increased ", percent_change, "%")
+        change_text <- paste0("increased by ", abs(percent_change), "%")
+        vals_text <- paste0("rising from ", round(state.mean.2000_2002(), 1), 
+                            " to ", round(state.mean.2015_2017(), 1))
       }
       else if (percent_change < 0) {
-        change_text <- paste0("decreased ", percent_change, "%")
+        change_text <- paste0("decreased by ", abs(percent_change), "%")
+        vals_text <- paste0("falling from ", round(state.mean.2000_2002(), 1), 
+                            " to ", round(state.mean.2015_2017(), 1))
       }
       
       # comparison wish national average
@@ -1684,8 +1689,9 @@ server <- function(input, output, session) {
       tagList(
         tags$ul(
           #style = "font-size: 18px;",
-          tags$li(tags$h4(paste0("Have ", change_text, " from 2000 to 2017"))),
-          tags$li(tags$h4(paste0("Were ", comparison_text, " the national mean in 2015-2017"))),
+          tags$li(tags$h4(paste0("Have ", change_text, " from 2000 to 2017, ", vals_text, " per 100k people"))),
+          tags$li(tags$h4(paste0("Were ", comparison_text, " the national mean in 2015-2017 of ",
+                                 round(national.mean.2015_2017(), 2), " per 100k people"))),
           tags$li(tags$h4(paste0("Range from ", 
                          round(as.numeric(low.rate.county.2015_2017()[1]), 1),
                          " per 100k people in ",
