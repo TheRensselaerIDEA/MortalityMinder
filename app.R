@@ -232,51 +232,6 @@ ui <- fluidPage(
                              ), # End of inner Column (Column 1 Top Left)
                        column(5,
                               class = "page2_col page2_col1_top_right",
-                              tags$style(
-                                      HTML(
-                                      "
-                                      #year_selector {
-                                      width: 100%;
-                                      text-align: left;
-                                      overflow-x: auto;
-                                      overflow-y: visible;
-                                      }
-                                      #year_selector .control-label {
-                                      width: 100%;
-                                      text-align: left;
-                                      font-size: 12px;
-                                      display: block;
-                                      }
-                                      .radio-inline {
-                                      padding: 0;
-                                      margin: 0 2px;
-                                      }
-                                      .radio-inline+.radio-inline {
-                                      margin: 0;
-                                      }
-                                      .radio-inline input[type=radio] {
-                                      display: none;
-                                      }
-                                      .radio-inline input[type=radio]:checked + span {
-                                      padding: 0 2px;
-                                      border: 2px solid black;
-                                      border-radius: 3px;
-                                      }
-                                      @media screen and (min-width : 1601px)
-                                      {
-                                      .radio-inline {
-                                      font-size: 16px;
-                                      }
-                                      }
-                                      @media screen and (max-width : 1600px)
-                                      {
-                                      .radio-inline {
-                                      font-size: 10px;
-                                      }
-                                      }
-                                      "
-                                          ) #End of HTML Block
-                                        ), # End of Style block
                               tags$div(
                                 class="page2_col1_top_right_title",
                                 uiOutput("textMortRates")
@@ -1807,7 +1762,6 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the distribution of mortality rates for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Mortality rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
         icon("info-circle")
