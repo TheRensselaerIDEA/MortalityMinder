@@ -1659,7 +1659,7 @@ server <- function(input, output, session) {
       change_text <- "remained the same"
       
       percent_change <- round(
-        abs(state.mean.2015_2017() - state.mean.2000_2002()) / state.mean.2000_2002() * 100,
+        (state.mean.2015_2017() - state.mean.2000_2002()) / state.mean.2000_2002() * 100,
         1
       )
       
