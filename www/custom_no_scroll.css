@@ -140,43 +140,6 @@
   background-color:rgb(235,235,235);
 }
 
-/*
-.col1_top_left h2 {
-  font-size: 38px;
-  line-height: 1.07143;
-  font-weight: 200;
-  letter-spacing: -.005em;
-  margin:26px 1px 1px 26px;
-  font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
-}
-*/
-
-/*
-.col1_top_left p {
-  width:75%;
-  height:70%;
-  margin:10px 10% 1px 15%;
-  padding:5px 5px;
-  font-size: 20px;
-  line-height: 1.07143;
-  font-weight: 200;
-  letter-spacing: -.005em;
-  font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
-  border:2px dashed black;
-}
-*/
-
-/*
-.col2_title h2 {
-  font-size: 38px;
-  line-height: 1.07143;
-  font-weight: 200;
-  letter-spacing: -.005em;
-  margin:26px 1px 1px 26px;
-  font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
-}
-*/
-
 .word_redBG {
   padding: 3px 1px 1px 1px;
   background-color:red;
@@ -205,6 +168,65 @@
   display:block;
 }
 
+/********** FONTS ***********/
+p, blockquote, pre {
+ font-family: Georgia, Times, "Times New Roman", serif;
+ font-variant: normal; 
+ font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+ font-family: Georgia, Times, "Times New Roman", serif;
+ font-style: normal; 
+ font-variant: normal; 
+ font-weight: 700;
+}
+
+h1{
+ font-size: 24px;
+ line-height: 26.4px;
+}
+
+h2{
+ font-size: 18px;
+ line-height: 15.4px;
+}
+
+h3{
+ font-size: 16px;
+ line-height: 15.4px;
+}
+
+h4{
+ font-size: 14px;
+ line-height: 20px;
+ font-weight: 400;
+}
+
+h5{
+ font-size: 13px;
+}
+
+h6{
+ font-size: 12px;
+}
+
+p {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+blockquote {
+  font-size: 21px;
+  line-height: 30px; 
+}
+
+pre {
+  font-size: 13px;
+  line-height: 18.5714px; 
+}
+/******** END FONTS ***********/
+
 .page {
   width:100%;
   height:calc(100% - 50px);
@@ -215,6 +237,54 @@
   overflow-y: auto;
 }
 
+/************ PAGE 1 ****************/
+.page1 {}
+
+.page1_col{
+  height:95%;
+  float:left;
+  display:block;
+}
+
+.page1_col1 {
+  width:25%;
+  overflow-y:scroll;
+}
+
+.page1_col2 {}
+
+.page1_col2_top{
+  width:100%;
+  height:15%;
+}
+
+.page1_text {
+  width:45%;
+  float:left;
+  display:block;
+}
+
+.page1_col3_text_1{}
+
+.page1_col3_text_2{}
+
+.page1_col2_middle_left{}
+
+.page1_col2_middle_right{}
+
+.page1_col2_bottom{
+  width:100%;
+  height:35%;
+  position: relative;
+}
+
+.page1_col3 {
+  width:20%;
+}
+
+.img {}
+
+/************* PAGE2 ***********/
 
 .page2 {}
 
@@ -280,58 +350,23 @@
   width:100vw;
   height:100vh;
 }
-
-/****** THIS IS THE CUT OFF FOR PAGE2 ***********/
-
-.page1 {}
-
-.page1_col{
-  height:95%;
-  float:left;
-  display:block;
+/*
+.year_selector {
+  width: 100%;
+  text-align: left;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
-.page1_col1 {
-  width:25%;
-  overflow-y:scroll;
+.control-label {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  display: block;
 }
+*.
 
-.page1_col2 {}
-
-.page1_col2_top{
-  width:100%;
-  height:15%;
-}
-
-.page1_text {
-  width:45%;
-  float:left;
-  display:block;
-}
-
-.page1_col3_text_1{}
-
-.page1_col3_text_2{}
-
-.page1_col2_middle_left{}
-
-.page1_col2_middle_right{}
-
-.page1_col2_bottom{
-  width:100%;
-  height:35%;
-  position: relative;
-}
-
-.page1_col3 {
-  width:20%;
-}
-
-.img {
-  
-}
-
-/********** THIS IS THE END OF PAGE 1 ***********/
+/********** PAGE 3 ***********/
 .page3 {}
 
 .page3_col {
@@ -377,41 +412,11 @@
   display:block;
 }
 
+/************** PAGE 4 ****************/
+
 .page4 {
   height:95%;
 }
-
-.page1 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
-.page1 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page1 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page1 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page1 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page1 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
-.page1 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
-
-.page2 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
-.page2 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page2 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page2 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page2 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page2 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
-.page2 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
-
-.page3 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
-.page3 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page3 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page3 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page3 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page3 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
-.page3 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
-
-.page4 h1 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } 
-.page4 h2 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page4 h3 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } 
-.page4 h4 { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page4 p { font-family: Georgia, Times, "Times New Roman", serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } 
-.page4 blockquote { font-family: Georgia, Times, "Times New Roman", serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } 
-.page4 pre { font-family: Georgia, Times, "Times New Roman", serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
 
 /*----------------------------------------*/
 .fp-controlArrow.fp-prev {

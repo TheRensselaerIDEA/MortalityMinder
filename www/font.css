@@ -1,33 +1,56 @@
-body, p, li {
- font-family: 'Work Sans', sans-serif;
- font-size: 18px;
+p, blockquote, pre {
+ font-family: Georgia, Times, "Times New Roman", serif;
+ font-variant: normal; 
+ font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
- font-family: 'Crimson Text', serif;
+ font-family: Georgia, Times, "Times New Roman", serif;
+ font-style: normal; 
+ font-variant: normal; 
+ font-weight: 700;
 }
 
 h1{
- font-size: 48px;
+ font-size: 24px;
+ line-height: 26.4px;
 }
 
 h2{
- font-size: 36px;
+ font-size: 18px;
+ line-height: 15.4px;
 }
 
 h3{
- font-size: 24px;
+ font-size: 16px;
+ line-height: 15.4px;
 }
 
 h4{
- font-size: 18px;
+ font-size: 14px;
+ line-height: 20px;
+ font-weight: 400;
 }
 
 h5{
- font-size: 16px;
+ font-size: 13px;
 }
 
 h6{
- font-size: 15px;
+ font-size: 12px;
 }
 
+p {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+blockquote {
+  font-size: 21px;
+  line-height: 30px; 
+}
+
+pre {
+  font-size: 13px;
+  line-height: 18.5714px; 
+}
