@@ -172,7 +172,7 @@ ui <- fluidPage(
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
-                        style= "background-color: red",
+                        style= "border: solid; border-width: 1px;",
                         "2015-2017"
                       )
                     ) # End List of buttons
