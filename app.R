@@ -189,7 +189,7 @@ ui <- fluidPage(
                   ), # End of Middle inner Column
                   column(6,
                          class = "page1_col page1_col2_middle_right",
-                         tags$h3("Mortality Trend Plot"),
+                         uiOutput("textInfographicTitle"),
                          plotOutput("nation_state_infographic")
                   )
                 ), # End of inner Fluid Row (Column 2 Middle)
@@ -1606,6 +1606,34 @@ server <- function(input, output, session) {
                ":")
       )
     )
+  })
+
+  output$textInfographicTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          paste0("Mortality Rates for ",
+                 names(which(cause.list == input$death_cause)), 
+                 " in ", 
+                 location_str)
+        )
+      )
+    }
+    else {
+      location_str <- names(which(state.list == input$state_choice))
+      tagList(
+        tags$h3(
+          paste0("Mortality Rates for ",
+                 names(which(cause.list == input$death_cause)), 
+                 " in ", 
+                 location_str,
+                 " vs. United States")
+        )
+      )
+    }
   })
   
   output$textMortFactsClosing <- renderUI({
