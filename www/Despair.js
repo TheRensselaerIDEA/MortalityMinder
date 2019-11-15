@@ -54,6 +54,7 @@ btn1.onclick = function(){
       btn_list[i].style.border = "none";
     }
   }
+  Shiny.setInputValue("page1_period", 1);
   image.src = images[0];
   position = 0;
 }
@@ -73,6 +74,7 @@ btn2.onclick = function(){
       btn_list[i].style.border = "none";
     }
   }
+  Shiny.setInputValue("page1_period", 2);
   image.src = images[1];
   position = 1;
 }
@@ -92,6 +94,7 @@ btn3.onclick = function(){
       btn_list[i].style.border = "none";
     }
   }
+  Shiny.setInputValue("page1_period", 3);
   image.src = images[2];
   position = 2;
 }
@@ -111,6 +114,7 @@ btn4.onclick = function(){
       btn_list[i].style.border = "none";
     }
   }
+  Shiny.setInputValue("page1_period", 4);
   image.src = images[3];
   position = 3;
 }
@@ -130,6 +134,7 @@ btn5.onclick = function(){
       btn_list[i].style.border = "none";
     }
   }
+  Shiny.setInputValue("page1_period", 5);
   image.src = images[4];
   position = 4;
 }
@@ -149,6 +154,7 @@ btn6.onclick = function(){
       btn_list[i].style.border = "none";
     }
   }
+  Shiny.setInputValue("page1_period", 6);
   image.src = images[5];
   position = 5;
 }
