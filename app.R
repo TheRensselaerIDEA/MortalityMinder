@@ -41,7 +41,6 @@ ui <- fluidPage(
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
   tags$head(includeCSS("geoattr.css")),
-  tags$head(includeCSS("font.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -115,7 +114,7 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
                     given county during a three year period fora given cause and for a region:  county, state or nationwide.\n"), 
-                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates inthe United States have changed 
+                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed 
                     from 2000 to 2017.\n"), 
                       tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
                     increased mortality rates at the county level."), tags$br(),
@@ -131,14 +130,14 @@ ui <- fluidPage(
                     class = "National_title",
                     style = "padding-left: 20px",
                     uiOutput("textNationalTitle"),
-                    uiOutput("textMortFactsClosing"),
-                    tags$h5(tags$i("Click on time period to select national map for that period"))
+                    uiOutput("textMortFactsClosing")
                     )
                   ), # End of inner FluidRow (Column 2 top)
                 tags$hr(),
                 fluidRow(
                   column(6,
                   class = "page1_col page1_col2_middle_left",
+                  tags$h5(tags$i("Click on time period to select national map for that period")),
                   tags$div(
                     class = "explore_but",
                     style = "text-align: center;",
@@ -172,13 +171,13 @@ ui <- fluidPage(
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
-                        style= "border: solid; border-width: 1px;",
+                        style= "border: solid; border-width: 1px;border-radius: 3px;",
                         "2015-2017"
                       )
                     ) # End List of buttons
                   ), # End Button Functionality
                   tags$div(class="NationalMapContainer",
-                           style="position:relative;width: 100%;left: 0",
+                           style="position:relative;width: 100%;left: 0;",
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
@@ -190,7 +189,7 @@ ui <- fluidPage(
                   ), # End of Middle inner Column
                   column(6,
                          class = "page1_col page1_col2_middle_right",
-                         tags$h3("Mortality Trend Plot"),
+                         uiOutput("textInfographicTitle"),
                          plotOutput("nation_state_infographic")
                   )
                 ), # End of inner Fluid Row (Column 2 Middle)
@@ -220,11 +219,7 @@ ui <- fluidPage(
                        column(5,
                               class = "page2_col page2_col1_top_left",
                               tags$div(
-                                title="The mortality rate used in the app is the number
-                                      of people per 100,000 that died prematurely in a given 
-                                      county during a three year period. A premature death is 
-                                      considered anyone that dies between the ages of 25 to 64
-                                      as a result of the selected cause.",
+                                title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
                                 tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
                                       ), # End of Heading Conrainer
                               uiOutput("textDescription")
@@ -957,7 +952,7 @@ server <- function(input, output, session) {
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
       
     }
-  })
+  }, bg="transparent")
   
   update.county.fips <- function(value) {
     if (!is.na(value) & nchar(value) == 4) {
@@ -1020,7 +1015,7 @@ server <- function(input, output, session) {
           
           axis.line.x = element_blank(), 
           axis.title.x = element_blank(),
-          
+          rect = element_blank(),
           legend.position = "none"
         ) + 
         labs(
@@ -1033,7 +1028,7 @@ server <- function(input, output, session) {
       
     }
     
-  })
+  }, bg = "transparent")
   
   
   output$determinants_plot3 <- renderPlot({
@@ -1149,7 +1144,7 @@ server <- function(input, output, session) {
           )
       }
     }
-  })
+  }, bg = "transparent")
 
   # Geo-plot of selected determinant for selected county
   # Based on scatterplot
@@ -1351,7 +1346,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster \n Average", color = "Cluster \n Average") + 
-        ylab("Mortality Rate (# per 100k)")
+        ylab("Mortality Rate (# per 100k)") 
       
       if (is.null(county_choice())){
         line_plot 
@@ -1378,7 +1373,7 @@ server <- function(input, output, session) {
       }
     }
     
-  })
+  },bg="transparent")
   
   generate_text <- function(name, diff_pct){
     change_text <- paste0("The mortality rate \nhas ")
@@ -1598,6 +1593,8 @@ server <- function(input, output, session) {
                       )
                     ) + 
                       geom_line(size = 1.5) + 
+                      scale_fill_brewer(palette="Pastel2") +
+                      scale_color_brewer(palette="Dark2") +
                       geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
                       theme.line.mort() + 
                       theme(legend.position = "bottom", legend.title = element_blank()) + 
@@ -1641,7 +1638,8 @@ server <- function(input, output, session) {
     }
     assign("page1_infographic", line_plot, envir = .GlobalEnv)
     line_plot
-  })
+  }, bg="transparent")
+
   
   # Textual description box (upper-left panel, Page 1)
   output$textDescription <- renderUI({
@@ -1651,8 +1649,8 @@ server <- function(input, output, session) {
       tags$h5(
         paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$h5(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h5(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify indiviual counties. Zoom map with mouse wheel or zoom buttons.")),
+      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$p(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
       NULL
     )
   })
@@ -1675,6 +1673,34 @@ server <- function(input, output, session) {
                ":")
       )
     )
+  })
+
+  output$textInfographicTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          paste0("Mortality Rates for ",
+                 names(which(cause.list == input$death_cause)), 
+                 " in ", 
+                 location_str)
+        )
+      )
+    }
+    else {
+      location_str <- names(which(state.list == input$state_choice))
+      tagList(
+        tags$h3(
+          paste0("Mortality Rates for ",
+                 names(which(cause.list == input$death_cause)), 
+                 " in ", 
+                 location_str,
+                 " vs. United States")
+        )
+      )
+    }
   })
   
   output$textMortFactsClosing <- renderUI({
@@ -1723,17 +1749,22 @@ server <- function(input, output, session) {
     else {
       # percent change for first bullet
       change_text <- "remained the same"
+      vals_text <- paste0("at ", round(state.mean.2015_2017(), 1), " per 100k people")
       
       percent_change <- round(
-        abs(state.mean.2015_2017() - state.mean.2000_2002()) / state.mean.2000_2002() * 100,
+        (state.mean.2015_2017() - state.mean.2000_2002()) / state.mean.2000_2002() * 100,
         1
       )
       
       if (percent_change > 0) {
-        change_text <- paste0("increased ", percent_change, "%")
+        change_text <- paste0("increased by ", abs(percent_change), "%")
+        vals_text <- paste0("rising from ", round(state.mean.2000_2002(), 1), 
+                            " to ", round(state.mean.2015_2017(), 1))
       }
       else if (percent_change < 0) {
-        change_text <- paste0("decreased ", percent_change, "%")
+        change_text <- paste0("decreased by ", abs(percent_change), "%")
+        vals_text <- paste0("falling from ", round(state.mean.2000_2002(), 1), 
+                            " to ", round(state.mean.2015_2017(), 1))
       }
       
       # comparison wish national average
@@ -1750,8 +1781,9 @@ server <- function(input, output, session) {
       tagList(
         tags$ul(
           #style = "font-size: 18px;",
-          tags$li(tags$h4(paste0("Have ", change_text, " from 2000 to 2017"))),
-          tags$li(tags$h4(paste0("Were ", comparison_text, " the national mean in 2015-2017"))),
+          tags$li(tags$h4(paste0("Have ", change_text, " from 2000 to 2017, ", vals_text, " per 100k people"))),
+          tags$li(tags$h4(paste0("Were ", comparison_text, " the national mean in 2015-2017 of ",
+                                 round(national.mean.2015_2017(), 2), " per 100k people"))),
           tags$li(tags$h4(paste0("Range from ", 
                          round(as.numeric(low.rate.county.2015_2017()[1]), 1),
                          " per 100k people in ",
@@ -2221,7 +2253,7 @@ the highest absolute correlation with mortality.",
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
       
     }
-  })
+  }, bg = "transparent")
   
   draw_border <- function(plot.name, border){
     proxy <- leafletProxy(plot.name)
