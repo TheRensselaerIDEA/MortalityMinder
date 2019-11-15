@@ -52,6 +52,8 @@ ui <- fluidPage(
       class = "title",
       h1("MortalityMinder")
             ),
+    tags$div(
+      class = "nav_container",
     
     tags$div(
       class = "prompt_text",
@@ -78,7 +80,7 @@ ui <- fluidPage(
         subtext = c("Self-Harm and some other causes"),
         "dropup-auto" = FALSE
       )
-    )
+    ))
     
     
   ),
