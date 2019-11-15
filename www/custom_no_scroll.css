@@ -36,7 +36,7 @@
   overflow-y: auto;
   overflow-x: auto;
 }
-/*----------------------------------------*/
+
 /******Header********/
 
 .header {
@@ -75,7 +75,6 @@
   padding:5px 0;
 }
 
-/*----------------------------------------*/
 /***********NAV STYLES*************/
 
 .fp-slidesNav {
@@ -107,8 +106,6 @@
   display:block;
 }
 
-/*----------------------------------------*/
-
 /********Title Styles**********/
 
 .title {
@@ -135,7 +132,6 @@
   font-size:30px;
 }
 
-/*----------------------------------------*/
 /********Col Styles**********/
 
 
@@ -143,8 +139,6 @@
   width: 74%;
 }
 
-
-/*----------------------------------------*/
 /********Page 1 Styles**********/
 
 .landing_page_map {
@@ -218,8 +212,6 @@
   width:20%;
 }
 
-
-/*----------------------------------------*/
 /********Page 2 Styles**********/
 
 
@@ -286,7 +278,6 @@
   display:block;
 }
 
-/*----------------------------------------*/
 /********Page 3 Styles**********/
 .page3 {}
 
@@ -331,15 +322,12 @@
   display:block;
 }
 
-/*----------------------------------------*/
 /********Page 4 Styles**********/
 
 .page4 {
   height:95%;
 }
 
-
-/*----------------------------------------*/
 /********Shiny Styles**********/
 
 .shiny-input-container {
@@ -355,11 +343,7 @@
   display:none;
 }
 
-
-/*----------------------------------------*/
 /********Form Styles**********/
-
-
 #year_selector {
   width: 100%;
   text-align: center;
@@ -400,7 +384,8 @@
   }
   .radio-inline input[type=radio]:checked + span{
   
-  background-color: red;
+  background-color: black;
+  color: white;
   background-size: cover;
   }
   @media screen and (min-width : 1601px)
@@ -421,10 +406,6 @@
   font-size: 7px;
          }
   }
-
-
-
-/*----------------------------------------*/
 
 /*******fp-control arrow Styles********/
 
@@ -450,9 +431,6 @@
     background-size: 100% 100%;
     cursor: pointer;
 }
-
-
-/*----------------------------------------*/
 
 /***********leaflet*******/
 
@@ -485,9 +463,6 @@ font-size: 8px;
 .leaflet-left .leaflet-control {
 margin: 0;
 }
-
-
-/*----------------------------------------*/
 
 /********Topbar Input Styles**********/
 
@@ -529,14 +504,6 @@ div.form-group{
   width:100%;
  
 }
-
-
-
-
-
-/*----------------------------------------*/
-
-
 
 /********** FONTS ***********/
 p, blockquote, pre, .radio-inline{
@@ -594,8 +561,6 @@ pre {
   font-size: 13px;
   line-height: 18.5714px; 
 }
-/******** END FONTS ***********/
-
 
 /********Misc Styles**********/
 
@@ -652,7 +617,6 @@ width: 40px;
 #nation_state_infographic img{
   margin-top: -5vh;
 }
-/*----------------------------------------*/
 
 
 
