@@ -177,7 +177,8 @@ ui <- fluidPage(
                   ), # End Button Functionality
                   column(6,
                   class = "page1_col page1_col2_middle_left",
-                  tags$h3("National Plot Title"),
+                  # tags$h3("National Plot Title"),
+                  uiOutput("textNationwideTitle"),
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 100%;left: 0;",
                   tags$img(
@@ -1823,6 +1824,17 @@ server <- function(input, output, session) {
     tagList(
       tags$h1(
         paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
+      )
+    )
+  })
+
+  output$textNationwideTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        # paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates, ", input$year_selector)
+        paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates ")
       )
     )
   })
