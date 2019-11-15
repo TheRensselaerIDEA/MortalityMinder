@@ -515,7 +515,7 @@ h1, h2, h3, h4, h5, h6 {
 font-family: urw-din, sans-serif;
 font-weight: 200;
 font-style: normal;
-color: #cccccc;
+color: black;
 }
 
 h1{
@@ -534,7 +534,7 @@ h3{
 }
 
 h4{
- font-size: 14px;
+ font-size: 1.0em;
  line-height: 20px;
  font-weight: 400;
 }
@@ -560,6 +560,10 @@ blockquote {
 pre {
   font-size: 13px;
   line-height: 18.5714px; 
+}
+
+#textMortFactsClosing h4{
+  font-size: 0.4em;
 }
 
 /********Misc Styles**********/
