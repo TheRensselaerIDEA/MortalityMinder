@@ -25,7 +25,7 @@ cause.definitions <- c("*\"Deaths of Despair\" are deaths due to suicide, overdo
                        "*\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
                        "*\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
                        "*\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
-
+period.list <- c("2000-2002","2003-2005","2006-2008","2009-2011","2012-2014","2015-2017")
 
 n.clusters.state = 3
 n.clusters.nation = 6
@@ -1830,11 +1830,15 @@ server <- function(input, output, session) {
 
   output$textNationwideTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
+    if (is.null(input$page1_period)){
+      period_choice = 6
+    } else {
+      period_choice = input$page1_period
+    }
     
     tagList(
       tags$h3(
-        # paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates, ", input$year_selector)
-        paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates ")
+        paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates for ", period.list[period_choice])
       )
     )
   })
