@@ -13,7 +13,7 @@
   height:100vh;
   width:100vw;
   position:fixed;
-  background-color:rgb(240,240,240);
+  background-color:rgb(245,245,245);
 }
 
 .header {
@@ -195,7 +195,7 @@ h2{
 
 h3{
  font-size: 16px;
- line-height: 15.4px;
+ line-height: 26.4px;
 }
 
 h4{
@@ -234,8 +234,10 @@ pre {
   float:left;
   display:block;
   max-height: 90vh;
-  margin-left: 25px; 
+  padding-left: 50px;
+  padding-right: 50;
   overflow-y: auto;
+  overflow-x: auto;
 }
 
 /************ PAGE 1 ****************/
@@ -243,20 +245,32 @@ pre {
 
 .page1_col{
   height:95%;
-  float:left;
+  float:center;
   display:block;
+  padding: 10px;
 }
 
 .page1_col1 {
   width:25%;
   overflow-y:scroll;
+  border-right: 2px solid rgb(235,235,235,.5);
 }
 
-.page1_col2 {}
+.page1_col1_heading {
+  /*border: solid;
+  border-width: 1px;*/
+  padding-top: 0;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.page1_col2 {
+}
 
 .page1_col2_top{
   width:100%;
   height:15%;
+  border-bottom: 2px solid rgb(235,235,235,.5)
 }
 
 .page1_text {
@@ -269,9 +283,22 @@ pre {
 
 .page1_col3_text_2{}
 
-.page1_col2_middle_left{}
+.page1_col2_middle {
+  /*border: 1px solid rgb(255, 255, 255);*/
+}
+.page1_col2_middle_left{
+  text-align: center;
+}
 
-.page1_col2_middle_right{}
+.page1_col2_middle_right{
+  text-align: center;
+}
+
+.page1 img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .page1_col2_bottom{
   width:100%;
@@ -306,50 +333,55 @@ pre {
   overflow-y: auto;
 }
 
-.page2_col1_top_left {}
+.page2_col1_top_left {
+  width: 40%;
+}
 
 .page2_col1_top_right {}
 #year_selector {
   width: 100%;
-  text-align: left;
+  text-align: center;
   }
 #year_selector .control-label {
   width: 100%;
-  text-align: left;
-  font-size: 10px;
-  display: block;
+  text-align: center;
+  font-size: 8px;
+  display: flex;
   }
   .radio-inline {
-  padding: 0;
-  margin: 0 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 1px;
+  border: 1px solid black;
   }
   .radio-inline+.radio-inline {
-  margin: 0;
+  margin: 1px;
   }
   .radio-inline input[type=radio] {
   display: none;
   }
   .radio-inline input[type=radio]:checked + span {
-  padding: 0 2px;
-  border: 1px solid black;
-  border-radius: 3px;
+  padding-left: 5px;
+  padding-left: 5px;
+  background-color: red;
+  background-size: cover;
   }
   @media screen and (min-width : 1601px)
   {
   .radio-inline {
-  font-size: 14px;
+  font-size: 12px;
             }
   }
   @media screen and (max-width : 1600px)
   {
   .radio-inline {
-  font-size: 10px;
+  font-size: 8px;
          }
   }
   @media screen and (max-width : 1200px)
   {
   .radio-inline {
-  font-size: 8px;
+  font-size: 7px;
          }
   }
 
@@ -358,11 +390,11 @@ pre {
 
 .hr {
   width:100%;
-  height:0;
   border-top:1px solid #eee;
   float:left;
   display:block;
-  
+  background-color: black;
+  height: 1px;
 }
 
 .page2_col1_bot {

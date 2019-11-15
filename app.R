@@ -103,7 +103,10 @@ ui <- fluidPage(
           uiOutput("national_map"),
           column(3, 
                   class="page1_col page1_col1", 
-                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year."),
+                 tags$div(
+                   class = "page1_col1_heading",
+                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year.")
+                  ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
                       tags$li(tags$h4("Deaths of Despair")),
@@ -132,15 +135,11 @@ ui <- fluidPage(
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing")
                     )
+                  
                   ), # End of inner FluidRow (Column 2 top)
-                tags$hr(),
-                fluidRow(
-                  column(6,
-                  class = "page1_col page1_col2_middle_left",
-                  tags$h5(tags$i("Click on time period to select national map for that period")),
-                  tags$div(
-                    class = "explore_but",
-                    style = "text-align: center;",
+
+                fluidRow(class="page1_col page1_col2_middle",
+                  fluidRow(
                     tags$ul(
                       class = "ul_period",
                       tags$button(
@@ -171,11 +170,14 @@ ui <- fluidPage(
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
-                        style= "border: solid; border-width: 1px;border-radius: 3px;",
+                        style= "background-color: red",
                         "2015-2017"
                       )
                     ) # End List of buttons
                   ), # End Button Functionality
+                  column(6,
+                  class = "page1_col page1_col2_middle_left",
+                  tags$h3("National Plot Title"),
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 100%;left: 0;",
                   tags$img(
@@ -232,7 +234,8 @@ ui <- fluidPage(
                                 uiOutput("textMortRates")
                                       ), # End of title div container
                               radioButtons("year_selector", 
-                                           label = "Click on time period to select state map for that period",
+                                           #label = "Click on time period to select state map for that period",
+                                           label = NULL,
                                            selected = "2015-2017", 
                                            choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
