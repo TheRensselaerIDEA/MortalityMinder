@@ -244,21 +244,17 @@ pre {
 .page1 {}
 
 .page1_col{
-  height:95%;
   float:center;
   display:block;
   padding: 10px;
 }
 
 .page1_col1 {
-  width:25%;
   overflow-y:scroll;
   border-right: 2px solid rgb(235,235,235,.5);
 }
 
 .page1_col1_heading {
-  /*border: solid;
-  border-width: 1px;*/
   padding-top: 0;
   padding-bottom: 5px;
   padding-left: 10px;
@@ -268,8 +264,6 @@ pre {
 }
 
 .page1_col2_top{
-  width:100%;
-  height:15%;
   border-bottom: 2px solid rgb(235,235,235,.5)
 }
 
@@ -301,13 +295,10 @@ pre {
 }
 
 .page1_col2_bottom{
-  width:100%;
-  height:35%;
   position: relative;
 }
 
 .page1_col3 {
-  width:20%;
 }
 
 .img {}

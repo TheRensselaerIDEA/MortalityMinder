@@ -218,7 +218,7 @@ ui <- fluidPage(
                    class="page2_col page2_col1",
                    fluidRow(
                      class="page2_col page2_col1_top",
-                       column(5,
+                       column(4,
                               class = "page2_col page2_col1_top_left",
                               tags$div(
                                 title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
@@ -227,7 +227,7 @@ ui <- fluidPage(
                               uiOutput("textDescription")
                               
                              ), # End of inner Column (Column 1 Top Left)
-                       column(5,
+                       column(8,
                               class = "page2_col page2_col1_top_right",
                               tags$div(
                                 class="page2_col1_top_right_title",
