@@ -362,7 +362,7 @@ pre {
   }
   .radio-inline input[type=radio]:checked + span {
   padding-left: 5px;
-  padding-left: 5px;
+  padding-right: 5px;
   background-color: red;
   background-size: cover;
   }
