@@ -15,18 +15,16 @@
 theme.categorical.colors <- function(n_clusters) {
 
   if (n_clusters == 3) {
-    return(c("#fed976", "#fd8d3c", "#bd0026"))
+    return(c("#b3c9b6", "#6f9da8", "#8e7575"))
   }
   if (n_clusters == 4) {
-    return(c("#fed976", "#fd8d3c", "#fc4e2a", "#bd0026"))
+    return(c("#c6b295", "#b3c9b6", "#6f9da8", "#8e7575"))
   }
   if (n_clusters == 5) {
-    return(c("#fed976", "#fd8d3c", "#fc4e2a", 
-            "#e31a1c", "#bd0026"))
+    return(c("#c6b295", "#b3c9b6", "#6f9da8", "#d4916e", "#8e7575"))
   }
   if (n_clusters == 6) {
-    return(c("#fed976", "#fd8d3c", "#fc4e2a", 
-             "#e31a1c", "#bd0026", "#800026"))
+    return(c("#c6b295", "#b3c9b6", "#6f9da8", "#d4916e", "#8e7575", "#8a8487"))
   }
 }
 
@@ -158,7 +156,7 @@ color.geo.cluster <- function(n) {
     #c("#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000")
     #c("#c6c6c6","#9e9e9e","#787878","#565656")
     values = colorRampPalette(
-      c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15")
+      c("#eadfdf", "#e0baba", "#c19291", "#a56d6a", "#84473d", "#723325")
     )(n),
     guide = guide_legend(
       keyheight = unit(2, units = "mm"), 
