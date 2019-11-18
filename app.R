@@ -25,7 +25,7 @@ cause.definitions <- c("*\"Deaths of Despair\" are deaths due to suicide, overdo
                        "*\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
                        "*\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
                        "*\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
-
+period.list <- c("2000-2002","2003-2005","2006-2008","2009-2011","2012-2014","2015-2017")
 
 n.clusters.state = 3
 n.clusters.nation = 6
@@ -179,7 +179,8 @@ ui <- fluidPage(
                   ), # End Button Functionality
                   column(6,
                   class = "page1_col page1_col2_middle_left",
-                  tags$h3("National Plot Title"),
+                  # tags$h3("National Plot Title"),
+                  uiOutput("textNationwideTitle"),
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 100%;left: 0;",
                   tags$img(
@@ -1290,17 +1291,23 @@ server <- function(input, output, session) {
   output$determinant_dir <- renderText({
     if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
       return(paste0("<strong>No</strong> statistically significant ",
-                    " relationship with mortality (p-value = .05)"))
+                    " relationship with mortality (p-value = ",
+                    signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
+                    ")"))
     }
     else if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
       return(paste0("Statistically significant <strong> <span style=\"color:	#f8766d\">",
-                     tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
-                     "</span> </strong> relationship with mortality (p-value = .05)"))
+                      tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
+                      "</span> </strong> relationship with mortality (p-value = ",
+                      signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
+                      ")"))
     }
     else {
       return(paste0("Statistically significant <strong> <span style=\"color:	#00bfc4\">",
                     tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
-                    "</span> </strong> relationship with mortality (p-value = .05)"))
+                    "</span> </strong> relationship with mortality (p-value = ",
+                    signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
+                    ")"))
     }
   })
   
@@ -1824,6 +1831,21 @@ server <- function(input, output, session) {
     tagList(
       tags$h1(
         paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
+      )
+    )
+  })
+
+  output$textNationwideTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    if (is.null(input$page1_period)){
+      period_choice = 6
+    } else {
+      period_choice = input$page1_period
+    }
+    
+    tagList(
+      tags$h3(
+        paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates for ", period.list[period_choice])
       )
     )
   })
