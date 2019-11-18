@@ -423,7 +423,14 @@ ui <- fluidPage(
                                    We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
                                    to discover counties with different patterns of mortality over time and associated social 
                                    determinants using cluster or supervised clustering."),
-                                   offset=1) # Close Column
+                                   offset=1), # Close Column
+                            column(11, tags$h3("Assumptions",align="center"), 
+                                   tags$h4("The following assumptions regarding analysis and visualizations are made: "), 
+                                   tags$ul(
+                                     tags$li(tags$h4("K Means clustering was used to create cluster for all states except for states that have less than 6
+                                           counties including Hawaii, Delaware, and Rhode Island.")),
+                                     tags$li(tags$h4("Counties for which data was not available were imputed based on the cause of death."))
+                                   ), offset=1) # Close column
                    ), tags$br(),# Close inner fluidRow,
                    tags$div(class="IDEA_Logo_Wrapper",
                             style="position:relative;width: 50%;left: 50%",
