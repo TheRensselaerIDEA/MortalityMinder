@@ -145,33 +145,33 @@ ui <- fluidPage(
                       tags$button(
                         id = "first_period",
                         class = "period_text",
-                        "2000-2002"
+                        "2000-02"
                       ),
                       tags$button(
                         id = "second_period",
                         class = "period_text",
-                        "2003-2005"
+                        "2003-05"
                       ),
                       tags$button(
                         id = "third_period",
                         class = "period_text",
-                        "2006-2008"
+                        "2006-08"
                       ),
                       tags$button(
                         id = "forth_period",
                         class = "period_text",
-                        "2009-2011"
+                        "2009-11"
                       ),
                       tags$button(
                         id = "fifth_period",
                         class = "period_text",
-                        "2012-2014"
+                        "2012-14"
                       ),
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
                         style= "background-color: red",
-                        "2015-2017"
+                        "2015-17"
                       )
                     ) # End List of buttons
                   ), # End Button Functionality
@@ -238,7 +238,7 @@ ui <- fluidPage(
                                            #label = "Click on time period to select state map for that period",
                                            label = NULL,
                                            selected = "2015-2017", 
-                                           choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
                               leafletOutput("geo_mort_change2",width="100%",height="80%")
@@ -364,7 +364,13 @@ ui <- fluidPage(
                 uiOutput("textSDGeo")
                       ),
               leafletOutput("determinants_plot5")
-                    ) # End of inner Column 3 bottom
+                    ), # End of inner Column 3 bottom
+            tags$div(
+              style = "padding-top: 10px;",
+              tags$p("Select a county:"),
+              uiOutput("county_selector")
+            ) # End of pickerInput container
+            
                 ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
@@ -854,7 +860,23 @@ server <- function(input, output, session) {
   )
   
   # ----------------------------------------------------------------------
+
+  output$county_selector <- renderUI({
+    selectInput('county_drop_choice', 'County', geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
+    
+  })
+
+  rv_county_drop_choice <- reactive({})
+    
+  county_event <- observeEvent(input$county_drop_choice, {
+    rv_county_drop_choice <- input$county_drop_choice 
+    county_choice(paste0(rv_county_drop_choice, " County"))
+  },
+  ignoreInit = TRUE
+  )
   
+
+  # ----------------------------------------------------------------------
   
   output$national_map<-renderUI({
     if(input$death_cause == "Despair"){
@@ -2355,7 +2377,7 @@ the highest absolute correlation with mortality.",
     county_name <- sub(county_choice(), pattern = " [[:alpha:]]*$", replacement = "")
     req(county_name)
     county_indices <- which(state_map@data$NAME %in% c(county_name))
-    
+
     if (length(county_indices) != 1){
       return()
     }
