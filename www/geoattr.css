@@ -5,7 +5,7 @@
 .state {
   stroke: #666;
   stroke-width:0.5px;
-  fill-opacity:white;
+  fill-opacity:#f7f7f7;
 }
 
 .state:hover {
@@ -56,39 +56,4 @@
 }
 
 
-.period_text {
-  margin: 15px;
-  font-size:14px;
-  padding: 10px;
-  float: left;
-  border: solid;
-  border-width: 1px;
-  background: none;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-family: Georgia, Times, "Times New Roman", serif;
-  font-variant: normal; 
-  font-weight: 400;
-}
-
-@media screen and (min-width : 1601px)
-  {
-  .period_text {
-  font-size: 18px;
-            }
-}
-@media screen and (max-width : 1600px)
-{
-.period_text {
-font-size: 14px;
-       }
-}
-@media screen and (max-width : 1200px)
-{
-.period_text {
-font-size: 10px;
-       }
-}
 
