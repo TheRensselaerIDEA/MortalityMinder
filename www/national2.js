@@ -35,7 +35,7 @@ btn1.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+      btn_list[i].style.backgroundColor = "white";
     }
   }
   image.src = images[0];
@@ -51,7 +51,7 @@ btn2.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+      btn_list[i].style.backgroundColor = "white";
     }
   }
   image.src = images[1];
@@ -67,7 +67,7 @@ btn3.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+      btn_list[i].style.backgroundColor = "white";
     }
   }
   image.src = images[2];
@@ -83,7 +83,7 @@ btn4.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+      btn_list[i].style.backgroundColor = "white";
     }
   }
   image.src = images[3];
@@ -99,7 +99,7 @@ btn5.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+      btn_list[i].style.backgroundColor = "white";
     }
   }
   image.src = images[4];
@@ -115,7 +115,7 @@ btn6.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+      btn_list[i].style.backgroundColor = "white";
     }
   }
   image.src = images[5];
@@ -133,7 +133,7 @@ function changeImage(){
           btn_list[i].style.backgroundColor = "red";
         }
         else{
-          btn_list[i].style.backgroundColor = "#f7f7f7";
+          btn_list[i].style.backgroundColor = "white";
         }
       }
       image.src = images[position];
