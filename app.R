@@ -1290,17 +1290,23 @@ server <- function(input, output, session) {
   output$determinant_dir <- renderText({
     if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
       return(paste0("<strong>No</strong> statistically significant ",
-                    " relationship with mortality (p-value = .05)"))
+                    " relationship with mortality (p-value = ",
+                    signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
+                    ")"))
     }
     else if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
       return(paste0("Statistically significant <strong> <span style=\"color:	#f8766d\">",
-                     tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
-                     "</span> </strong> relationship with mortality (p-value = .05)"))
+                      tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
+                      "</span> </strong> relationship with mortality (p-value = ",
+                      signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
+                      ")"))
     }
     else {
       return(paste0("Statistically significant <strong> <span style=\"color:	#00bfc4\">",
                     tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
-                    "</span> </strong> relationship with mortality (p-value = .05)"))
+                    "</span> </strong> relationship with mortality (p-value = ",
+                    signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
+                    ")"))
     }
   })
   
