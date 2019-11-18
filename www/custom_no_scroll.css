@@ -4,6 +4,11 @@
 
 @import url("https://use.typekit.net/vsf0bra.css");
 
+@font-face {
+    font-family: customFont;
+    font-weight: bold;
+    src: url("AboveDemoRegular-lJMd.ttf") format("opentype");
+}
 
 /******Framework Formatting*******/
 
@@ -122,6 +127,7 @@
   text-shadow: 0 0 0px #565254;
    color: transparent;
   font-size:30px;
+  font-family:'customFont';
 }
 .title h1:hover {
   margin:0;
