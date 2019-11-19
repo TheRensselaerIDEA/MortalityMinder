@@ -48,10 +48,17 @@ ui <- fluidPage(
 ##################### NAV BAR #####################
   tags$div(
     class = "navbar",
+
     tags$div(
       class = "title",
-      h1("MortalityMinder")
-            ),
+      tags$h1(
+        # tags$img(
+        #   class="rpi_logo",
+        #   src="RPIlogo_black.png",
+        #   height="30px",
+        #   style="display: inline-block;"),      
+        "MortalityMinder")
+      ),
     tags$div(
       class = "nav_container",
     
@@ -119,7 +126,15 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("MortalityMinder is a four-page interactive presentation that examines county-level factors associated with mortality trends.\n"), 
                       tags$h4("Pick a cause of death and state on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate further.\n"))   
+                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate further.\n")
+                              ),
+                 tags$div(class="IDEA_Logo_Wrapper",
+                          tags$img(
+                            class="rensselaer_logo",
+                            src="RPIlogo.png", 
+                            width="100%", 
+                            style="bottom: 0; left: 0;")
+                 )
           ), # End Column 1
           tags$div(
             class = "vl"

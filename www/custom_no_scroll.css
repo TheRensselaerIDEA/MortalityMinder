@@ -119,6 +119,7 @@
     padding: 2vh 3.6vw;
     overflow: none;
     font-weight: 800;
+    display:inline;
 }
 
 .title h1 {
