@@ -13,7 +13,7 @@
 #' @author Ross DeVito
 #' @export
 theme.categorical.colors <- function(n_clusters) {
-
+  
   if (n_clusters == 3) {
     return(c("#fed976", "#fd8d3c", "#bd0026"))
   }
@@ -22,7 +22,7 @@ theme.categorical.colors <- function(n_clusters) {
   }
   if (n_clusters == 5) {
     return(c("#fed976", "#fd8d3c", "#fc4e2a", 
-            "#e31a1c", "#bd0026"))
+             "#e31a1c", "#bd0026"))
   }
   if (n_clusters == 6) {
     return(c("#fed976", "#fd8d3c", "#fc4e2a", 
@@ -204,7 +204,7 @@ geoTitle <- function(state.choice, death.cause) {
 
 # draw.geo.cluster: Used in app.R to draw state and US maps
 draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters) {
-
+  
   dataset <- geo.map.fetch(state.choice, mort.cluster) %>% 
     dplyr::rename(VAR_ = cluster)
   lat_long <- getLatLong(state.choice, dataset)
@@ -262,7 +262,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
               setMapWidgetStyle(style = list(background = "transparent"))
     )
   }
-
+  
 }
 
 # draw.sd.geo: Used in app.R to overlay SD rates on state and US maps
@@ -399,8 +399,8 @@ bin.geo.mort <- function(death.cause) {
 
 draw.geo.mort <- function(state.choice, period.choice, mort.data, death.cause) {
   if (state.choice != "US"){
-
-      geo.map.fetch(state.choice, mort.data) %>% 
+    
+    geo.map.fetch(state.choice, mort.data) %>% 
       dplyr::rename(VAR_ = death_rate) %>%
       base.geo() + 
       labs.geo.mort(state.choice, period.choice, death.cause) + 
@@ -625,7 +625,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         opacity = 1) %>% 
               clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
-            ) 
+    ) 
   }else{
     return (leaflet(shapes, 
                     options = leafletOptions(dragging = FALSE)) %>%
@@ -693,7 +693,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
 }
 
 geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
-#  browser()
+  #  browser()
   dataset <- geo.map.fetch(state.choice, sd.data) %>% 
     dplyr::rename(VAR_ = VAR) %>%
     dplyr::rename(county_name = county_name.y)
@@ -708,31 +708,31 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
   
   pal <- colorBin(c("#7ccaf2", "#2a9df4", "#0277bd", "#03254c"), 
                   domain = dataset$VAR, bins = 3)
-    
+  
   if (state.choice != "US"){
     plot <- leaflet(shapes, 
                     options = leafletOptions()) %>%
-                    fitBounds(lat1 = lat_long[1], 
-                              lng1 = lat_long[2], 
-                              lat2 = lat_long[3], 
-                              lng2 = lat_long[4]) %>%
-                    addPolygons(stroke = TRUE, 
-                                smoothFactor = 0.1, 
-                                fillOpacity = 1,
-                                weight = 1,
-                                color = "white",
-                                opacity = 1,
-                                fillColor = ~pal(dataset$VAR),
-                                label = dataset$county_name,
-                                layerId = dataset$county_name) %>%
-                    addControl(get_sd_title(state.choice, sd.choice, period), 
-                               position = "topleft", 
-                               className="map-title") %>%
-                    addLegend("bottomleft",
-                              pal = pal,
-                              values = ~dataset$VAR,
-                              title = "Rate",
-                              opacity = 1) %>% 
+      fitBounds(lat1 = lat_long[1], 
+                lng1 = lat_long[2], 
+                lat2 = lat_long[3], 
+                lng2 = lat_long[4]) %>%
+      addPolygons(stroke = TRUE, 
+                  smoothFactor = 0.1, 
+                  fillOpacity = 1,
+                  weight = 1,
+                  color = "white",
+                  opacity = 1,
+                  fillColor = ~pal(dataset$VAR),
+                  label = dataset$county_name,
+                  layerId = dataset$county_name) %>%
+      addControl(get_sd_title(state.choice, sd.choice, period), 
+                 position = "topleft", 
+                 className="map-title") %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values = ~dataset$VAR,
+                title = "Rate",
+                opacity = 1) %>% 
       clearBounds() %>%
       setMapWidgetStyle(style = list(background = "transparent"))
     
@@ -769,7 +769,7 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
               clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
             
-            )
+    )
   }
   
   
