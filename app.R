@@ -368,10 +368,14 @@ ui <- fluidPage(
               leafletOutput("determinants_plot5")
             ), # End of inner Column 3 bottom
             tags$div(
-              style = "padding-top: 10px;",
-              tags$h4("Select a county:"),
+              class = "nav_container",
+              tags$div(
+                class = "prompt_text",
+                "Select a county:"              
+              ),
               uiOutput("county_selector")
             ) # End of pickerInput container
+            
             ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
