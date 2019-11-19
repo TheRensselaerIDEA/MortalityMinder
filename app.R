@@ -52,11 +52,10 @@ ui <- fluidPage(
     tags$div(
       class = "title",
       tags$h1(
-        # tags$img(
-        #   class="rpi_logo",
-        #   src="RPIlogo_black.png",
-        #   height="30px",
-        #   style="display: inline-block;"),      
+        tags$img(
+          src="RPIlogo_black.png"
+          # height="30px"
+          ),
         "MortalityMinder")
       ),
     tags$div(

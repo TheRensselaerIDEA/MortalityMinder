@@ -113,7 +113,7 @@
 
 .title {
   float: left;
-    max-width: 400px;
+    max-width: 900px;
     width: 100vw;
     height: auto;
     padding: 2vh 3.6vw;
@@ -130,13 +130,12 @@
   font-size:30px;
   font-family:'customFont';
 }
-.title h1:hover {
-  margin:0;
-  color:#565254;
-   text-shadow: 0 0 5px #565254;
-   color: transparent;
-  font-size:30px;
-}
+
+.title h1 img {
+    vertical-align: middle;/*was -8px;*/
+    margin-right: 5px;
+    height: 30px;
+} 
 
 /********Col Styles**********/
 
