@@ -2321,8 +2321,8 @@ the highest absolute correlation with mortality.",
     
     #add a slightly thicker red polygon on top of the selected one
     proxy %>% addPolylines(stroke = TRUE, 
-                                   weight = 2,
-                                   color="#565254",
+                                   weight = 4,
+                                   color="black",
                                    data = border,
                                    group="highlighted_polygon",
                                    dashArray = "4 2 4")
