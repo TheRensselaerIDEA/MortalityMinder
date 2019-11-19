@@ -2363,6 +2363,7 @@ the highest absolute correlation with mortality.",
       return()
     highlight_county(event)
     county_choice(event$id)
+    updatePickerInput(session, "county_drop_choice", selected = event$id)
   })
   
   observe({
@@ -2371,6 +2372,7 @@ the highest absolute correlation with mortality.",
       return()
     highlight_county(event)
     county_choice(event$id)
+    updatePickerInput(session, "county_drop_choice", selected = event$id)
   })
   
   observe({
@@ -2379,6 +2381,7 @@ the highest absolute correlation with mortality.",
       return()
     highlight_county(event)
     county_choice(paste0(event$id," County"))
+    updatePickerInput(session, "county_drop_choice", selected = event$id)
   })
   
   observe({
