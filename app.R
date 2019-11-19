@@ -107,7 +107,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year.")
+                  tags$h3("Mortality rates are rising in the United States depending on where you live.")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -117,13 +117,9 @@ ui <- fluidPage(
                       tags$li(tags$h4("Assault Deaths")),
                       tags$li(tags$h4("All Causes"))
                        ), # End List
-                      tags$h4("The mortality rate is the number of people aged 25 to 64 per 100,000 that died prematurely in a 
-                    given county during a three year period for a given cause and for a region: county, state or nationwide.\n"), 
-                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed 
-                    from 2000 to 2017.\n"), 
-                      tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
-                    increased mortality rates at the county level."), 
-                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate more.\n"))   
+                      tags$h4("MortalityMinder is a four-page interactive presentation that examines county-level factors associated with mortality trends.\n"), 
+                      tags$h4("Pick a cause of death and state on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
+                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate further.\n"))   
           ), # End Column 1
           tags$div(
             class = "vl"
@@ -201,11 +197,10 @@ ui <- fluidPage(
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
                   
-                  tags$h3("The mortality rate is the number of people aged 25 to 64 per 100,000 that died prematurely in a 
-                    given county during a three year period for a given cause and for a region: county, state or nationwide.")
-                  
                   # uiOutput("textMortFactsTitle"),
                   # uiOutput("textMortFacts")
+
+                  uiOutput("textMortFactsNew")
                   
                   ) # Close inner FluidRow (Column 2 Bottom)
                 ) #Close Column 2
@@ -283,7 +278,7 @@ ui <- fluidPage(
 
               tags$div(
                 class = "page2_col2_plot",
-                plotOutput("page1.bar.cor1",width="90%",height="100%", 
+                plotOutput("page1.bar.cor1",width="100%",height="100%", 
                            hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
                            click = clickOpts("page1_bar_plot_click")),
                 uiOutput("hover_info")
@@ -307,7 +302,7 @@ ui <- fluidPage(
               class = "col1_title",
               uiOutput("textDeterminants2")
                     ), # End title div container
-            plotOutput("determinants_plot1", height = "85%", width = "100%",
+            plotOutput("determinants_plot1", height = "100%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
                 ), # End Column 1
           
@@ -379,7 +374,7 @@ ui <- fluidPage(
               class = "nav_container",
               tags$div(
                 class = "prompt_text",
-                "Select a county:"              
+                "Select a county below or by clicking the map:"              
               ),
               uiOutput("county_selector")
             ) # End of pickerInput container
@@ -1723,6 +1718,21 @@ server <- function(input, output, session) {
     )
   })
 
+  output$textMortFactsNew <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        paste0("Mortality rate per 100,000 for people ages 25-to 64 due to ",
+               names(which(cause.list == input$death_cause)), 
+               " for three year periods for counties (left) and state and nation (right) . Darker colors indicate higher rates. "
+               )
+      ),
+      tags$h4("Source: CDC WONDER"),
+      tags$h4("Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute")
+    )
+  })
+  
   output$textInfographicTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
