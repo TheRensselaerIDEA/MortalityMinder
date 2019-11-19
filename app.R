@@ -251,16 +251,17 @@ ui <- fluidPage(
                                 class="page2_col1_top_right_title",
                                 uiOutput("textMortRates")
                                       ), # End of title div container
-                              radioButtons("year_selector", 
+                              radioButtons("year_selector",
                                            #label = "Click on time period to select state map for that period",
                                            label = NULL,
-                                           selected = "2015-2017", 
+                                           selected = "2015-2017",
                                            choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
                               leafletOutput("geo_mort_change2",width="82%",height="80%")
                               ) # End of inner Column (Column 1 top right)
-                           ), # End of inner FluidRow (Column1 Top)
+                     
+                   ), # End of inner FluidRow (Column1 Top)
                    tags$div(
                      class = "hr"
                            ),

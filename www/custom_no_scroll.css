@@ -266,11 +266,11 @@ color: #f7f7f7;
 }
 
 .page2_col1_top_left {
-  width: 30%;
+  width: 40%;
 }
 
 .page2_col1_top_right {
-  width: 70%;
+  width: 60%;
 }
 
 
@@ -382,7 +382,7 @@ color: #f7f7f7;
 
 /********Form Styles**********/
 #year_selector {
-  width: 15%;
+  width: 100%;
   text-align: center;
   padding-left: 0;
   padding-right: 0;
@@ -393,6 +393,7 @@ color: #f7f7f7;
   font-size: 8px;
   display: flex;
   }
+  
 .radio-inline input[type=radio] {
   display: none;
   }
@@ -413,13 +414,13 @@ color: #f7f7f7;
   }
   
  .radio-inline {
-   width: 100%;
+/*   width: 100%; */
  }
  
 .checkbox-inline, .radio-inline{
    padding-left: 0px;
    margin-bottom: 3vh;
-  margin-top: 1vh;
+/*  margin-top: 1vh; */
  }
  
  .checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline {
