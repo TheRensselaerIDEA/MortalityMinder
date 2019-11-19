@@ -21,10 +21,10 @@ names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
 cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
-cause.definitions <- c("*\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
-                       "*\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
-                       "*\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
-                       "*\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
+cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
+                       "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
+                       "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
+                       "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 period.list <- c("2000-2002","2003-2005","2006-2008","2009-2011","2012-2014","2015-2017")
 
 n.clusters.state = 3
@@ -117,13 +117,13 @@ ui <- fluidPage(
                       tags$li(tags$h4("Assault Deaths")),
                       tags$li(tags$h4("All Causes"))
                        ), # End List
-                      tags$h4("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
-                    given county during a three year period fora given cause and for a region:  county, state or nationwide.\n"), 
+                      tags$h4("The mortality rate is the number of people aged 25 to 64 per 100,000 that died prematurely in a 
+                    given county during a three year period for a given cause and for a region: county, state or nationwide.\n"), 
                       tags$h4("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed 
                     from 2000 to 2017.\n"), 
                       tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
                     increased mortality rates at the county level."), 
-                      tags$h4(tags$i("Click right and left to investigate more.\n"))   
+                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate more.\n"))   
           ), # End Column 1
           tags$div(
             class = "vl"
@@ -201,8 +201,12 @@ ui <- fluidPage(
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
                   
-                  uiOutput("textMortFactsTitle"),
-                  uiOutput("textMortFacts")
+                  tags$h3("The mortality rate is the number of people aged 25 to 64 per 100,000 that died prematurely in a 
+                    given county during a three year period for a given cause and for a region: county, state or nationwide.")
+                  
+                  # uiOutput("textMortFactsTitle"),
+                  # uiOutput("textMortFacts")
+                  
                   ) # Close inner FluidRow (Column 2 Bottom)
                 ) #Close Column 2
               ) #Close Outter Row (National Map Page)
@@ -224,7 +228,7 @@ ui <- fluidPage(
                        column(5,
                               class = "page2_col page2_col1_top_left",
                               tags$div(
-                                title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
+                                title="The mortality rate used in MortalityMinder is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
                                 tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
                                       ), # End of Heading Conrainer
                               uiOutput("textDescription")
@@ -1686,11 +1690,11 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h5(
+      tags$h4(
         paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$p(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$h4(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
       NULL
     )
   })
