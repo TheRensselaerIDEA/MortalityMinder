@@ -339,7 +339,11 @@ ui <- fluidPage(
           column(3,
             class = "page3_col page3_col3",
             tags$div(
-              style = "padding-top: 10px;",
+              class = "nav_container",
+              tags$div(
+                class = "prompt_text",
+                "Select a determinant:"              
+              ),
               pickerInput(
                 inputId = "determinant_choice",
                 label = "Selected Determinant: ",
