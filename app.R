@@ -52,8 +52,6 @@ ui <- fluidPage(
       class = "title",
       h1("MortalityMinder")
             ),
-    tags$div(
-      class = "nav_container",
     
     tags$div(
       class = "prompt_text",
@@ -80,7 +78,7 @@ ui <- fluidPage(
         subtext = c("Self-Harm and some other causes"),
         "dropup-auto" = FALSE
       )
-    ))
+    )
     
     
   ),
@@ -122,7 +120,7 @@ ui <- fluidPage(
                       tags$h4("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed 
                     from 2000 to 2017.\n"), 
                       tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
-                    increased mortality rates at the county level."), 
+                    increased mortality rates at the county level."), tags$br(),
                       tags$h4(tags$i("Click right and left to investigate more.\n"))   
           ), # End Column 1
           tags$div(
@@ -147,33 +145,33 @@ ui <- fluidPage(
                       tags$button(
                         id = "first_period",
                         class = "period_text",
-                        "2000-2002"
+                        "2000-02"
                       ),
                       tags$button(
                         id = "second_period",
                         class = "period_text",
-                        "2003-2005"
+                        "2003-05"
                       ),
                       tags$button(
                         id = "third_period",
                         class = "period_text",
-                        "2006-2008"
+                        "2006-08"
                       ),
                       tags$button(
                         id = "forth_period",
                         class = "period_text",
-                        "2009-2011"
+                        "2009-11"
                       ),
                       tags$button(
                         id = "fifth_period",
                         class = "period_text",
-                        "2012-2014"
+                        "2012-14"
                       ),
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
-                        style= "background-color: #565254; color: #f7f7f7;",
-                        "2015-2017"
+                        style= "background-color: red",
+                        "2015-17"
                       )
                     ) # End List of buttons
                   ), # End Button Functionality
@@ -200,7 +198,7 @@ ui <- fluidPage(
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
-                  
+                  style = "padding-left: 20px",
                   uiOutput("textMortFactsTitle"),
                   uiOutput("textMortFacts")
                   ) # Close inner FluidRow (Column 2 Bottom)
@@ -240,10 +238,10 @@ ui <- fluidPage(
                                            #label = "Click on time period to select state map for that period",
                                            label = NULL,
                                            selected = "2015-2017", 
-                                           choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
-                              leafletOutput("geo_mort_change2",width="82%",height="80%")
+                              leafletOutput("geo_mort_change2",width="100%",height="80%")
                               ) # End of inner Column (Column 1 top right)
                            ), # End of inner FluidRow (Column1 Top)
                    tags$div(
@@ -366,7 +364,13 @@ ui <- fluidPage(
                 uiOutput("textSDGeo")
                       ),
               leafletOutput("determinants_plot5")
-                    ) # End of inner Column 3 bottom
+                    ), # End of inner Column 3 bottom
+            tags$div(
+              style = "padding-top: 10px;",
+              tags$p("Select a county:"),
+              uiOutput("county_selector")
+            ) # End of pickerInput container
+            
                 ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
@@ -428,7 +432,7 @@ ui <- fluidPage(
                                    offset=1) # Close Column
                    ), tags$br(),# Close inner fluidRow,
                    tags$div(class="IDEA_Logo_Wrapper",
-                    
+                            style="position:relative;width: 50%;left: 50%",
                             tags$img(
                               class="Idea_Logo",
                               src="IDEA_logo_500.png", 
@@ -446,7 +450,7 @@ ui <- fluidPage(
                           tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
                           "CDC WONDER.", tags$br(),
                           tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
-                          "County Health Rankings Roadmaps. ", 
+                          "County Health Rankings Roadmaps. ", tags$br(),
                           tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
                           "Small Area Health Insurance Estimates (SAHIE) Program.", tags$br(),
                           tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
@@ -458,6 +462,7 @@ ui <- fluidPage(
                           downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                           downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
                           downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
+                          tags$br(),
                           tags$h3("Download Current Results",align="center"), 
                           downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
                           downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
@@ -855,7 +860,23 @@ server <- function(input, output, session) {
   )
   
   # ----------------------------------------------------------------------
+
+  output$county_selector <- renderUI({
+    selectInput('county_drop_choice', 'County', geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
+    
+  })
+
+  rv_county_drop_choice <- reactive({})
+    
+  county_event <- observeEvent(input$county_drop_choice, {
+    rv_county_drop_choice <- input$county_drop_choice 
+    county_choice(paste0(rv_county_drop_choice, " County"))
+  },
+  ignoreInit = TRUE
+  )
   
+
+  # ----------------------------------------------------------------------
   
   output$national_map<-renderUI({
     if(input$death_cause == "Despair"){
@@ -913,12 +934,12 @@ server <- function(input, output, session) {
             y = ifelse(DIR == "Protective", 0.1, -0.1),
             hjust = ifelse(DIR == "Protective", 0, 1)
           ), 
-          color = "#565254", 
+          color = "black", 
           size = 4
         ) +
         geom_text(
           aes(label = round(kendall_cor, 2)), 
-          color = "#565254", 
+          color = "black", 
           size = 3
         ) +
         
@@ -1091,7 +1112,7 @@ server <- function(input, output, session) {
         tidyr::drop_na() %>%
         
         ggplot(aes(x = death_rate, y = VAR)) + 
-        #geom_point(colour="#565254", shape=21, size = 3, alpha = .7,
+        #geom_point(colour="black", shape=21, size = 3, alpha = .7,
         #aes(fill = cluster)) + 
         stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
@@ -1118,7 +1139,7 @@ server <- function(input, output, session) {
       
       plot <- data %>%  
         ggplot(aes(x = death_rate, y = VAR)) + 
-        geom_point(colour="#565254", shape=21, size = 3, alpha = .7,
+        geom_point(colour="black", shape=21, size = 3, alpha = .7,
                    aes(fill = cluster)) + 
         #stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
@@ -1141,11 +1162,11 @@ server <- function(input, output, session) {
         plot + 
           geom_point(
             mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
-            data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
+            data = county_data, color="black", size = 5, alpha = .7, inherit.aes = FALSE
           ) + 
           scale_shape_manual(name = "County",
                              values = c(18), 
-                             guide = guide_legend(override.aes = list(color = c("#565254")))
+                             guide = guide_legend(override.aes = list(color = c("black")))
           )
       }
     }
@@ -1328,7 +1349,7 @@ server <- function(input, output, session) {
         )
       ) + 
         geom_line(size = 1.5) + 
-        geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
+        geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
         # labs.line.mort(input$state_choice, input$death_cause) + 
         scale_color_manual(
           values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
@@ -1349,7 +1370,7 @@ server <- function(input, output, session) {
         )
       ) + 
         geom_line(size = 1.5) + 
-        geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
+        geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
         # labs.line.mort(input$state_choice, input$death_cause) + 
         scale_color_manual(
           values = theme.categorical.colors.accent(nclusters)) +
@@ -1370,16 +1391,16 @@ server <- function(input, output, session) {
         line_plot + 
           geom_line(
             mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-            data = county_data, color = "#565254", size = 1.3
+            data = county_data, color = "black", size = 1.3
           ) +
           geom_point(
             mapping = aes(x = period, y = death_rate),
-            data = county_data, color = "#565254", shape = 21, 
-            fill = "#f7f7f7", inherit.aes = FALSE, size = 2
+            data = county_data, color = "black", shape = 21, 
+            fill = "white", inherit.aes = FALSE, size = 2
           ) +
           scale_linetype_manual(name = "County",
                                 values = c("twodash"),
-                                guide = guide_legend(override.aes = list(color = c("#565254")))
+                                guide = guide_legend(override.aes = list(color = c("black")))
           )
       }
     }
@@ -1456,9 +1477,9 @@ server <- function(input, output, session) {
   draw_reference_single <- function(line_plot, start, end, x, y){
     line_plot +
       geom_segment(aes(x='2000-2002', xend='2015-2017', y=y, yend=y),
-                   color = '#565254', linetype=2) +
+                   color = 'black', linetype=2) +
       geom_segment(aes(x=x, xend=x, y=start, yend=end),
-                   color = '#565254', linetype=1, arrow = arrow(length=unit(0.4,"cm")))
+                   color = 'black', linetype=1, arrow = arrow(length=unit(0.4,"cm")))
   }
   
   add_reference_point <- function(label_data, l_start, l_end, r_start, r_end){
@@ -1525,7 +1546,7 @@ server <- function(input, output, session) {
         )
       ) + 
         geom_line(size = 1.5, color = theme.cat.accent.color()) + 
-        geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
+        geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
         theme.line.mort() + 
         theme(legend.position = "bottom", legend.title = element_blank()) + 
         ylab("Mortality Rate (# per 100k)") + 
@@ -1546,8 +1567,8 @@ server <- function(input, output, session) {
         geom_label_repel(data = label_data, mapping = aes(x = x, y = death_rate, label = label), 
                          fill = theme.cat.accent.color(),
                          inherit.aes = FALSE,
-                         segment.colour = "#565254",
-                         color = "#f7f7f7",
+                         segment.colour = "black",
+                         color = "white",
                          #hjust = "inward", vjust = "inward",
                          #point.padding = 0.5,
                          direction = "both",
@@ -1606,7 +1627,7 @@ server <- function(input, output, session) {
                       geom_line(size = 1.5) + 
                       scale_fill_brewer(palette="Pastel2") +
                       scale_color_brewer(palette="Dark2") +
-                      geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
+                      geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
                       theme.line.mort() + 
                       theme(legend.position = "bottom", legend.title = element_blank()) + 
                       ylab("Mortality Rate (# per 100k)") +
@@ -1634,8 +1655,8 @@ server <- function(input, output, session) {
                       coord_cartesian(clip = "off") +
                       geom_label_repel(data = label_data, 
                                        mapping = aes(x = x, y = death_rate, label = label, fill = group),
-                                       segment.colour = "#565254",
-                                       color = "#f7f7f7",
+                                       segment.colour = "black",
+                                       color = "white",
                                        inherit.aes = FALSE,
                                        #hjust = "inward", vjust = "inward",
                                        #point.padding = 0.5,
@@ -1645,7 +1666,7 @@ server <- function(input, output, session) {
                                        show.legend = FALSE) + 
                       scale_fill_manual(values = colors)
                                        
-                      #geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = '#565254')
+                      #geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = 'black')
     }
     assign("page1_infographic", line_plot, envir = .GlobalEnv)
     line_plot
@@ -2236,12 +2257,12 @@ the highest absolute correlation with mortality.",
             y = ifelse(DIR == "Protective", 0.1, -0.1),
             hjust = ifelse(DIR == "Protective", 0, 1)
           ), 
-          color = "#565254", 
+          color = "black", 
           size = 4
         ) +
         geom_text(
           aes(label = round(kendall_cor, 2)), 
-          color = "#565254", 
+          color = "black", 
           size = 3
         ) +
         
@@ -2289,7 +2310,7 @@ the highest absolute correlation with mortality.",
     #add a slightly thicker red polygon on top of the selected one
     proxy %>% addPolylines(stroke = TRUE, 
                                    weight = 2,
-                                   color="#565254",
+                                   color="#000000",
                                    data = border,
                                    group="highlighted_polygon",
                                    dashArray = "4 2 4")
@@ -2356,7 +2377,7 @@ the highest absolute correlation with mortality.",
     county_name <- sub(county_choice(), pattern = " [[:alpha:]]*$", replacement = "")
     req(county_name)
     county_indices <- which(state_map@data$NAME %in% c(county_name))
-    
+
     if (length(county_indices) != 1){
       return()
     }
@@ -2459,4 +2480,3 @@ the highest absolute correlation with mortality.",
 }
 
 shinyApp(ui = ui, server = server)
-
