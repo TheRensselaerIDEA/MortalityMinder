@@ -67,6 +67,16 @@ ui <- fluidPage(
     ),
     
     pickerInput(
+      inputId = "death_cause",
+      label = h4("Cause of Death"),
+      choices = cause.list,
+      width = "200px",
+      choicesOpt = list(
+        subtext = c("Self-Harm and some other causes"),
+        "dropup-auto" = FALSE
+      )
+    ),
+    pickerInput(
       inputId = "state_choice",
       label = h4("State"), 
       choices = state.list,
@@ -76,17 +86,9 @@ ui <- fluidPage(
         `live-search` = TRUE,
         "dropup-auto" = FALSE
       )
-    ),
-    pickerInput(
-      inputId = "death_cause",
-      label = h4("Cause of Death"),
-      choices = cause.list,
-      width = "200px",
-      choicesOpt = list(
-        subtext = c("Self-Harm and some other causes"),
-        "dropup-auto" = FALSE
-      )
-    ))
+    )
+    
+    )
     
     
   ),
