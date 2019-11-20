@@ -131,7 +131,7 @@ chr.namemap.2019 <- bind_rows(
   )
 
 chr.namemap.2019 %>% 
-  #dplyr::mutate(name = stringr::str_to_title(name)) %>%
+  dplyr::mutate(name = stringr::str_to_title(name)) %>%
   as.data.frame() %>% 
   textshape::column_to_rownames("name") -> chr.namemap.inv.2019
 write_rds(chr.namemap.inv.2019, "chr.namemap.inv.2019.rds")
