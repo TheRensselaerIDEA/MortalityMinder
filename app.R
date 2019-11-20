@@ -2133,7 +2133,19 @@ server <- function(input, output, session) {
   # Determinant Header (upper-right panel, Page 1)
   output$textDeterminants <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
+          paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -2143,12 +2155,25 @@ server <- function(input, output, session) {
       ),
       NULL
       )
+    }
   })
 
   # Death Trends Header (Page 2 lower middle)
   output$textDeathTrends <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the average premature death trends for each cluster.",
+          paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -2158,12 +2183,24 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+    }
   })
 
   # Mortality Rates Header (Page 2 lower middle)
   output$textMortRates <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(tags$h3(
+        title="This plot represents the distribution of mortality rates for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Mortality Rates for ",
+              location_str, " for ", input$year_selector),
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         title="This plot represents the distribution of mortality rates for the selected state.",
@@ -2172,12 +2209,25 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+    }
   })
 
   # Cluster geo Header (Page 2 lower middle)
   output$textClusterGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if (input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the geographic distribution of clusters for the selected state.",
+          paste0(names(which(cause.list == input$death_cause)), " Clusters for ",location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -2187,12 +2237,25 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+    }
   })
 
   # Cluster geo Header (Page 2 lower middle)
   output$textSDGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the geographic distribution of the selected determinant for the selected state.",
+          paste0(input$determinant_choice, " Distribution for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -2202,26 +2265,35 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+  }
   })
   
   # Determinant Header (upper-left panel, Page 2)
   output$textDeterminants2 <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality.",
+          paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning 
-that it has a positive correlation with the 
-death rate; or Protective, meaning it has a 
-negative correlation with the death rate. 
-MortalityMinder shows those factors which have 
-the highest absolute correlation with mortality.",
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality.",
         paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
       NULL
       )
+    }
   })
   
   # Determinant Header (upper-center panel, Page 2)
@@ -2242,7 +2314,19 @@ the highest absolute correlation with mortality.",
   # Boxplot Header (upper-center panel, Page 3)
   output$textBoxplotTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h2(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Help text for box plots",
+          paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h2(
         style = "padding-right: 20px; padding-left: 20px",
@@ -2252,12 +2336,25 @@ the highest absolute correlation with mortality.",
       ),
       NULL
     )
+  }
   })
 
   # Scatterplot Header (lower-center panel, Page 3)
   output$textScatterplotTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h2(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Help text for scatter plots",
+          paste0(input$determinant_choice, " and Mortality Relationship for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h2(
         style = "padding-right: 20px; padding-left: 20px",
@@ -2267,6 +2364,7 @@ the highest absolute correlation with mortality.",
       ),
       NULL
     )
+  }
   })
   
   # Determinant geo Header (upper-center panel, Page 2)
