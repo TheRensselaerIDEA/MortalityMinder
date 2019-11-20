@@ -262,7 +262,6 @@ color: #f7f7f7;
 .page2_col1_top {
   width:100%;
   height:calc(50% - 1px);
-  overflow-y: auto;
 }
 
 .page2_col1_top_left {
