@@ -848,7 +848,7 @@ server <- function(input, output, session) {
     filename = function() {
       "chr_data_desc.csv"
     },
-    content = function(file) {z
+    content = function(file) {
       write.csv(SocialDeterminants, file, row.names = FALSE)
     }
   )
