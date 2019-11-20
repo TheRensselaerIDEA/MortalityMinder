@@ -331,6 +331,7 @@ ui <- fluidPage(
             
             fluidRow(
               class = "page3_col2_top",
+              uiOutput("textBoxplotTitle"),
               plotOutput("determinants_plot2",width="100%",height="85%")
                     ), #End of Column 2 Top
             
@@ -339,6 +340,7 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col2_bot",
               style = "position: relative",
+              uiOutput("textScatterplotTitle"),
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%",
                          click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
@@ -1046,7 +1048,8 @@ server <- function(input, output, session) {
           axis.title.x = element_blank(),
           
           legend.position = "none"
-        ) + ggtitle(paste(input$determinant_choice, "and Risk County Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Risk County Relationship"))+
         scale_fill_manual(
           name = "County",
           labels = sd.select$county_name,  
@@ -1076,7 +1079,8 @@ server <- function(input, output, session) {
           x = "Cluster",
           y = input$determinant_choice
          
-        ) + ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
       
@@ -1113,7 +1117,8 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -1146,7 +1151,8 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -1173,7 +1179,8 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -2023,6 +2030,36 @@ the highest absolute correlation with mortality.",
     )
   })
 
+  # Boxplot Header (upper-center panel, Page 3)
+  output$textBoxplotTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h2(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="Help text for box plots",
+        paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  })
+
+  # Scatterplot Header (lower-center panel, Page 3)
+  output$textScatterplotTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h2(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="Help text for scatter plots",
+        paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  })
+  
   # Determinant geo Header (upper-center panel, Page 2)
   output$textDeterminantsGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
