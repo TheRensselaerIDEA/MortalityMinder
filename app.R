@@ -144,12 +144,10 @@ ui <- fluidPage(
                 fluidRow(
                   class = "page1_col page1_col2_top",
                   tags$div(
-                    class = "National_title",
-                    style = "padding-left: 20px",
+                    class = "National_title page1_title",
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing")
-                    )
-                  
+                  )
                   ), # End of inner FluidRow (Column 2 top)
 
                 fluidRow(class="page1_col page1_col2_middle",
@@ -192,7 +190,9 @@ ui <- fluidPage(
                   column(6,
                   class = "page1_col page1_col2_middle_left",
                   # tags$h3("National Plot Title"),
-                  uiOutput("textNationwideTitle"),
+                  tags$div(class = "page1_title",
+                    uiOutput("textNationwideTitle")
+                  ), 
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 100%;left: 0;",
                   tags$img(
@@ -206,7 +206,9 @@ ui <- fluidPage(
                   ), # End of Middle inner Column
                   column(6,
                          class = "page1_col page1_col2_middle_right",
-                         uiOutput("textInfographicTitle"),
+                         tags$div(class = "page1_title",
+                          uiOutput("textInfographicTitle")
+                          ),
                          plotOutput("nation_state_infographic")
                   )
                 ), # End of inner Fluid Row (Column 2 Middle)
