@@ -2742,7 +2742,7 @@ server <- function(input, output, session) {
       return()
     highlight_county(event)
     county_choice(event$id)
-    updatePickerInput(session, "county_drop_choice", selected = event$id)
+    updatePickerInput(session, "county_drop_choice", selected = gsub(" County", "", event$id))
   })
   
   observe({
@@ -2751,7 +2751,7 @@ server <- function(input, output, session) {
       return()
     highlight_county(event)
     county_choice(event$id)
-    updatePickerInput(session, "county_drop_choice", selected = event$id)
+    updatePickerInput(session, "county_drop_choice", selected = gsub(" County", "", event$id))
   })
   
   observe({
@@ -2807,6 +2807,9 @@ server <- function(input, output, session) {
     
     county_name = point$county_name
     county_choice(paste0(county_name, " County"))
+    
+    updatePickerInput(session, "county_drop_choice", selected = point$county_name)
+    
   })
   
   # click on bar plot triggers page change
@@ -2864,7 +2867,7 @@ server <- function(input, output, session) {
     point <- nearPoints(kendall.cor.new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
-    
+
     updatePickerInput(session, "determinant_choice", selected = point$chr_code)
   })
 }
