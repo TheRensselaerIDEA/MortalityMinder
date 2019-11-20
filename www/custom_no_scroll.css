@@ -179,7 +179,7 @@
   width:25%;
   padding-left: 2%;
   padding-right: 2%;
-  overflow-y:scroll;
+  /*overflow-y:scroll;*/
   background-color: #8a8487;
   color: #f7f7f7;
 }
