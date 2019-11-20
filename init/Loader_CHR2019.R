@@ -100,24 +100,24 @@ chr.additionMeasure.namemap <- tibble(
            "Premature age-adjusted mortality", "Age-Adjusted Mortality", "Age-Adjusted Mortality (Black)","Age-Adjusted Mortality (Hispanic)",
            "Age-Adjusted Mortality (White)","Child total number of death","Child Mortality Rate",
            "Child Mortality Rate (Black)","Child Mortality Rate (Hispanic)","Child Mortality Rate (White)","Infant total number of death",
-           "Infant mortality rate","Infant Mortality Rate (Black)","Infant Mortality Rate (Hispanic)","Infant Mortality Rate (White)",
-           "Frequent physical distress percentage","Frequent mental distress	percentage","Diabetes prevalence percentage",
-           "Number of HIV Cases", "HIV prevalence rate","Food insecurity number","Food Insecure percentage","total number of Limited access to healthy foods",
+           "Infant Mortality Rate","Infant Mortality Rate (Black)","Infant Mortality Rate (Hispanic)","Infant Mortality Rate (White)",
+           "Frequent Physical Distress Percentage","Frequent Mental Distress	Percentage","Diabetes Prevalence Percentage",
+           "Number of HIV Cases", "HIV Prevalence Rate","Food Insecurity Number","Food Insecure Percentage","Total Number of Limited Access To Healthy Foods",
            "Limited access to healthy foods percentage","Total number of drug overdose deaths","Drug overdose deaths rate",
-           "Total number of motor vehicle crash deaths","Motor vehicle crash deaths rate","Insufficient sleep percentage",
-           "Total number of uninsured adults","Uninsured adults percentage","Total number of uninsured children",
+           "Total Number of Motor Vehicle Crash Deaths","Motor Vehicle Crash Deaths Rate","Insufficient Sleep Percentage",
+           "Total Number of Uninsured Adults","Uninsured Adults Percentage","Total Number of Uninsured Children",
            "Uninsured children percentage","Other primary care providers rate","Other primary care providers ratio",
-           "Disconnected youth percentage","Median household income","Household income (Black)","Household income (Hispanic)",
-           "Household income (White)","Children eligible for free or reduced price lunch percentage",
-           "Residential segregation - black/white","Residential segregation - non-white/white","Homicides rate",
-           "Total number of firearm fatalities","Firearm fatalities rate","Total number of Homeowners","Homeownership percentage",
-           "Total number of households with Severe housing cost burden","households with Severe housing cost burden percentage",
-           "Population","Percentage younger than 18","Percentage older than 65","Number of African American","African American percentage",
-           "Number of American Indian/Alaskan Native","American Indian/Alaskan Native percentage","Number of Asian",
-           "Asian percentage","Number of Native Hawaiian/Other Pacific Islander","Native Hawaiian/Other Pacific Islander percentage",
-           "Number of Hispanic","Hispanic percentage","Number of Non-Hispanic White","Non-Hispanic White percentage",
-           "Number of people Not Proficient in English","people Not Proficient in English percentage","female percentage",
-           "Number of rural", "Rural percentage")
+           "Disconnected Youth Percentage","Median Household Income","Household Income (Black)","Household Income (Hispanic)",
+           "Household Income (White)","Children Eligible for Free or Reduced Price Lunch Percentage",
+           "Residential Segregation - Black/White","Residential Segregation - Non-White/White","Homicides Rate",
+           "Total Number of Firearm Fatalities","Firearm Fatalities Rate","Total Number of Homeowners","Homeownership Percentage",
+           "Total Number of Households With Severe Housing Cost Burden","Households With Severe Housing Cost Burden Percentage",
+           "Population","Percentage Younger Than 18","Percentage Older Than 65","Number of African American","African American Percentage",
+           "Number of American Indian/Alaskan Native","American Indian/Alaskan Native Percentage","Size of Asian Population",
+           "Asian Population Percentage","Size of Native Hawaiian/Pacific Islander/Other Population","Native Hawaiian/Pacific Islander/Other Population Percentage",
+           "Size of Hispanic Population","Hispanic Population Percentage","Size of Non-Hispanic White Population","Non-Hispanic White Population Percentage",
+           "Size of Population Not Proficient in English","Population Not Proficient in English Percentage","Female Population Percentage",
+           "Size of Rural Population", "Rural Population Percentage")
 )
 
 # Summary name mapping
@@ -131,13 +131,13 @@ chr.namemap.2019 <- bind_rows(
   )
 
 chr.namemap.2019 %>% 
-  dplyr::mutate(name = stringr::str_to_title(name)) %>%
+  #dplyr::mutate(name = stringr::str_to_title(name)) %>%
   as.data.frame() %>% 
   textshape::column_to_rownames("name") -> chr.namemap.inv.2019
 write_rds(chr.namemap.inv.2019, "chr.namemap.inv.2019.rds")
 
 chr.namemap.2019 %>% 
-  dplyr::mutate(name = stringr::str_to_title(name)) %>%
+  #dplyr::mutate(name = stringr::str_to_title(name)) %>%
   as.data.frame() %>% 
   textshape::column_to_rownames("code") -> chr.namemap.2019
 
