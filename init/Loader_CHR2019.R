@@ -112,12 +112,12 @@ chr.additionMeasure.namemap <- tibble(
            "Residential Segregation - Black/White","Residential Segregation - Non-White/White","Homicides Rate",
            "Total Number of Firearm Fatalities","Firearm Fatalities Rate","Total Number of Homeowners","Homeownership Percentage",
            "Total Number of Households With Severe Housing Cost Burden","Households With Severe Housing Cost Burden Percentage",
-           "Population","Percentage Younger Than 18","Percentage Older Than 65","Number of African American","African American Percentage",
-           "Number of American Indian/Alaskan Native","American Indian/Alaskan Native Percentage","Size of Asian Population",
-           "Asian Population Percentage","Size of Native Hawaiian/Pacific Islander/Other Population","Native Hawaiian/Pacific Islander/Other Population Percentage",
-           "Size of Hispanic Population","Hispanic Population Percentage","Size of Non-Hispanic White Population","Non-Hispanic White Population Percentage",
-           "Size of Population Not Proficient in English","Population Not Proficient in English Percentage","Female Population Percentage",
-           "Size of Rural Population", "Rural Population Percentage")
+           "Population","Percentage Younger Than 18","Percentage Older Than 65","Number of African American","African American percentage",
+           "Number of American Indian/Alaskan Native","American Indian/Alaskan Native percentage","Number of Asian",
+           "Asian percentage","Number of Native Hawaiian/Other Pacific Islander","Native Hawaiian/Other Pacific Islander percentage",
+           "Number of Hispanic","Hispanic percentage","Number of Non-Hispanic White","Non-Hispanic White percentage",
+           "Number of people Not Proficient in English","people Not Proficient in English percentage","female percentage",
+           "Number of rural", "Rural percentage")
 )
 
 # Summary name mapping
@@ -137,7 +137,7 @@ chr.namemap.2019 %>%
 write_rds(chr.namemap.inv.2019, "chr.namemap.inv.2019.rds")
 
 chr.namemap.2019 %>% 
-  #dplyr::mutate(name = stringr::str_to_title(name)) %>%
+  dplyr::mutate(name = stringr::str_to_title(name)) %>%
   as.data.frame() %>% 
   textshape::column_to_rownames("code") -> chr.namemap.2019
 
