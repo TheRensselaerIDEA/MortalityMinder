@@ -1747,10 +1747,11 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h3(
+        title ="Mortality Rates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed.   See About page for details.",
         paste0("Mortality rate per 100,000 for people ages 25-to 64 due to ",
                names(which(cause.list == input$death_cause)), 
                " for three year periods for counties (left) and state and nation (right) . Darker colors indicate higher rates. "
-               )
+               ), icon("info-circle")
       ),
       tags$h4("Source: CDC WONDER"),
       tags$h4("Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute")
