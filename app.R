@@ -373,6 +373,7 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col3_top",
               tags$br(),
+              tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$p(htmlOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
@@ -394,7 +395,14 @@ ui <- fluidPage(
                 "Select a county below or by clicking the map:"              
               ),
               uiOutput("county_selector")
-            ) # End of pickerInput container
+            ), # End of pickerInput container
+            fluidRow(
+              class = "page3_col3_county_desc",
+              tags$br(),
+              tags$br(),
+              tags$br(),
+              uiOutput("county_desc")
+            )
             
             ) # End of Column 3
                 ) # End of Fluid Row
@@ -1358,6 +1366,85 @@ server <- function(input, output, session) {
                     signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
                     ")"))
     }
+  })
+  
+  # Gives information about county population and urbanness
+  output$county_desc <- renderUI({
+    
+    # when app starts up there is initially no selection
+    if (is.null(input$county_drop_choice)) {
+      return()
+    }
+    
+    county.data.00.02 <- dplyr::filter(
+      cdc.data,
+      county_name == input$county_drop_choice,
+      death_cause == input$death_cause,
+      state_abbr == input$state_choice,
+      period == "2000-2002"
+    )
+    county.data.15.17 <- dplyr::filter(
+      cdc.data,
+      county_name == input$county_drop_choice,
+      death_cause == input$death_cause,
+      state_abbr == input$state_choice,
+      period == "2015-2017"
+    )
+    
+    # pop change
+    pop.00.02 <- county.data.00.02$population
+    pop.15.17 <- county.data.15.17$population
+    
+    pop.change.text <- "Population has remained relatively constant since 2002"
+    
+    if (pop.00.02 > pop.15.17) {
+      pop.change.text <- paste0("Population fell by ", 
+                                formatC(pop.00.02 - pop.15.17, format="d", big.mark=","),
+                                " (",
+                                round((pop.00.02 - pop.15.17) / pop.00.02 * 100, 2),
+                                "%) from 2002 to 2017")
+    }
+    if (pop.00.02 < pop.15.17) {
+      pop.change.text <- paste0("Population rose by ",
+                                formatC(pop.15.17 - pop.00.02, format="d", big.mark=","),
+                                " (",
+                                round((pop.15.17 - pop.00.02) / pop.00.02 * 100, 2),
+                                "%) from 2002 to 2017")
+    }
+    
+    # death rate change
+    dr.00.02 <- county.data.00.02$death_rate
+    dr.15.17 <- county.data.15.17$death_rate
+    
+    dr.change.text <- paste0("The ", tolower(input$death_cause), 
+                             " mortality rate has remained relatively constant since 2002 at ",
+                             round(dr.15.17, 2),
+                             "per 100k people")
+    
+    if (dr.00.02 > dr.15.17) {
+      dr.change.text <- paste0("The ", tolower(input$death_cause), 
+                                " mortality rate fell by ",
+                                round((dr.00.02 - dr.15.17) / dr.00.02 * 100, 2),
+                                "% from 2002 to 2017 from ",
+                                round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
+    }
+    if (dr.00.02 < dr.15.17) {
+      dr.change.text <- paste0("The ", tolower(input$death_cause), 
+                                " mortality rate rose by ",
+                                round((dr.15.17 - dr.00.02) / dr.00.02 * 100, 2),
+                                "% from 2002 to 2017 from ",
+                                round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
+    }
+    
+    tagList(
+      tags$h5(paste0(
+        county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
+        " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
+        formatC(pop.15.17, format="d", big.mark=","))
+      ),
+      tags$h5(pop.change.text),
+      tags$h5(dr.change.text)
+    )
   })
   
   output$determinants_plot4 <- renderPlot({
