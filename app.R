@@ -1486,6 +1486,125 @@ server <- function(input, output, session) {
       nclusters <- max(mort.cluster.raw()$cluster)
       total.data <- rbind(mort.avg.cluster.ord(), national.mean())
       
+ 
+      
+      if (input$state_choice == "DE") {
+        
+        exceptions.data <- cdc.data %>%
+          dplyr::filter(death_cause == input$death_cause) %>%
+          dplyr::right_join(mort.cluster.raw(), by = "county_fips")
+        exceptions.data$cluster <- exceptions.data$county_name
+        exceptions.data <- exceptions.data %>%
+          dplyr::group_by(period, cluster) %>%
+          dplyr::summarise(
+            death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
+            count = n()
+          ) %>%
+          dplyr::ungroup()
+        exceptions.data <- rbind(exceptions.data, national.mean())
+        extras.color <- rbind(mort.avg.cluster.ord(), national.mean())
+        colnames(extras.color)[2] <- "cluster.num"
+        exceptions.data <- cbind(exceptions.data, extras.color$cluster.num)
+        colnames(exceptions.data)[5] <- "cluster.num"
+        
+
+        line_plot <- ggplot(
+          exceptions.data,
+          aes(
+            x = period, y = death_rate, 
+            color = cluster.num, group = cluster.num
+          )
+        ) + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+          # labs.line.mort(input$state_choice, input$death_cause) + 
+          scale_color_manual(
+            values = c(theme.categorical.colors(nclusters), "#0571b0"), labels = c("Kent", "New Castle", "Sussex", "National")) +
+          theme.line.mort() + 
+          theme(legend.position = "left") + 
+          guides(color = guide_legend(reverse = T)) +
+          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          ylab("Mortality Rate (# per 100k)")
+        line_plot
+        
+      } else if (input$state_choice == "HI") {
+        
+        exceptions.data <- cdc.data %>%
+          dplyr::filter(death_cause == input$death_cause) %>%
+          dplyr::right_join(mort.cluster.raw(), by = "county_fips")
+        exceptions.data$cluster <- exceptions.data$county_name
+        exceptions.data <- exceptions.data %>%
+          dplyr::group_by(period, cluster) %>%
+          dplyr::summarise(
+            death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
+            count = n()
+          ) %>%
+          dplyr::ungroup()
+        exceptions.data <- rbind(exceptions.data, national.mean())
+        extras.color <- rbind(mort.avg.cluster.ord(), national.mean())
+        colnames(extras.color)[2] <- "cluster.num"
+        exceptions.data <- cbind(exceptions.data, extras.color$cluster.num)
+        colnames(exceptions.data)[5] <- "cluster.num"
+        
+        line_plot <- ggplot(
+          exceptions.data,
+          aes(
+            x = period, y = death_rate, 
+            color = cluster.num, group = cluster.num
+          )
+        ) + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+          # labs.line.mort(input$state_choice, input$death_cause) + 
+          scale_color_manual(
+            values = c(theme.categorical.colors(nclusters), "#0571b0"), labels = c("Kalawao", "Honolulu" , "Maui", "Hawaii", "Kauai", "National")) +
+          theme.line.mort() + 
+          theme(legend.position = "left") + 
+          guides(color = guide_legend(reverse = T)) +
+          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          ylab("Mortality Rate (# per 100k)")
+        line_plot
+        
+      } else if (input$state_choice == "RI") {
+        
+        exceptions.data <- cdc.data %>%
+          dplyr::filter(death_cause == input$death_cause) %>%
+          dplyr::right_join(mort.cluster.raw(), by = "county_fips")
+        exceptions.data$cluster <- exceptions.data$county_name
+        exceptions.data <- exceptions.data %>%
+          dplyr::group_by(period, cluster) %>%
+          dplyr::summarise(
+            death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
+            count = n()
+          ) %>%
+          dplyr::ungroup()
+        exceptions.data <- rbind(exceptions.data, national.mean())
+        extras.color <- rbind(mort.avg.cluster.ord(), national.mean())
+        colnames(extras.color)[2] <- "cluster.num"
+        exceptions.data <- cbind(exceptions.data, extras.color$cluster.num)
+        colnames(exceptions.data)[5] <- "cluster.num"
+        
+        line_plot <- ggplot(
+          exceptions.data,
+          aes(
+            x = period, y = death_rate, 
+            color = cluster.num, group = cluster.num
+          )
+        ) + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+          # labs.line.mort(input$state_choice, input$death_cause) + 
+          scale_color_manual(
+            values = c(theme.categorical.colors(nclusters), "#0571b0"), labels = c("Bristol", "Washington", "Newport", "Kent", "Providence", "National")) +
+          theme.line.mort() + 
+          theme(legend.position = "left") + 
+          guides(color = guide_legend(reverse = T)) +
+          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          ylab("Mortality Rate (# per 100k)")
+        line_plot 
+        
+      } else {
+      
       line_plot <- ggplot(
         total.data,
         aes(
@@ -1526,6 +1645,7 @@ server <- function(input, output, session) {
                                 values = c("twodash"),
                                 guide = guide_legend(override.aes = list(color = c("#565254")))
           )
+      }
       }
     }
     
