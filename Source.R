@@ -7,7 +7,7 @@ library(withr)
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
 
 # Read in new Social Determinants definitions
-SocialDeterminants <- readRDS("../init/SocialDeterminants.rds")
+SocialDeterminants <- read_csv("../init/SocialDeterminants.csv")
 
 final.determinants <- SocialDeterminants[SocialDeterminants$Keep == 1,]["Code"]
 final.determinants <- append(final.determinants$Code, "county_fips", after = 0)
