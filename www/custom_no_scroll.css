@@ -164,6 +164,10 @@
 
 .page1 {}
 
+.page1_title {
+  padding: 10px;
+}
+
 .page1_col{
   height:95%;
   float:center;
@@ -175,7 +179,7 @@
   width:25%;
   padding-left: 2%;
   padding-right: 2%;
-  overflow-y:scroll;
+  /*overflow-y:scroll;*/
   background-color: #8a8487;
   color: #f7f7f7;
 }
@@ -262,7 +266,6 @@ color: #f7f7f7;
 .page2_col1_top {
   width:100%;
   height:calc(50% - 1px);
-  overflow-y: auto;
 }
 
 .page2_col1_top_left {
