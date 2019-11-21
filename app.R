@@ -410,35 +410,34 @@ ui <- fluidPage(
       ), # End of Page 3
 ##################### PAGE 4, STATE COMPARISON PAGE #####################
 
-tags$div(
-  class = "slide",
-  tags$div(
-    class = "nav_bar_blank"
-  ),
-  fluidRow(
-    class = "page page4",
-    column(3,
-           class = "page3_col page3_col2",
-           
-           fluidRow(
-             class = "page3_col2_top",
-             uiOutput("textBoxplotTitle"),
-             plotOutput("determinants_plot2",width="100%",height="85%")
-           ), #End of Column 2 Top
-           
-           tags$div(class = "hr"),
-           
-           fluidRow(
-             class = "page3_col2_bot",
-             style = "position: relative",
-             uiOutput("textScatterplotTitle"),
-             uiOutput("determinants_plot3_county_name"),
-             plotOutput("determinants_plot3",width="100%",height="85%",
-                        click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
-           ) # End of Column 1 Bottom
-    ) # End of Column 1
-  ) # End of Fluid Row
-), # End of Page 4
+    tags$div(
+        class = "slide",
+        tags$div(
+          class = "nav_bar_blank"
+        ),
+        fluidRow(
+          class = "page page4",
+          column(6,
+                class = "page4_col page4_col1",
+                fluidRow(
+                  class="page4_col page4_col1_top", 
+                  tags$div(
+                    class="page4_col1_top_title",
+                    uiOutput("textMortRates_compare")
+                  ), # End of title div container
+                  radioButtons("year_selector",
+                               #label = "Click on time period to select state map for that period",
+                               label = NULL,
+                               selected = "2015-2017",
+                               choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
+                               choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                               inline = TRUE),
+                  leafletOutput("geo_mort_change2_compare",width="82%",height="80%")
+                ) # End of inner fluid row col1 top
+           ) #End of Column 1 
+        ) # End of Fluid Row
+    ), # End of Page 4
+
 ##################### PAGE 5, ABOUT PAGE #####################
 
       tags$div(
@@ -2189,7 +2188,7 @@ server <- function(input, output, session) {
   })
 
   # Mortality Rates Header (Page 2 lower middle)
-  output$textMortRates <- renderUI({
+  output$textMortRates_compare <- output$textMortRates <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     if(input$state_choice == "United States") {
       location_str <- "the United States" 
@@ -2468,7 +2467,7 @@ server <- function(input, output, session) {
   })
   
   # Mortality Rate by County Period 2
-  output$geo_mort_change2 <- renderLeaflet({
+  output$geo_mort_change2_compare <- output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
