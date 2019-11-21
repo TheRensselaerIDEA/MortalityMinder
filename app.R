@@ -417,24 +417,37 @@ ui <- fluidPage(
         ),
         fluidRow(
           class = "page page4",
-          column(6,
+          column(5,
                 class = "page4_col page4_col1",
                 fluidRow(
                   class="page4_col page4_col1_top", 
-                  tags$div(
-                    class="page4_col1_top_title",
-                    uiOutput("textMortRates_compare")
-                  ), # End of title div container
-                  radioButtons("year_selector",
+                  column(5,
+                         class="page4_col page4_col1_top_left",
+                          tags$div(
+                            class="page4_col1_top_title",
+                            uiOutput("textMortRates_compare")
+                          ), # End of title div container
+                          radioButtons("year_selector",
                                #label = "Click on time period to select state map for that period",
                                label = NULL,
                                selected = "2015-2017",
                                choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                inline = TRUE),
-                  leafletOutput("geo_mort_change2_compare",width="82%",height="80%")
-                ) # End of inner fluid row col1 top
-           ) #End of Column 1 
+                          leafletOutput("geo_mort_change2_compare",width="328px",height="320px")
+                          )
+                    ), # End of inner fluid row col1 top
+                    tags$div(
+                      class = "hr"
+                    ),
+                  fluidRow(
+                        class="page4_col page4_col1_bottom", 
+                        column(5,
+                               class="page4_col page4_col1_bottom_left",
+                              tags$h4("Compare state-wide mortality rates. Select a state to compare.")
+                        )
+                  ) # End of inner fluid row col1 bottom
+            ) #End of Column 1 
         ) # End of Fluid Row
     ), # End of Page 4
 
