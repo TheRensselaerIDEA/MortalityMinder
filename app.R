@@ -408,7 +408,38 @@ ui <- fluidPage(
             ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
-##################### PAGE 4, ABOUT PAGE #####################
+##################### PAGE 4, STATE COMPARISON PAGE #####################
+
+tags$div(
+  class = "slide",
+  tags$div(
+    class = "nav_bar_blank"
+  ),
+  fluidRow(
+    class = "page page4",
+    column(3,
+           class = "page3_col page3_col2",
+           
+           fluidRow(
+             class = "page3_col2_top",
+             uiOutput("textBoxplotTitle"),
+             plotOutput("determinants_plot2",width="100%",height="85%")
+           ), #End of Column 2 Top
+           
+           tags$div(class = "hr"),
+           
+           fluidRow(
+             class = "page3_col2_bot",
+             style = "position: relative",
+             uiOutput("textScatterplotTitle"),
+             uiOutput("determinants_plot3_county_name"),
+             plotOutput("determinants_plot3",width="100%",height="85%",
+                        click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
+           ) # End of Column 1 Bottom
+    ) # End of Column 1
+  ) # End of Fluid Row
+), # End of Page 4
+##################### PAGE 5, ABOUT PAGE #####################
 
       tags$div(
         class = "slide",
@@ -416,7 +447,7 @@ ui <- fluidPage(
           class = "nav_bar_blank"
         ),
           fluidRow(
-                  class = "page page4",
+                  class = "page page5",
                    column(3, tags$h3("Project Overview",align="center"),  #offset=1,
                           fluidRow(
                             column(11, tags$h4("Since 2010 the rate of increase in life expectancy in the United States (US) 
@@ -502,7 +533,7 @@ ui <- fluidPage(
                           downloadButton("downloadCorr", "Current Factor Correlations")
                    )
         )# Close outter fluidRow
-        ) # Close Page 4
+        ) # Close Page 5
       )
     ),
   tags$script(src = "jquery-ui.min.js"),
