@@ -378,6 +378,7 @@ ui <- fluidPage(
               tags$p(htmlOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
+              tags$h5(htmlOutput("determinant_original_source")),
               tags$p(uiOutput("determinant_link"))
                     ), # End of Column 3 top
             fluidRow(
@@ -826,7 +827,16 @@ server <- function(input, output, session) {
     return(as.character(
       SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"URL"))
   })
+  
+  determinant.source <- reactive({
+    return(as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Source"))
+  })
 
+  determinant.source_url <- reactive({
+    return(as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Source_url"))
+  })
   
   # ----------------------------------------------------------------------
   # Functions for data download
@@ -1292,6 +1302,18 @@ server <- function(input, output, session) {
       tags$a(
         "Click here for more information",
         href = determinant.url(),
+        target="_blank"
+      )
+    )
+    )
+  })
+  
+  output$determinant_original_source <- renderUI({
+    tagList(tags$h4(
+      "Source: ",
+      tags$a(
+        determinant.source(),
+        href = determinant.source_url(),
         target="_blank"
       )
     )
