@@ -214,10 +214,6 @@ ui <- fluidPage(
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
-                  
-                  # uiOutput("textMortFactsTitle"),
-                  # uiOutput("textMortFacts")
-
                   uiOutput("textMortFactsNew")
                   
                   ) # Close inner FluidRow (Column 2 Bottom)
@@ -1267,37 +1263,6 @@ server <- function(input, output, session) {
       
     }
     
-# # Mortality Rate by County Period 2
-#       if(input$state_choice == "United States"){
-#         # mort.data <- dplyr::filter(
-#         #   cdc.data,
-#         #   death_cause == input$death_cause,
-#         #   period == input$year_selector
-#         # ) %>% 
-#         #   dplyr::mutate(
-#         #     # death_rate = death_num / population * 10^5,
-#         #     death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-#         #   ) %>%
-#         #   dplyr::select(county_fips, death_rate, period)
-#         # 
-#         # geo.plot("US", input$death_cause, mort.data, input$year_selector)
-#       } else{
-#         sd.data <- dplyr::filter(
-#           cdc.data,
-#           state_abbr == input$state_choice,
-#           death_cause == input$death_cause,
-#           period == input$year_selector
-#         ) %>% 
-#           dplyr::mutate(
-#             # death_rate = death_num / population * 10^5,
-#             death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-#           ) %>%
-#           dplyr::select(county_fips, death_rate, period)
-#         
-#         geo.plot(input$state_choice, input$death_cause, sd.data, input$year_selector)
-#       }
-
-    
   })
   
   output$determinant_title <- renderText({
@@ -1313,10 +1278,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # output$determinant_text <- renderText({
-  #   as.character(
-  #     SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
-  # })
 
   output$determinant_text <- renderUI({
     tagList(tags$h4(
@@ -1750,18 +1711,6 @@ server <- function(input, output, session) {
       period_choice = input$page1_period
     }
     
-    # if (!is.null(page1_period_choice) && period_choice != page1_period_choice){
-    #   line_plot <- page1_infographic
-    #   # delete_layers(line_plot, idx = 3L)
-    #   # append_layers(line_plot,
-    #   #               geom_segment(aes(x=period_choice, xend=period_choice, y=lo, yend=hi), color = '#38761D', linetype=2))
-    #   line_plot$plot_env$period_choice = period_choice
-    #   assign("page1_period_choice", period_choice, envir = .GlobalEnv)
-    #   return(line_plot)
-    # }
-    # 
-    # assign("page1_period_choice", period_choice, envir = .GlobalEnv)
-    
     if (input$state_choice == "United States"){
       
       nation_data <- dplyr::filter(
@@ -1962,8 +1911,7 @@ server <- function(input, output, session) {
                " for three year periods for counties (left) and state and nation (right) . Darker colors indicate higher rates. "
                ), icon("info-circle")
       ),
-      tags$h4("Source: CDC WONDER"),
-      tags$h4("Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute")
+      HTML("<h4>Source: CDC WONDER<br>Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute</h4>")
     )
   })
   
