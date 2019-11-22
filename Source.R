@@ -5,25 +5,31 @@ library(withr)
 # Separated out function definitions 10/01/2019
 #source("Loader_CHR2019.R") # Added write_rds 9/27/2019
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
-  
-#chr.data.2019 <- readRDS("chr.data.2019.reduced.rds")
-chr.data.2019 <- readRDS("chr.data.2019.rds")
-reduced.chr.list <- readRDS("reduced.chr.list")
 
-#Filtering out the social determinants that we don't want; making chr.data.2019 only contain the few selected social determinants that are relevant
+# Read in new Social Determinants definitions
+SocialDeterminants <- read_csv("../init/SocialDeterminants.csv")
 
-reduced.chr.list <- readRDS("reduced.chr.list")
-reduced.chr.list <- append(reduced.chr.list, "county_fips", after = 0)
+final.determinants <- SocialDeterminants[SocialDeterminants$Keep == 1,]["Code"]
+final.determinants <- append(final.determinants$Code, "county_fips", after = 0)
 
+# Load all data
+chr.data.2019 <- readRDS("../init/chr.data.2019.rds")
 chr.data.2019 <- chr.data.2019 %>%
   as_data_frame %>%
-  select(reduced.chr.list)
+  select(final.determinants)
+
+# Load name map and its inverse
+chr.namemap.2019 <- SocialDeterminants %>% select("Code", "Name")
+chr.namemap.2019 <- column_to_rownames(chr.namemap.2019, "Code")
+names(chr.namemap.2019)[1] <- "name"
+
+chr.namemap.inv.2019 <- SocialDeterminants %>% select("Name", "Code")
+chr.namemap.inv.2019 <- column_to_rownames(chr.namemap.inv.2019, "Name")
+names(chr.namemap.inv.2019)[1] <- "code"
 
 # Load state and national mortality rate data
 state_natl_death_rates <- readRDS("../data/CDC/state_natl_death_rates.Rds")
   
-chr.namemap.2019 <- readRDS("chr.namemap.2019.rds")
-chr.namemap.inv.2019 <- readRDS("chr.namemap.inv.2019.rds")
 # Separated out function definitions 10/01/2019
 #source("Loader_CDC.R")     # Added write_rds 9/27/2019
 source("CDC_Lib.R")         # Function definitions from Loader_CDC.R
@@ -39,6 +45,6 @@ source("Analyzer_PCA.R")
 source("Clustering_Lib.R")
 source("Analyzer_Correlation.R")
 source("Theme.R")
-# Read in new SD definitions
-SocialDeterminants <- readRDS("SocialDeterminants.rds")
+
+# Set final working directory
 setwd("../www")

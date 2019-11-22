@@ -3,14 +3,17 @@
 # MortalityMinder
 
 ## About
-**MortalityMinder** is a web application built on the [R Shiny](https://shiny.rstudio.com/) application framework, written primarily in R, with some functionality written in javascript. It creates highly visual analysis of mortality data provided by [CDCWonder](https://wonder.cdc.gov/) and [County Health Rankings](http://www.countyhealthrankings.org/). You may find a live version of the app here: https://lp01.idea.rpi.edu/shiny/erickj4/MortalityMinder/
+**MortalityMinder** is a web application built on the [R Shiny](https://shiny.rstudio.com/) application framework, written primarily in R, with some functionality written in javascript. It creates highly visual analysis of mortality data provided by [CDCWonder](https://wonder.cdc.gov/) and [County Health Rankings](http://www.countyhealthrankings.org/). You will find live versions of the app at the following locations:
+* http://mortalityminder.idea.rpi.edu/ (primary)
+* https://olyerickson.shinyapps.io/mortalityminder/ (secondary)
 
 ## Local Setup
 To run a local instance of the application, follow the steps below:
 
-1. Clone the repository to your local setup.
-2. Open RStudio and navigate to your local repository location in the RStudio files tab.
-3. Open app.R and select `Run App` on the top-right corner of the code window.
+1. Clone the repository to your local setup; the directory `MortalityMinder` will be created.
+2. Open RStudio and navigate to the `MortalityMinder` directory using the RStudio files tab.
+3. Set the working directory to `MortalityMinder`
+4. Double-click to open `app.R` and select `Run App` on the top-right corner of the code window.
 
 ## Reference
 If you use **MortalityMinder** in your work, please use the following reference

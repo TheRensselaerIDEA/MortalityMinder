@@ -113,12 +113,13 @@
 
 .title {
   float: left;
-    max-width: 400px;
+    max-width: 600px;
     width: 100vw;
     height: auto;
     padding: 2vh 3.6vw;
     overflow: none;
     font-weight: 800;
+    display:inline;
 }
 
 .title h1 {
@@ -129,13 +130,12 @@
   font-size:30px;
   font-family:'customFont';
 }
-.title h1:hover {
-  margin:0;
-  color:#565254;
-   text-shadow: 0 0 5px #565254;
-   color: transparent;
-  font-size:30px;
-}
+
+.title h1 img {
+    vertical-align: middle;/*was -8px;*/
+    margin-right: 5px;
+    height: 30px;
+} 
 
 /********Col Styles**********/
 
@@ -164,6 +164,10 @@
 
 .page1 {}
 
+.page1_title {
+  padding: 10px;
+}
+
 .page1_col{
   float:center;
   display:block;
@@ -174,7 +178,7 @@
   width:25%;
   padding-left: 2%;
   padding-right: 2%;
-  overflow-y:scroll;
+  /*overflow-y:scroll;*/
   background-color: #8a8487;
   color: #f7f7f7;
 }
@@ -255,15 +259,14 @@ color: #f7f7f7;
 .page2_col1_top {
   width:100%;
   height:calc(50% - 1px);
-  overflow-y: auto;
 }
 
 .page2_col1_top_left {
-  width: 30%;
+  width: 40%;
 }
 
 .page2_col1_top_right {
-  width: 70%;
+  width: 60%;
 }
 
 
@@ -296,14 +299,14 @@ color: #f7f7f7;
 .page2_col1_bot_right_title{}
 
 .page2_col2 {
-  width:25%;
+  width:30%;
 }
 
 .page2_col2_title {}
 
 .page2_col2_plot {
   width:100%;
-  height:90%;
+  height:95%;
   float:left;
   display:block;
 }
@@ -375,7 +378,7 @@ color: #f7f7f7;
 
 /********Form Styles**********/
 #year_selector {
-  width: 15%;
+  width: 100%;
   text-align: center;
   padding-left: 0;
   padding-right: 0;
@@ -386,6 +389,7 @@ color: #f7f7f7;
   font-size: 8px;
   display: flex;
   }
+  
 .radio-inline input[type=radio] {
   display: none;
   }
@@ -406,13 +410,13 @@ color: #f7f7f7;
   }
   
  .radio-inline {
-   width: 100%;
+/*   width: 100%; */
  }
  
 .checkbox-inline, .radio-inline{
    padding-left: 0px;
    margin-bottom: 3vh;
-  margin-top: 1vh;
+/*  margin-top: 1vh; */
  }
  
  .checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline {

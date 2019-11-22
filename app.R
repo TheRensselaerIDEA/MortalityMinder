@@ -21,10 +21,10 @@ names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
 cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
-cause.definitions <- c("*\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
-                       "*\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
-                       "*\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
-                       "*\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
+cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
+                       "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
+                       "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
+                       "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 period.list <- c("2000-2002","2003-2005","2006-2008","2009-2011","2012-2014","2015-2017")
 
 n.clusters.state = 3
@@ -48,10 +48,16 @@ ui <- fluidPage(
 ##################### NAV BAR #####################
   tags$div(
     class = "navbar",
+
     tags$div(
       class = "title",
-      h1("MortalityMinder")
-            ),
+      tags$h1(
+        tags$img(
+          src="RPIlogo_black.png"
+          # height="30px"
+          ),
+        "MortalityMinder")
+      ),
     tags$div(
       class = "nav_container",
     
@@ -60,6 +66,16 @@ ui <- fluidPage(
       "Select cause of death and state: "
     ),
     
+    pickerInput(
+      inputId = "death_cause",
+      label = h4("Cause of Death"),
+      choices = cause.list,
+      width = "200px",
+      choicesOpt = list(
+        subtext = c("Self-Harm and some other causes"),
+        "dropup-auto" = FALSE
+      )
+    ),
     pickerInput(
       inputId = "state_choice",
       label = h4("State"), 
@@ -70,17 +86,9 @@ ui <- fluidPage(
         `live-search` = TRUE,
         "dropup-auto" = FALSE
       )
-    ),
-    pickerInput(
-      inputId = "death_cause",
-      label = h4("Cause of Death"),
-      choices = cause.list,
-      width = "200px",
-      choicesOpt = list(
-        subtext = c("Self-Harm and some other causes"),
-        "dropup-auto" = FALSE
-      )
-    ))
+    )
+    
+    )
     
     
   ),
@@ -107,7 +115,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Since 2010, mortality rates in the United States have steadily increased year over year.")
+                  tags$h3("Mortality rates are rising in the United States depending on where you live.")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -117,13 +125,17 @@ ui <- fluidPage(
                       tags$li(tags$h4("Assault Deaths")),
                       tags$li(tags$h4("All Causes"))
                        ), # End List
-                      tags$h4("The mortality rate is the number of people age 25 to 64 per 100,000 that died prematurely in a 
-                    given county during a three year period fora given cause and for a region:  county, state or nationwide.\n"), 
-                      tags$h4("Pick the cause of death on the menu bar to see how mortality rates in the United States have changed 
-                    from 2000 to 2017.\n"), 
-                      tags$h4("To understand why rates are changing, MortalityMinder analyzes factors that are related with 
-                    increased mortality rates at the county level."), 
-                      tags$h4(tags$i("Click right and left to investigate more.\n"))   
+                      tags$h4("MortalityMinder is a four-page interactive presentation that examines county-level factors associated with mortality trends.\n"), 
+                      tags$h4("Pick a cause of death and state on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
+                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate further.\n")
+                              ),
+                 tags$div(class="IDEA_Logo_Wrapper",
+                          tags$img(
+                            class="rensselaer_logo",
+                            src="RPIlogo.png", 
+                            width="100%", 
+                            style="bottom: 0; left: 0;")
+                 )
           ), # End Column 1
           tags$div(
             class = "vl"
@@ -132,12 +144,10 @@ ui <- fluidPage(
                 fluidRow(
                   class = "page1_col page1_col2_top",
                   tags$div(
-                    class = "National_title",
-                    style = "padding-left: 20px",
+                    class = "National_title page1_title",
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing")
-                    )
-                  
+                  )
                   ), # End of inner FluidRow (Column 2 top)
 
                 fluidRow(class="page1_col page1_col2_middle",
@@ -147,40 +157,42 @@ ui <- fluidPage(
                       tags$button(
                         id = "first_period",
                         class = "period_text",
-                        "2000-2002"
+                        "2000-02"
                       ),
                       tags$button(
                         id = "second_period",
                         class = "period_text",
-                        "2003-2005"
+                        "2003-05"
                       ),
                       tags$button(
                         id = "third_period",
                         class = "period_text",
-                        "2006-2008"
+                        "2006-08"
                       ),
                       tags$button(
                         id = "forth_period",
                         class = "period_text",
-                        "2009-2011"
+                        "2009-11"
                       ),
                       tags$button(
                         id = "fifth_period",
                         class = "period_text",
-                        "2012-2014"
+                        "2012-14"
                       ),
                       tags$button(
                         id = "sixth_period",
                         class = "period_text",
                         style= "background-color: #565254; color: #f7f7f7;",
-                        "2015-2017"
+                        "2015-17"
                       )
                     ) # End List of buttons
                   ), # End Button Functionality
                   column(6,
                   class = "page1_col page1_col2_middle_left",
                   # tags$h3("National Plot Title"),
-                  uiOutput("textNationwideTitle"),
+                  tags$div(class = "page1_title",
+                    uiOutput("textNationwideTitle")
+                  ), 
                   tags$div(class="NationalMapContainer",
                            style="position:relative;width: 100%;left: 0;",
                   tags$img(
@@ -194,15 +206,16 @@ ui <- fluidPage(
                   ), # End of Middle inner Column
                   column(6,
                          class = "page1_col page1_col2_middle_right",
-                         uiOutput("textInfographicTitle"),
+                         tags$div(class = "page1_title",
+                          uiOutput("textInfographicTitle")
+                          ),
                          plotOutput("nation_state_infographic")
                   )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
+                  uiOutput("textMortFactsNew")
                   
-                  uiOutput("textMortFactsTitle"),
-                  uiOutput("textMortFacts")
                   ) # Close inner FluidRow (Column 2 Bottom)
                 ) #Close Column 2
               ) #Close Outter Row (National Map Page)
@@ -224,7 +237,7 @@ ui <- fluidPage(
                        column(4,
                               class = "page2_col page2_col1_top_left",
                               tags$div(
-                                title="The mortality rate used in the app is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
+                                title="The mortality rate used in MortalityMinder is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
                                 tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
                                       ), # End of Heading Conrainer
                               uiOutput("textDescription")
@@ -236,16 +249,17 @@ ui <- fluidPage(
                                 class="page2_col1_top_right_title",
                                 uiOutput("textMortRates")
                                       ), # End of title div container
-                              radioButtons("year_selector", 
+                              radioButtons("year_selector",
                                            #label = "Click on time period to select state map for that period",
                                            label = NULL,
-                                           selected = "2015-2017", 
-                                           choiceNames = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
+                                           selected = "2015-2017",
+                                           choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
                               leafletOutput("geo_mort_change2",width="82%",height="80%")
                               ) # End of inner Column (Column 1 top right)
-                           ), # End of inner FluidRow (Column1 Top)
+                     
+                   ), # End of inner FluidRow (Column1 Top)
                    tags$div(
                      class = "hr"
                            ),
@@ -279,7 +293,7 @@ ui <- fluidPage(
 
               tags$div(
                 class = "page2_col2_plot",
-                plotOutput("page1.bar.cor1",width="90%",height="100%", 
+                plotOutput("page1.bar.cor1",width="100%",height="100%", 
                            hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
                            click = clickOpts("page1_bar_plot_click")),
                 uiOutput("hover_info")
@@ -303,7 +317,7 @@ ui <- fluidPage(
               class = "col1_title",
               uiOutput("textDeterminants2")
                     ), # End title div container
-            plotOutput("determinants_plot1", height = "85%", width = "100%",
+            plotOutput("determinants_plot1", height = "100%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
                 ), # End Column 1
           
@@ -315,6 +329,7 @@ ui <- fluidPage(
             
             fluidRow(
               class = "page3_col2_top",
+              uiOutput("textBoxplotTitle"),
               plotOutput("determinants_plot2",width="100%",height="85%")
                     ), #End of Column 2 Top
             
@@ -323,6 +338,7 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col2_bot",
               style = "position: relative",
+              uiOutput("textScatterplotTitle"),
               uiOutput("determinants_plot3_county_name"),
               plotOutput("determinants_plot3",width="100%",height="85%",
                          click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
@@ -335,7 +351,11 @@ ui <- fluidPage(
           column(3,
             class = "page3_col page3_col3",
             tags$div(
-              style = "padding-top: 10px;",
+              class = "nav_container",
+              tags$div(
+                class = "prompt_text",
+                "Select a determinant:"              
+              ),
               pickerInput(
                 inputId = "determinant_choice",
                 label = "Selected Determinant: ",
@@ -353,10 +373,12 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col3_top",
               tags$br(),
+              tags$br(),
               tags$h2(textOutput("determinant_title")),
               tags$p(htmlOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
+              tags$h5(htmlOutput("determinant_original_source")),
               tags$p(uiOutput("determinant_link"))
                     ), # End of Column 3 top
             fluidRow(
@@ -366,8 +388,24 @@ ui <- fluidPage(
                 uiOutput("textSDGeo")
                       ),
               leafletOutput("determinants_plot5")
-                    ) # End of inner Column 3 bottom
-                ) # End of Column 3
+            ), # End of inner Column 3 bottom
+            tags$div(
+              class = "nav_container",
+              tags$div(
+                class = "prompt_text",
+                "Select a county below or by clicking the map:"              
+              ),
+              uiOutput("county_selector")
+            ), # End of pickerInput container
+            fluidRow(
+              class = "page3_col3_county_desc",
+              tags$br(),
+              tags$br(),
+              tags$br(),
+              uiOutput("county_desc")
+            )
+            
+            ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
 ##################### PAGE 4, ABOUT PAGE #####################
@@ -789,7 +827,16 @@ server <- function(input, output, session) {
     return(as.character(
       SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"URL"))
   })
+  
+  determinant.source <- reactive({
+    return(as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Source"))
+  })
 
+  determinant.source_url <- reactive({
+    return(as.character(
+      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Source_url"))
+  })
   
   # ----------------------------------------------------------------------
   # Functions for data download
@@ -819,7 +866,7 @@ server <- function(input, output, session) {
     filename = function() {
       "chr_data_desc.csv"
     },
-    content = function(file) {z
+    content = function(file) {
       write.csv(SocialDeterminants, file, row.names = FALSE)
     }
   )
@@ -855,7 +902,27 @@ server <- function(input, output, session) {
   )
   
   # ----------------------------------------------------------------------
+  output$county_selector <- renderUI({
+    pickerInput('county_drop_choice', 
+                'County', 
+                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
+    # selectInput('county_drop_choice', 
+    #             'County', 
+    #             geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
+    
+  })
   
+  rv_county_drop_choice <- reactive({})
+  
+  county_event <- observeEvent(input$county_drop_choice, {
+    rv_county_drop_choice <- input$county_drop_choice 
+    county_choice(paste0(rv_county_drop_choice, " County"))
+  },
+  ignoreInit = TRUE
+  )
+  
+  
+  # ----------------------------------------------------------------------
   
   output$national_map<-renderUI({
     if(input$death_cause == "Despair"){
@@ -997,7 +1064,8 @@ server <- function(input, output, session) {
           axis.title.x = element_blank(),
           
           legend.position = "none"
-        ) + ggtitle(paste(input$determinant_choice, "and Risk County Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Risk County Relationship"))+
         scale_fill_manual(
           name = "County",
           labels = sd.select$county_name,  
@@ -1027,7 +1095,8 @@ server <- function(input, output, session) {
           x = "Cluster",
           y = input$determinant_choice
          
-        ) + ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
       
@@ -1064,7 +1133,8 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -1097,7 +1167,8 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -1124,7 +1195,8 @@ server <- function(input, output, session) {
         labs(
           x = "Mortality Rate (2015-2017)",
           y = input$determinant_choice
-        ) + ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
@@ -1201,37 +1273,6 @@ server <- function(input, output, session) {
       
     }
     
-# # Mortality Rate by County Period 2
-#       if(input$state_choice == "United States"){
-#         # mort.data <- dplyr::filter(
-#         #   cdc.data,
-#         #   death_cause == input$death_cause,
-#         #   period == input$year_selector
-#         # ) %>% 
-#         #   dplyr::mutate(
-#         #     # death_rate = death_num / population * 10^5,
-#         #     death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-#         #   ) %>%
-#         #   dplyr::select(county_fips, death_rate, period)
-#         # 
-#         # geo.plot("US", input$death_cause, mort.data, input$year_selector)
-#       } else{
-#         sd.data <- dplyr::filter(
-#           cdc.data,
-#           state_abbr == input$state_choice,
-#           death_cause == input$death_cause,
-#           period == input$year_selector
-#         ) %>% 
-#           dplyr::mutate(
-#             # death_rate = death_num / population * 10^5,
-#             death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-#           ) %>%
-#           dplyr::select(county_fips, death_rate, period)
-#         
-#         geo.plot(input$state_choice, input$death_cause, sd.data, input$year_selector)
-#       }
-
-    
   })
   
   output$determinant_title <- renderText({
@@ -1247,10 +1288,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # output$determinant_text <- renderText({
-  #   as.character(
-  #     SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
-  # })
 
   output$determinant_text <- renderUI({
     tagList(tags$h4(
@@ -1265,6 +1302,18 @@ server <- function(input, output, session) {
       tags$a(
         "Click here for more information",
         href = determinant.url(),
+        target="_blank"
+      )
+    )
+    )
+  })
+  
+  output$determinant_original_source <- renderUI({
+    tagList(tags$h4(
+      "Source: ",
+      tags$a(
+        determinant.source(),
+        href = determinant.source_url(),
         target="_blank"
       )
     )
@@ -1311,6 +1360,85 @@ server <- function(input, output, session) {
     }
   })
   
+  # Gives information about county population and urbanness
+  output$county_desc <- renderUI({
+    
+    # when app starts up there is initially no selection
+    if (is.null(input$county_drop_choice)) {
+      return()
+    }
+    
+    county.data.00.02 <- dplyr::filter(
+      cdc.data,
+      county_name == input$county_drop_choice,
+      death_cause == input$death_cause,
+      state_abbr == input$state_choice,
+      period == "2000-2002"
+    )
+    county.data.15.17 <- dplyr::filter(
+      cdc.data,
+      county_name == input$county_drop_choice,
+      death_cause == input$death_cause,
+      state_abbr == input$state_choice,
+      period == "2015-2017"
+    )
+    
+    # pop change
+    pop.00.02 <- county.data.00.02$population
+    pop.15.17 <- county.data.15.17$population
+    
+    pop.change.text <- "Population has remained relatively constant since 2002"
+    
+    if (pop.00.02 > pop.15.17) {
+      pop.change.text <- paste0("Population fell by ", 
+                                formatC(pop.00.02 - pop.15.17, format="d", big.mark=","),
+                                " (",
+                                round((pop.00.02 - pop.15.17) / pop.00.02 * 100, 2),
+                                "%) from 2002 to 2017")
+    }
+    if (pop.00.02 < pop.15.17) {
+      pop.change.text <- paste0("Population rose by ",
+                                formatC(pop.15.17 - pop.00.02, format="d", big.mark=","),
+                                " (",
+                                round((pop.15.17 - pop.00.02) / pop.00.02 * 100, 2),
+                                "%) from 2002 to 2017")
+    }
+    
+    # death rate change
+    dr.00.02 <- county.data.00.02$death_rate
+    dr.15.17 <- county.data.15.17$death_rate
+    
+    dr.change.text <- paste0("The ", tolower(input$death_cause), 
+                             " mortality rate has remained relatively constant since 2002 at ",
+                             round(dr.15.17, 2),
+                             "per 100k people")
+    
+    if (dr.00.02 > dr.15.17) {
+      dr.change.text <- paste0("The ", tolower(input$death_cause), 
+                                " mortality rate fell by ",
+                                round((dr.00.02 - dr.15.17) / dr.00.02 * 100, 2),
+                                "% from 2002 to 2017 from ",
+                                round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
+    }
+    if (dr.00.02 < dr.15.17) {
+      dr.change.text <- paste0("The ", tolower(input$death_cause), 
+                                " mortality rate rose by ",
+                                round((dr.15.17 - dr.00.02) / dr.00.02 * 100, 2),
+                                "% from 2002 to 2017 from ",
+                                round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
+    }
+    
+    tagList(
+      tags$h5(paste0(
+        county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
+        " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
+        formatC(pop.15.17, format="d", big.mark=","))
+      ),
+      tags$h5(pop.change.text),
+      tags$h5(dr.change.text)
+    )
+  })
+  
   output$determinants_plot4 <- renderPlot({
     
   })
@@ -1340,6 +1468,125 @@ server <- function(input, output, session) {
 
       nclusters <- max(mort.cluster.raw()$cluster)
       total.data <- rbind(mort.avg.cluster.ord(), national.mean())
+      
+ 
+      
+      if (input$state_choice == "DE") {
+        
+        exceptions.data <- cdc.data %>%
+          dplyr::filter(death_cause == input$death_cause) %>%
+          dplyr::right_join(mort.cluster.raw(), by = "county_fips")
+        exceptions.data$cluster <- exceptions.data$county_name
+        exceptions.data <- exceptions.data %>%
+          dplyr::group_by(period, cluster) %>%
+          dplyr::summarise(
+            death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
+            count = n()
+          ) %>%
+          dplyr::ungroup()
+        exceptions.data <- rbind(exceptions.data, national.mean())
+        extras.color <- rbind(mort.avg.cluster.ord(), national.mean())
+        colnames(extras.color)[2] <- "cluster.num"
+        exceptions.data <- cbind(exceptions.data, extras.color$cluster.num)
+        colnames(exceptions.data)[5] <- "cluster.num"
+        
+
+        line_plot <- ggplot(
+          exceptions.data,
+          aes(
+            x = period, y = death_rate, 
+            color = cluster.num, group = cluster.num
+          )
+        ) + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+          # labs.line.mort(input$state_choice, input$death_cause) + 
+          scale_color_manual(
+            values = c(theme.categorical.colors(nclusters), "#0571b0"), labels = c("Kent", "New Castle", "Sussex", "National")) +
+          theme.line.mort() + 
+          theme(legend.position = "left") + 
+          guides(color = guide_legend(reverse = T)) +
+          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          ylab("Mortality Rate (# per 100k)")
+        line_plot
+        
+      } else if (input$state_choice == "HI") {
+        
+        exceptions.data <- cdc.data %>%
+          dplyr::filter(death_cause == input$death_cause) %>%
+          dplyr::right_join(mort.cluster.raw(), by = "county_fips")
+        exceptions.data$cluster <- exceptions.data$county_name
+        exceptions.data <- exceptions.data %>%
+          dplyr::group_by(period, cluster) %>%
+          dplyr::summarise(
+            death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
+            count = n()
+          ) %>%
+          dplyr::ungroup()
+        exceptions.data <- rbind(exceptions.data, national.mean())
+        extras.color <- rbind(mort.avg.cluster.ord(), national.mean())
+        colnames(extras.color)[2] <- "cluster.num"
+        exceptions.data <- cbind(exceptions.data, extras.color$cluster.num)
+        colnames(exceptions.data)[5] <- "cluster.num"
+        
+        line_plot <- ggplot(
+          exceptions.data,
+          aes(
+            x = period, y = death_rate, 
+            color = cluster.num, group = cluster.num
+          )
+        ) + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+          # labs.line.mort(input$state_choice, input$death_cause) + 
+          scale_color_manual(
+            values = c(theme.categorical.colors(nclusters), "#0571b0"), labels = c("Kalawao", "Honolulu" , "Maui", "Hawaii", "Kauai", "National")) +
+          theme.line.mort() + 
+          theme(legend.position = "left") + 
+          guides(color = guide_legend(reverse = T)) +
+          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          ylab("Mortality Rate (# per 100k)")
+        line_plot
+        
+      } else if (input$state_choice == "RI") {
+        
+        exceptions.data <- cdc.data %>%
+          dplyr::filter(death_cause == input$death_cause) %>%
+          dplyr::right_join(mort.cluster.raw(), by = "county_fips")
+        exceptions.data$cluster <- exceptions.data$county_name
+        exceptions.data <- exceptions.data %>%
+          dplyr::group_by(period, cluster) %>%
+          dplyr::summarise(
+            death_rate = sum(death_num) / max(sum(population), 1) * 10^5,
+            count = n()
+          ) %>%
+          dplyr::ungroup()
+        exceptions.data <- rbind(exceptions.data, national.mean())
+        extras.color <- rbind(mort.avg.cluster.ord(), national.mean())
+        colnames(extras.color)[2] <- "cluster.num"
+        exceptions.data <- cbind(exceptions.data, extras.color$cluster.num)
+        colnames(exceptions.data)[5] <- "cluster.num"
+        
+        line_plot <- ggplot(
+          exceptions.data,
+          aes(
+            x = period, y = death_rate, 
+            color = cluster.num, group = cluster.num
+          )
+        ) + 
+          geom_line(size = 1.5) + 
+          geom_point(color = "black", shape = 21, fill = "white", size = 2) + 
+          # labs.line.mort(input$state_choice, input$death_cause) + 
+          scale_color_manual(
+            values = c(theme.categorical.colors(nclusters), "#0571b0"), labels = c("Bristol", "Washington", "Newport", "Kent", "Providence", "National")) +
+          theme.line.mort() + 
+          theme(legend.position = "left") + 
+          guides(color = guide_legend(reverse = T)) +
+          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          ylab("Mortality Rate (# per 100k)")
+        line_plot 
+        
+      } else {
       
       line_plot <- ggplot(
         total.data,
@@ -1381,6 +1628,7 @@ server <- function(input, output, session) {
                                 values = c("twodash"),
                                 guide = guide_legend(override.aes = list(color = c("#565254")))
           )
+      }
       }
     }
     
@@ -1484,18 +1732,6 @@ server <- function(input, output, session) {
     } else {
       period_choice = input$page1_period
     }
-    
-    # if (!is.null(page1_period_choice) && period_choice != page1_period_choice){
-    #   line_plot <- page1_infographic
-    #   # delete_layers(line_plot, idx = 3L)
-    #   # append_layers(line_plot,
-    #   #               geom_segment(aes(x=period_choice, xend=period_choice, y=lo, yend=hi), color = '#38761D', linetype=2))
-    #   line_plot$plot_env$period_choice = period_choice
-    #   assign("page1_period_choice", period_choice, envir = .GlobalEnv)
-    #   return(line_plot)
-    # }
-    # 
-    # assign("page1_period_choice", period_choice, envir = .GlobalEnv)
     
     if (input$state_choice == "United States"){
       
@@ -1657,11 +1893,11 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h5(
+      tags$h4(
         paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
       ),
-      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$p(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$h4(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
       NULL
     )
   })
@@ -1686,6 +1922,21 @@ server <- function(input, output, session) {
     )
   })
 
+  output$textMortFactsNew <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    
+    tagList(
+      tags$h3(
+        title ="Mortality Rates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed.   See About page for details.",
+        paste0("Mortality rate per 100,000 for people ages 25-to 64 due to ",
+               names(which(cause.list == input$death_cause)), 
+               " for three year periods for counties (left) and state and nation (right) . Darker colors indicate higher rates. "
+               ), icon("info-circle")
+      ),
+      HTML("<h4>Source: CDC WONDER<br>Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute</h4>")
+    )
+  })
+  
   output$textInfographicTitle <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     
@@ -1853,7 +2104,19 @@ server <- function(input, output, session) {
   # Determinant Header (upper-right panel, Page 1)
   output$textDeterminants <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
+          paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -1863,12 +2126,25 @@ server <- function(input, output, session) {
       ),
       NULL
       )
+    }
   })
 
   # Death Trends Header (Page 2 lower middle)
   output$textDeathTrends <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the average premature death trends for each cluster.",
+          paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -1878,12 +2154,24 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+    }
   })
 
   # Mortality Rates Header (Page 2 lower middle)
   output$textMortRates <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(tags$h3(
+        title="This plot represents the distribution of mortality rates for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Mortality Rates for ",
+              location_str, " for ", input$year_selector),
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         title="This plot represents the distribution of mortality rates for the selected state.",
@@ -1892,12 +2180,25 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+    }
   })
 
   # Cluster geo Header (Page 2 lower middle)
   output$textClusterGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if (input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the geographic distribution of clusters for the selected state.",
+          paste0(names(which(cause.list == input$death_cause)), " Clusters for ",location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -1907,12 +2208,25 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+    }
   })
 
   # Cluster geo Header (Page 2 lower middle)
   output$textSDGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the geographic distribution of the selected determinant for the selected state.",
+          paste0(input$determinant_choice, " Distribution for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
@@ -1922,26 +2236,35 @@ server <- function(input, output, session) {
       ),
       NULL
     )
+  }
   })
   
   # Determinant Header (upper-left panel, Page 2)
   output$textDeterminants2 <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
-    
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality.",
+          paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning 
-that it has a positive correlation with the 
-death rate; or Protective, meaning it has a 
-negative correlation with the death rate. 
-MortalityMinder shows those factors which have 
-the highest absolute correlation with mortality.",
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality.",
         paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
       NULL
       )
+    }
   })
   
   # Determinant Header (upper-center panel, Page 2)
@@ -1959,6 +2282,62 @@ the highest absolute correlation with mortality.",
     )
   })
 
+  # Boxplot Header (upper-center panel, Page 3)
+  output$textBoxplotTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h2(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Help text for box plots",
+          paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
+    tagList(
+      tags$h2(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="Help text for box plots",
+        paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  }
+  })
+
+  # Scatterplot Header (lower-center panel, Page 3)
+  output$textScatterplotTitle <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    if(input$state_choice == "United States") {
+      location_str <- "the United States" 
+      tagList(
+        tags$h2(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="Help text for scatter plots",
+          paste0(input$determinant_choice, " and Mortality Relationship for ", location_str), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+    }
+    else {
+    tagList(
+      tags$h2(
+        style = "padding-right: 20px; padding-left: 20px",
+        title="Help text for scatter plots",
+        paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice))), 
+        icon("info-circle")
+      ),
+      NULL
+    )
+  }
+  })
+  
   # Determinant geo Header (upper-center panel, Page 2)
   output$textDeterminantsGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
@@ -2288,8 +2667,8 @@ the highest absolute correlation with mortality.",
     
     #add a slightly thicker red polygon on top of the selected one
     proxy %>% addPolylines(stroke = TRUE, 
-                                   weight = 2,
-                                   color="#565254",
+                                   weight = 4,
+                                   color="black",
                                    data = border,
                                    group="highlighted_polygon",
                                    dashArray = "4 2 4")
@@ -2334,6 +2713,7 @@ the highest absolute correlation with mortality.",
       return()
     highlight_county(event)
     county_choice(event$id)
+    updatePickerInput(session, "county_drop_choice", selected = gsub(" County", "", event$id))
   })
   
   observe({
@@ -2342,6 +2722,7 @@ the highest absolute correlation with mortality.",
       return()
     highlight_county(event)
     county_choice(event$id)
+    updatePickerInput(session, "county_drop_choice", selected = gsub(" County", "", event$id))
   })
   
   observe({
@@ -2350,6 +2731,7 @@ the highest absolute correlation with mortality.",
       return()
     highlight_county(event)
     county_choice(paste0(event$id," County"))
+    updatePickerInput(session, "county_drop_choice", selected = event$id)
   })
   
   observe({
@@ -2396,6 +2778,9 @@ the highest absolute correlation with mortality.",
     
     county_name = point$county_name
     county_choice(paste0(county_name, " County"))
+    
+    updatePickerInput(session, "county_drop_choice", selected = point$county_name)
+    
   })
   
   # click on bar plot triggers page change
@@ -2453,7 +2838,7 @@ the highest absolute correlation with mortality.",
     point <- nearPoints(kendall.cor.new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
-    
+
     updatePickerInput(session, "determinant_choice", selected = point$chr_code)
   })
 }
