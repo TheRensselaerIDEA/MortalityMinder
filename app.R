@@ -295,7 +295,8 @@ ui <- fluidPage(
               tags$div(
                 class = "page2_col2_plot",
                 plotOutput("page1.bar.cor1",width="100%",height="100%", 
-                           hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
+                           # hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"),
+                           hover = hoverOpts("plot_hover"),
                            click = clickOpts("page1_bar_plot_click")),
                 uiOutput("hover_info")
                       ) # End of plot div container
