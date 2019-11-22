@@ -185,6 +185,8 @@ ui <- fluidPage(
                       )
                     ) # End List of buttons
                   ), # End Button Functionality
+                  fluidRow(
+                    class="page1_col2_graphics_row",
                   column(6,
                   class = "page1_col page1_col2_middle_left",
                   # tags$h3("National Plot Title"),
@@ -209,6 +211,7 @@ ui <- fluidPage(
                           ),
                          plotOutput("nation_state_infographic")
                   )
+                )
                 ), # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
