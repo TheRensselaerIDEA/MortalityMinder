@@ -2513,11 +2513,11 @@ server <- function(input, output, session) {
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
       style = style,
-      p(HTML(paste0("<b>", point$chr_code, "</b><br/>",
+      HTML(paste0("<b>", point$chr_code, "</b>", "<br/>",
                     "<i>", point$DIR, "</i>","<br/>",
                     SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definitions[[1]],
                     NULL
-      )))
+      ))
     )
     
   })
