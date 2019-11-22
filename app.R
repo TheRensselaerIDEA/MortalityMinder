@@ -349,7 +349,6 @@ ui <- fluidPage(
           column(3,
             class = "page3_col page3_col3",
             tags$div(
-              class = "nav_container",
               tags$div(
                 class = "prompt_text",
                 "Select a determinant:"              
@@ -388,7 +387,7 @@ ui <- fluidPage(
               leafletOutput("determinants_plot5")
             ), # End of inner Column 3 bottom
             tags$div(
-              class = "nav_container",
+             
               tags$div(
                 class = "prompt_text",
                 "Select a county below or by clicking the map:"              
