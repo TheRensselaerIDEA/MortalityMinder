@@ -228,10 +228,13 @@ color: #f7f7f7;
 
 .page1_col2_middle_left{
   text-align: left;
+    width:65%;
+
 }
 
 .page1_col2_middle_right{
   text-align: left;
+    width:35%;
 }
 
 .page1 img {
