@@ -432,14 +432,15 @@ ui <- fluidPage(
                         choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                         choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                         inline = TRUE),
-                   leafletOutput("geo_mort_change2_compare",width="328px",height="320px")
+                   leafletOutput("geo_mort_change2_compare_state1",width="328px",height="320px")
                     ), # End of inner fluid row col1 top
                     tags$div(
                       class = "hr"
                     ),
                     fluidRow(
-                        class="page4_col page4_col1_bottom", 
-                        tags$h4("Compare state-wide mortality rates. Select a state to compare.")
+                        class="page4_col page4_col1_bot", 
+                        tags$h4("Compare state-wide mortality rates. Select a state in the righthand window to compare
+                                 mortality trends and social determinants.")
                   ) # End of inner fluid row col1 bottom
             ), #End of Column 1 
           tags$div(
@@ -459,7 +460,7 @@ ui <- fluidPage(
                       inputId = "state_choice_compare",
                       label = h4("State"), 
                       choices = state.list,
-                      selected = "CA",
+                      selected = "NY",
                       width = "200px",
                       options = list(
                         `live-search` = TRUE,
@@ -468,9 +469,18 @@ ui <- fluidPage(
                     )
                     ), # End of nav container
                     column(6,
-                           class = "page4_col page4_col2_top_"
+                           class = "page4_col page4_col2_top",
+                           leafletOutput("geo_mort_change2_compare_state2",width="328px",height="320px")
                     ) 
-            )# End of Column 2 top
+            ), # End of Column 2 top
+            fluidRow(
+              class="page4_col page4_col2_bot",
+              tags$div(
+                class="page4_col2_bot_title",
+                uiOutput("textStateComparison")
+              ), # End of title div container
+              plotOutput("state_state_infographic",width="100%",height="80%")
+            ) # End of Column 2 bot
           ) # End of Column 2
         ) # End of Fluid Row
     ), # End of Page 4
@@ -1953,6 +1963,113 @@ server <- function(input, output, session) {
     assign("page1_infographic", line_plot, envir = .GlobalEnv)
     line_plot
   }, bg="transparent")
+  
+  
+  # Mort line comparison for states
+  output$state_state_infographic <- renderPlot({
+    
+    u <- 0.65
+    v <- 1 - u
+    if (is.null(input$page1_period)){
+      period_choice = 6
+    } else {
+      period_choice = input$page1_period
+    }
+    
+    state1_data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice,
+      death_cause == input$death_cause
+    ) %>% 
+      drop_na() %>%
+      group_by(period) %>% 
+      summarise(population = sum(population), death_num = sum(death_num)) %>%
+      mutate(death_rate = death_num/population*100000, group = input$state_choice) %>%
+      select(period, death_rate, group)
+    
+    state1_begin <- state1_data[state1_data$period=="2000-2002",]$death_rate
+    state1_end <- state1_data[state1_data$period=="2015-2017",]$death_rate
+    state1_hi <- max(state1_begin, state1_end)
+    state1_lo <- min(v, state1_end)
+    
+    state2_data <- dplyr::filter(
+      cdc.data,
+      state_abbr == input$state_choice_compare,
+      death_cause == input$death_cause
+    ) %>% 
+      drop_na() %>%
+      group_by(period) %>% 
+      summarise(population = sum(population), death_num = sum(death_num)) %>%
+      mutate(death_rate = death_num/population*100000, group = input$state_choice) %>%
+      select(period, death_rate, group)
+  
+    state2_begin <- state2_data[state2_data$period=="2000-2002",]$death_rate
+    state2_end <- state2_data[state2_data$period=="2015-2017",]$death_rate
+    state2_hi <- max(state2_begin, state2_end)
+    state2_lo <- min(state2_begin, state2_end)
+      
+    data <- bind_rows(state1_data, state2_data)
+    hi <- max(data$death_rate)
+    lo <- min(data$death_rate)
+    range <- hi - lo 
+    ylim <- c(lo - 0.1 * range, hi + 0.1 * range)
+      
+    colors <- c("placeholder" = '#D95F02', "United States"=theme.cat.accent.color())
+    names(colors) <- c(input$state_choice, "United States")
+      
+    line_plot <- ggplot(
+       data,
+      aes(
+        x = period, y = death_rate, 
+        color = group, group = group
+      )
+    ) + 
+      geom_line(size = 1.5) + 
+      scale_fill_brewer(palette="Pastel2") +
+      scale_color_brewer(palette="Dark2") +
+      geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
+      theme.line.mort() + 
+      theme(legend.position = "bottom", legend.title = element_blank()) + 
+      ylab("Mortality Rate (# per 100k)") +
+      ylim(ylim) + 
+      scale_color_manual(values = colors) + 
+      geom_segment(aes(x=period_choice, xend=period_choice, y=lo, yend=hi), color = '#38761D', linetype=2) +
+      geom_polygon(data = data.frame(
+        x = c(period_choice-0.1, period_choice+0.1, period_choice, period_choice-0.1), 
+        y = c(hi+range*0.1, hi+range*0.1, hi, hi+range*0.1)), 
+        aes(x = x, y = y), inherit.aes = FALSE, fill = '#38761D')
+      
+    if (xor(state2_end < state1_end, state1_end < state1_begin)){
+      label_data <- generate_label_data(state1_data, state2_data, state1_begin, state1_end, state2_begin, state2_end,
+                                        1, u*state1_hi+v*state1_lo, 6, u*state2_lo+v*state2_hi)
+      label_data <- add_reference_point(label_data, state1_begin, state1_end, state2_begin, state2_end)
+      line_plot <- draw_reference(line_plot, state1_begin, state1_end, state2_begin, state2_end)
+    } else {
+      label_data <- generate_label_data(state1_data, state2_data, state1_begin, state1_end, state2_begin, state2_end, 
+                                        6, v*state1_hi+u*state1_lo, 1, v*state2_lo+u*state2_hi)
+      label_data <- add_reference_point(label_data, state2_begin, state2_end, state1_begin, state1_end)
+      line_plot <- draw_reference(line_plot, state2_begin, state2_end, state1_begin, state1_end)
+    }
+      
+    line_plot <- line_plot +
+      coord_cartesian(clip = "off") +
+      geom_label_repel(data = label_data, 
+                        mapping = aes(x = x, y = death_rate, label = label, fill = group),
+                       segment.colour = "#565254",
+                       color = "#f7f7f7",
+                       inherit.aes = FALSE,
+                       #hjust = "inward", vjust = "inward",
+                       #point.padding = 0.5,
+                       direction = "both",
+                       xlim = c(1.5, 5.5),
+                       ylim = ylim,
+                       show.legend = FALSE) + 
+      scale_fill_manual(values = colors)
+    
+    #geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = '#565254')
+  assign("page4_infographic", line_plot, envir = .GlobalEnv)
+  line_plot
+}, bg="transparent")
 
   
   # Textual description box (upper-left panel, Page 1)
@@ -2420,6 +2537,19 @@ server <- function(input, output, session) {
     )
   })
   
+  # Page 3 state comparison mort line title
+  output$textStateComparison <- renderUI({
+    tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          title="This plot represents the mortality rate of two states",
+          paste0(names(which(cause.list == input$state_choice)), " Compared to ", names(which(state.list == input$state_choice_compare))), 
+          icon("info-circle")
+        ),
+        NULL
+      )
+  })
+  
   
   # Mortality Rate Table
   output$table <- renderTable(width = "100%", {
@@ -2504,7 +2634,7 @@ server <- function(input, output, session) {
   })
   
   # Mortality Rate by County Period 2
-  output$geo_mort_change2_compare <- output$geo_mort_change2 <- renderLeaflet({
+  output$geo_mort_change2_compare_state1 <- output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
       mort.data <- dplyr::filter(
         cdc.data,
@@ -2533,6 +2663,23 @@ server <- function(input, output, session) {
       geo.plot(input$state_choice, input$death_cause, mort.data, input$year_selector)
     }
     
+  })
+  
+  # Copy of geo mort for state comparison
+  output$geo_mort_change2_compare_state2 <- renderLeaflet({
+      mort.data <- dplyr::filter(
+        cdc.data,
+        state_abbr == input$state_choice_compare,
+        death_cause == input$death_cause,
+        period == input$year_selector
+      ) %>% 
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5,
+          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
+        ) %>%
+        dplyr::select(county_fips, death_rate, period)
+      
+      geo.plot(input$state_choice_compare, input$death_cause, mort.data, input$year_selector)
   })
   
   # Implementation of hover (08 Oct 2019)
