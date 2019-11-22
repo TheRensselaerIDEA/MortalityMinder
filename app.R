@@ -70,7 +70,6 @@ ui <- fluidPage(
       inputId = "death_cause",
       label = h4("Cause of Death"),
       choices = cause.list,
-      width = "200px",
       choicesOpt = list(
         subtext = c("Self-Harm and some other causes"),
         "dropup-auto" = FALSE
@@ -81,7 +80,6 @@ ui <- fluidPage(
       label = h4("State"), 
       choices = state.list,
       selected = "CA",
-      width = "200px",
       options = list(
         `live-search` = TRUE,
         "dropup-auto" = FALSE
