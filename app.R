@@ -237,10 +237,10 @@ ui <- fluidPage(
                      class="page2_col page2_col1_top",
                        column(4,
                               class = "page2_col page2_col1_top_left",
-                              tags$div(
-                                title="The mortality rate used in MortalityMinder is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
-                                tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
-                                      ), # End of Heading Conrainer
+                              # tags$div(
+                              #   title="The mortality rate used in MortalityMinder is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
+                              #   tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
+                              #         ), # End of Heading Conrainer
                               uiOutput("textDescription")
                               
                              ), # End of inner Column (Column 1 Top Left)
@@ -1895,10 +1895,17 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h4(
-        paste0("Mortality rates for ",names(which(cause.list == input$death_cause)), " for the State of ", names(which(state.list == input$state_choice)))
+        paste0(names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h4(tags$i("Select year range to see statewide mortality rate distribution for that period. Mouse over maps to identify individual counties. Zoom map with mouse wheel or zoom buttons.")),
+      tags$h4("Counties are grouped into disparate risk clusters within a state based on their mortality rate trends.") ,
+      tags$ul(
+      tags$li(tags$h5("On the top map, select years to see how county mortality rates changed over time.")) ,
+      tags$li(tags$h5("The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)")) ,
+      tags$li(tags$h5("The right graph shows factors correlated associated with mortality disparities."))
+      )
+      ,
+      tags$h4("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see a counties name and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
       NULL
     )
   })
