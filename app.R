@@ -1894,7 +1894,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(
+      tags$h3(
         paste0(names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
