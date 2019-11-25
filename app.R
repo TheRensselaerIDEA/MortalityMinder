@@ -132,7 +132,7 @@ ui <- fluidPage(
                           tags$img(
                             # class="rensselaer_logo",
                             src="RPIlogo.png", 
-                            width="100%", 
+                            width="80%", 
                             style="bottom: 0; left: 0;")
                  # )
                  
