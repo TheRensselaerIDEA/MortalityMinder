@@ -63,7 +63,8 @@ ui <- fluidPage(
     
     tags$div(
       class = "prompt_text",
-      "Select cause of death and state: "
+      # "Select cause of death and state: "
+      "Select state and cause of death: "
     ),
     
     pickerInput(
@@ -997,7 +998,7 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          title = "Most Related Factors",
+          title = "Most Associated Factors",
           subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster",
           caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
           y = "Correlation",
@@ -1435,7 +1436,8 @@ server <- function(input, output, session) {
         " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
         formatC(pop.15.17, format="d", big.mark=","))
       ),
-      tags$h5(pop.change.text),
+      # tags$h5(pop.change.text),
+      # TODO: Add determinant change!
       tags$h5(dr.change.text)
     )
   })
@@ -2118,7 +2120,7 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
-          paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          paste0("Factors associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
         NULL
@@ -2129,7 +2131,7 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please navigate to...", 
-        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
+        paste0("Factors associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
       NULL
@@ -2256,7 +2258,7 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality.",
-          paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          paste0("Factors associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
         NULL
@@ -2267,7 +2269,7 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the death rate; or Protective, meaning it has a negative correlation with the death rate. MortalityMinder shows those factors which have the highest absolute correlation with mortality.",
-        paste0("Factors related to ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
+        paste0("Factors associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
       NULL
@@ -2639,7 +2641,7 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          title = "Most Related Factors",
+          title = "Most Associated Factors",
           subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster",
           caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
           y = "Correlation",
