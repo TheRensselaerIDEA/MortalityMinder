@@ -1385,6 +1385,16 @@ server <- function(input, output, session) {
       period == "2015-2017"
     )
     
+    if (nrow(county.data.15.17) == 0) {
+      return(
+        tagList(
+          tags$h5(paste0(
+            "No data for ", input$county_drop_choice, ", ", input$state_choice)
+          )
+        )
+      )
+    }
+    
     # pop change
     pop.00.02 <- county.data.00.02$population
     pop.15.17 <- county.data.15.17$population
@@ -1430,15 +1440,17 @@ server <- function(input, output, session) {
                                 round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
     }
     
-    tagList(
-      tags$h5(paste0(
-        county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
-        " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
-        formatC(pop.15.17, format="d", big.mark=","))
-      ),
-      # tags$h5(pop.change.text),
-      # TODO: Add determinant change!
-      tags$h5(dr.change.text)
+    return(
+      tagList(
+        tags$h5(paste0(
+          county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
+          " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
+          formatC(pop.15.17, format="d", big.mark=","))
+        ),
+        # tags$h5(pop.change.text),
+        # TODO: Add determinant change!
+        tags$h5(dr.change.text)
+      )
     )
   })
   
