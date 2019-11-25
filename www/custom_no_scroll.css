@@ -724,7 +724,7 @@ width: 40px;
 }
 
 .IDEA_Logo_Wrapper{
-  position: absolute;
+  position: relative;
     width: 100%;
     padding-left: 20%;
     padding-right: 20%;

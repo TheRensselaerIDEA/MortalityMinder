@@ -466,9 +466,8 @@ ui <- fluidPage(
                                    to discover counties with different patterns of mortality over time and associated social 
                                    determinants using cluster or supervised clustering."),
                                    offset=1) # Close Column
-                   ), tags$br(),# Close inner fluidRow,
-                   tags$div(class="IDEA_Logo_Wrapper",
-                    
+                   ),# Close inner fluidRow,
+                   fluidRow(class="IDEA_Logo_Wrapper",
                             tags$img(
                               class="Idea_Logo",
                               src="IDEA_logo_500.png", 
