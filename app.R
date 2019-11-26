@@ -955,6 +955,9 @@ server <- function(input, output, session) {
     else if(input$death_cause == "Cardiovascular"){
       includeScript(path = "Cardio.js")
     }
+    else if(input$death_cause == "All Cause"){
+      includeScript(path = "All.js")
+    }
   })
   output$determinants_plot1 <- renderPlot({
     

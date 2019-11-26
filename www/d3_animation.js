@@ -15,6 +15,9 @@ function sequenceMap(index,tooltip,cause) {
     else if (cause == "Assault") {
       death_rate_domain = [0,3,6,9,12,15,18,21,24,27,30,33,36];
     }
+    else if (cause == "All Cause"){
+      death_rate_domain = [0,100,200,300,400,500,600,700,800,900,1000,1100,1200];
+    }
     
     var color = d3.scale.threshold()
             .domain(death_rate_domain)
@@ -54,6 +57,9 @@ r2d3.onRender(function(data, svg, width, height, options) {
     }
     else if (cause == "Assault") {
       death_rate_domain = [0,3,6,9,12,15,18,21,24,27,30,33,36];
+    }
+    else if (cause == "All Cause"){
+      death_rate_domain = [0,100,200,300,400,500,600,700,800,900,1000,1100,1200];
     }
   var death_rate = d3.map();
   var color = d3.scale.threshold()
@@ -119,11 +125,11 @@ r2d3.onRender(function(data, svg, width, height, options) {
           .enter()
           .append("rect")
           .attr({
-              width: 24,
-              height: 5,
+              width: 35,
+              height: 7,
               y: 520,
               x: function (d, i) {
-                  return 550 + 25 * i;
+                  return 400 + 36 * i;
               },
               fill: color
           });
@@ -135,11 +141,12 @@ r2d3.onRender(function(data, svg, width, height, options) {
       .attr({
         y:520,
         x:function(d,i){
-          return 550 + 25 * i;
+          return 400 + 36 * i;
         }})
       .text(function(d){
           return d;
         })
+      .style("font-size", "12px")
       ;
           
   var index = 0;        

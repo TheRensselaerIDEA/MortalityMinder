@@ -54,7 +54,7 @@ server <- function(input, output) {
   output$d3 <- renderD3({
     data_geo <- jsonlite::read_json("www/all-counties.json")
     
-    causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio")
+    causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio","All Cause")
     for(cause in causes_of_death){
       data_stat <- cdc.mort.mat(cdc.data,"US",cause)
       if(cause == "Cardio"){
