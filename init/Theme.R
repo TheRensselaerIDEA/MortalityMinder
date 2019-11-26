@@ -563,9 +563,8 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
   shapes.data <- as.data.frame(shapes)
   shapes.data$county_fips <- paste(as.data.frame(shapes)$STATEFP, as.data.frame(shapes)$COUNTYFP, sep = '')
   dataset <- left_join(shapes.data, dataset, by = c("county_fips" = "county_fips"))
-  
-  if (state.choice != "US"){
-    return (leaflet(shapes, 
+
+  return (leaflet(shapes, 
                     options = leafletOptions()) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
@@ -625,71 +624,51 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         opacity = 1) %>% 
               clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
-    ) 
-  }else{
-    return (leaflet(shapes, 
-                    options = leafletOptions(dragging = FALSE)) %>%
-              fitBounds(lat1 = lat_long[1], 
-                        lng1 = lat_long[2], 
-                        lat2 = lat_long[3], 
-                        lng2 = lat_long[4]) %>%
-              addPolygons(stroke = TRUE, 
-                          smoothFactor = 0.1, 
-                          fillOpacity = 1,
-                          weight = 0,
-                          color = "white",
-                          opacity = 1,
-                          fillColor = colors[as.numeric(dataset$VAR_)],
-                          label = dataset$county_name) %>%
-              addControl(get_title(state.choice, death.cause, period), 
-                         position = "topleft", 
-                         className="map-title") %>%
-              addLegend("bottomleft",
-                        colors = colors[8],
-                        labels = labels[8],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[7],
-                        labels = labels[7],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[6],
-                        labels = labels[6],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[5],
-                        labels = labels[5],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[4],
-                        labels = labels[4],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[3],
-                        labels = labels[3],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[2],
-                        labels = labels[2],
-                        title = "&nbsp;",
-                        opacity = 1) %>%
-              addLegend("bottomleft",
-                        colors = colors[1],
-                        labels = labels[1],
-                        title = "Rate;",
-                        opacity = 1) %>% 
-              clearBounds() %>%
-              setMapWidgetStyle(style = list(background = "transparent"))
     )
+}
+
+geo.us.plot <- function(death.cause, period) {
+  if (death.cause == "Cardiovascular") {
+    death.cause = "Cardio"
   }
   
-  
+  switch(period,
+         "2000-2002" = {
+           image_name = "1"
+         },
+         "2003-2005" = {
+           image_name = "2"
+         },
+         "2006-2008" = {
+           image_name = "3"
+         },
+         "2009-2011" = {
+           image_name = "4"
+         },
+         "2012-2014" = {
+           image_name = "5"
+         },
+         "2015-2017" = {
+           image_name = "6"
+         })
+  return (
+    leaflet() %>%
+      fitBounds(lat1 = 21.68154, 
+                lng1 = -125.46167, 
+                lat2 = 49.43436, 
+                lng2 = -66.89990) %>%
+      setMapWidgetStyle(style = list(background = "transparent")) %>%
+      htmlwidgets::onRender(paste("
+        function(el, x) {
+          console.log(this);
+          var myMap = this;
+          var imageUrl = 'National_image/", death.cause, "/", image_name, ".png';
+          var imageBounds = [[21.68154, -125.46167], [49.43436, -66.89990]];
+          
+          L.imageOverlay(imageUrl, imageBounds).addTo(myMap);
+        }
+      ", sep = ''))
+  )
 }
 
 geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
