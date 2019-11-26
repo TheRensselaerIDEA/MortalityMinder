@@ -1435,14 +1435,16 @@ server <- function(input, output, session) {
                                   " county average (", signif(state.mean, 2), ")")
     }
     
-    tagList(
-      tags$h5(paste0(
-        county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
-        " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
-        formatC(county.data.15.17$population, format="d", big.mark=","))
-      ),
-      tags$h5(dr.change.text),
-      tags$h5(county.comp.state)
+    return(
+      tagList(
+        tags$h5(paste0(
+          county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
+          " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
+          formatC(county.data.15.17$population, format="d", big.mark=","))
+        ),
+        tags$h5(dr.change.text),
+        tags$h5(county.comp.state)
+      )
     )
   })
   
