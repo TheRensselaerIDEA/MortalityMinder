@@ -703,11 +703,18 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   shapes.data <- as.data.frame(shapes)
+  
   shapes.data$county_fips <- paste(as.data.frame(shapes)$STATEFP, as.data.frame(shapes)$COUNTYFP, sep = '')
   dataset <- left_join(shapes.data, dataset, by = c("county_fips" = "county_fips"))
   
   pal <- colorBin(c("#7ccaf2", "#2a9df4", "#0277bd", "#03254c"), 
                   domain = dataset$VAR, bins = 3)
+  
+  epsg2163 <- leafletCRS(
+    crsClass = "L.Proj.CRS",
+    code = "EPSG:2163",
+    proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs",
+    resolutions = 2^(16:7))
   
   if (state.choice != "US"){
     plot <- leaflet(shapes, 
@@ -750,7 +757,7 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
     )
   }else{
     return (leaflet(shapes, 
-                    options = leafletOptions(dragging = FALSE)) %>%
+                    options = leafletOptions(crs = epsg2163)) %>%
               fitBounds(lat1 = lat_long[1], 
                         lng1 = lat_long[2], 
                         lat2 = lat_long[3], 

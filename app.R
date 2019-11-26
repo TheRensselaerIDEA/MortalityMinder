@@ -390,23 +390,39 @@ ui <- fluidPage(
                 class = "col1_bot_title",
                 uiOutput("textSDGeo")
                       ),
-              leafletOutput("determinants_plot5")
-            ), # End of inner Column 3 bottom
-            tags$div(
-             
+              leafletOutput("determinants_plot5"),
               tags$div(
-                class = "prompt_text",
-                "Select a county below or by clicking the map:"              
-              ),
-              uiOutput("county_selector")
-            ), # End of pickerInput container
-            fluidRow(
-              class = "page3_col3_county_desc",
-              tags$br(),
-              tags$br(),
-              tags$br(),
-              uiOutput("county_desc")
-            )
+                
+                tags$div(
+                  class = "prompt_text",
+                  "Select a county below or by clicking the map:"              
+                ),
+                uiOutput("county_selector")
+              ), # End of pickerInput container
+              fluidRow(
+                class = "page3_col3_county_desc",
+                # tags$br(),
+                # tags$br(),
+                # tags$br(),
+                uiOutput("county_desc")
+              )
+              
+            ) # End of inner Column 3 bottom
+            # tags$div(
+            #  
+            #   tags$div(
+            #     class = "prompt_text",
+            #     "Select a county below or by clicking the map:"              
+            #   ),
+            #   uiOutput("county_selector")
+            # ), # End of pickerInput container
+            # fluidRow(
+            #   class = "page3_col3_county_desc",
+            #   tags$br(),
+            #   tags$br(),
+            #   tags$br(),
+            #   uiOutput("county_desc")
+            # )
             
             ) # End of Column 3
                 ) # End of Fluid Row
@@ -907,9 +923,11 @@ server <- function(input, output, session) {
   output$county_selector <- renderUI({
     pickerInput('county_drop_choice', 
                 'County', 
-                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name,
-                options = pickerOptions(size=15)
-                )
+                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
+    # selectInput('county_drop_choice', 
+    #             'County', 
+    #             geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
+    
   })
   
   rv_county_drop_choice <- reactive({})
@@ -1236,9 +1254,8 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
-      
-      dplyr::filter(
+      if(input$state_choice == "United States"){
+      sd.data <- dplyr::filter(
         cdc.data,
         period == "2015-2017", 
         death_cause == input$death_cause
@@ -1246,17 +1263,9 @@ server <- function(input, output, session) {
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
         tidyr::drop_na() 
-
-    } else if(input$state_choice == "United States"){
-      dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        death_cause == input$death_cause
-      ) %>% 
-        dplyr::select(county_fips, death_rate) %>% 
-        dplyr::inner_join(sd.select, by = "county_fips") %>% 
-        tidyr::drop_na() 
-
+        
+        geo.sd.plot("US", input$determinant_choice, sd.data, "2015-2017")
+        
     } else {
       
       sd.data <- dplyr::filter(
@@ -1383,6 +1392,37 @@ server <- function(input, output, session) {
       period == "2015-2017"
     )
     
+    if (nrow(county.data.15.17) == 0) {
+      return(
+        tagList(
+          tags$h5(paste0(
+            "No data for ", input$county_drop_choice, ", ", input$state_choice)
+          )
+        )
+      )
+    }
+    
+    # pop change
+    pop.00.02 <- county.data.00.02$population
+    pop.15.17 <- county.data.15.17$population
+    
+    pop.change.text <- "Population has remained relatively constant since 2002"
+    
+    if (pop.00.02 > pop.15.17) {
+      pop.change.text <- paste0("Population fell by ", 
+                                formatC(pop.00.02 - pop.15.17, format="d", big.mark=","),
+                                " (",
+                                round((pop.00.02 - pop.15.17) / pop.00.02 * 100, 2),
+                                "%) from 2002 to 2017")
+    }
+    if (pop.00.02 < pop.15.17) {
+      pop.change.text <- paste0("Population rose by ",
+                                formatC(pop.15.17 - pop.00.02, format="d", big.mark=","),
+                                " (",
+                                round((pop.15.17 - pop.00.02) / pop.00.02 * 100, 2),
+                                "%) from 2002 to 2017")
+    }
+    
     # death rate change
     dr.00.02 <- county.data.00.02$death_rate
     dr.15.17 <- county.data.15.17$death_rate
@@ -1407,43 +1447,16 @@ server <- function(input, output, session) {
                                 round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
     }
     
-    # deteminant value county compared to state
-    state.data.15.17 <- dplyr::filter(
-      cdc.data,
-      death_cause == input$death_cause,
-      state_abbr == input$state_choice,
-      period == "2015-2017"
-    ) %>% dplyr::inner_join(chr.data.2019, by='county_fips')
-    
-    sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
-    state.mean <- mean(na.omit(state.data.15.17[, sd.code]))
-    county.val <- state.data.15.17[state.data.15.17$county_name == input$county_drop_choice, sd.code]
-    
-    county.comp.state <- paste0(input$determinant_choice, " levels same as state county average (", state.mean, ")")
-    
-    if (is.na(county.val)) {
-      county.comp.state <- paste0("No determinant data for county")
-    }
-    else if (county.val > state.mean) {
-      county.comp.state <- paste0(input$determinant_choice, " levels (", signif(county.val, 2), 
-                                  ") greater than ", input$state_choice,
-                                  " county average (", signif(state.mean, 2), ")")
-    }
-    else if (county.val < state.mean) {
-      county.comp.state <- paste0(input$determinant_choice, " levels (", signif(county.val, 2), 
-                                  ") less than ", input$state_choice,
-                                  " county average (", signif(state.mean, 2), ")")
-    }
-    
     return(
       tagList(
         tags$h5(paste0(
           county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
           " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
-          formatC(county.data.15.17$population, format="d", big.mark=","))
+          formatC(pop.15.17, format="d", big.mark=","))
         ),
-        tags$h5(dr.change.text),
-        tags$h5(county.comp.state)
+        # tags$h5(pop.change.text),
+        # TODO: Add determinant change!
+        tags$h5(dr.change.text)
       )
     )
   })
