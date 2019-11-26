@@ -774,3 +774,23 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
   
   
 }
+
+kmean.us.plot <- function(death.cause) {
+  return (
+    leaflet() %>%
+      fitBounds(lat1 = 21.68154, 
+                lng1 = -125.46167, 
+                lat2 = 49.43436, 
+                lng2 = -66.89990) %>%
+      setMapWidgetStyle(style = list(background = "transparent")) %>%
+      htmlwidgets::onRender(paste("
+          function(el, x) {
+            var myMap = this;
+            var imageUrl = 'National_geo_image/", death.cause, ".png';
+            var imageBounds = [[21.68154, -125.46167], [49.43436, -66.89990]];
+            
+            L.imageOverlay(imageUrl, imageBounds).addTo(myMap);
+          }
+        ", sep = ''))
+  )
+}
