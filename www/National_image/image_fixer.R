@@ -101,3 +101,28 @@ frink <- image_read("Cancer/6.png")
 frink_x <- image_transparent(frink, "white", fuzz = 0)
 image_write(frink_x, "Cancer/6.png")
 
+# Add transparency to "All_Cause" images
+frink <- image_read("All_Cause/1.png")
+frink_x <- image_transparent(frink, "white", fuzz = 0)
+image_write(frink_x, "All_Cause/1.png")
+
+frink <- image_read("All_Cause/2.png")
+frink_x <- image_transparent(frink, "white", fuzz = 0)
+image_write(frink_x, "All_Cause/2.png")
+
+frink <- image_read("All_Cause/3.png")
+frink_x <- image_transparent(frink, "white", fuzz = 0)
+image_write(frink_x, "All_Cause/3.png")
+
+frink <- image_read("All_Cause/4.png")
+frink_x <- image_transparent(frink, "white", fuzz = 0)
+image_write(frink_x, "All_Cause/4.png")
+
+frink <- image_read("All_Cause/5.png")
+frink_x <- image_transparent(frink, "white", fuzz = 0)
+image_write(frink_x, "All_Cause/5.png")
+
+frink <- image_read("All_Cause/6.png")
+frink_x <- image_transparent(frink, "white", fuzz = 0)
+image_write(frink_x, "All_Cause/6.png")
+
