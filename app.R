@@ -908,11 +908,12 @@ server <- function(input, output, session) {
   output$county_selector <- renderUI({
     pickerInput('county_drop_choice', 
                 'County', 
-                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
-    # selectInput('county_drop_choice', 
-    #             'County', 
-    #             geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
-    
+                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name,
+                selected = NULL,
+                multiple = TRUE,
+                options = pickerOptions(size = 15,
+                                        maxOptions = 1)
+    )
   })
   
   rv_county_drop_choice <- reactive({})
