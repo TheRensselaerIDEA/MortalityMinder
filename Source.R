@@ -18,6 +18,11 @@ chr.data.2019 <- chr.data.2019 %>%
   as_data_frame %>%
   select(final.determinants)
 
+# Load short names 
+chr.shortnamemap.2019 <- SocialDeterminants %>% select("Code", "ShortName")
+chr.shortnamemap.2019 <- column_to_rownames(chr.shortnamemap.2019, "Code")
+names(chr.shortnamemap.2019)[1] <- "name"
+
 # Load name map and its inverse
 chr.namemap.2019 <- SocialDeterminants %>% select("Code", "Name")
 chr.namemap.2019 <- column_to_rownames(chr.namemap.2019, "Code")
