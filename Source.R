@@ -7,7 +7,7 @@ library(withr)
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
 
 # Read in new Social Determinants definitions
-SocialDeterminants <- read_csv("../init/SocialDeterminants_updated.csv")
+SocialDeterminants <- read_csv("../init/SocialDeterminants.csv")
 
 final.determinants <- SocialDeterminants[SocialDeterminants$Keep == 1,]["Code"]
 final.determinants <- append(final.determinants$Code, "county_fips", after = 0)
@@ -17,11 +17,6 @@ chr.data.2019 <- readRDS("../init/chr.data.2019.rds")
 chr.data.2019 <- chr.data.2019 %>%
   as_data_frame %>%
   select(final.determinants)
-
-# Load short names 
-chr.shortnamemap.2019 <- SocialDeterminants %>% select("Code", "ShortName")
-chr.shortnamemap.2019 <- column_to_rownames(chr.shortnamemap.2019, "Code")
-names(chr.shortnamemap.2019)[1] <- "name"
 
 # Load name map and its inverse
 chr.namemap.2019 <- SocialDeterminants %>% select("Code", "Name")
