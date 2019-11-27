@@ -666,7 +666,7 @@ server <- function(input, output, session) {
           "Protective",
           "Destructive"
         ),
-        chr_code = chr.shortnamemap.2019[chr_code, 1]
+        chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit()
     
   })
@@ -2504,7 +2504,7 @@ server <- function(input, output, session) {
           "Protective",
           "Destructive"
         ),
-        chr_code = chr.shortnamemap.2019[chr_code, 1]
+        chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
@@ -2606,7 +2606,6 @@ server <- function(input, output, session) {
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
     if(nrow(kendall.cor.new) > 0) {
-      
       kendall.cor.new %>% 
         ggplot(
           aes(
@@ -2820,7 +2819,7 @@ server <- function(input, output, session) {
           "Protective",
           "Destructive"
         ),
-        chr_code = chr.shortnamemap.2019[chr_code, 1]
+        chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
@@ -2850,7 +2849,7 @@ server <- function(input, output, session) {
           "Protective",
           "Destructive"
         ),
-        chr_code = chr.shortnamemap.2019[chr_code, 1]
+        chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
