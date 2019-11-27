@@ -745,4 +745,6 @@ width: 40px;
     left: 0;
 }
 
-
+#determinants_plot5 {
+  height: 300px !important;
+}
