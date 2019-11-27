@@ -237,7 +237,6 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
               addControl(geoTitle(state.choice, death.cause),
                          position = "topleft",
                          className="map-title") %>%
-              clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
   }else{
@@ -258,7 +257,6 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
               addControl(geoTitle(state.choice, death.cause),
                          position = "topleft",
                          className="map-title") %>%
-              clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
   }
@@ -299,7 +297,6 @@ draw.sd.geo <- function(sd.rates, state.choice, death.cause) {
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
                          className="map-title") %>%
-              clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
   }else{
@@ -320,7 +317,6 @@ draw.sd.geo <- function(sd.rates, state.choice, death.cause) {
               addControl(geoTitle(state.choice, death.cause), 
                          position = "topleft", 
                          className="map-title") %>%
-              clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
   }
@@ -467,7 +463,7 @@ getLatLong <- function(state.choice, dataset) {
   switch(state.choice,
          'AK'= {
            min.lat = 50.0
-           max.lat = 76.0
+           max.lat = 70.0
            min.long = -164.0
            max.long = -120.0
          },
@@ -622,7 +618,6 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
                         labels = labels[1],
                         title = "Rate;",
                         opacity = 1) %>% 
-              clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
 }
@@ -719,7 +714,6 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
                 values = ~dataset$VAR,
                 title = "Rate",
                 opacity = 1) %>% 
-      clearBounds() %>%
       setMapWidgetStyle(style = list(background = "transparent"))
     
     
@@ -752,7 +746,6 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
               addControl(get_sd_title(state.choice, sd.choice, period), 
                          position = "topleft", 
                          className="map-title") %>%
-              clearBounds() %>%
               setMapWidgetStyle(style = list(background = "transparent"))
             
     )
