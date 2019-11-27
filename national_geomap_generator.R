@@ -1,8 +1,10 @@
-#Author: Ziyi
-#Note: This file takes about five to ten minutes to run.
-#Only run it when we make a change on data imputation or significant national graph change
+# Author: Karan Bhanot
+# Adapted from "national_map_generator.R and Theme.R
+# Create geo plot images for USA
 
 library(htmltools)
+library(webshot)
+
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
@@ -54,28 +56,33 @@ server <- function(input, output) {
   output$d3 <- renderD3({
     data_geo <- jsonlite::read_json("www/all-counties.json")
     
-    causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio","All Cause")
+    causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio", "All Cause")
+    
     for(cause in causes_of_death){
-      data_stat <- cdc.mort.mat(cdc.data,"US",cause)
-      if(cause == "Cardio"){
-        data_stat <- cdc.mort.mat(cdc.data,"US",paste0(cause,"vascular"))
+      if (cause == "Cardio") {
+        cause = paste(cause, "vascular", sep = "")
       }
-      map <- r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause)),
-                d3_version = 3,
-                dependencies = "topojson.min.js",
-                css = "www/geoattr.css",
-                script = "www/d3_animation.js")
-      interval <- c(0,1,2,3,4,5)
-      for(i in interval){
-        a <- i+1
-        address <- paste0("www/National_image/",cause)
-        address <- paste0(address, "/")
-        address <- paste0(address,as.character(a))
-        address <- paste0(address,".png")
       
-        save_d3_png(map, address, width = 992,
-                  height = 544, delay = i*2 + 0.5, zoom = 1)
-      }
+      mort.cluster.raw <- cluster.counties(cdc.mort.mat(cdc.data, "US", cause), cluster.method="kmeans", cluster.num=6)
+      mort.cluster <- order.county.clusters(mort.cluster.raw,
+                                            get.cluster.order.map(get.cluster.deathrate.during.time(mort.cluster.raw,
+                                                                                                    cdc.data,
+                                                                                                    death.cause=cause
+                                            ), time.period = "2015-2017"))
+
+      dataset <- geo.map.fetch("US", mort.cluster) %>% dplyr::select(county_fips, cluster) %>% dplyr::arrange(county_fips)
+
+      map <- r2d3(data = list(data_geo,data_to_json(dataset),data_to_json(cause)),
+                  d3_version = 3,
+                  dependencies = "topojson.min.js",
+                  css = "www/geoattr.css",
+                  script = "www/d3_geo_animation.js")
+      
+      address <- paste0("www/National_geo_image/",cause)
+      address <- paste0(address,".png")
+      
+      save_d3_png(map, address, width = 992,
+                  height = 544, delay = 1, zoom = 1)
     }
     print("finished generating map")
   })

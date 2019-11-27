@@ -390,24 +390,25 @@ ui <- fluidPage(
                 class = "col1_bot_title",
                 uiOutput("textSDGeo")
                       ),
-              leafletOutput("determinants_plot5")
-            ), # End of inner Column 3 bottom
-            tags$div(
-             
+              leafletOutput("determinants_plot5"),
               tags$div(
-                class = "prompt_text",
-                "Select a county below or by clicking the map:"              
-              ),
-              uiOutput("county_selector")
-            ), # End of pickerInput container
-            fluidRow(
-              class = "page3_col3_county_desc",
-              tags$br(),
-              tags$br(),
-              tags$br(),
-              uiOutput("county_desc")
-            )
-            
+                
+                tags$div(
+                  class = "prompt_text",
+                  uiOutput("textCountyPrompt")              
+                ),
+                uiOutput("county_selector")
+              ), # End of pickerInput container
+              fluidRow(
+                class = "page3_col3_county_desc",
+                # tags$br(),
+                # tags$br(),
+                # tags$br(),
+                uiOutput("county_desc")
+              )
+              
+            ) # End of inner Column 3 bottom
+
             ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
@@ -907,11 +908,12 @@ server <- function(input, output, session) {
   output$county_selector <- renderUI({
     pickerInput('county_drop_choice', 
                 'County', 
-                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
-    # selectInput('county_drop_choice', 
-    #             'County', 
-    #             geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name)
-    
+                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name,
+                selected = NULL,
+                multiple = TRUE,
+                options = pickerOptions(size = 15,
+                                        maxOptions = 1)
+    )
   })
   
   rv_county_drop_choice <- reactive({})
@@ -938,6 +940,9 @@ server <- function(input, output, session) {
     }
     else if(input$death_cause == "Cardiovascular"){
       includeScript(path = "Cardio.js")
+    }
+    else if(input$death_cause == "All Cause"){
+      includeScript(path = "All.js")
     }
   })
   output$determinants_plot1 <- renderPlot({
@@ -1238,27 +1243,19 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
-      
-      dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        death_cause == input$death_cause
-      ) %>% 
-        dplyr::select(county_fips, death_rate) %>% 
-        dplyr::inner_join(sd.select, by = "county_fips") %>% 
-        tidyr::drop_na() 
-
-    } else if(input$state_choice == "United States"){
-      dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        death_cause == input$death_cause
-      ) %>% 
-        dplyr::select(county_fips, death_rate) %>% 
-        dplyr::inner_join(sd.select, by = "county_fips") %>% 
-        tidyr::drop_na() 
-
+      if(input$state_choice == "United States"){
+      # If "United States" suppress plot
+      # sd.data <- dplyr::filter(
+      #   cdc.data,
+      #   period == "2015-2017", 
+      #   death_cause == input$death_cause
+      # ) %>% 
+      #   dplyr::select(county_fips, death_rate) %>% 
+      #   dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      #   tidyr::drop_na() 
+      #   
+      #   geo.sd.plot("US", input$determinant_choice, sd.data, "2015-2017")
+        
     } else {
       
       sd.data <- dplyr::filter(
@@ -1385,6 +1382,16 @@ server <- function(input, output, session) {
       period == "2015-2017"
     )
     
+    if (nrow(county.data.15.17) == 0) {
+      return(
+        tagList(
+          tags$h5(paste0(
+            "No data for ", input$county_drop_choice, ", ", input$state_choice)
+          )
+        )
+      )
+    }
+    
     # pop change
     pop.00.02 <- county.data.00.02$population
     pop.15.17 <- county.data.15.17$population
@@ -1430,15 +1437,17 @@ server <- function(input, output, session) {
                                 round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
     }
     
-    tagList(
-      tags$h5(paste0(
-        county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
-        " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
-        formatC(pop.15.17, format="d", big.mark=","))
-      ),
-      # tags$h5(pop.change.text),
-      # TODO: Add determinant change!
-      tags$h5(dr.change.text)
+    return(
+      tagList(
+        tags$h5(paste0(
+          county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
+          " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
+          formatC(pop.15.17, format="d", big.mark=","))
+        ),
+        # tags$h5(pop.change.text),
+        # TODO: Add determinant change!
+        tags$h5(dr.change.text)
+      )
     )
   })
   
@@ -1903,11 +1912,11 @@ server <- function(input, output, session) {
       tags$h4("Counties are grouped into disparate risk clusters within a state based on their mortality rate trends.") ,
       tags$ul(
       tags$li(tags$h5("On the top map, select years to see how county mortality rates changed over time.")) ,
-      tags$li(tags$h5("The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)")) ,
-      tags$li(tags$h5("The right graph shows factors correlated associated with mortality disparities."))
+      tags$li(tags$h5("The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)")) 
+      # tags$li(tags$h5("The right graph shows factors correlated associated with mortality disparities."))
       )
       ,
-      tags$h4("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see a counties name and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
+      tags$h4("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see county names and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
       NULL
     )
   })
@@ -2221,7 +2230,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Cluster geo Header (Page 2 lower middle)
+  # Determinant geo Header (Page 2 lower middle)
   output$textSDGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     if(input$state_choice == "United States") {
@@ -2229,9 +2238,7 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the geographic distribution of the selected determinant for the selected state.",
-          paste0(input$determinant_choice, " Distribution for ", location_str), 
-          icon("info-circle")
+          paste0(input$determinant_choice, " Distribution for United States is not currently available.")
         ),
         NULL
       )
@@ -2248,6 +2255,24 @@ server <- function(input, output, session) {
     )
   }
   })
+  
+  # Determinant geo Header (Page 2 lower middle)
+  output$textCountyPrompt <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    if(input$state_choice == "United States") {
+      # No prompt if United States
+    }
+    else {
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          paste0("Select a ", input$state_choice," county below or by clicking the map:")
+        ),
+        NULL
+      )
+    }
+  })
+  
   
   # Determinant Header (upper-left panel, Page 2)
   output$textDeterminants2 <- renderUI({
@@ -2388,8 +2413,7 @@ server <- function(input, output, session) {
   output$geo_cluster_kmean <- renderLeaflet({
     
     if(input$state_choice == "United States"){
-      draw.geo.cluster("US", input$death_cause, mort.cluster.ord(),
-                       max(mort.cluster.ord()$cluster))
+      kmean.us.plot(input$death_cause)
     }else{
       draw.geo.cluster(input$state_choice, input$death_cause, mort.cluster.ord(), 
                        max(mort.cluster.ord()$cluster))
@@ -2449,17 +2473,7 @@ server <- function(input, output, session) {
   # Mortality Rate by County Period 2
   output$geo_mort_change2 <- renderLeaflet({
     if(input$state_choice == "United States"){
-      mort.data <- dplyr::filter(
-        cdc.data,
-        death_cause == input$death_cause,
-        period == input$year_selector
-      ) %>%
-        dplyr::mutate(
-          death_rate = cut(death_rate, bin.geo.mort(input$death_cause))
-        ) %>%
-        dplyr::select(county_fips, death_rate, period)
-
-      geo.plot("US", input$death_cause, mort.data, input$year_selector)
+      geo.us.plot(input$death_cause, input$year_selector)
     } else{
       mort.data <- dplyr::filter(
         cdc.data,
@@ -2595,7 +2609,6 @@ server <- function(input, output, session) {
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
     if(nrow(kendall.cor.new) > 0) {
-      
       kendall.cor.new %>% 
         ggplot(
           aes(

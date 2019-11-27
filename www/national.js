@@ -33,10 +33,12 @@ btn1.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 0){
-      btn_list[i].style.backgroundColor = "red";
+       btn_list[i].style.backgroundColor = "#565254";
+      btn_list[i].style.color = "#f7f7f7";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+       btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
     }
   }
   image.src = images[0];
@@ -52,7 +54,8 @@ btn2.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+        btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
     }
   }
   image.src = images[1];
@@ -65,10 +68,12 @@ btn3.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 2){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+      btn_list[i].style.color = "#f7f7f7";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+       btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
     }
   }
   image.src = images[2];
@@ -84,7 +89,8 @@ btn4.onclick = function(){
       btn_list[i].style.backgroundColor = "red";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+        btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
     }
   }
   image.src = images[3];
@@ -97,10 +103,12 @@ btn5.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 4){
-      btn_list[i].style.backgroundColor = "red";
+     btn_list[i].style.backgroundColor = "#565254";
+      btn_list[i].style.color = "#f7f7f7";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+       btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
     }
   }
   image.src = images[4];
@@ -113,10 +121,12 @@ btn6.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 5){
-      btn_list[i].style.backgroundColor = "red";
+       btn_list[i].style.backgroundColor = "#565254";
+      btn_list[i].style.color = "#f7f7f7";
     }
     else{
-      btn_list[i].style.backgroundColor = "#f7f7f7";
+        btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
     }
   }
   image.src = images[5];
@@ -131,10 +141,12 @@ function changeImage(){
       var i;
       for(i = 0; i < btn_list.length; i++){
         if(i === position){
-          btn_list[i].style.backgroundColor = "red";
+         btn_list[i].style.backgroundColor = "#565254";
+      btn_list[i].style.color = "#f7f7f7";
         }
         else{
-          btn_list[i].style.backgroundColor = "#f7f7f7";
+           btn_list[i].style.background = "none";
+      btn_list[i].style.color = "#565254";
         }
       }
       image.src = images[position];
