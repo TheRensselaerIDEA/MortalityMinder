@@ -395,7 +395,7 @@ ui <- fluidPage(
                 
                 tags$div(
                   class = "prompt_text",
-                  "Select a county below or by clicking the map:"              
+                  uiOutput("textCountyPrompt")              
                 ),
                 uiOutput("county_selector")
               ), # End of pickerInput container
@@ -408,22 +408,7 @@ ui <- fluidPage(
               )
               
             ) # End of inner Column 3 bottom
-            # tags$div(
-            #  
-            #   tags$div(
-            #     class = "prompt_text",
-            #     "Select a county below or by clicking the map:"              
-            #   ),
-            #   uiOutput("county_selector")
-            # ), # End of pickerInput container
-            # fluidRow(
-            #   class = "page3_col3_county_desc",
-            #   tags$br(),
-            #   tags$br(),
-            #   tags$br(),
-            #   uiOutput("county_desc")
-            # )
-            
+
             ) # End of Column 3
                 ) # End of Fluid Row
       ), # End of Page 3
@@ -1258,16 +1243,17 @@ server <- function(input, output, session) {
       tidyr::drop_na()
     
       if(input$state_choice == "United States"){
-      sd.data <- dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        death_cause == input$death_cause
-      ) %>% 
-        dplyr::select(county_fips, death_rate) %>% 
-        dplyr::inner_join(sd.select, by = "county_fips") %>% 
-        tidyr::drop_na() 
-        
-        geo.sd.plot("US", input$determinant_choice, sd.data, "2015-2017")
+      # If "United States" suppress plot
+      # sd.data <- dplyr::filter(
+      #   cdc.data,
+      #   period == "2015-2017", 
+      #   death_cause == input$death_cause
+      # ) %>% 
+      #   dplyr::select(county_fips, death_rate) %>% 
+      #   dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      #   tidyr::drop_na() 
+      #   
+      #   geo.sd.plot("US", input$determinant_choice, sd.data, "2015-2017")
         
     } else {
       
@@ -2243,7 +2229,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Cluster geo Header (Page 2 lower middle)
+  # Determinant geo Header (Page 2 lower middle)
   output$textSDGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     if(input$state_choice == "United States") {
@@ -2251,9 +2237,7 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the geographic distribution of the selected determinant for the selected state.",
-          paste0(input$determinant_choice, " Distribution for ", location_str), 
-          icon("info-circle")
+          paste0(input$determinant_choice, " Distribution for United States is not currently available.")
         ),
         NULL
       )
@@ -2270,6 +2254,24 @@ server <- function(input, output, session) {
     )
   }
   })
+  
+  # Determinant geo Header (Page 2 lower middle)
+  output$textCountyPrompt <- renderUI({
+    # We reference state.list, cause.list and cause.definitions defined above
+    if(input$state_choice == "United States") {
+      # No prompt if United States
+    }
+    else {
+      tagList(
+        tags$h3(
+          style = "padding-right: 20px; padding-left: 20px",
+          paste0("Select a ", input$state_choice," county below or by clicking the map:")
+        ),
+        NULL
+      )
+    }
+  })
+  
   
   # Determinant Header (upper-left panel, Page 2)
   output$textDeterminants2 <- renderUI({
