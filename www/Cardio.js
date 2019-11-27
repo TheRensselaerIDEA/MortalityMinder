@@ -30,12 +30,7 @@ var btn6 = document.getElementById("sixth_period");
 var btn_list = [btn1,btn2,btn3,btn4,btn5,btn6];
 
 // Set buttons as transparent .style.background = "none";
-btn1.style.background = "none";
-btn2.style.background = "none";
-btn3.style.background = "none";
-btn4.style.background = "none";
-btn5.style.background = "none";
-btn6.style.background = "none";
+
 
 btn1.onclick = function(){
   if(playing === true){
@@ -44,13 +39,16 @@ btn1.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 0){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
+      btn_list[i].style.color = "#565254";
       btn_list[i].style.background = "none";
+       
       //btn_list[i].style.border = "none";
     }
   }
@@ -65,13 +63,15 @@ btn2.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 1){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
       btn_list[i].style.background = "none";
+       btn_list[i].style.color = "#565254";
       //btn_list[i].style.border = "none";
       
     }
@@ -87,13 +87,15 @@ btn3.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 2){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
       btn_list[i].style.background = "none";
+       btn_list[i].style.color = "#565254";
       //btn_list[i].style.border = "none";
     }
   }
@@ -108,13 +110,15 @@ btn4.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 3){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
       //btn_list[i].style.border = "none";
+       btn_list[i].style.color = "#565254";
       btn_list[i].style.background = "none";
     }
   }
@@ -129,13 +133,15 @@ btn5.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
     if(i === 4){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
       btn_list[i].style.background = "none";
+       btn_list[i].style.color = "#565254";
       //btn_list[i].style.border = "none";
     }
   }
@@ -150,13 +156,15 @@ btn6.onclick = function(){
   }
   for(i = 0; i < btn_list.length; i++){
    if(i === 5){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
       //btn_list[i].style.border = "none";
+       btn_list[i].style.color = "#565254";
       btn_list[i].style.background = "none";
     }
   }
@@ -173,13 +181,15 @@ function changeImage(){
       var i;
       for(i = 0; i < btn_list.length; i++){
         if(i === position){
-      btn_list[i].style.backgroundColor = "red";
+      btn_list[i].style.backgroundColor = "#565254";
+       btn_list[i].style.color = "#f7f7f7";
       //btn_list[i].style.border = "solid";
       //btn_list[i].style.borderWidth = "1px";
       //btn_list[i].style.borderRadius= "3px";
     }
     else{
       btn_list[i].style.background = "none";
+       btn_list[i].style.color = "#565254";
       //btn_list[i].style.border = "none";
     }
       }
