@@ -1258,16 +1258,16 @@ server <- function(input, output, session) {
       tidyr::drop_na()
     
       if(input$state_choice == "United States"){
-      sd.data <- dplyr::filter(
-        cdc.data,
-        period == "2015-2017", 
-        death_cause == input$death_cause
-      ) %>% 
-        dplyr::select(county_fips, death_rate) %>% 
-        dplyr::inner_join(sd.select, by = "county_fips") %>% 
-        tidyr::drop_na() 
-        
-        geo.sd.plot("US", input$determinant_choice, sd.data, "2015-2017")
+      # sd.data <- dplyr::filter(
+      #   cdc.data,
+      #   period == "2015-2017", 
+      #   death_cause == input$death_cause
+      # ) %>% 
+      #   dplyr::select(county_fips, death_rate) %>% 
+      #   dplyr::inner_join(sd.select, by = "county_fips") %>% 
+      #   tidyr::drop_na() 
+      #   
+      #   geo.sd.plot("US", input$determinant_choice, sd.data, "2015-2017")
         
     } else {
       
@@ -2251,9 +2251,7 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the geographic distribution of the selected determinant for the selected state.",
-          paste0(input$determinant_choice, " Distribution for ", location_str), 
-          icon("info-circle")
+          paste0(input$determinant_choice, " Distribution for the United States is not currently available")
         ),
         NULL
       )
