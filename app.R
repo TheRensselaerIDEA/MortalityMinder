@@ -8,6 +8,7 @@
 # library(reactlog)
 # options(shiny.reactlog = TRUE)
 
+
 source("Source.R")
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
@@ -950,6 +951,7 @@ server <- function(input, output, session) {
       includeScript(path = "All.js")
     }
   })
+  
   output$determinants_plot1 <- renderPlot({
     
     # Sort by kendall.cor
@@ -961,6 +963,7 @@ server <- function(input, output, session) {
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
+    # browser()
     if(nrow(kendall.cor.new) > 0) {
       kendall.cor.new %>% 
         ggplot(
@@ -1608,8 +1611,8 @@ server <- function(input, output, session) {
       line_plot <- ggplot(
         total.data,
         aes(
-          x = period, y = death_rate, 
-          color = cluster, group = cluster
+          x = period, y = death_rate, color = cluster,
+          group = cluster
         )
       ) + 
         geom_line(size = 1.5) + 
@@ -1627,7 +1630,14 @@ server <- function(input, output, session) {
         line_plot 
       } else {
         drop.cols <- c('county_fips')
-        county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause) %>%
+        county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause)
+        
+        if (nrow(county_data) == 0) {
+          ggplot() + 
+            xlab("Error: county_data is empty. Aborting plot creation.")
+        } else {
+        
+        county_data <- county_data %>%
           dplyr::select(-drop.cols) %>%
           tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
           dplyr::mutate("county" = county_choice())
@@ -1645,6 +1655,7 @@ server <- function(input, output, session) {
                                 values = c("twodash"),
                                 guide = guide_legend(override.aes = list(color = c("#565254")))
           )
+        }
       }
       }
     }
