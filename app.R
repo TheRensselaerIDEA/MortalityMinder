@@ -961,6 +961,8 @@ server <- function(input, output, session) {
       dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
+    assign("kendall_cor_new", kendall.cor.new, envir = .GlobalEnv)
+    
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
     # browser()
@@ -2821,29 +2823,13 @@ server <- function(input, output, session) {
     req(input$page1_bar_plot_click) # Same as if-not-NULL
     click <- input$page1_bar_plot_click
     
-    #   Replaced with new definition (from above) 
-    kendall.cor.new <- mort.rate() %>% 
-      dplyr::mutate(VAR = death_rate) %>%
-      kendall.func(chr.data.2019) %>%
-      dplyr::mutate(
-        DIR = dplyr::if_else(
-          kendall_cor <= 0,
-          "Protective",
-          "Destructive"
-        ),
-        chr_code = chr.namemap.2019[chr_code, 1]
-      ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.1) %>% 
-      dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
-      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+    js$nextpage()
     
-    point <- nearPoints(kendall.cor.new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
+    point <- nearPoints(kendall_cor_new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
     
     updatePickerInput(session, "determinant_choice", selected = point$chr_code)
-    js$nextpage()
   })
   
   # click on bar plot triggers page change
@@ -2851,24 +2837,7 @@ server <- function(input, output, session) {
     req(input$page2_bar_plot_click) # Same as if-not-NULL
     click <- input$page2_bar_plot_click
     
-    #   Replaced with new definition (from above) 
-    kendall.cor.new <- mort.rate() %>% 
-      dplyr::mutate(VAR = death_rate) %>%
-      kendall.func(chr.data.2019) %>%
-      dplyr::mutate(
-        DIR = dplyr::if_else(
-          kendall_cor <= 0,
-          "Protective",
-          "Destructive"
-        ),
-        chr_code = chr.namemap.2019[chr_code, 1]
-      ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.1) %>% 
-      dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
-      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
-    
-    point <- nearPoints(kendall.cor.new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
+    point <- nearPoints(kendall_cor_new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
 
