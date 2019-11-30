@@ -55,6 +55,7 @@ data_to_json <- function(data) {
 server <- function(input, output) {
   output$d3 <- renderD3({
     data_geo <- jsonlite::read_json("www/all-counties.json")
+    all_shapes <- jsonlite::read_json("www/all-shapes.json")
     
     causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio", "All Cause")
     
@@ -72,7 +73,7 @@ server <- function(input, output) {
 
       dataset <- geo.map.fetch("US", mort.cluster) %>% dplyr::select(county_fips, cluster) %>% dplyr::arrange(county_fips)
 
-      map <- r2d3(data = list(data_geo,data_to_json(dataset),data_to_json(cause)),
+      map <- r2d3(data = list(data_geo,data_to_json(dataset),data_to_json(cause), all_shapes),
                   d3_version = 3,
                   dependencies = "topojson.min.js",
                   css = "www/geoattr.css",

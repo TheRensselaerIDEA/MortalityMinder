@@ -41,6 +41,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var us = data[0];
   var stat = data[1];
   var cause = data[2];
+  var all_shapes = data[3];
   var clusters = [1,2,3,4,5,6]
   var death_rate = d3.map();
   var color = d3.scale.threshold()
@@ -74,7 +75,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   root.selectAll(".state")
   .data(geo2)
   .enter().append("path")
-  .attr("class", "state")
+  .attr("class", "counties")
   .attr("d", path)
   .attr("fill",function(d){
     return color(d.properties.cluster);
@@ -93,8 +94,12 @@ r2d3.onRender(function(data, svg, width, height, options) {
     .style("opacity", 0); 
   });
   
-  
-  
+  root.selectAll(".state")
+  .data(topojson.feature(all_shapes, all_shapes.objects.states).features)
+  .enter().append("path")
+  .attr("class", "states")
+  .attr("d", path);
+
   var rect = svg
   .attr("width", "100%")
   .attr("height", "100%")
