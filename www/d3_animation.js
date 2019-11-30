@@ -51,6 +51,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var us = data[0];
   var stat = data[1];
   var cause = data[2];
+  var all_shapes = data[3];
   var death_rate_domain = [0,10,20,30,40,50,60,70,80,90,100,110,120];
     if (cause == "Cardio" || cause == "Cancer") {
       death_rate_domain = [0,45,90,135,180,225,270,315,360,405,450,495,540];
@@ -95,7 +96,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   root.selectAll(".state")
       .data(geo2)
       .enter().append("path")
-      .attr("class", "state")
+      .attr("class", "counties")
       .attr("d", path)
       .attr("fill",function(d){
           return color(d.properties.death_rate[0]);
@@ -114,6 +115,11 @@ r2d3.onRender(function(data, svg, width, height, options) {
             .style("opacity", 0); 
           });
           
+  root.selectAll(".state")
+  .data(topojson.feature(all_shapes, all_shapes.objects.states).features)
+  .enter().append("path")
+  .attr("class", "states")
+  .attr("d", path);
           
           
   var rect = svg
