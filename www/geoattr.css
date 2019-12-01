@@ -2,16 +2,16 @@
   float:left;
 }
 
-.counties {
+.state {
   stroke: #fff;
   stroke-width:0.5px;
   fill-opacity:#f7f7f7;
 }
 
-.states {
+.stateoverlay {
   fill: transparent;
   stroke: #fff;
-  stroke-width: 1px;
+  stroke-width: 1.5px;
 }
 
 .state:hover {

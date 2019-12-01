@@ -53,7 +53,7 @@ data_to_json <- function(data) {
 server <- function(input, output) {
   output$d3 <- renderD3({
     data_geo <- jsonlite::read_json("www/all-counties.json")
-    all_shapes <- jsonlite::read_json("www/all-shapes.json")
+    usa_states <- jsonlite::read_json("www/usa-states.json")
     
     causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio","All Cause")
     for(cause in causes_of_death){
@@ -61,7 +61,7 @@ server <- function(input, output) {
       if(cause == "Cardio"){
         data_stat <- cdc.mort.mat(cdc.data,"US",paste0(cause,"vascular"))
       }
-      map <- r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause), all_shapes),
+      map <- r2d3(data = list(data_geo,data_to_json(data_stat),data_to_json(cause), usa_states),
                 d3_version = 3,
                 dependencies = "topojson.min.js",
                 css = "www/geoattr.css",

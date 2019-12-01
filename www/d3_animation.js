@@ -51,7 +51,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var us = data[0];
   var stat = data[1];
   var cause = data[2];
-  var all_shapes = data[3];
+  var usa_states = data[3];
   var death_rate_domain = [0,10,20,30,40,50,60,70,80,90,100,110,120];
     if (cause == "Cardio" || cause == "Cancer") {
       death_rate_domain = [0,45,90,135,180,225,270,315,360,405,450,495,540];
@@ -93,10 +93,12 @@ r2d3.onRender(function(data, svg, width, height, options) {
   }    
   
   //map      
-  root.selectAll(".state")
+  root.append("g")
+      .attr("id", "counties")
+      .selectAll(".state")
       .data(geo2)
       .enter().append("path")
-      .attr("class", "counties")
+      .attr("class", "state")
       .attr("d", path)
       .attr("fill",function(d){
           return color(d.properties.death_rate[0]);
@@ -114,14 +116,15 @@ r2d3.onRender(function(data, svg, width, height, options) {
             .duration(500)    
             .style("opacity", 0); 
           });
-          
-  root.selectAll(".state")
-  .data(topojson.feature(all_shapes, all_shapes.objects.states).features)
+  
+  root.append("g")
+  .attr("id", "states")
+  .selectAll(".state")
+  .data(topojson.feature(usa_states, usa_states.objects.us).features)
   .enter().append("path")
-  .attr("class", "states")
+  .attr("class", "stateoverlay")
   .attr("d", path);
-          
-          
+  
   var rect = svg
             .attr("width", "100%")
             .attr("height", "100%")
