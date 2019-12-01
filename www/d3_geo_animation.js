@@ -41,7 +41,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var us = data[0];
   var stat = data[1];
   var cause = data[2];
-  var all_shapes = data[3];
+  var usa_states = data[3];
   var clusters = [1,2,3,4,5,6]
   var death_rate = d3.map();
   var color = d3.scale.threshold()
@@ -72,7 +72,9 @@ r2d3.onRender(function(data, svg, width, height, options) {
   }    
   
   //map      
-  root.selectAll(".state")
+  root.append("g")
+  .attr("id", "counties")
+  .selectAll(".state")
   .data(geo2)
   .enter().append("path")
   .attr("class", "counties")
@@ -94,10 +96,12 @@ r2d3.onRender(function(data, svg, width, height, options) {
     .style("opacity", 0); 
   });
   
-  root.selectAll(".state")
-  .data(topojson.feature(all_shapes, all_shapes.objects.states).features)
+  root.append("g")
+  .attr("id", "states")
+  .selectAll(".state")
+  .data(topojson.feature(usa_states, usa_states.objects.us).features)
   .enter().append("path")
-  .attr("class", "states")
+  .attr("class", "stateoverlay")
   .attr("d", path);
 
   var rect = svg
