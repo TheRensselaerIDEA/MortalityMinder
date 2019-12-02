@@ -382,7 +382,6 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col3_top",
               tags$br(),
-              tags$br(),
               tags$p(htmlOutput("determinant_text")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
@@ -392,12 +391,6 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col3_bot",
               tags$div(
-                class = "col1_bot_title",
-                uiOutput("textSDGeo")
-                      ),
-              leafletOutput("determinants_plot5"),
-              tags$div(
-                
                 tags$div(
                   class = "prompt_text",
                   uiOutput("textCountyPrompt")              
@@ -410,8 +403,9 @@ ui <- fluidPage(
                 # tags$br(),
                 # tags$br(),
                 uiOutput("county_desc")
-              )
+              ),
               
+              leafletOutput("determinants_plot5")
             ) # End of inner Column 3 bottom
 
             ) # End of Column 3
@@ -1432,20 +1426,20 @@ server <- function(input, output, session) {
     dr.00.02 <- county.data.00.02$death_rate
     dr.15.17 <- county.data.15.17$death_rate
     
-    dr.change.text <- paste0("The ", tolower(input$death_cause), 
+    dr.change.text <- paste0("For ", county.data.15.17$county_name, " County, the ", tolower(input$death_cause), 
                              " mortality rate has remained relatively constant since 2002 at ",
                              round(dr.15.17, 2),
                              "per 100k people")
     
     if (dr.00.02 > dr.15.17) {
-      dr.change.text <- paste0("The ", tolower(input$death_cause), 
+      dr.change.text <- paste0("For ", county.data.15.17$county_name, " County, the ", tolower(input$death_cause), 
                                 " mortality rate fell by ",
                                 round((dr.00.02 - dr.15.17) / dr.00.02 * 100, 2),
                                 "% from 2002 to 2017 from ",
                                 round(dr.00.02, 2), " to ",  round(dr.15.17, 2))
     }
     if (dr.00.02 < dr.15.17) {
-      dr.change.text <- paste0("The ", tolower(input$death_cause), 
+      dr.change.text <- paste0("For ", county.data.15.17$county_name, " County, the ", tolower(input$death_cause), 
                                 " mortality rate rose by ",
                                 round((dr.15.17 - dr.00.02) / dr.00.02 * 100, 2),
                                 "% from 2002 to 2017 from ",
@@ -1454,11 +1448,11 @@ server <- function(input, output, session) {
     
     return(
       tagList(
-        tags$h5(paste0(
-          county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
-          " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
-          formatC(pop.15.17, format="d", big.mark=","))
-        ),
+        # tags$h5(paste0(
+        #   county.data.15.17$county_name, ", ", county.data.15.17$state_abbr,
+        #   " is a ", tolower(county.data.15.17$urban_2013), " area with a population of ",
+        #   formatC(pop.15.17, format="d", big.mark=","))
+        # ),
         # tags$h5(pop.change.text),
         # TODO: Add determinant change!
         tags$h5(dr.change.text)
@@ -2281,7 +2275,7 @@ server <- function(input, output, session) {
     else {
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
+          style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
           paste0("Select a ", input$state_choice," county below or by clicking the map:")
         ),
         NULL
