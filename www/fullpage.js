@@ -154,7 +154,7 @@
 
             //design
             controlArrows: true,
-            controlArrowColor: '#000',
+            controlArrowColor: '#fff',
             verticalCentered: true,
             sectionsColor : [],
             paddingTop: 0,
@@ -1030,10 +1030,8 @@
             after($(SLIDES_WRAPPER_SEL, section)[0], arrows);
 
             if(options.controlArrowColor !== '#fff'){
-                //css($(SLIDES_ARROW_NEXT_SEL, section), {'border-color': 'transparent transparent transparent '+options.controlArrowColor});
-                //css($(SLIDES_ARROW_PREV_SEL, section), {'border-color': 'transparent '+ options.controlArrowColor + ' transparent transparent'});
-                css($(SLIDES_ARROW_NEXT_SEL, section), {'border-color': 'transparent transparent transparent transparent'});
-                css($(SLIDES_ARROW_PREV_SEL, section), {'border-color': 'transparent transparent transparent transparent'});
+                css($(SLIDES_ARROW_NEXT_SEL, section), {'border-color': 'transparent transparent transparent '+options.controlArrowColor});
+                css($(SLIDES_ARROW_PREV_SEL, section), {'border-color': 'transparent '+ options.controlArrowColor + ' transparent transparent'});
             }
 
             if(!options.loopHorizontal){

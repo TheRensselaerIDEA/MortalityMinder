@@ -445,9 +445,9 @@ color: #f7f7f7;
 .fp-controlArrow.fp-prev {
     left: 0;
     border: none;
-    width: 100px !important;
-    height: 100px;
-    background: url(backcircle.png);
+    width: 20px !important;
+    height: 20px;
+    background: url(left.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: 100% 100%;
@@ -456,9 +456,9 @@ color: #f7f7f7;
 .fp-controlArrow.fp-next {
     right: 0;
     border: none;
-    width: 100px;
-    height: 100px;
-    background: url(nextcircle.png);
+    width: 20px;
+    height: 20px;
+    background: url(right.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: 100% 100%;

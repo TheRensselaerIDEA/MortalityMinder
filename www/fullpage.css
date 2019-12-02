@@ -71,29 +71,17 @@ html.fp-enabled,
     transform: translate3d(0,0,0);
     color: #000;
 }
-/*.fp-controlArrow.fp-prev {
+.fp-controlArrow.fp-prev {
     left: 15px;
     width: 0;
     border-width: 38.5px 34px 38.5px 0;
     border-color: transparent transparent transparent transparent;
-}*/
-.fp-controlArrow.fp-prev {
-    left:0;
-    background: url(backcircle.png);
-    background-repeat: no-repeat; /* Do not repeat the image */
-
 }
 
-/*.fp-controlArrow.fp-next {
+.fp-controlArrow.fp-next {
     right: 15px;
     border-width: 38.5px 0 38.5px 34px;
     border-color: transparent transparent transparent transparent;
-}*/
-
-.fp-controlArrow.fp-next {
-    right:0;
-    background: url(nextcircle.png);
-    background-repeat: no-repeat; /* Do not repeat the image */
 }
 
 .fp-scrollable {
