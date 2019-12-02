@@ -1,13 +1,12 @@
 # Date: 2019/8/1
-# Author: 
-#   UI: Shengjin Li
-#   Server: Yuxuan Wang
-#   Graph: Ziyi Wang
-
-# This version uses reactlog
-# library(reactlog)
-# options(shiny.reactlog = TRUE)
-
+# Contributors: 
+#   UI: Shengjin Li (prototype)
+#   Server: Yuxuan Wang (prototype)
+#   Visualizations: Ziyi Wang (prototype)
+#   Fall 2019 Coding Team: Ross DeVito, Jose Figueroa, Xinyu Gu, Taras Kaminsky, Lilian Ngweta, 
+#             Jiangshan Lin, Farukh Saidmuratov, Christina Van Hal, Ziyi Wang, Hongrui Zhang
+#   Advisors: Kristin Bennett, John Erickson, Karan Bhanot
+#   The Rensselaer Institute for Data Exploration & Applications (IDEA)
 
 source("Source.R")
 deps <- list("topojson.min.js", 
