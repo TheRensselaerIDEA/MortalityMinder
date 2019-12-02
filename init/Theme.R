@@ -709,7 +709,7 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
       addControl(get_sd_title(state.choice, sd.choice, period), 
                  position = "topleft", 
                  className="map-title") %>%
-      addLegend("bottomleft",
+      addLegend("topright",
                 pal = pal,
                 values = ~dataset$VAR,
                 title = "Rate",

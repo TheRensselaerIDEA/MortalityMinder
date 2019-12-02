@@ -70,7 +70,7 @@ ui <- fluidPage(
     tags$div(
       class = "prompt_text",
       # "Select cause of death and state: "
-      "Select state and cause of death: "
+      "Select State and Cause of Death:  "
     ),
     
     pickerInput(
