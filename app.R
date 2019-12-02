@@ -1305,10 +1305,19 @@ server <- function(input, output, session) {
   
 
   output$determinant_text <- renderUI({
-    tagList(tags$h4(
-      as.character(
-      SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
-    )
+    reason_text <- ""
+    if (!is.na(SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Reason")) {
+      reason_text <- as.character(
+        SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Reason"
+      )
+    }
+    
+    tagList(
+      tags$h4(
+        as.character(
+          SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
+      ),
+      tags$h4(reason_text)
     )
   })
   
