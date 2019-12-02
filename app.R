@@ -20,11 +20,17 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
-cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
+# cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
+# cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
+#                        "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
+#                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
+#                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
+
+cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
 cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
-                       "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
+
 period.list <- c("2000-2002","2003-2005","2006-2008","2009-2011","2012-2014","2015-2017")
 
 n.clusters.state = 3
@@ -121,7 +127,7 @@ ui <- fluidPage(
                       tags$li(tags$h4("Deaths of Despair")),
                       tags$li(tags$h4("Cardiovascular Disease")),
                       tags$li(tags$h4("Cancer")),
-                      tags$li(tags$h4("Assault Deaths")),
+                      # tags$li(tags$h4("Assault Deaths")),
                       tags$li(tags$h4("All Causes"))
                        ), # End List
                       tags$h4("MortalityMinder is a four-page interactive presentation that examines county-level factors associated with mortality trends.\n"), 
@@ -452,9 +458,9 @@ ui <- fluidPage(
                                    tags$ul(
                                      tags$li(tags$h4(tags$b("Deaths of Despair: "), 
                                              "deaths due to suicide, overdose, substance abuse and poisonings")),
-                                     tags$li(tags$h4(tags$b("Assault: "), 
-                                             "deaths due injuries inflicted by another person with intent to injure or kill, 
-                                             by any means")),
+                                     # tags$li(tags$h4(tags$b("Assault: "), 
+                                     #         "deaths due injuries inflicted by another person with intent to injure or kill, 
+                                     #         by any means")),
                                      tags$li(tags$h4(tags$b("Cardiovascular Disease: "), 
                                              "diseases of the circulatory systems such as heart disease and stroke")),
                                      tags$li(tags$h4(tags$b("Cancer: "), 
