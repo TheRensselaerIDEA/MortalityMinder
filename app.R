@@ -1336,6 +1336,10 @@ server <- function(input, output, session) {
   })
   
   output$determinant_corr <- renderText({
+    if (nrow(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]) == 0) {
+      return("")
+    }
+    
     if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
       return(paste0("Kendal Correlation with ",
                     input$death_cause,
@@ -1353,6 +1357,10 @@ server <- function(input, output, session) {
   })
   
   output$determinant_dir <- renderText({
+    if (nrow(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]) == 0) {
+      return("")
+    }
+    
     if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p > .05) {
       return(paste0("<strong>No</strong> statistically significant ",
                     " relationship with mortality (p-value = ",
