@@ -120,7 +120,8 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Mortality rates are rising in the United States depending on where you live.")
+                  tags$h3("Mortality rates are rising in the United State with significant community-level and regional variations.
+")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -130,9 +131,9 @@ ui <- fluidPage(
                       # tags$li(tags$h4("Assault Deaths")),
                       tags$li(tags$h4("All Causes"))
                        ), # End List
-                      tags$h4("MortalityMinder is a four-page interactive presentation that examines county-level factors associated with mortality trends.\n"), 
-                      tags$h4("Pick a cause of death and state on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      tags$h4(tags$i("Click right and left at the edges of your screen to investigate further.\n")
+                      tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
+                      tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
+                      tags$h4(tags$i("To see state and factor views, click << and >>.\n")
                               ), 
                  # fluidRow(class="IDEA_Logo_Wrapper",
                           tags$img(
@@ -1153,7 +1154,7 @@ server <- function(input, output, session) {
         ggplot(aes(x = death_rate, y = VAR)) + 
         geom_point(aes(fill = cluster)) + 
         labs(
-          x = "Mortality Rate (2015-2017)",
+          x = "Midlife Mortality Rate (2015-2017)",
           y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
@@ -1187,7 +1188,7 @@ server <- function(input, output, session) {
         #aes(fill = cluster)) + 
         stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
-          x = "Mortality Rate (2015-2017)",
+          x = "Midlife Mortality Rate (2015-2017)",
           y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
@@ -1215,7 +1216,7 @@ server <- function(input, output, session) {
                    aes(fill = cluster)) + 
         #stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
-          x = "Mortality Rate (2015-2017)",
+          x = "Midlife Mortality Rate (2015-2017)",
           y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
@@ -1534,7 +1535,7 @@ server <- function(input, output, session) {
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
-          ylab("Mortality Rate (# per 100k)")
+          ylab("Midlife deaths per 100,000")
         line_plot
         
       } else if (input$state_choice == "HI") {
@@ -1572,7 +1573,7 @@ server <- function(input, output, session) {
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
-          ylab("Mortality Rate (# per 100k)")
+          ylab("Midlife deaths per 100,000")
         line_plot
         
       } else if (input$state_choice == "RI") {
@@ -1610,7 +1611,7 @@ server <- function(input, output, session) {
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
-          ylab("Mortality Rate (# per 100k)")
+          ylab("Midlife deaths per 100,000")
         line_plot 
         
       } else {
@@ -1631,7 +1632,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster \n Average", color = "Cluster \n Average") + 
-        ylab("Mortality Rate (# per 100k)") 
+        ylab("Midlife deaths per 100,000") 
       
       if (is.null(county_choice())){
         line_plot 
@@ -1799,7 +1800,7 @@ server <- function(input, output, session) {
         geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
         theme.line.mort() + 
         theme(legend.position = "bottom", legend.title = element_blank()) + 
-        ylab("Mortality Rate (# per 100k)") + 
+        ylab("Midlife deaths per 100,000") + 
         geom_segment(aes(x=period_choice, xend=period_choice, y=lo, yend=hi), color = '#38761D', linetype=2) +
         geom_polygon(data = data.frame(
           x = c(period_choice-0.1, period_choice+0.1, period_choice, period_choice-0.1), 
@@ -1878,7 +1879,7 @@ server <- function(input, output, session) {
                       geom_point(color = "#565254", shape = 21, fill = "#f7f7f7", size = 2) + 
                       theme.line.mort() + 
                       theme(legend.position = "bottom", legend.title = element_blank()) + 
-                      ylab("Mortality Rate (# per 100k)") +
+                      ylab("Midlife deaths per 100,000") +
                       ylim(ylim) + 
                       scale_color_manual(values = colors) + 
                       geom_segment(aes(x=period_choice, xend=period_choice, y=lo, yend=hi), color = '#38761D', linetype=2) +
@@ -1926,12 +1927,12 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
-        paste0(names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
+      tags$h2(
+        paste0("State View: ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h4("Counties are grouped into disparate risk clusters within a state based on their mortality rate trends."),
-      tags$h4("The top map shows how counties are grouped into disparate risk clusters within a state based on their mortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
+      tags$h4("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
+      tags$h4("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
       tags$h4("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see county names and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
       NULL
     )
@@ -1948,7 +1949,7 @@ server <- function(input, output, session) {
     }
     tagList(
       tags$h3(
-        paste0("Premature Mortality Rates for ",
+        paste0("Midlife Mortality Rates for ",
                names(which(cause.list == input$death_cause)), 
                " in ", 
                location_str,
@@ -1962,13 +1963,13 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h3(
-        title ="Mortality Rates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed.   See About page for details.",
-        paste0("Mortality rate per 100,000 for people ages 25-to 64 due to ",
+        title ="Midlife Mortality Rates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed.   See About page for details.",
+        paste0("Midlife Mortality Rate: Deaths per 100,000 for people ages 25-to 64 due to ",
                names(which(cause.list == input$death_cause)), 
                " for three year periods for counties (left) and state and nation (right) . Darker colors indicate higher rates. "
                ), icon("info-circle")
       ),
-      HTML("<h4>Source: CDC WONDER<br>Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute</h4>")
+      HTML("<h4>Data Source: CDC WONDER<br>Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute</h4>")
     )
   })
   
@@ -1979,7 +1980,7 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          paste0("Mortality Rates for ",
+          paste0("Midlife Mortality Rates for ",
                  names(which(cause.list == input$death_cause)), 
                  " in ", 
                  location_str)
@@ -1990,7 +1991,7 @@ server <- function(input, output, session) {
       location_str <- names(which(state.list == input$state_choice))
       tagList(
         tags$h3(
-          paste0("Mortality Rates for ",
+          paste0("Midlife Mortality Rates for ",
                  names(which(cause.list == input$death_cause)), 
                  " in ", 
                  location_str,
@@ -2116,7 +2117,7 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h1(
-        paste0(names(which(cause.list == input$death_cause)), " Rates Over Time")
+        paste0("Nationwide View: ",names(which(cause.list == input$death_cause)), " Rates Over Time")
       )
     )
   })
@@ -2144,7 +2145,7 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please see Project Overview.", 
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
@@ -2155,7 +2156,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please see Project Overview.", 
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
@@ -2172,7 +2173,7 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the average premature death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
+          title="This plot represents the average midlife death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
           paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str), 
           icon("info-circle")
         ),
@@ -2183,7 +2184,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="This plot represents the average premature death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
+        title="This plot represents the average midlife death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
         paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
@@ -2198,8 +2199,8 @@ server <- function(input, output, session) {
     if(input$state_choice == "United States") {
       location_str <- "the United States" 
       tagList(tags$h3(
-        title="This plot represents the distribution of mortality rates for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Mortality Rates for ",
+        title="This plot represents the distribution of midlife mortality rates (ages 25-64) for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ",
               location_str, " for ", input$year_selector),
           icon("info-circle")
         ),
@@ -2209,8 +2210,8 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        title="This plot represents the distribution of mortality rates for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
+        title="This plot represents the distribution of midlife mortality rates (ages 25-64) for the selected state.",
+        paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
         icon("info-circle")
       ),
       NULL
@@ -2298,8 +2299,8 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please see Project Overview.",
-          paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
+          paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
         NULL
@@ -2309,8 +2310,8 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality. For more information on the method of determining correlation please see Project Overview.",
-        paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
+        paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
       ),
       NULL
