@@ -561,7 +561,7 @@ ul{
 .prompt_text {
   position:relative;
   display: inline-block;
-  font-size:10pt !important;
+  font-size:11.5pt !important;
   padding-left: 3px;
   padding-top: 3px;
 }
@@ -746,5 +746,5 @@ width: 40px;
 }
 
 #determinants_plot5 {
-  height: 300px !important;
+  height: 200px !important;
 }
