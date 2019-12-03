@@ -1696,21 +1696,21 @@ server <- function(input, output, session) {
         
       } else {
 
-        # total.data$cluster[total.data$cluster == 1] <- "1: Low"
-        # total.data$cluster[total.data$cluster == 2] <- "2: Medium"
-        # total.data$cluster[total.data$cluster == 3] <- "3: High"
-        total.data$cluster <- as_factor(total.data$cluster)
+        total.data$cluster[total.data$cluster == 1] <- "1: Low"
+        total.data$cluster[total.data$cluster == 2] <- "2: Medium"
+        total.data$cluster[total.data$cluster == 3] <- "3: High"
+        # total.data$cluster <- as_factor(total.data$cluster)
 
-        total.data$cluster_label[total.data$cluster == "1"] <- "Low"
-        total.data$cluster_label[total.data$cluster == "2"] <- "Medium"
-        total.data$cluster_label[total.data$cluster == "3"] <- "High"
-        total.data$cluster_label[total.data$cluster == "National"] <- "National"
-        total.data$cluster_label <- as_factor(total.data$cluster_label)
+        # total.data$cluster_label[total.data$cluster == "1"] <- "Low"
+        # total.data$cluster_label[total.data$cluster == "2"] <- "Medium"
+        # total.data$cluster_label[total.data$cluster == "3"] <- "High"
+        # total.data$cluster_label[total.data$cluster == "National"] <- "National"
+        # total.data$cluster_label <- as_factor(total.data$cluster_label)
 
       line_plot <- ggplot(
         total.data,
         aes(
-          x = period, y = death_rate, color = cluster_label,
+          x = period, y = death_rate, color = cluster,
           group = cluster
         )
       ) + 
