@@ -223,14 +223,16 @@ ui <- fluidPage(
                          plotOutput("nation_state_infographic")
                   )
                 )
-                ), # End of inner Fluid Row (Column 2 Middle)
+                )
+                , # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
                   uiOutput("textMortFactsNew")
-                  
+
                   ) # Close inner FluidRow (Column 2 Bottom)
                 ) #Close Column 2
               ) #Close Outter Row (National Map Page)
+
       ), # Close div tag "slide"
       
 ##################### PAGE 2, INDIVIDUAL STATE ANALYSIS #####################
