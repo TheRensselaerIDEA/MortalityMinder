@@ -213,6 +213,17 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   colors <- rev(theme.categorical.colors(n_clusters))
   labels <- c("High", "Medium", "Low")
   
+  if (state.choice == "DE") {
+    colors <- rev(colors)
+    labels <- c("Kent", "New Castle", "Sussex")
+  } else if (state.choice == "HI") {
+    colors <- rev(colors)
+    labels <- c("Kalawao", "Honolulu" , "Maui", "Hawaii", "Kauai")
+  } else if (state.choice == "RI") {
+    colors <- rev(colors)
+    labels <- c("Bristol", "Washington", "Newport", "Kent", "Providence")
+  }
+  
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   shapes.data <- as.data.frame(shapes)
   shapes.data$county_fips <- paste(as.data.frame(shapes)$STATEFP, as.data.frame(shapes)$COUNTYFP, sep = '')

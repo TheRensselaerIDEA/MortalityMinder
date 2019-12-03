@@ -1508,7 +1508,7 @@ server <- function(input, output, session) {
         theme.line.mort() + 
         theme(legend.position = "left") + 
         ylab("Average Midlife deaths per 100,000") +
-        labs(fill = "Cluster \n Average", color = "Cluster \n Average") +
+        labs(fill = "Cluster", color = "Cluster") +
         guides(
           color = guide_legend(reverse = T)
         )
@@ -1655,7 +1655,7 @@ server <- function(input, output, session) {
         theme.line.mort() + 
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
-        labs(fill = "Cluster \n Average", color = "Cluster \n Average") + 
+        labs(fill = "Cluster", color = "Cluster") + 
         ylab("Average Midlife deaths per 100,000") 
       
       if (is.null(county_choice())){
@@ -2252,7 +2252,7 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="This plot represents the geographic distribution of clusters for the selected state.",
-          paste0(names(which(cause.list == input$death_cause)), " Clusters for ",location_str), 
+          paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ",location_str), 
           icon("info-circle")
         ),
         NULL
@@ -2263,7 +2263,7 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Clusters for ", names(which(state.list == input$state_choice))), 
+        paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
       NULL
