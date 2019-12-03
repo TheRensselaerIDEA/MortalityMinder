@@ -1694,15 +1694,22 @@ server <- function(input, output, session) {
         line_plot 
         
       } else {
-      
-        total.data$cluster[total.data$cluster == 1] <- "1: Low"
-        total.data$cluster[total.data$cluster == 2] <- "2: Medium"
-        total.data$cluster[total.data$cluster == 3] <- "3: High"
-        
+
+        # total.data$cluster[total.data$cluster == 1] <- "1: Low"
+        # total.data$cluster[total.data$cluster == 2] <- "2: Medium"
+        # total.data$cluster[total.data$cluster == 3] <- "3: High"
+        total.data$cluster <- as_factor(total.data$cluster)
+
+        total.data$cluster_label[total.data$cluster == "1"] <- "Low"
+        total.data$cluster_label[total.data$cluster == "2"] <- "Medium"
+        total.data$cluster_label[total.data$cluster == "3"] <- "High"
+        total.data$cluster_label[total.data$cluster == "National"] <- "National"
+        total.data$cluster_label <- as_factor(total.data$cluster_label)
+
       line_plot <- ggplot(
         total.data,
         aes(
-          x = period, y = death_rate, color = cluster,
+          x = period, y = death_rate, color = cluster_label,
           group = cluster
         )
       ) + 
@@ -1715,7 +1722,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster", color = "Cluster") + 
-        ylab("Average Midlife deaths per 100,000") 
+        ylab("Average Midlife Deaths per 100,000") 
       
       if (is.null(county_choice())){
         line_plot 
