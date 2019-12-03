@@ -135,7 +135,7 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
                       tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      tags$h4(tags$i("To see state and factor views, click << and >>.\n")
+                      tags$h5(tags$i("Click << and >> for State and Factor views")
                               ), 
                  # fluidRow(class="IDEA_Logo_Wrapper",
                           tags$img(
