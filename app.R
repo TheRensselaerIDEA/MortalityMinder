@@ -20,12 +20,14 @@ state.list <- state.abb
 names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
+# Cause list with Assault
 # cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
 # cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
 #                        "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
 #                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
 #                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 
+# Cause list with Assault commented out
 cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
 cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
@@ -421,60 +423,87 @@ ui <- fluidPage(
         ),
           fluidRow(
                   class = "page page4",
-                   column(3, tags$h3("Project Overview",align="center"),  #offset=1,
+                   column(3, tags$h4("ABOUT MORTALITYMINDER",align="center"),
                           fluidRow(
-                            column(11, tags$h4("Since 2010 the rate of increase in life expectancy in the United States (US) 
-                                   has stagnated and even declined, reversing for the US the trend toward increased life
-                                   expectancy that is still continuing in most nations. The goal of this project is 
-                                   to develop an interactive tool, MortalityMinder, to explore trends in mortality, 
-                                   and identify their associated community level social determinants."), offset=1), # Close column,
-                            column(11, tags$h3("AHRQ Contest Synopsis",align="center"), 
-                                   tags$h4("The AHRQ Visualization Resources of Community-Level Social Determinants of Health Challenge 
-                                   seeks tools that support visualizing such data clusters to enhance the research and analysis 
-                                   of community-level health services."), 
-                                   tags$h4("Challenge participants must develop visualization tools that can augment the insights drawn 
-                                   from the analysis of medical expenditure and health care utilization data at the community 
-                                   level. Tools must use publicly available and free SDOH data from at least three of the 
-                                   following data sources: "), 
-                                   tags$ul(
-                                     tags$li(tags$h4("Federal databases")),
-                                     tags$li(tags$h4("State databases")),
-                                     tags$li(
-                                       tags$h4("Other locally available data sources, such as SDOH data from voice, digital, and 
-                                       social medical requests via service lines"))
-                                     ), offset=1) # Close column
-                                   ) # Close inner fluidRow
-                            ), # Close outter column
-                   column(3, tags$h3("Methodology",align="center"),   offset=1,
+                            column(11, 
+                                   tags$h5("Mortality rates are rising in the United State with significant 
+                                           community and regional variations. MortalityMinder (MM) is a web-based 
+                                           visualization tool that enables interactive exploration of social, 
+                                           economic and geographic factors associated with premature mortality 
+                                           among mid-life adults ages 25-64 across the United States. Using 
+                                           authoritative data from the CDC and other sources, MM is a publicly-available, 
+                                           open source, easily maintained tool designed to help health policy 
+                                           decision makers in the public and private sectors identify and 
+                                           address unmet healthcare needs, healthcare costs, and healthcare utilization.")), 
+                            column(11, tags$h4("DATA UTILIZATION AND PREPARATION",align="center"), 
+                                   tags$h5("MortalityMinder uses county-level mortality rates and social and 
+                                           economic factors measurements available from well-known public portals.  
+                                           Mortality rates  from 2000-2017 are obtained through the CDC WONDER portal, 
+                                           the definitive source of mortality information in the United States. Social 
+                                           factors data  for 2015-2017 are obtained through County Health Rankings (CHR), 
+                                           an aggregate of county level data curated by the Robert Wood Johnson Foundation. 
+                                           MM considers 168 factors from twenty (20) sources, including 
+                                           datasets such as AHRQ, BRFSS, the Bureau of Labor Statistics, the FBI, and many 
+                                           others.  This version of MM focuses on midlife deaths attributed to leading 
+                                           causes of death including 'Deaths of Despair', 'CardioVascular', 'Cancer' and 
+                                           'All Causes',  but the approach can be readily generalized to any health problem 
+                                           of interest."), 
+                                   tags$h5("Age-specific mortality rates were calculated in three-year chunks to 
+                                           allow more robust estimation by considering multiple years. MM aims to capture 
+                                           the actual experience of mortality by Americans in a community, so our analysis 
+                                           does not age-adjust. In the future, age-adjustment could easily be added to MM. 
+                                           To provide for more complete data for effective visualizations, county mortality 
+                                           rates that are suppressed to preserve privacy by CDC WONDER were imputed using 
+                                           the Amelia package in R. Multiple imputation could be added to the analysis 
+                                           in the future. Details of data sources and preparation are available at: (github link)")),
+                            column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
+                                   downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
+                                   downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
+                                   downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
+                                   tags$h4("DOWNLOAD CURRENT RESULTS",align="center"), 
+                                   downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
+                                   downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
+                                   downloadButton("downloadCorr", "Current Factor Correlations"))
+                          ) # Close row
+                   ), #close column
+                   column(3, tags$h4("INNOVATION",align="center"),   offset=1,
                           fluidRow(
-                            column(11, tags$h4("MortalityMinder finds trends in Mortality Rates in the United States. 
-                                   It looks at premature deaths, that is deaths in adults from 15 to 64 
-                                   caused by: "), 
-                                   tags$ul(
-                                     tags$li(tags$h4(tags$b("Deaths of Despair: "), 
-                                             "deaths due to suicide, overdose, substance abuse and poisonings")),
-                                     # tags$li(tags$h4(tags$b("Assault: "), 
-                                     #         "deaths due injuries inflicted by another person with intent to injure or kill, 
-                                     #         by any means")),
-                                     tags$li(tags$h4(tags$b("Cardiovascular Disease: "), 
-                                             "diseases of the circulatory systems such as heart disease and stroke")),
-                                     tags$li(tags$h4(tags$b("Cancer: "), 
-                                             "deaths due to cancer and neoplasm")),
-                                     tags$li(tags$h4(tags$b("All Cause: "), 
-                                             "deaths due to any cause"))
-                                     ), 
-                                   tags$h4("Machine learning and statistics methods are used for analysis and data visualization. 
-                                   We use standard and advanced machine learning methods such as K-means and Cadre Modeling 
-                                   to discover counties with different patterns of mortality over time and associated social 
-                                   determinants using cluster or supervised clustering."),
-                                   offset=1) # Close Column
-                   ),
-                   fluidRow(
-                     column(11, tags$h3("Acknowledgement", align = "center"), 
-                            tags$h4("MortalityMinder was created by students in the Data INCITE Lab at Rensselaer Polytechnic Institute with the support of the United Health Foundation and the Rensselaer Institute for Data Exploration and Applications.  Send comments to the directors of the project  Kristin P. Bennett and John Erickson  (bennek@rpi.edu)."),
-                            offset=1) # Close Column
-                   ),
-                   # Close inner fluidRow,
+                            column(11, tags$h5("MortalityMinder enables users to dynamically investigate county and regional 
+                                               variations within mortality trends at the national, state, and local levels 
+                                               and the social determinants and other factors associated with these trends.  It 
+                                               then prioritizes and visualizes the most significant factors associated with 
+                                               higher risks for each cause of death , MM allows the user to explore 
+                                               individual factors include its relation to the selected cause at a county level 
+                                               for each state, and the distribution of those factors within each state."), 
+                                   tags$h5("MM allows the user to visually explore the growth of mortality rates in the United 
+                                           States using county level three-year averages from 2000-2017, providing 
+                                           both national and state views. For each cause of death, MM clusters counties in 
+                                           each state, categorizing each county into high/medium/low mortality clusters; 
+                                           visualizes the geographic distribution of those clusters; and illustrates the 
+                                           mortality trends of those clusters and user-selected counties over time.  MM does
+                                           a similar analysis for the entire United States, only using six clusters."),
+                                   tags$h5("The app determines the correlation of social factors and visualizes the most 
+                                           significant, highlighting whether those factors are protective or destructive. 
+                                           Users can select individual factors to explore more deeply at the state level."),
+                                   tags$h5("Demonstrations and user testing by our advisory panel of health care experts and 
+                                           other testers have shown that MortalityMinder is compelling and highly engaging. The 
+                                           page-oriented organization of the app lends itself to user-driven investigation and 
+                                           storytelling, like a highly interactive slideshow.")),
+                            column(11, tags$h4("INSIGHTS",align="center"), 
+                                   tags$h5("MortalityMinder provides striking insights into the disturbing rise in 'Deaths 
+                                           of Despair' due to suicide, overdose, and self-harm. The app was inspired by 
+                                           'Mortality and morbidity in the 21st century' (Case and Dean, 2017) which described 
+                                           the disturbing rise in mortality rates by 'deaths of despair.'  The app highlights 
+                                           great disparities in mortality rates between counties across and within 
+                                           states with both common and distinct associated factors. Such an insight can be used to 
+                                           create regional specific interventions and determine best practices."), 
+                                   tags$h5("MortalityMinder further provides a county-level confirmation of the trends and 
+                                          hypothesized causes  in 'Life Expectancy and Mortality Rates in the United States, 
+                                          1959-2017' (Woof and Schoomaker 2019). MM shows, however, that rates due to other causes 
+                                          including cancer, cardiovascular disease and all causes are also on the rise. MM confirms the midlife 
+                                          mortality rate increases in (Woolf and Schoomaker), but it provides much greater insight 
+                                          into community level variations and their associated factors that may be actionable.")) 
+                   ), 
                    fluidRow(class="IDEA_Logo_Wrapper",
                             tags$img(
                               class="Idea_Logo",
@@ -482,35 +511,53 @@ ui <- fluidPage(
                               width="100%", 
                               style="bottom: 0; left: 0;")
                    )
-                          ), # Close column
-                   column(3, 
-                          tags$h3("Additional Resources",align="center"),  offset=1,
-                          tags$h4("Bennett, K. P., & Erickson, J. S. (2019). MortalityMinder: Exploring and Visualizing Social Determinants 
-                          of Mortality. The Rensselaer Institute for Data Exploration and Applications, Rensselaer Polytechnic 
-                          Institute. Retrieved from ", tags$br(),
-                          tags$a(href="http://orion.tw.rpi.edu/~olyerickson/MortalityMinder_Phase1.pdf", "Mortality Minder Phase 1"), tags$br(),
-                          "Erickson, J. S., & Bennett, K. P. (n.d.). Mortality Minder Github. Retrieved from ", tags$br(),
-                          tags$a(href="https://github.com/TheRensselaerIDEA/MortalityMinder", "Mortality Minder Github"),tags$br(),
-                          "CDC WONDER.", tags$br(),
-                          tags$a(href="https://wonder.cdc.gov/", "Center for Disease Control and Prevention"),tags$br(),
-                          "County Health Rankings Roadmaps. ", 
-                          tags$a(href="http://www.countyhealthrankings.org/", "County Health Rankings"),tags$br(),
-                          "Small Area Health Insurance Estimates (SAHIE) Program.", tags$br(),
-                          tags$a(href="https://www.census.gov/programs-surveys/sahie.html", "Small Area Health Insurance Estimates"),tags$br(),
-                          "Agency for Healthcare Research and Quality, US Dept. of Health and Human Services.", tags$br(),
-                          tags$a(href="https://www.ahrq.gov/sdoh-challenge/index.html", "AHRQ Challenge Page")),tags$br(),
-                          
-                          
-                          tags$h3("Download Data",align="center"), 
-                          downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
-                          downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
-                          downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
-                          tags$h3("Download Current Results",align="center"), 
-                          downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
-                          downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
-                          downloadButton("downloadCorr", "Current Factor Correlations")
-                   )
-        )# Close outter fluidRow
+                   ), # Close column
+                   column(3, tags$h4("DESIGN AND DEVELOPMENT",align="center"),  offset=1,
+                          fluidRow(
+                            column(11, tags$h5("The focus of MortalityMinder development July-December 2019 
+                                               was on data source identification for multiple causes, beyond 
+                                               our Phase 1 example of 'Deaths of Despair'; social factor selection;
+                                               refinement of our analytic techniques; expansion of our visualization 
+                                               choices; implementation of our interactive, web-based framework; and 
+                                               refinement of the user experience, with input from our external experts, 
+                                               student graphic designers, and a formal usability study."), 
+                                   tags$h5("The team's overarching development objective, beyond analytical credibility, 
+                                           was to provide a compelling and engaging tool for health policy and other 
+                                           decision makers. MortalityMinder can be used as an investigative tool, but 
+                                           may also be used for interactive storytelling, e.g. for lectures on mortality 
+                                           across the United States.")),
+                            column(11, tags$h4("IMPLEMENTATION AND DEPLOYMENT",align="center"), 
+                                   tags$h5("MortalityMinder is currently published via two publicly-accessible web locations. 
+                                           Our open-source R code is freely available via a github repository. Source 
+                                           data and generated results may be downloaded from within the app. MM is 
+                                           coded using the R language and environment for statistical computing and graphics, 
+                                           incorporating best practices and using well-known packages whenever possible. 
+                                           Data Loader scripts enable additional years and types of data to be easily incorporated.  
+                                           The result is a robust, extensible package that can be maintained and grown over 
+                                           time as either an open source package or within organizations such as AHRQ."),
+                                   tags$h5("MM can be run from the public web locations; no user installation 
+                                           is required to test the application. Alternatively, the github repository may be cloned 
+                                           and run immediately in the user's RStudio environment, either on a server or 
+                                           on a personal machine."), 
+                                   tags$h5("MM utilizes the R Shiny platform for web interactivity; most of the visualizations
+                                           presented in MM are generated in real time based on data loaded when the app is launched. 
+                                           Data analysts and software engineers familiar with the R language and reactive coding 
+                                           via Shiny will have no problem customizing the code as required. MM's 
+                                           overall web layout utilizes a standard Javascript UI framework which is easily 
+                                           customized to modify the overall style of the app.")),
+                          column(11, tags$h4("ACKNOWLEDGEMENTS", align = "center"), 
+                                 tags$h5("MortalityMinder was created by undergraduate participants in the Data INCITE Lab at Rensselaer 
+                                    Polytechnic Institute with support from the United Health Foundation and the 
+                                    Rensselaer Institute for Data Exploration and Applications. MortalityMinder was directed by 
+                                    Kristin P. Bennett and John S. Erickson."),
+                                 tags$h5("The MortalityMinder Team would like to thank Jim Hendler, Director, The Rensselaer IDEA,
+                                    and Curt Breneman, Dean of the School of Science at Rensselaer for their support
+                                    and encouragement."),
+                                 tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
+                                 )
+                   ) # Close inner fluidRow
+          )
+        ) # Close outter fluidRow
         ) # Close Page 4
       )
     ),
