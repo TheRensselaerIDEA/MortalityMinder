@@ -113,15 +113,13 @@
 
 .title {
   float: left;
-  max-width: 400px;
-  
-    height: auto;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
-    padding-left: 2vw;
-    overflow: none;
-    font-weight: 800;
-    display:inline;
+  height: auto;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  padding-left: 2vw;
+  overflow: none;
+  font-weight: 800;
+  display:inline;
 }
 
 .title h1 {
@@ -545,8 +543,7 @@ ul{
 
 .nav_container{
     position: relative;
-    width: 60vw;
-    max-width: 660px;
+    width: 65vw;
     text-align: left;
     padding-top: 10px;
     float: right;
