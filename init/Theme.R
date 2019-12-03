@@ -222,6 +222,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   } else if (state.choice == "RI") {
     colors <- rev(colors)
     labels <- c("Bristol", "Washington", "Newport", "Kent", "Providence")
+  } else {
+    colors <- rev(colors)
   }
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
