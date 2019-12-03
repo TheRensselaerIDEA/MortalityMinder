@@ -459,7 +459,8 @@ ui <- fluidPage(
                                            the Amelia package in R. Multiple imputation could be added to the analysis 
                                            in the future. Details of data sources and preparation are available at ",
                                            a("the MortalityMinder github wiki.",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"))),
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"
+                                             , target="_blank"))),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
                                    downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                                    downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
@@ -542,7 +543,7 @@ ui <- fluidPage(
                                    tags$h5("MM can be run from the public web locations; no user installation 
                                            is required to test the application. Alternatively, the ",
                                            a("github repository",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/"), 
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank"), 
                                            "may be cloned and the MM then run immediately in the user's RStudio environment, 
                                            either on a server or on a personal machine."), 
                                    tags$h5("MM utilizes the R Shiny platform for web interactivity; most of the visualizations
@@ -563,9 +564,9 @@ ui <- fluidPage(
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
                                  tags$h5(a("MortalityMinder github repository",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/")),
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank")),
                                  tags$h5(a("MortalityMinder github Wiki",
-                                           href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"))
+                                           href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki", target="_blank"))
                           )
                    ) # Close inner fluidRow
           )
