@@ -585,11 +585,10 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   county_choice <- reactiveVal()
-  
+  assign("sd_tooltip", NULL, envir = .GlobalEnv)
   mort.rate <- reactive({
     county_choice(NULL)
     assign("county_polygon", NULL, envir = .GlobalEnv)
-    assign("page1_period_choice", 6, envir = .GlobalEnv)
     if(input$state_choice == "United States"){
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
@@ -2592,42 +2591,21 @@ server <- function(input, output, session) {
     
   })
   
-  # Implementation of hover (08 Oct 2019)
-  output$hover_info <- renderUI({
-    req(input$plot_hover) # Same as if-not-NULL
-    hover <- input$plot_hover
-
-    #   Replaced with new definition (from above) 
-    kendall.cor.new <- mort.rate() %>% 
-      dplyr::mutate(VAR = death_rate) %>%
-      kendall.func(chr.data.2019) %>%
-      dplyr::mutate(
-        DIR = dplyr::if_else(
-          kendall_cor <= 0,
-          "Protective",
-          "Destructive"
-        ),
-        chr_code = chr.namemap.2019[chr_code, 1]
-      ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.1) %>% 
-      dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
-      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+  show_sd_tooltip <- function(event){
     
-    
-    point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
+    point <- nearPoints(kendall_cor_new, event, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
     
     
     # calculate point position INSIDE the image as percent of total dimensions
     # from left (horizontal) and from top (vertical)
-    left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
-    top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+    left_pct <- (event$x - event$domain$left) / (event$domain$right - event$domain$left)
+    top_pct <- (event$domain$top - event$y) / (event$domain$top - event$domain$bottom)
     
     # calculate distance from left and bottom side of the picture in pixels
-    left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
-    top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+    left_px <- event$range$left + left_pct * (event$range$right - event$range$left)
+    top_px <- event$range$top + top_pct * (event$range$bottom - event$range$top)
     
     # create style property fot tooltip
     # background color is set so tooltip is a bit transparent
@@ -2635,18 +2613,25 @@ server <- function(input, output, session) {
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
                     "left:", left_px + 2, "px; top:", top_px + 2, "px;")
     
+    assign("sd_tooltip", point$chr_code, envir = .GlobalEnv)
     #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
       style = style,
       HTML(paste0("<b>", point$chr_code, "</b>", "<br/>",
-                    "<i>", point$DIR, "</i>","<br/>",
-                    SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definitions[[1]],
-                    NULL
+                  "<i>", point$DIR, "</i>","<br/>",
+                  SocialDeterminants[SocialDeterminants$Name == as.character(point$chr_code),]$Definitions[[1]],
+                  NULL
       ))
     )
-    
+  }
+  
+  # Implementation of hover (08 Oct 2019)
+  output$hover_info <- renderUI({
+    req(input$plot_hover) # Same as if-not-NULL
+    hover <- input$plot_hover
+    show_sd_tooltip(hover)
   })
   
   output$determinants_plot3_county_name <- renderUI({
@@ -2912,13 +2897,16 @@ server <- function(input, output, session) {
     req(input$page1_bar_plot_click) # Same as if-not-NULL
     click <- input$page1_bar_plot_click
     
-    js$nextpage()
-    
     point <- nearPoints(kendall_cor_new, click, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
     
-    updatePickerInput(session, "determinant_choice", selected = point$chr_code)
+    if (!is.null(sd_tooltip) && sd_tooltip == point$chr_code){
+      js$nextpage()
+      updatePickerInput(session, "determinant_choice", selected = point$chr_code)
+    }else{
+      show_sd_tooltip(click)
+    }
   })
   
   # click on bar plot triggers page change
