@@ -918,14 +918,16 @@ server <- function(input, output, session) {
   
   # ----------------------------------------------------------------------
   output$county_selector <- renderUI({
-    pickerInput('county_drop_choice', 
-                'County', 
-                geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name,
-                selected = NULL,
-                multiple = TRUE,
-                options = pickerOptions(size = 15,
-                                        maxOptions = 1)
-    )
+    if (input$state_choice != "United States") {
+      pickerInput('county_drop_choice', 
+                  'County', 
+                  geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name,
+                  selected = NULL,
+                  multiple = TRUE,
+                  options = pickerOptions(size = 15,
+                                          maxOptions = 1)
+      )
+    }
   })
   
   rv_county_drop_choice <- reactive({})
@@ -1484,8 +1486,12 @@ server <- function(input, output, session) {
     
     if (input$state_choice == "United States"){
       
+      total.data <- mort.avg.cluster.ord()
+      total.data$cluster[total.data$cluster == 1] <- "1: Low"
+      total.data$cluster[total.data$cluster == 6] <- "6: High"
+      
       ggplot(
-        mort.avg.cluster.ord(),
+        total.data,
         aes(
           x = period, y = death_rate, 
           color = cluster, group = cluster
@@ -1497,6 +1503,9 @@ server <- function(input, output, session) {
         scale_color_manual(
           values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
         theme.line.mort() + 
+        theme(legend.position = "left") + 
+        ylab("Average Midlife deaths per 100,000") +
+        labs(fill = "Cluster \n Average", color = "Cluster \n Average") +
         guides(
           color = guide_legend(reverse = T)
         )
@@ -1543,7 +1552,7 @@ server <- function(input, output, session) {
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
-          ylab("Midlife deaths per 100,000")
+          ylab("Average Midlife deaths per 100,000")
         line_plot
         
       } else if (input$state_choice == "HI") {
@@ -1581,7 +1590,7 @@ server <- function(input, output, session) {
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
-          ylab("Midlife deaths per 100,000")
+          ylab("Average Midlife deaths per 100,000")
         line_plot
         
       } else if (input$state_choice == "RI") {
@@ -1619,11 +1628,15 @@ server <- function(input, output, session) {
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
-          ylab("Midlife deaths per 100,000")
+          ylab("Average Midlife deaths per 100,000")
         line_plot 
         
       } else {
       
+        total.data$cluster[total.data$cluster == 1] <- "1: Low"
+        total.data$cluster[total.data$cluster == 2] <- "2: Medium"
+        total.data$cluster[total.data$cluster == 3] <- "3: High"
+        
       line_plot <- ggplot(
         total.data,
         aes(
@@ -1640,7 +1653,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster \n Average", color = "Cluster \n Average") + 
-        ylab("Midlife deaths per 100,000") 
+        ylab("Average Midlife deaths per 100,000") 
       
       if (is.null(county_choice())){
         line_plot 
@@ -2431,7 +2444,7 @@ server <- function(input, output, session) {
       dplyr::rename(
         "Trend Grp." = "cluster",
         "Count" = "count"
-      ) 
+      )
   })
   
   # Mortality Trend Cluster by County

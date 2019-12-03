@@ -210,8 +210,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   lat_long <- getLatLong(state.choice, dataset)
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
-  colors <- theme.categorical.colors(n_clusters)
-  labels <- c("Low", "Medium", "High")
+  colors <- rev(theme.categorical.colors(n_clusters))
+  labels <- c("High", "Medium", "Low")
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   shapes.data <- as.data.frame(shapes)
@@ -237,6 +237,11 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
               addControl(geoTitle(state.choice, death.cause),
                          position = "topleft",
                          className="map-title") %>%
+              addLegend("topright",
+                        colors = colors,
+                        labels = labels,
+                        title = "Risk Clusters",
+                        opacity = 1) %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
   }else{
