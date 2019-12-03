@@ -2,8 +2,7 @@
 
 # MORTALITYMINDER
 
-## MORTALITYMINDER WIKI
-For extensive details about [MORTALITYMINDER](https://mortalityminder.idea.rpi.edu/), please refer to the [MORTALITYMINDER WIKI](https://github.com/TheRensselaerIDEA/MortalityMinder/wiki).
+**NOTE:** For extensive details about [MORTALITYMINDER](https://mortalityminder.idea.rpi.edu/), please refer to the [MORTALITYMINDER WIKI](https://github.com/TheRensselaerIDEA/MortalityMinder/wiki).
 
 The notes below are intended for users interested in cloning the repo and contributing code. 
 
