@@ -211,7 +211,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
   
   colors <- rev(theme.categorical.colors(n_clusters))
-  labels <- c("High", "Medium", "Low")
+  labels <- c("Low", "Medium", "High")
   
   if (state.choice == "DE") {
     colors <- rev(colors)
@@ -251,9 +251,9 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
                          position = "topleft",
                          className="map-title") %>%
               addLegend("topright",
-                        colors = colors,
-                        labels = labels,
-                        title = "Risk Clusters",
+                        colors = rev(colors),
+                        labels = rev(labels),
+                        title = "Risk\nClusters",
                         opacity = 1) %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
