@@ -455,7 +455,9 @@ ui <- fluidPage(
                                            To provide for more complete data for effective visualizations, county mortality 
                                            rates that are suppressed to preserve privacy by CDC WONDER were imputed using 
                                            the Amelia package in R. Multiple imputation could be added to the analysis 
-                                           in the future. Details of data sources and preparation are available at: (github link)")),
+                                           in the future. Details of data sources and preparation are available at ",
+                                           a("the MortalityMinder github wiki.",
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"))),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
                                    downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                                    downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
@@ -536,9 +538,11 @@ ui <- fluidPage(
                                            The result is a robust, extensible package that can be maintained and grown over 
                                            time as either an open source package or within organizations such as AHRQ."),
                                    tags$h5("MM can be run from the public web locations; no user installation 
-                                           is required to test the application. Alternatively, the github repository may be cloned 
-                                           and run immediately in the user's RStudio environment, either on a server or 
-                                           on a personal machine."), 
+                                           is required to test the application. Alternatively, the ",
+                                           a("github repository",
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/"), 
+                                           "may be cloned and the MM then run immediately in the user's RStudio environment, 
+                                           either on a server or on a personal machine."), 
                                    tags$h5("MM utilizes the R Shiny platform for web interactivity; most of the visualizations
                                            presented in MM are generated in real time based on data loaded when the app is launched. 
                                            Data analysts and software engineers familiar with the R language and reactive coding 
@@ -554,7 +558,13 @@ ui <- fluidPage(
                                     and Curt Breneman, Dean of the School of Science at Rensselaer for their support
                                     and encouragement."),
                                  tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
-                                 )
+                                 ),
+                          column(11, tags$h4("LINKS", align = "center"), 
+                                 tags$h5(a("MortalityMinder github repository",
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/")),
+                                 tags$h5(a("MortalityMinder github Wiki",
+                                           href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"))
+                          )
                    ) # Close inner fluidRow
           )
         ) # Close outter fluidRow
