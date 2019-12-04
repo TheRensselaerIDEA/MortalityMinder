@@ -8,7 +8,7 @@
 #   Advisors: Kristin Bennett, John Erickson, Karan Bhanot
 #   The Rensselaer Institute for Data Exploration & Applications (IDEA)
 
-source("Source.R")
+source("src/Source.R")
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
