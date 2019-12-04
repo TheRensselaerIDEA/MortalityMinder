@@ -8,24 +8,47 @@ Note: Re-used code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
 
 
 
+
 Reading Source.R
 ```{r}
-#source("Source.R")
-chr.data.2019 <- readRDS("init/chr.data.2019.rds") %>%
-  # 10/02/2019
-  # Remove unwanted social determinants
-  # This should be a temporary change because the source file will be replaced in the end
-  dplyr::select(
-    -dplyr::starts_with("health_"),
-    -dplyr::contains("cohort"),
-    -dplyr::contains("firearm"),
-    -dplyr::contains("mortality"),
-    -dplyr::contains("deaths"),
-    -dplyr::contains("death"),
-    -dplyr::contains("life"),
-    -dplyr::contains("ypll"),
-    -dplyr::starts_with("num_")
-  )
+source("Source.R")
+
+```
+
+Loading the mortality data that will be used in the Kendall correlation analysis below
+```{r}
+# # cdc.data <- readRDS("data/CDC/cdc.data.imputed.Rds")
+# # ncol(cdc.data)
+# ncol(chr.data.2019)
+# 
+ colMeans(is.na(chr.data.2019))
+
+
+
+```
+
+
+
+Reading from the CSV file
+```{r}
+# csv_factors <- read_csv("init/SocialDeterminants.csv")
+# 
+# csv_factors_1s <- csv_factors[csv_factors$Keep == 1,]["Code"]
+# csv_factors_1s <- append(csv_factors_1s$Code, "county_fips", after = 0)
+# 
+# print(csv_factors_1s)
+```
+
+
+Loading the actual factors data which was obtained from county health rankings
+```{r}
+chr.data.2019 <- readRDS("init/chr.data.2019.rds")
+
+#Only keeping the factors that have keep value as 1
+chr.data.2019 <- chr.data.2019 %>%
+  as_data_frame %>%
+  select(csv_factors_1s)
+head(chr.data.2019)
 ```
 
 
