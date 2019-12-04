@@ -1026,7 +1026,6 @@ server <- function(input, output, session) {
     
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
-    # browser()
     if(nrow(kendall.cor.new) > 0) {
       kendall.cor.new %>% 
         ggplot(
@@ -1322,15 +1321,20 @@ server <- function(input, output, session) {
                         data,
                         county_name == substr(county_choice(), 0, nchar(county_choice())-7)
                       )
-        plot + 
-          geom_point(
-            mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
-            data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
-          ) + 
-          scale_shape_manual(name = "County",
-                             values = c(18), 
-                             guide = guide_legend(override.aes = list(color = c("#565254")))
-          )
+        if (nrow(county_data) == 0) {
+          plot
+        }
+        else {
+          plot + 
+            geom_point(
+              mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
+              data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
+            ) + 
+            scale_shape_manual(name = "County",
+                               values = c(18), 
+                               guide = guide_legend(override.aes = list(color = c("#565254")))
+            )
+        }
       }
     }
   }, bg = "transparent")
@@ -1504,6 +1508,15 @@ server <- function(input, output, session) {
       state_abbr == input$state_choice,
       period == "2015-2017"
     )
+    
+    if (identical(county.data.00.02$county_fips, character(0)) |
+        as.logical(cdc.suppress[cdc.suppress$county_fips == county.data.00.02$county_fips, input$death_cause])) {
+      return(
+        tagList(
+          tags$h5("County mortality data suppressed by CDC due to low number of deaths.")
+        )
+      )
+    }
     
     if (nrow(county.data.15.17) == 0) {
       return(
@@ -1733,13 +1746,6 @@ server <- function(input, output, session) {
         total.data$cluster[total.data$cluster == 1] <- "1: Low"
         total.data$cluster[total.data$cluster == 2] <- "2: Medium"
         total.data$cluster[total.data$cluster == 3] <- "3: High"
-        # total.data$cluster <- as_factor(total.data$cluster)
-
-        # total.data$cluster_label[total.data$cluster == "1"] <- "Low"
-        # total.data$cluster_label[total.data$cluster == "2"] <- "Medium"
-        # total.data$cluster_label[total.data$cluster == "3"] <- "High"
-        # total.data$cluster_label[total.data$cluster == "National"] <- "National"
-        # total.data$cluster_label <- as_factor(total.data$cluster_label)
 
       line_plot <- ggplot(
         total.data,
@@ -1762,33 +1768,33 @@ server <- function(input, output, session) {
       if (is.null(county_choice())){
         line_plot 
       } else {
+        #browser()
+        county_fips <- cdc.data[cdc.data$county_name == county_choice(),]$county_fips[1]
+        # for use with & !as.logical(cdc.suppress[cdc.suppress$county_fips == county_fips, input$death_cause]) in if below
+        
         drop.cols <- c('county_fips')
         county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause)
         
-        if (nrow(county_data) == 0) {
-          ggplot() + 
-            xlab("Error: county_data is empty. Aborting plot creation.")
-        } else {
-        
-        county_data <- county_data %>%
-          dplyr::select(-drop.cols) %>%
-          tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
-          dplyr::mutate("county" = county_choice())
-        line_plot + 
-          geom_line(
-            mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-            data = county_data, color = "#565254", size = 1.3
-          ) +
-          geom_point(
-            mapping = aes(x = period, y = death_rate),
-            data = county_data, color = "#565254", shape = 21, 
-            fill = "#f7f7f7", inherit.aes = FALSE, size = 2
-          ) +
-          scale_linetype_manual(name = "County",
-                                values = c("twodash"),
-                                guide = guide_legend(override.aes = list(color = c("#565254")))
-          )
-        }
+        if (nrow(county_data) != 0) {
+          county_data <- county_data %>%
+            dplyr::select(-drop.cols) %>%
+            tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
+            dplyr::mutate("county" = county_choice())
+          line_plot + 
+            geom_line(
+              mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
+              data = county_data, color = "#565254", size = 1.3
+            ) +
+            geom_point(
+              mapping = aes(x = period, y = death_rate),
+              data = county_data, color = "#565254", shape = 21, 
+              fill = "#f7f7f7", inherit.aes = FALSE, size = 2
+            ) +
+            scale_linetype_manual(name = "County",
+                                  values = c("twodash"),
+                                  guide = guide_legend(override.aes = list(color = c("#565254")))
+            )
+          }
       }
       }
     }
@@ -2677,7 +2683,6 @@ server <- function(input, output, session) {
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
                     "left:", left_px + 2, "px; top:", top_px + 2, "px;")
     
-    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     wellPanel(
@@ -2724,7 +2729,6 @@ server <- function(input, output, session) {
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); pointer-events:none;",
                     "left:", hover$coords_css$x + 10, "px; top:", hover$coords_css$y - 30, "px; font-size: 7px")
     
-    #browser()
     # actual tooltip created as wellPanel
     # TODO: Change these variables based on `kendall.cor`
     tags$div(
