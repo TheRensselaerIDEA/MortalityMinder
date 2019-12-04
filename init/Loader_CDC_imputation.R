@@ -738,6 +738,14 @@ cdc.data.cancer <- cdc.reader.batch(cdc.files.cancer, cdc.periods, "Cancer")
 cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.periods, "Cardiovascular")
 cdc.data.allcause <- cdc.reader.batch(cdc.files.allcause, cdc.periods, "All Cause")
 
+cdc.data.ori <- dplyr::bind_rows(
+    cdc.data.despair, 
+    cdc.data.assault, 
+    cdc.data.cancer,
+    cdc.data.cardiovascular, 
+    cdc.data.allcause
+  ) %>% 
+  as.data.frame()
 
 cdc.data.despair.state <- cdc.reader.state.batch(cdc.files.despair.state, cdc.periods, "Despair")
 cdc.data.assault.state <- cdc.reader.state.batch(cdc.files.assault.state, cdc.periods, "Assault")
@@ -750,7 +758,32 @@ cdc.data.state <-
                    cdc.data.cardiovascular.state, cdc.data.allcause.state) %>% 
   as.data.frame()
 
-######################
+
+
+##################################### Exam Heavily Missing Counties ####################################
+# Check the counties with more than 4 periods being missing
+cdc.miss_gt4 <- cdc.data.ori %>% 
+  dplyr::mutate(is_missing = is.na(death_rate)) %>%
+  dplyr::group_by(county_fips, death_cause) %>%
+  dplyr::summarise(sup_gt4 = sum(is_missing)) %>% 
+  dplyr::mutate(sup_gt4 = sup_gt4 >= 4)
+
+# Check the counties with last period being missing
+cdc.miss_last_period <- cdc.data.ori %>% 
+  dplyr::filter(period == "2015-2017") %>%
+  dplyr::group_by(county_fips, death_cause) %>%
+  dplyr::summarise(sup_last = is.na(death_rate))
+
+# Union the two conditions
+cdc.suppress <- cdc.miss_last_period %>% 
+  dplyr::full_join(cdc.miss_gt4, by = c("county_fips", "death_cause")) %>% 
+  dplyr::mutate(suppress = sup_gt4 || sup_last) %>%
+  dplyr::select(county_fips, death_cause, suppress) %>% 
+  tidyr::spread(key = death_cause, value = suppress)
+
+# Save the data frame as `cdc.suppress.rds`
+saveRDS(cdc.suppress, "../data/CDC/cdc.suppress.Rds")
+########################################################################################################
 
 cdc.data.despair.excluded <- cdc.reader.batch(cdc.files.despair.excluded, cdc.periods, "-Despair")
 cdc.data.assault.excluded <- cdc.reader.batch(cdc.files.assault.excluded, cdc.periods, "-Assault")
