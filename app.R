@@ -122,8 +122,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Mortality rates are rising in the United State with significant community-level and regional variations.
-")
+                  tags$h3("What are the county-level factors that cause increased mortality in the United States?")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
