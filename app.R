@@ -88,7 +88,7 @@ ui <- fluidPage(
       inputId = "state_choice",
       label = h4("State"), 
       choices = state.list,
-      selected = "PA",
+      selected = "NY",
       options = list(
         `live-search` = TRUE,
         "dropup-auto" = FALSE
@@ -616,6 +616,36 @@ server <- function(input, output, session) {
     }
   })
   
+  mort.rate.original <- reactive({
+    county_choice(NULL)
+    assign("county_polygon", NULL, envir = .GlobalEnv)
+    assign("page1_period_choice", 6, envir = .GlobalEnv)
+    if(input$state_choice == "United States"){
+      cdc.unimputed.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
+      cdc.unimputed.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
+  
   # Cache of UNORDERED mortality trend cluster label calculation
   mort.cluster.raw <- reactive({
     
@@ -707,7 +737,7 @@ server <- function(input, output, session) {
   # get unfiltered kendal cors
   kendall.cor <- reactive({
     
-    kendall.cor.new <- mort.rate() %>% 
+    kendall.cor.new <- mort.rate.original() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
       dplyr::mutate(
