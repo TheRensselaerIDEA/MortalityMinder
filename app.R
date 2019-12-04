@@ -1792,9 +1792,12 @@ server <- function(input, output, session) {
         drop.cols <- c('county_fips')
         county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause)
         
-        canShow <- dplyr::inner_join(county_data, cdc.original.data, by = 'county_fips')
+        canShow <- dplyr::inner_join(county_data, cdc.unimputed.data, by = 'county_fips') %>% 
+          dplyr::filter(
+            death_cause == input$death_cause
+          )
         
-        if (any(canShow$death_num == 0) | nrow(county_data) == 0) {
+        if (any(canShow$death_num == 0.5) | nrow(county_data) == 0) {
           line_plot + xlab("period\nCould not plot county as data suppressed by CDC")
         } else {
             county_data <- county_data %>%
