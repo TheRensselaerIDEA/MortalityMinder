@@ -88,7 +88,7 @@ ui <- fluidPage(
       inputId = "state_choice",
       label = h4("State"), 
       choices = state.list,
-      selected = "NY",
+      selected = "PA",
       options = list(
         `live-search` = TRUE,
         "dropup-auto" = FALSE
@@ -1247,6 +1247,13 @@ server <- function(input, output, session) {
   output$determinants_plot3 <- renderPlot({
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+      
+    # res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017", 
+    #                                     death_cause == input$death_cause, 
+    #                                     state_abbr == input$state_choice,
+    #                                     death_num != 0.5)
+    # 
+    # res <- dplyr::inner_join(mort.cluster.ord(), res, by = 'county_fips')
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
@@ -1258,9 +1265,10 @@ server <- function(input, output, session) {
     if (nrow(sd.select) <= 6){
       
       dplyr::filter(
-        cdc.data,
+        cdc.unimputed.data,
         period == "2015-2017", 
-        death_cause == input$death_cause
+        death_cause == input$death_cause,
+        death_num != 0.5
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
@@ -1317,9 +1325,10 @@ server <- function(input, output, session) {
     } else {
       
       data <- dplyr::filter(
-        cdc.data,
+        cdc.unimputed.data,
         period == "2015-2017", 
-        death_cause == input$death_cause
+        death_cause == input$death_cause,
+        death_num != 0.5
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
@@ -1352,15 +1361,20 @@ server <- function(input, output, session) {
                         data,
                         county_name == substr(county_choice(), 0, nchar(county_choice())-7)
                       )
-        plot + 
-          geom_point(
-            mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
-            data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
-          ) + 
-          scale_shape_manual(name = "County",
-                             values = c(18), 
-                             guide = guide_legend(override.aes = list(color = c("#565254")))
-          )
+        
+        if (nrow(county_data) == 0) {
+          plot + xlab("Midlife Mortality Rate (2015-2017)\nCould not plot county as data suppressed by CDC")
+        } else {
+          plot + 
+            geom_point(
+              mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
+              data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
+            ) + 
+            scale_shape_manual(name = "County",
+                               values = c(18), 
+                               guide = guide_legend(override.aes = list(color = c("#565254")))
+            )
+        }
       }
     }
   }, bg = "transparent")
