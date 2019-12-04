@@ -122,7 +122,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("What are the county-level factors that cause increased mortality in the United States?")
+                  tags$h3("Which county-level social and economic factors increase mortality in the United States?")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -372,7 +372,7 @@ ui <- fluidPage(
               pickerInput(
                 inputId = "determinant_choice",
                 label = "Selected Determinant: ",
-                choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
+                choices = str_sort(chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),]),
                 selected = "Socio-Economic",
                 width = "100%",
                 inline = TRUE,
@@ -387,10 +387,10 @@ ui <- fluidPage(
               class = "page3_col3_top",
               tags$br(),
               tags$p(htmlOutput("determinant_text")),
-              tags$h5(htmlOutput("determinant_corr")),
-              tags$h5(htmlOutput("determinant_dir")),
+              tags$h5(uiOutput("determinant_link")),
               tags$h5(htmlOutput("determinant_original_source")),
-              tags$p(uiOutput("determinant_link"))
+              tags$h5(htmlOutput("determinant_corr")),
+              tags$h5(htmlOutput("determinant_dir"))
                     ), # End of Column 3 top
             fluidRow(
               class = "page3_col3_bot",
@@ -1019,7 +1019,7 @@ server <- function(input, output, session) {
     kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::top_n(15, abs(kendall_cor)) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
     assign("kendall_cor_new", kendall.cor.new, envir = .GlobalEnv)
@@ -1402,7 +1402,7 @@ server <- function(input, output, session) {
     }
     
     tagList(
-      tags$h4(
+      tags$h3(
         as.character(
           SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
       ),
@@ -1412,8 +1412,9 @@ server <- function(input, output, session) {
   
   output$determinant_link <- renderUI({
     tagList(tags$h4(
+      "Text Source: ",
       tags$a(
-        "Click here for more information",
+        "County Health Rankings",
         href = determinant.url(),
         target="_blank"
       )
@@ -1423,7 +1424,7 @@ server <- function(input, output, session) {
   
   output$determinant_original_source <- renderUI({
     tagList(tags$h4(
-      "Source: ",
+      "Data Source: ",
       tags$a(
         determinant.source(),
         href = determinant.source_url(),
@@ -2740,7 +2741,7 @@ server <- function(input, output, session) {
     kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::top_n(15, abs(kendall_cor)) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
     # # Set currently selected determinant to most correlated determinant
