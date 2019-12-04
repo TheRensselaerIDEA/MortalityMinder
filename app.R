@@ -1764,14 +1764,9 @@ server <- function(input, output, session) {
         
         canShow <- dplyr::inner_join(county_data, cdc.original.data, by = 'county_fips')
         
-        if (any(canShow$death_num == 0)) {
+        if (any(canShow$death_num == 0) | nrow(county_data) == 0) {
           line_plot + xlab("period\nCould not plot county as data suppressed by CDC")
-          
         } else {
-          if (nrow(county_data) == 0) {
-            line_plot + xlab("period\nNo county data to plot")
-          } else {
-            
             county_data <- county_data %>%
               dplyr::select(-drop.cols) %>%
               tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
@@ -1790,7 +1785,6 @@ server <- function(input, output, session) {
                                     values = c("twodash"),
                                     guide = guide_legend(override.aes = list(color = c("#565254")))
               )
-          }
         }
       }
       }
