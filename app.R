@@ -122,8 +122,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Mortality rates are rising in the United State with significant community-level and regional variations.
-")
+                  tags$h3("Which county-level factors that cause increased mortality in the United States?")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -135,7 +134,7 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
                       tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      tags$h4(tags$i("To see state and factor views, click << and >>.\n")
+                      tags$h5(tags$i("Click << and >> for State and Factor views")
                               ), 
                  # fluidRow(class="IDEA_Logo_Wrapper",
                           tags$img(
@@ -223,14 +222,16 @@ ui <- fluidPage(
                          plotOutput("nation_state_infographic")
                   )
                 )
-                ), # End of inner Fluid Row (Column 2 Middle)
+                )
+                , # End of inner Fluid Row (Column 2 Middle)
                 fluidRow(
                   class = "page1_col page1_col2_bottom",
                   uiOutput("textMortFactsNew")
-                  
+
                   ) # Close inner FluidRow (Column 2 Bottom)
                 ) #Close Column 2
               ) #Close Outter Row (National Map Page)
+
       ), # Close div tag "slide"
       
 ##################### PAGE 2, INDIVIDUAL STATE ANALYSIS #####################
@@ -455,7 +456,10 @@ ui <- fluidPage(
                                            To provide for more complete data for effective visualizations, county mortality 
                                            rates that are suppressed to preserve privacy by CDC WONDER were imputed using 
                                            the Amelia package in R. Multiple imputation could be added to the analysis 
-                                           in the future. Details of data sources and preparation are available at: (github link)")),
+                                           in the future. Details of data sources and preparation are available at ",
+                                           a("the MortalityMinder github wiki.",
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"
+                                             , target="_blank"))),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
                                    downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
                                    downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
@@ -536,9 +540,11 @@ ui <- fluidPage(
                                            The result is a robust, extensible package that can be maintained and grown over 
                                            time as either an open source package or within organizations such as AHRQ."),
                                    tags$h5("MM can be run from the public web locations; no user installation 
-                                           is required to test the application. Alternatively, the github repository may be cloned 
-                                           and run immediately in the user's RStudio environment, either on a server or 
-                                           on a personal machine."), 
+                                           is required to test the application. Alternatively, the ",
+                                           a("github repository",
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank"), 
+                                           "may be cloned and the MM then run immediately in the user's RStudio environment, 
+                                           either on a server or on a personal machine."), 
                                    tags$h5("MM utilizes the R Shiny platform for web interactivity; most of the visualizations
                                            presented in MM are generated in real time based on data loaded when the app is launched. 
                                            Data analysts and software engineers familiar with the R language and reactive coding 
@@ -554,7 +560,13 @@ ui <- fluidPage(
                                     and Curt Breneman, Dean of the School of Science at Rensselaer for their support
                                     and encouragement."),
                                  tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
-                                 )
+                                 ),
+                          column(11, tags$h4("LINKS", align = "center"), 
+                                 tags$h5(a("MortalityMinder github repository",
+                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank")),
+                                 tags$h5(a("MortalityMinder github Wiki",
+                                           href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki", target="_blank"))
+                          )
                    ) # Close inner fluidRow
           )
         ) # Close outter fluidRow
@@ -1140,7 +1152,10 @@ server <- function(input, output, session) {
           )(max(sd.select$cluster))
         )
       
-    } else{
+    } else if (input$state_choice == "United States") {
+      
+      sd.select$cluster[sd.select$cluster == 1] <- "1: Low"
+      sd.select$cluster[sd.select$cluster == 6] <- "6: High"
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
@@ -1166,6 +1181,34 @@ server <- function(input, output, session) {
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
       
+    } else {
+      
+      sd.select$cluster[sd.select$cluster == 1] <- "1: Low"
+      sd.select$cluster[sd.select$cluster == 2] <- "2: Medium"
+      sd.select$cluster[sd.select$cluster == 3] <- "3: High"
+      
+      ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
+        geom_boxplot() +
+        theme.background() + 
+        theme.text() + 
+        theme(
+          
+          panel.grid = element_line(color = "grey"),
+          panel.grid.major.x = element_blank(),
+          panel.background = element_blank(),
+          
+          axis.line.x = element_blank(), 
+          axis.title.x = element_blank(),
+          rect = element_blank(),
+          legend.position = "none"
+        ) + 
+        labs(
+          x = "Cluster",
+          y = input$determinant_choice
+          
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
     }
     
   }, bg = "transparent")
@@ -1243,7 +1286,6 @@ server <- function(input, output, session) {
       
     } else {
       
-#      browser()
       data <- dplyr::filter(
         cdc.data,
         period == "2015-2017", 
@@ -1252,6 +1294,10 @@ server <- function(input, output, session) {
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
         tidyr::drop_na()
+
+      data$cluster[data$cluster == 1] <- "1: Low"
+      data$cluster[data$cluster == 2] <- "2: Medium"
+      data$cluster[data$cluster == 3] <- "3: High"
       
       plot <- data %>%  
         ggplot(aes(x = death_rate, y = VAR)) + 
@@ -1682,11 +1728,18 @@ server <- function(input, output, session) {
         line_plot 
         
       } else {
-      
+
         total.data$cluster[total.data$cluster == 1] <- "1: Low"
         total.data$cluster[total.data$cluster == 2] <- "2: Medium"
         total.data$cluster[total.data$cluster == 3] <- "3: High"
-        
+        # total.data$cluster <- as_factor(total.data$cluster)
+
+        # total.data$cluster_label[total.data$cluster == "1"] <- "Low"
+        # total.data$cluster_label[total.data$cluster == "2"] <- "Medium"
+        # total.data$cluster_label[total.data$cluster == "3"] <- "High"
+        # total.data$cluster_label[total.data$cluster == "National"] <- "National"
+        # total.data$cluster_label <- as_factor(total.data$cluster_label)
+
       line_plot <- ggplot(
         total.data,
         aes(
@@ -1703,7 +1756,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster", color = "Cluster") + 
-        ylab("Average Midlife deaths per 100,000") 
+        ylab("Average Midlife Deaths per 100,000") 
       
       if (is.null(county_choice())){
         line_plot 

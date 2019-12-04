@@ -195,7 +195,7 @@
 }
 
 .page1_col1_heading h3{
-  font-size: 1.35vw;
+  font-size: 2.2vh;
   line-height: 1.3em;
   margin-bottom: 0;
   padding: 4%;
@@ -205,9 +205,14 @@
   margin-bottom: 4vh;
 }
 
-.page1_col1 h4{
-color: #f7f7f7;
-   
+.page1_col1 h4 {
+  color: #f7f7f7;
+  font-size: 1.55vh; 
+}
+
+.page1_col1 h5 {
+  color: #f7f7f7;
+  font-size: 1.5vh; 
 }
 
 .page1_col2 {
@@ -243,7 +248,7 @@ color: #f7f7f7;
 
 .page1_col2_bottom{
   position: relative;
-   margin-top: -25vh;
+ /* margin-top: -25vh;*/
 }
 
 .page1_col3 {
@@ -364,6 +369,15 @@ color: #f7f7f7;
 
 .page4 {
   height:95%;
+}
+
+.page4 h4 {
+  font-size: 1.75vh;
+}
+
+.page4 h5 {
+  font-size: 1.25vh;
+  
 }
 
 /********Shiny Styles**********/
