@@ -133,8 +133,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
     }})
   .text(function(d){
     return d;
-  })
-  ;
+  });
   
   var index = 0;        
   var timer;
