@@ -1,80 +1,33 @@
 ---
-title: "Statewide Kendall's Taus Extractor"
+title: "A Notebook for Filtering out Factors that are Less Relevant for the Analysis"
 author: "Lilian Ngweta"
 date: "09/27/2019"
 output: html_notebook
 ---
-Note: Re-used code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
+Note: Re-used some of the code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wang
 
 
 
 
-Reading Source.R
+Importing Source.R so it is possible to use variables such chr.data.2019 and cdc.data that are defined in Source.R
 ```{r}
 source("Source.R")
 
 ```
 
-Loading the mortality data that will be used in the Kendall correlation analysis below
-```{r}
-# # cdc.data <- readRDS("data/CDC/cdc.data.imputed.Rds")
-# # ncol(cdc.data)
-# ncol(chr.data.2019)
-# 
- colMeans(is.na(chr.data.2019))
 
-
-
-```
-
-
-
-Reading from the CSV file
-```{r}
-# csv_factors <- read_csv("init/SocialDeterminants.csv")
-# 
-# csv_factors_1s <- csv_factors[csv_factors$Keep == 1,]["Code"]
-# csv_factors_1s <- append(csv_factors_1s$Code, "county_fips", after = 0)
-# 
-# print(csv_factors_1s)
-```
-
-
-Loading the actual factors data which was obtained from county health rankings
-```{r}
-chr.data.2019 <- readRDS("init/chr.data.2019.rds")
-
-#Only keeping the factors that have keep value as 1
-chr.data.2019 <- chr.data.2019 %>%
-  as_data_frame %>%
-  select(csv_factors_1s)
-head(chr.data.2019)
-```
-
-
-Extracting Taus for all social determinants on nationwide data. The goal is to filter out social dterminants that are less relevant.
-
-For Deaths of Despair
+Filtering out social determinants that are less relevant for Deaths of Despair using Benjamin Hochberg's method for multiple hypothesis testing.
 ```{r}
 state = "US"
 death_cause_despair = "Despair"
-# UNORDERED mortality trend cluster label calculation
 mort.cluster.raw <- function(){
-  
-  # Variables:
-  #   - county_fips
-  #   - cluster
-  
-  # Currently hard-coded 4 clusters
   n.clusters <- 6
   cluster.counties(cdc.mort.mat(cdc.data, "US", death_cause_despair),
                    cluster.method="kmeans",
                    cluster.num=n.clusters)
 }
 # Weighed Avg by UNORDERED cluster
-mort.avg.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -82,6 +35,7 @@ mort.avg.cluster.raw <- function(){
   
   # Notes:
   #   - The cluster labels are UNORDERED
+mort.avg.cluster.raw <- function(){
   head(cdc.data)
   cdc.data %>%
     dplyr::filter(death_cause == death_cause_despair) %>%
@@ -93,16 +47,15 @@ mort.avg.cluster.raw <- function(){
     ) %>% 
     dplyr::ungroup()
 }
+
+
 # MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
-mort.cluster.map <- function(){
-  
-  # Variables:
+ # Variables:
   #   - ord
-  
   # Notes:
   #   - This is a mapping from raw cluster label to ORDERED cluster.
   #       Row names are the original cluster and `ord` are the reordered cluster
-  
+mort.cluster.map <- function(){
   mort.avg.cluster.raw() %>% 
     dplyr::filter(period == "2015-2017") %>%
     dplyr::arrange(death_rate) %>% 
@@ -110,20 +63,18 @@ mort.cluster.map <- function(){
     dplyr::select(-c(period, death_rate)) %>% 
     textshape::column_to_rownames("cluster")
 }
+
 # ORDERED mortality trend cluster label calculation
-mort.cluster.ord <- function(){
-  
-  # Variables:
+# Variables:
   #   - county_fips
   #   - cluster
-  
+mort.cluster.ord <- function(){
   order.county.clusters(mort.cluster.raw(), mort.cluster.map())
-  #dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
 # Weighed Avg by ORDERED cluster
-mort.avg.cluster.ord <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -131,26 +82,23 @@ mort.avg.cluster.ord <- function(){
   
   # Notes:
   #   - The cluster labels are ORDERED
-  
+mort.avg.cluster.ord <- function(){
   dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
+#Extracting the mortality rates for all states and counties for years "2015-2017"
 mort.rate <- function(){
-  
   cdc.data %>% dplyr::filter(
     death_cause == death_cause_despair,
-    #state_abbr == input$state_choice,
     period == "2015-2017"
   ) %>%
     dplyr::mutate(
-      # death_rate = death_num / population * 10^5
-      #death_rate = cut(death_rate, bin.geo.mort(death_cause_despair))
     ) %>%
     dplyr::select(county_fips, death_rate)
   
 }
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
-#kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-#kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
 kendall.cor <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
@@ -159,64 +107,46 @@ kendall.cor <- mort.rate() %>%
           kendall_cor <= 0,
           "Protective",
           "Destructive"
-        ),
+        )
         #chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      #dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      #dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
-    
-# kendall.cor <- kendall.func(chr.data.2019)
-# 
-# kendall.cor <- kendall.cor %>%
-#   dplyr::mutate(
-#     Direction = dplyr::if_else(
-#       kendall_cor <= 0,
-#       "Protective",
-#       "Destructive"
-#     ),
-#     #kendall_cor = abs(kendall_cor),
-#     kendall_cor = kendall_cor
-#     #chr_code = chr.namemap.2019[chr_code, 1]
-#   ) %>% na.omit() %>% 
-#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-#   dplyr::filter(kendall_p < 0.05) %>% 
-#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-#   dplyr::arrange(desc(kendall_cor))
+
 selected_SDs_despair <- cbind(kendall.cor, state = state)
-#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing
+
+#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing to filter out factors that are less relevant.
 corrected_pvalues <- p.adjust(selected_SDs_despair$kendall_p)
 selected_SDs_despair <- cbind(selected_SDs_despair, Corrected_P_Vals = corrected_pvalues)
 selected_SDs_despair <- selected_SDs_despair %>%
-  #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
   dplyr::arrange(desc(kendall_cor))
+
+#Printing out the few selected factors for deaths of despair.
 print(selected_SDs_despair)
 ```
 
 
-For Cancer
+
+Filtering out social determinants that are less relevant for Cancer using Benjamin Hochberg's method for multiple hypothesis testing.
 ```{r}
 state = "US"
 death_cause_cancer = "Cancer"
+
 # UNORDERED mortality trend cluster label calculation
-mort.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - county_fips
   #   - cluster
-  
-  # Currently hard-coded 4 clusters
+mort.cluster.raw <- function(){
   n.clusters <- 6
   cluster.counties(cdc.mort.mat(cdc.data, "US", death_cause_cancer),
                    cluster.method="kmeans",
                    cluster.num=n.clusters)
 }
+
+
 # Weighed Avg by UNORDERED cluster
-mort.avg.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -224,6 +154,7 @@ mort.avg.cluster.raw <- function(){
   
   # Notes:
   #   - The cluster labels are UNORDERED
+mort.avg.cluster.raw <- function(){
   head(cdc.data)
   cdc.data %>%
     dplyr::filter(death_cause == death_cause_cancer) %>%
@@ -235,16 +166,17 @@ mort.avg.cluster.raw <- function(){
     ) %>% 
     dplyr::ungroup()
 }
+
+
 # MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
-mort.cluster.map <- function(){
-  
-  # Variables:
+ # Variables:
   #   - ord
   
   # Notes:
   #   - This is a mapping from raw cluster label to ORDERED cluster.
   #       Row names are the original cluster and `ord` are the reordered cluster
   
+mort.cluster.map <- function(){
   mort.avg.cluster.raw() %>% 
     dplyr::filter(period == "2015-2017") %>%
     dplyr::arrange(death_rate) %>% 
@@ -252,20 +184,20 @@ mort.cluster.map <- function(){
     dplyr::select(-c(period, death_rate)) %>% 
     textshape::column_to_rownames("cluster")
 }
+
+
 # ORDERED mortality trend cluster label calculation
-mort.cluster.ord <- function(){
-  
-  # Variables:
+ # Variables:
   #   - county_fips
   #   - cluster
-  
+mort.cluster.ord <- function(){
   order.county.clusters(mort.cluster.raw(), mort.cluster.map())
-  #dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
-}
-# Weighed Avg by ORDERED cluster
-mort.avg.cluster.ord <- function(){
   
-  # Variables:
+}
+
+
+# Weighed Avg by ORDERED cluster
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -273,43 +205,26 @@ mort.avg.cluster.ord <- function(){
   
   # Notes:
   #   - The cluster labels are ORDERED
-  
+mort.avg.cluster.ord <- function(){
   dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
+#Extracting the mortality rates for all states and counties for years "2015-2017"
 mort.rate <- function(){
   
   cdc.data %>% dplyr::filter(
     death_cause == death_cause_cancer,
-    #state_abbr == input$state_choice,
     period == "2015-2017"
   ) %>%
     dplyr::mutate(
-      # death_rate = death_num / population * 10^5
-      #death_rate = cut(death_rate, bin.geo.mort(death_cause_cancer))
     ) %>%
     dplyr::select(county_fips, death_rate)
   
 }
-#print(mort.cluster.ord())
+
+
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
-#kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-# 
-# kendall.cor <- kendall.cor %>%
-#   dplyr::mutate(
-#     Direction = dplyr::if_else(
-#       kendall_cor <= 0,
-#       "Protective",
-#       "Destructive"
-#     ),
-#     #kendall_cor = abs(kendall_cor),
-#     kendall_cor = kendall_cor
-#     #chr_code = chr.namemap.2019[chr_code, 1]
-#   ) %>% na.omit() %>% 
-#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-#   dplyr::filter(kendall_p < 0.05) %>% 
-#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-#   dplyr::arrange(desc(kendall_cor))
 kendall.cor <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
@@ -321,43 +236,44 @@ kendall.cor <- mort.rate() %>%
         )
         #chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      #dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      #dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+
 selected_SDs_cancer <- cbind(kendall.cor, state = state)
-#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing
+
+#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing to filter out factors that are less relevant.
 corrected_pvalues <- p.adjust(selected_SDs_cancer$kendall_p)
 selected_SDs_cancer <- cbind(selected_SDs_cancer, Corrected_P_Vals = corrected_pvalues)
 selected_SDs_cancer <- selected_SDs_cancer %>%
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
   dplyr::arrange(desc(kendall_cor))
+
+#Printing out the few selected factors for cancer.
 print(selected_SDs_cancer)
 ```
 
 
-
-For Assault
+Filtering out social determinants that are less relevant for Assault using Benjamin Hochberg's method for multiple hypothesis testing.
 ```{r}
 state = "US"
 death_cause_assault = "Assault"
+
+
 # UNORDERED mortality trend cluster label calculation
-mort.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - county_fips
   #   - cluster
-  
-  # Currently hard-coded 4 clusters
+
+mort.cluster.raw <- function(){
   n.clusters <- 6
   cluster.counties(cdc.mort.mat(cdc.data, "US", death_cause_assault),
                    cluster.method="kmeans",
                    cluster.num=n.clusters)
 }
+
+
 # Weighed Avg by UNORDERED cluster
-mort.avg.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -365,6 +281,7 @@ mort.avg.cluster.raw <- function(){
   
   # Notes:
   #   - The cluster labels are UNORDERED
+mort.avg.cluster.raw <- function(){
   head(cdc.data)
   cdc.data %>%
     dplyr::filter(death_cause == death_cause_assault) %>%
@@ -376,16 +293,10 @@ mort.avg.cluster.raw <- function(){
     ) %>% 
     dplyr::ungroup()
 }
+
+
 # MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
 mort.cluster.map <- function(){
-  
-  # Variables:
-  #   - ord
-  
-  # Notes:
-  #   - This is a mapping from raw cluster label to ORDERED cluster.
-  #       Row names are the original cluster and `ord` are the reordered cluster
-  
   mort.avg.cluster.raw() %>% 
     dplyr::filter(period == "2015-2017") %>%
     dplyr::arrange(death_rate) %>% 
@@ -393,20 +304,20 @@ mort.cluster.map <- function(){
     dplyr::select(-c(period, death_rate)) %>% 
     textshape::column_to_rownames("cluster")
 }
+
+
 # ORDERED mortality trend cluster label calculation
-mort.cluster.ord <- function(){
-  
-  # Variables:
+# Variables:
   #   - county_fips
   #   - cluster
-  
+mort.cluster.ord <- function(){
   order.county.clusters(mort.cluster.raw(), mort.cluster.map())
-  #dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
+
 # Weighed Avg by ORDERED cluster
-mort.avg.cluster.ord <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -414,14 +325,15 @@ mort.avg.cluster.ord <- function(){
   
   # Notes:
   #   - The cluster labels are ORDERED
-  
+mort.avg.cluster.ord <- function(){
   dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
+#Extracting the mortality rates for all states and counties for years "2015-2017"
 mort.rate <- function(){
-  
   cdc.data %>% dplyr::filter(
     death_cause == death_cause_assault,
-    #state_abbr == input$state_choice,
     period == "2015-2017"
   ) %>%
     dplyr::mutate(
@@ -431,26 +343,8 @@ mort.rate <- function(){
     dplyr::select(county_fips, death_rate)
   
 }
-#print(mort.cluster.ord())
+
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
-#kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-# 
-# kendall.cor <- kendall.cor %>%
-#   dplyr::mutate(
-#     Direction = dplyr::if_else(
-#       kendall_cor <= 0,
-#       "Protective",
-#       "Destructive"
-#     ),
-#     #kendall_cor = abs(kendall_cor),
-#     kendall_cor = kendall_cor
-#     #chr_code = chr.namemap.2019[chr_code, 1]
-#   ) %>% na.omit() %>% 
-#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-#   dplyr::filter(kendall_p < 0.05) %>% 
-#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-#   dplyr::arrange(desc(kendall_cor))
 kendall.cor <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
@@ -462,43 +356,41 @@ kendall.cor <- mort.rate() %>%
         )
         #chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      #dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      #dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+
 selected_SDs_assault <- cbind(kendall.cor, state = state)
-#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing
+
+#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing to filter out factors that are less relevant.
 corrected_pvalues <- p.adjust(selected_SDs_assault$kendall_p)
 selected_SDs_assault <- cbind(selected_SDs_assault, Corrected_P_Vals = corrected_pvalues)
 selected_SDs_assault <- selected_SDs_assault %>%
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
   dplyr::arrange(desc(kendall_cor))
+
+#Printing out the few selected factors for assault
 print(selected_SDs_assault)
 ```
 
-
-
-For Cardiovascular
+Filtering out social determinants that are less relevant for Cardiovascular deaths using Benjamin Hochberg's method for multiple hypothesis testing.
 ```{r}
 state = "US"
 death_cause_cardiovascular = "Cardiovascular"
+
 # UNORDERED mortality trend cluster label calculation
-mort.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - county_fips
   #   - cluster
-  
-  # Currently hard-coded 4 clusters
+mort.cluster.raw <- function(){
   n.clusters <- 6
   cluster.counties(cdc.mort.mat(cdc.data, "US", death_cause_cardiovascular),
                    cluster.method="kmeans",
                    cluster.num=n.clusters)
 }
+
+
 # Weighed Avg by UNORDERED cluster
-mort.avg.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -506,6 +398,7 @@ mort.avg.cluster.raw <- function(){
   
   # Notes:
   #   - The cluster labels are UNORDERED
+mort.avg.cluster.raw <- function(){
   head(cdc.data)
   cdc.data %>%
     dplyr::filter(death_cause == death_cause_cardiovascular) %>%
@@ -517,16 +410,16 @@ mort.avg.cluster.raw <- function(){
     ) %>% 
     dplyr::ungroup()
 }
+
+
 # MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
-mort.cluster.map <- function(){
-  
-  # Variables:
+# Variables:
   #   - ord
   
   # Notes:
   #   - This is a mapping from raw cluster label to ORDERED cluster.
   #       Row names are the original cluster and `ord` are the reordered cluster
-  
+mort.cluster.map <- function(){
   mort.avg.cluster.raw() %>% 
     dplyr::filter(period == "2015-2017") %>%
     dplyr::arrange(death_rate) %>% 
@@ -534,20 +427,19 @@ mort.cluster.map <- function(){
     dplyr::select(-c(period, death_rate)) %>% 
     textshape::column_to_rownames("cluster")
 }
+
+
 # ORDERED mortality trend cluster label calculation
-mort.cluster.ord <- function(){
-  
-  # Variables:
+ # Variables:
   #   - county_fips
   #   - cluster
-  
+mort.cluster.ord <- function(){
   order.county.clusters(mort.cluster.raw(), mort.cluster.map())
-  #dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
 # Weighed Avg by ORDERED cluster
-mort.avg.cluster.ord <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -555,14 +447,14 @@ mort.avg.cluster.ord <- function(){
   
   # Notes:
   #   - The cluster labels are ORDERED
-  
+mort.avg.cluster.ord <- function(){
   dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+#Extracting the mortality rates for all states and counties for years "2015-2017"
 mort.rate <- function(){
-  
   cdc.data %>% dplyr::filter(
     death_cause == death_cause_cardiovascular,
-    #state_abbr == input$state_choice,
     period == "2015-2017"
   ) %>%
     dplyr::mutate(
@@ -573,24 +465,6 @@ mort.rate <- function(){
   
 }
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
-#kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-# 
-# kendall.cor <- kendall.cor %>%
-#   dplyr::mutate(
-#     Direction = dplyr::if_else(
-#       kendall_cor <= 0,
-#       "Protective",
-#       "Destructive"
-#     ),
-#     #kendall_cor = abs(kendall_cor),
-#     kendall_cor = kendall_cor
-#     #chr_code = chr.namemap.2019[chr_code, 1]
-#   ) %>% na.omit() %>% 
-#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-#   dplyr::filter(kendall_p < 0.05) %>% 
-#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-#   dplyr::arrange(desc(kendall_cor))
 kendall.cor <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
@@ -602,42 +476,42 @@ kendall.cor <- mort.rate() %>%
         )
         #chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      #dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      #dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+
 selected_SDs_cardiovascular <- cbind(kendall.cor, state = state)
-#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing
+
+#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing to filter out factors that are less relevant
 corrected_pvalues <- p.adjust(selected_SDs_cardiovascular$kendall_p)
 selected_SDs_cardiovascular <- cbind(selected_SDs_cardiovascular, Corrected_P_Vals = corrected_pvalues)
 selected_SDs_cardiovascular <- selected_SDs_cardiovascular %>%
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
   dplyr::arrange(desc(kendall_cor))
+
+#Printing out the few selected factors for cardiovascular deaths
 print(selected_SDs_cardiovascular)
 ```
 
 
-
+Filtering out social determinants that are less relevant for all causes of death using Benjamin Hochberg's method for multiple hypothesis testing.
 ```{r}
 state = "US"
 death_cause_allcause = "All Cause"
+
 # UNORDERED mortality trend cluster label calculation
-mort.cluster.raw <- function(){
-  
-  # Variables:
+ # Variables:
   #   - county_fips
   #   - cluster
-  
-  # Currently hard-coded 4 clusters
+mort.cluster.raw <- function(){
   n.clusters <- 6
   cluster.counties(cdc.mort.mat(cdc.data, "US", death_cause_allcause),
                    cluster.method="kmeans",
                    cluster.num=n.clusters)
 }
+
+
 # Weighed Avg by UNORDERED cluster
-mort.avg.cluster.raw <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -645,6 +519,7 @@ mort.avg.cluster.raw <- function(){
   
   # Notes:
   #   - The cluster labels are UNORDERED
+mort.avg.cluster.raw <- function(){
   head(cdc.data)
   cdc.data %>%
     dplyr::filter(death_cause == death_cause_allcause) %>%
@@ -656,16 +531,16 @@ mort.avg.cluster.raw <- function(){
     ) %>% 
     dplyr::ungroup()
 }
+
+
 # MAPPING from UNORDERED mortality trend label to ORDERED mortality trend label
-mort.cluster.map <- function(){
-  
-  # Variables:
+# Variables:
   #   - ord
   
   # Notes:
   #   - This is a mapping from raw cluster label to ORDERED cluster.
   #       Row names are the original cluster and `ord` are the reordered cluster
-  
+mort.cluster.map <- function(){
   mort.avg.cluster.raw() %>% 
     dplyr::filter(period == "2015-2017") %>%
     dplyr::arrange(death_rate) %>% 
@@ -673,20 +548,19 @@ mort.cluster.map <- function(){
     dplyr::select(-c(period, death_rate)) %>% 
     textshape::column_to_rownames("cluster")
 }
+
+
 # ORDERED mortality trend cluster label calculation
-mort.cluster.ord <- function(){
-  
-  # Variables:
+ # Variables:
   #   - county_fips
   #   - cluster
-  
+mort.cluster.ord <- function(){
   order.county.clusters(mort.cluster.raw(), mort.cluster.map())
-  #dplyr::mutate(mort.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
 # Weighed Avg by ORDERED cluster
-mort.avg.cluster.ord <- function(){
-  
-  # Variables:
+# Variables:
   #   - period
   #   - cluster
   #   - death_rate
@@ -694,14 +568,15 @@ mort.avg.cluster.ord <- function(){
   
   # Notes:
   #   - The cluster labels are ORDERED
-  
+mort.avg.cluster.ord <- function(){
   dplyr::mutate(mort.avg.cluster.raw(), cluster = mort.cluster.map()[cluster, "ord"])
 }
+
+
 mort.rate <- function(){
   
   cdc.data %>% dplyr::filter(
     death_cause == death_cause_allcause,
-    #state_abbr == input$state_choice,
     period == "2015-2017"
   ) %>%
     dplyr::mutate(
@@ -711,25 +586,8 @@ mort.rate <- function(){
     dplyr::select(county_fips, death_rate)
   
 }
+
 # Kendall Correlation Between raw mortality rates and county health rankings social determinants
-#kendall.cor <- kendall.func(mort.cluster.ord(), chr.data.2019)
-# kendall.cor <- kendall.func(mort.rate(), chr.data.2019)
-# 
-# kendall.cor <- kendall.cor %>%
-#   dplyr::mutate(
-#     Direction = dplyr::if_else(
-#       kendall_cor <= 0,
-#       "Protective",
-#       "Destructive"
-#     ),
-#     #kendall_cor = abs(kendall_cor),
-#     kendall_cor = kendall_cor
-#     #chr_code = chr.namemap.2019[chr_code, 1]
-#   ) %>% na.omit() %>% 
-#   #kendall_p = p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p)) %>% 
-#   dplyr::filter(kendall_p < 0.05) %>% 
-#   #dplyr::filter(p.adjust(kendall_p, method = p.adjust.methods, n = length(kendall_p))) %>% 
-#   dplyr::arrange(desc(kendall_cor))
 kendall.cor <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
@@ -741,35 +599,24 @@ kendall.cor <- mort.rate() %>%
         )
         #chr_code = chr.namemap.2019[chr_code, 1]
       ) %>% na.omit() %>% 
-      #dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      #dplyr::top_n(15, kendall_cor) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
+
 selected_SDs_allcause <- cbind(kendall.cor, state = state)
-#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing
+
+#using Benjamin Hochberg's p.adjust() method to adjust P-values for multiple hypothesis testing to filter out factors that are less relevant.
 corrected_pvalues <- p.adjust(selected_SDs_allcause$kendall_p)
 selected_SDs_allcause <- cbind(selected_SDs_allcause, Corrected_P_Vals = corrected_pvalues)
 selected_SDs_allcause <- selected_SDs_allcause %>%
   dplyr::filter(Corrected_P_Vals < 0.05) %>% 
   dplyr::arrange(desc(kendall_cor))
+
+#Printing out the few selected factors for all causes of death
 print(selected_SDs_allcause)
-
 ```
 
 
-
-
-Influential social determinants that are are found in all causes of death
-```{r}
-selected_SDs <- intersect(selected_SDs_despair$chr_code, selected_SDs_cancer$chr_code)
-selected_SDs <- intersect(selected_SDs, selected_SDs_assault$chr_code)
-selected_SDs <- intersect(selected_SDs, selected_SDs_cardiovascular$chr_code)
-selected_SDs <- intersect(selected_SDs, selected_SDs_allcause$chr_code)
-print(selected_SDs)
-```
-
-
-Combining all the influential social determinants that are are found in all causes of death
+Combining all the influential social determinants that are are found in all causes of death. We are combining them by taking the union.
 ```{r}
 selected_SDs_final <- union(selected_SDs_despair$chr_code, selected_SDs_cancer$chr_code)
 selected_SDs_final <- union(selected_SDs_final, selected_SDs_assault$chr_code)
@@ -794,7 +641,12 @@ saveRDS(chr.data.2019_fewer_SDs, "init/chr.data.2019.reduced.rds")
 ```
 
 ```{r}
-reduced.chr.list <- readRDS("init/reduced.chr.list")
+reduced.chr.list <- readRDS("init/chr.data.2019.reduced.rds")
 print(reduced.chr.list)
+```
+
+Calculating the percentage missing values for each factor (social determinant)
+```{r}
+colMeans(is.na(chr.data.2019))
 ```
 
