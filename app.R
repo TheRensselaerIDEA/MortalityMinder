@@ -372,7 +372,7 @@ ui <- fluidPage(
               pickerInput(
                 inputId = "determinant_choice",
                 label = "Selected Determinant: ",
-                choices = chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),],
+                choices = str_sort(chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),]),
                 selected = "Socio-Economic",
                 width = "100%",
                 inline = TRUE,
