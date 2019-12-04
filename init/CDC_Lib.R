@@ -185,9 +185,24 @@ cdc.countymort.mat <- function(cdc.data.long, state.abbr, county.choice, death.c
   if (endsWith(county.choice, "County")){
     true_county_name <- substr(county.choice, 0, nchar(county.choice)-7)
   }
-  dplyr::filter(tmp, death_cause == death.cause & state_abbr == state.abbr & county_name == true_county_name) %>%
-    tidyr::drop_na(county_fips) %>%
-    dplyr::select(county_fips, death_rate, period) %>%
+  state.data = dplyr::filter(tmp, death_cause == death.cause & state_abbr == state.abbr) %>%
+    tidyr::drop_na(county_fips) 
+  county.data = dplyr::filter(state.data, county_name == true_county_name)
+  if (nrow(county.data) == 0){
+    all.county = unique(state.data$county_name)
+    highest.score = - Inf
+    best.string = ""
+    for (county in all.county){
+      curr.score =  stringdist::stringsim(county, true_county_name)
+      if (curr.score > highest.score){
+        highest.score = curr.score
+        best.string = county
+      }
+    }
+    county.data = dplyr::filter(state.data, county_name == best.string)
+  } 
+  county.data %>%
+    dplyr::select(county_fips, death_rate, period)%>%
     tidyr::spread(key = period, value = death_rate) %>%
     dplyr::arrange(county_fips)
 }
