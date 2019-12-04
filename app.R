@@ -1610,8 +1610,6 @@ server <- function(input, output, session) {
       nclusters <- max(mort.cluster.raw()$cluster)
       total.data <- rbind(mort.avg.cluster.ord(), national.mean())
       
- 
-      
       if (input$state_choice == "DE") {
         
         exceptions.data <- cdc.data %>%
@@ -1759,34 +1757,40 @@ server <- function(input, output, session) {
         ylab("Average Midlife Deaths per 100,000") 
       
       if (is.null(county_choice())){
-        line_plot 
+        line_plot
       } else {
         drop.cols <- c('county_fips')
         county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause)
         
-        if (nrow(county_data) == 0) {
-          ggplot() + 
-            xlab("Error: county_data is empty. Aborting plot creation.")
-        } else {
+        canShow <- dplyr::inner_join(county_data, cdc.original.data, by = 'county_fips')
         
-        county_data <- county_data %>%
-          dplyr::select(-drop.cols) %>%
-          tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
-          dplyr::mutate("county" = county_choice())
-        line_plot + 
-          geom_line(
-            mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-            data = county_data, color = "#565254", size = 1.3
-          ) +
-          geom_point(
-            mapping = aes(x = period, y = death_rate),
-            data = county_data, color = "#565254", shape = 21, 
-            fill = "#f7f7f7", inherit.aes = FALSE, size = 2
-          ) +
-          scale_linetype_manual(name = "County",
-                                values = c("twodash"),
-                                guide = guide_legend(override.aes = list(color = c("#565254")))
-          )
+        if (any(canShow$death_num == 0)) {
+          line_plot + xlab("period\nCould not plot county as data suppressed by CDC")
+          
+        } else {
+          if (nrow(county_data) == 0) {
+            line_plot + xlab("period\nNo county data to plot")
+          } else {
+            
+            county_data <- county_data %>%
+              dplyr::select(-drop.cols) %>%
+              tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
+              dplyr::mutate("county" = county_choice())
+            line_plot + 
+              geom_line(
+                mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
+                data = county_data, color = "#565254", size = 1.3
+              ) +
+              geom_point(
+                mapping = aes(x = period, y = death_rate),
+                data = county_data, color = "#565254", shape = 21, 
+                fill = "#f7f7f7", inherit.aes = FALSE, size = 2
+              ) +
+              scale_linetype_manual(name = "County",
+                                    values = c("twodash"),
+                                    guide = guide_legend(override.aes = list(color = c("#565254")))
+              )
+          }
         }
       }
       }
