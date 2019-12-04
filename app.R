@@ -1153,7 +1153,10 @@ server <- function(input, output, session) {
           )(max(sd.select$cluster))
         )
       
-    } else{
+    } else if (input$state_choice == "United States") {
+      
+      sd.select$cluster[sd.select$cluster == 1] <- "1: Low"
+      sd.select$cluster[sd.select$cluster == 6] <- "6: High"
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
@@ -1179,6 +1182,34 @@ server <- function(input, output, session) {
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
       
+    } else {
+      
+      sd.select$cluster[sd.select$cluster == 1] <- "1: Low"
+      sd.select$cluster[sd.select$cluster == 2] <- "2: Medium"
+      sd.select$cluster[sd.select$cluster == 3] <- "3: High"
+      
+      ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
+        geom_boxplot() +
+        theme.background() + 
+        theme.text() + 
+        theme(
+          
+          panel.grid = element_line(color = "grey"),
+          panel.grid.major.x = element_blank(),
+          panel.background = element_blank(),
+          
+          axis.line.x = element_blank(), 
+          axis.title.x = element_blank(),
+          rect = element_blank(),
+          legend.position = "none"
+        ) + 
+        labs(
+          x = "Cluster",
+          y = input$determinant_choice
+          
+        ) + 
+        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
     }
     
   }, bg = "transparent")
@@ -1256,7 +1287,6 @@ server <- function(input, output, session) {
       
     } else {
       
-#      browser()
       data <- dplyr::filter(
         cdc.data,
         period == "2015-2017", 
@@ -1265,6 +1295,10 @@ server <- function(input, output, session) {
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
         tidyr::drop_na()
+
+      data$cluster[data$cluster == 1] <- "1: Low"
+      data$cluster[data$cluster == 2] <- "2: Medium"
+      data$cluster[data$cluster == 3] <- "3: High"
       
       plot <- data %>%  
         ggplot(aes(x = death_rate, y = VAR)) + 
