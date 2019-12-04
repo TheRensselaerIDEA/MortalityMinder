@@ -1019,7 +1019,7 @@ server <- function(input, output, session) {
     kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::top_n(15, abs(kendall_cor)) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
     assign("kendall_cor_new", kendall.cor.new, envir = .GlobalEnv)
@@ -2741,7 +2741,7 @@ server <- function(input, output, session) {
     kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
+      dplyr::top_n(15, abs(kendall_cor)) %>% 
       dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
     
     # # Set currently selected determinant to most correlated determinant
