@@ -730,22 +730,12 @@ cdc.files.cardiovascular.excluded <- c(
   "../data/CDC/CDC_excluded_data/excluded_Cardiovascular/Underlying Cause of Death, exclude Cardiovascular, 2015-2017.txt"
 )
 
-######################
-
+####################### Original Source, Separate Causes of Death Data File ###################
 cdc.data.despair <- cdc.reader.batch(cdc.files.despair, cdc.periods, "Despair")
 cdc.data.assault <- cdc.reader.batch(cdc.files.assault, cdc.periods, "Assault")
 cdc.data.cancer <- cdc.reader.batch(cdc.files.cancer, cdc.periods, "Cancer")
 cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.periods, "Cardiovascular")
 cdc.data.allcause <- cdc.reader.batch(cdc.files.allcause, cdc.periods, "All Cause")
-
-cdc.data.ori <- dplyr::bind_rows(
-    cdc.data.despair, 
-    cdc.data.assault, 
-    cdc.data.cancer,
-    cdc.data.cardiovascular, 
-    cdc.data.allcause
-  ) %>% 
-  as.data.frame()
 
 cdc.data.despair.state <- cdc.reader.state.batch(cdc.files.despair.state, cdc.periods, "Despair")
 cdc.data.assault.state <- cdc.reader.state.batch(cdc.files.assault.state, cdc.periods, "Assault")
@@ -753,23 +743,59 @@ cdc.data.cancer.state <- cdc.reader.state.batch(cdc.files.cancer.state, cdc.peri
 cdc.data.cardiovascular.state <- cdc.reader.state.batch(cdc.files.cardiovascular.state, cdc.periods, "Cardiovascular")
 cdc.data.allcause.state <- cdc.reader.state.batch(cdc.files.allcause.state, cdc.periods, "All Cause")
 
-cdc.data.state <- 
-  dplyr::bind_rows(cdc.data.despair.state, cdc.data.assault.state, cdc.data.cancer.state,
-                   cdc.data.cardiovascular.state, cdc.data.allcause.state) %>% 
+cdc.data.state <- dplyr::bind_rows(
+    cdc.data.despair.state, 
+    cdc.data.assault.state, 
+    cdc.data.cancer.state,
+    cdc.data.cardiovascular.state, 
+    cdc.data.allcause.state
+  ) %>% 
   as.data.frame()
 
 
+############################ Create Mortality Data by Subtraction ############################
+# All cause of death without *
+cdc.data.despair.excluded <- cdc.reader.batch(cdc.files.despair.excluded, cdc.periods, "-Despair")
+cdc.data.assault.excluded <- cdc.reader.batch(cdc.files.assault.excluded, cdc.periods, "-Assault")
+cdc.data.cancer.excluded <- cdc.reader.batch(cdc.files.cancer.excluded, cdc.periods, "-Cancer")
+cdc.data.cardiovascular.excluded <- cdc.reader.batch(cdc.files.cardiovascular.excluded, cdc.periods, "-Cardiovascular")
 
-##################################### Exam Heavily Missing Counties ####################################
+# Subtraction
+cdc.data.despair.fill <- cdc.fill.by.excl(cdc.data.despair, cdc.data.allcause, cdc.data.despair.excluded)
+cdc.data.assault.fill <- cdc.fill.by.excl(cdc.data.assault, cdc.data.allcause, cdc.data.assault.excluded)
+cdc.data.cancer.fill <- cdc.fill.by.excl(cdc.data.cancer, cdc.data.allcause, cdc.data.cancer.excluded)
+cdc.data.cardiovascular.fill <- cdc.fill.by.excl(cdc.data.cardiovascular, cdc.data.allcause, cdc.data.cardiovascular.excluded)
+
+# Bind to a single data frame
+cdc.data <- dplyr::bind_rows(
+    cdc.data.despair.fill, 
+    cdc.data.assault.fill, 
+    cdc.data.cancer.fill, 
+    cdc.data.cardiovascular.fill, 
+    cdc.data.allcause
+  ) %>% 
+  as.data.frame()
+
+# Save file
+saveRDS(cdc.data, "../data/CDC/cdc.data.fill.Rds")
+
+################################## Exam Heavily Missing Counties ####################################
+# If the data is heavily suppressed, then the imputation is not reliable. So 
+#   we have to record the heavily suppressed counties
+#   Generated data frame: 
+#     - Rows: 3174 counties, identified by county_fips
+#     - Cols: 5 causes of deaths
+#     - Each entry denotes the county-death_cause heavily suppressed or not (boolean values)
+
 # Check the counties with more than 4 periods being missing
-cdc.miss_gt4 <- cdc.data.ori %>% 
+cdc.miss_gt4 <- cdc.data %>% 
   dplyr::mutate(is_missing = is.na(death_rate)) %>%
   dplyr::group_by(county_fips, death_cause) %>%
   dplyr::summarise(sup_gt4 = sum(is_missing)) %>% 
   dplyr::mutate(sup_gt4 = sup_gt4 >= 4)
 
 # Check the counties with last period being missing
-cdc.miss_last_period <- cdc.data.ori %>% 
+cdc.miss_last_period <- cdc.data %>% 
   dplyr::filter(period == "2015-2017") %>%
   dplyr::group_by(county_fips, death_cause) %>%
   dplyr::summarise(sup_last = is.na(death_rate))
@@ -783,43 +809,29 @@ cdc.suppress <- cdc.miss_last_period %>%
 
 # Save the data frame as `cdc.suppress.rds`
 saveRDS(cdc.suppress, "../data/CDC/cdc.suppress.Rds")
-########################################################################################################
 
-cdc.data.despair.excluded <- cdc.reader.batch(cdc.files.despair.excluded, cdc.periods, "-Despair")
-cdc.data.assault.excluded <- cdc.reader.batch(cdc.files.assault.excluded, cdc.periods, "-Assault")
-cdc.data.cancer.excluded <- cdc.reader.batch(cdc.files.cancer.excluded, cdc.periods, "-Cancer")
-cdc.data.cardiovascular.excluded <- cdc.reader.batch(cdc.files.cardiovascular.excluded, cdc.periods, "-Cardiovascular")
-
-cdc.data.despair.fill <- cdc.fill.by.excl(cdc.data.despair, cdc.data.allcause, cdc.data.despair.excluded)
-cdc.data.assault.fill <- cdc.fill.by.excl(cdc.data.assault, cdc.data.allcause, cdc.data.assault.excluded)
-cdc.data.cancer.fill <- cdc.fill.by.excl(cdc.data.cancer, cdc.data.allcause, cdc.data.cancer.excluded)
-cdc.data.cardiovascular.fill <- cdc.fill.by.excl(cdc.data.cardiovascular, cdc.data.allcause, cdc.data.cardiovascular.excluded)
-
-
-cdc.data <- dplyr::bind_rows(cdc.data.despair.fill, cdc.data.assault.fill, cdc.data.cancer.fill, 
-                             cdc.data.cardiovascular.fill, cdc.data.allcause) %>% 
-  as.data.frame()
-
-saveRDS(cdc.data, "../data/CDC/cdc.data.fill.Rds")
-
-######################
-
+################################# Imputation with Amelia ######################################
+# Impute data with Amelia, data used is "filled data" instead of orginal download
 cdc.data.despair.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Despair")
 cdc.data.assault.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Assault")
 cdc.data.cancer.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Cancer")
 cdc.data.cardiovascular.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "Cardiovascular")
 cdc.data.allcause.imputed <- cdc.impute(cdc.data, cdc.data.state, "ALL", "All Cause")
 
-cdc.data.imputed <- 
-  dplyr::bind_rows(cdc.data.despair.imputed, cdc.data.assault.imputed, cdc.data.cancer.imputed,
-                   cdc.data.cardiovascular.imputed, cdc.data.allcause.imputed) %>% 
+# Bind to a single data frame
+cdc.data.imputed <- dplyr::bind_rows(
+    cdc.data.despair.imputed, 
+    cdc.data.assault.imputed, 
+    cdc.data.cancer.imputed,
+    cdc.data.cardiovascular.imputed, 
+    cdc.data.allcause.imputed
+  ) %>% 
   as.data.frame()
 
+# Save file
 saveRDS(cdc.data.imputed, "../data/CDC/cdc.data.imputed.Rds")
 
-######################
-
-
+############################# Remove Temporary Variables #####################################
 # Clean-up's
 rm(
   list = c(
