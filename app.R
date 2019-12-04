@@ -1534,25 +1534,27 @@ server <- function(input, output, session) {
     }
     
     county.data.00.02 <- dplyr::filter(
-      cdc.data,
+      cdc.unimputed.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
-      period == "2000-2002"
+      period == "2000-2002",
+      death_num != 0.5
     )
     county.data.15.17 <- dplyr::filter(
-      cdc.data,
+      cdc.unimputed.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
-      period == "2015-2017"
+      period == "2015-2017",
+      death_num != 0.5
     )
     
-    if (nrow(county.data.15.17) == 0) {
+    if (nrow(county.data.15.17) == 0 | nrow(county.data.00.02) == 0) {
       return(
         tagList(
           tags$h5(paste0(
-            "No data for ", input$county_drop_choice, ", ", input$state_choice)
+            "Data suppressed for ", input$county_drop_choice, ", ", input$state_choice, " by CDC")
           )
         )
       )
