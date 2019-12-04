@@ -122,7 +122,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Which county-level social and economic factors that cause increased mortality in the United States?")
+                  tags$h3("Which county-level social and economic factors increase mortality in the United States?")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
