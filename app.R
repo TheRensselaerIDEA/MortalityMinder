@@ -1155,6 +1155,10 @@ server <- function(input, output, session) {
       
     } else{
       
+      sd.select$cluster[sd.select$cluster == 1] <- "1: Low"
+      sd.select$cluster[sd.select$cluster == 2] <- "2: Medium"
+      sd.select$cluster[sd.select$cluster == 3] <- "3: High"
+      
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
         theme.background() + 
