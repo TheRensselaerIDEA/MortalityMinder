@@ -387,10 +387,10 @@ ui <- fluidPage(
               class = "page3_col3_top",
               tags$br(),
               tags$p(htmlOutput("determinant_text")),
-              tags$h5(htmlOutput("determinant_corr")),
-              tags$h5(htmlOutput("determinant_dir")),
+              tags$h5(uiOutput("determinant_link")),
               tags$h5(htmlOutput("determinant_original_source")),
-              tags$p(uiOutput("determinant_link"))
+              tags$h5(htmlOutput("determinant_corr")),
+              tags$h5(htmlOutput("determinant_dir"))
                     ), # End of Column 3 top
             fluidRow(
               class = "page3_col3_bot",
@@ -1402,7 +1402,7 @@ server <- function(input, output, session) {
     }
     
     tagList(
-      tags$h4(
+      tags$h3(
         as.character(
           SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
       ),
@@ -1412,8 +1412,9 @@ server <- function(input, output, session) {
   
   output$determinant_link <- renderUI({
     tagList(tags$h4(
+      "Text Source: ",
       tags$a(
-        "Click here for more information",
+        "County Health Rankings",
         href = determinant.url(),
         target="_blank"
       )
@@ -1423,7 +1424,7 @@ server <- function(input, output, session) {
   
   output$determinant_original_source <- renderUI({
     tagList(tags$h4(
-      "Source: ",
+      "Data Source: ",
       tags$a(
         determinant.source(),
         href = determinant.source_url(),
