@@ -1125,7 +1125,12 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>% 
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
+    if (nrow(sd.select) == 0) {
+      
+      ggplot() + 
+        ggtitle("Error: sd.select is empty. Aborting boxplot creation.")
+      
+    } else if (nrow(sd.select) <= 6){
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
