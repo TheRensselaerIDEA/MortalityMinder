@@ -1149,6 +1149,13 @@ server <- function(input, output, session) {
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
     
+    res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017",
+                                        death_cause == input$death_cause,
+                                        state_abbr == input$state_choice,
+                                        death_num != 0.5)
+
+    res <- dplyr::inner_join(mort.cluster.ord(), res, by = 'county_fips')
+    
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -1247,13 +1254,6 @@ server <- function(input, output, session) {
   output$determinants_plot3 <- renderPlot({
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
-      
-    # res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017", 
-    #                                     death_cause == input$death_cause, 
-    #                                     state_abbr == input$state_choice,
-    #                                     death_num != 0.5)
-    # 
-    # res <- dplyr::inner_join(mort.cluster.ord(), res, by = 'county_fips')
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
