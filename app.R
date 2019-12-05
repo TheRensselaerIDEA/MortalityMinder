@@ -2751,6 +2751,7 @@ server <- function(input, output, session) {
     #Only display the social determinants graph if there is any significant social determinant
     #Ex: New Hampshire, Delaware doesn't have any significant social determinant with p < 0.05
     if(nrow(kendall.cor.new) > 0) {
+      updatePickerInput(session, "determinant_choice", selected = kendall.cor.new$chr_code[[1]])
       kendall.cor.new %>% 
         ggplot(
           aes(
