@@ -406,7 +406,8 @@ ui <- fluidPage(
                 # tags$br(),
                 # tags$br(),
                 # tags$br(),
-                uiOutput("county_desc")
+                uiOutput("county_desc"),
+                uiOutput("textSDGeo")
               ),
               
               leafletOutput("determinants_plot5")
@@ -2435,23 +2436,16 @@ server <- function(input, output, session) {
   output$textSDGeo <- renderUI({
     # We reference state.list, cause.list and cause.definitions defined above
     if(input$state_choice == "United States") {
-      location_str <- "the United States" 
-      tagList(
-        tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
-          paste0(input$determinant_choice, " Distribution for United States is not currently available.")
-        ),
-        NULL
-      )
     }
     else {
     tagList(
-      tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
-        title="This plot represents the geographic distribution of the selected factor for the selected state.",
-        paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
-        icon("info-circle")
-      ),
+      # tags$h3(
+      #   style = "padding-right: 20px; padding-left: 20px",
+      #   title="This plot represents the geographic distribution of the selected factor for the selected state.",
+      #   paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
+      #   icon("info-circle")
+      # ),
+      tags$h5("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
       NULL
     )
   }
@@ -2469,6 +2463,7 @@ server <- function(input, output, session) {
           style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
           paste0("Select a ", input$state_choice," county below or by clicking the map:")
         ),
+        # tags$h6("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
         NULL
       )
     }
