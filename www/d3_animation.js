@@ -134,11 +134,11 @@ r2d3.onRender(function(data, svg, width, height, options) {
           .enter()
           .append("rect")
           .attr({
-              width: 35,
-              height: 7,
+              width: 40,
+              height: 8,
               y: 520,
               x: function (d, i) {
-                  return 400 + 36 * i;
+                  return 400 + 45 * i;
               },
               fill: color
           });
@@ -150,14 +150,20 @@ r2d3.onRender(function(data, svg, width, height, options) {
       .attr({
         y:520,
         x:function(d,i){
-          return 400 + 36 * i;
+          return 400 + 45 * i;
         }})
       .text(function(d){
           return d;
         })
-      .style("font-size", "12px")
-      ;
-          
+      .style("font-size", "15px");
+      
+  svg.append("text")
+     .attr({
+       y:520,
+       x:280
+     })
+     .text("Mortality rate:");
+     
   var index = 0;        
   var timer;
   var playing = false;
