@@ -616,6 +616,36 @@ server <- function(input, output, session) {
     }
   })
   
+  mort.rate.original <- reactive({
+    county_choice(NULL)
+    assign("county_polygon", NULL, envir = .GlobalEnv)
+    assign("page1_period_choice", 6, envir = .GlobalEnv)
+    if(input$state_choice == "United States"){
+      cdc.unimputed.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        #state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }else {
+      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
+      cdc.unimputed.data %>% dplyr::filter(
+        death_cause == input$death_cause,
+        state_abbr == input$state_choice,
+        period == "2015-2017"
+      ) %>%
+        dplyr::mutate(
+          # death_rate = death_num / population * 10^5
+          #death_rate = cut(death_rate, bin.geo.mort("Despair"))
+        ) %>%
+        dplyr::select(county_fips, death_rate)
+    }
+  })
+  
   # Cache of UNORDERED mortality trend cluster label calculation
   mort.cluster.raw <- reactive({
     
@@ -707,7 +737,7 @@ server <- function(input, output, session) {
   # get unfiltered kendal cors
   kendall.cor <- reactive({
     
-    kendall.cor.new <- mort.rate() %>% 
+    kendall.cor.new <- mort.rate.original() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
       dplyr::mutate(
@@ -1119,6 +1149,13 @@ server <- function(input, output, session) {
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
     
+    res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017",
+                                        death_cause == input$death_cause,
+                                        state_abbr == input$state_choice,
+                                        death_num != 0.5)
+
+    res <- dplyr::inner_join(mort.cluster.ord(), res, by = 'county_fips')
+    
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
       dplyr::right_join(mort.cluster.ord(), by = "county_fips") %>% 
@@ -1228,9 +1265,10 @@ server <- function(input, output, session) {
     if (nrow(sd.select) <= 6){
       
       dplyr::filter(
-        cdc.data,
+        cdc.unimputed.data,
         period == "2015-2017", 
-        death_cause == input$death_cause
+        death_cause == input$death_cause,
+        death_num != 0.5
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
@@ -1287,9 +1325,10 @@ server <- function(input, output, session) {
     } else {
       
       data <- dplyr::filter(
-        cdc.data,
+        cdc.unimputed.data,
         period == "2015-2017", 
-        death_cause == input$death_cause
+        death_cause == input$death_cause,
+        death_num != 0.5
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
@@ -1322,15 +1361,20 @@ server <- function(input, output, session) {
                         data,
                         county_name == substr(county_choice(), 0, nchar(county_choice())-7)
                       )
-        plot + 
-          geom_point(
-            mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
-            data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
-          ) + 
-          scale_shape_manual(name = "County",
-                             values = c(18), 
-                             guide = guide_legend(override.aes = list(color = c("#565254")))
-          )
+        
+        if (nrow(county_data) == 0) {
+          plot + xlab("Midlife Mortality Rate (2015-2017)\nCould not plot county as data suppressed by CDC")
+        } else {
+          plot + 
+            geom_point(
+              mapping = aes(x = death_rate, y = VAR, group = county_name, shape = county_choice()),
+              data = county_data, color="#565254", size = 5, alpha = .7, inherit.aes = FALSE
+            ) + 
+            scale_shape_manual(name = "County",
+                               values = c(18), 
+                               guide = guide_legend(override.aes = list(color = c("#565254")))
+            )
+        }
       }
     }
   }, bg = "transparent")
@@ -1491,25 +1535,27 @@ server <- function(input, output, session) {
     }
     
     county.data.00.02 <- dplyr::filter(
-      cdc.data,
+      cdc.unimputed.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
-      period == "2000-2002"
+      period == "2000-2002",
+      death_num != 0.5
     )
     county.data.15.17 <- dplyr::filter(
-      cdc.data,
+      cdc.unimputed.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
-      period == "2015-2017"
+      period == "2015-2017",
+      death_num != 0.5
     )
     
-    if (nrow(county.data.15.17) == 0) {
+    if (nrow(county.data.15.17) == 0 | nrow(county.data.00.02) == 0) {
       return(
         tagList(
           tags$h5(paste0(
-            "No data for ", input$county_drop_choice, ", ", input$state_choice)
+            "Data suppressed for ", input$county_drop_choice, ", ", input$state_choice, " by CDC")
           )
         )
       )
@@ -1610,8 +1656,6 @@ server <- function(input, output, session) {
 
       nclusters <- max(mort.cluster.raw()$cluster)
       total.data <- rbind(mort.avg.cluster.ord(), national.mean())
-      
- 
       
       if (input$state_choice == "DE") {
         
@@ -1760,34 +1804,37 @@ server <- function(input, output, session) {
         ylab("Average Midlife Deaths per 100,000") 
       
       if (is.null(county_choice())){
-        line_plot 
+        line_plot
       } else {
         drop.cols <- c('county_fips')
         county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause)
         
-        if (nrow(county_data) == 0) {
-          ggplot() + 
-            xlab("Error: county_data is empty. Aborting plot creation.")
-        } else {
-        
-        county_data <- county_data %>%
-          dplyr::select(-drop.cols) %>%
-          tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
-          dplyr::mutate("county" = county_choice())
-        line_plot + 
-          geom_line(
-            mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-            data = county_data, color = "#565254", size = 1.3
-          ) +
-          geom_point(
-            mapping = aes(x = period, y = death_rate),
-            data = county_data, color = "#565254", shape = 21, 
-            fill = "#f7f7f7", inherit.aes = FALSE, size = 2
-          ) +
-          scale_linetype_manual(name = "County",
-                                values = c("twodash"),
-                                guide = guide_legend(override.aes = list(color = c("#565254")))
+        canShow <- dplyr::inner_join(county_data, cdc.unimputed.data, by = 'county_fips') %>% 
+          dplyr::filter(
+            death_cause == input$death_cause
           )
+        
+        if (any(canShow$death_num == 0.5) | nrow(county_data) == 0) {
+          line_plot + xlab("period\nCould not plot county as data suppressed by CDC")
+        } else {
+            county_data <- county_data %>%
+              dplyr::select(-drop.cols) %>%
+              tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
+              dplyr::mutate("county" = county_choice())
+            line_plot + 
+              geom_line(
+                mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
+                data = county_data, color = "#565254", size = 1.3
+              ) +
+              geom_point(
+                mapping = aes(x = period, y = death_rate),
+                data = county_data, color = "#565254", shape = 21, 
+                fill = "#f7f7f7", inherit.aes = FALSE, size = 2
+              ) +
+              scale_linetype_manual(name = "County",
+                                    values = c("twodash"),
+                                    guide = guide_legend(override.aes = list(color = c("#565254")))
+              )
         }
       }
       }
