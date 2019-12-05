@@ -152,7 +152,7 @@ ui <- fluidPage(
                 fluidRow(
                   class = "page1_col page1_col2_top",
                   tags$div(
-                    class = "National_title page1_title",
+                    class = "page1_title",
                     uiOutput("textNationalTitle"),
                     uiOutput("textMortFactsClosing")
                   )
@@ -208,9 +208,7 @@ ui <- fluidPage(
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
-                    src = "Despair/1.png",
-                    width="100%",
-                    style = "bottom: 0; left:0;"
+                    src = "Despair/1.png"
                     )
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
@@ -219,7 +217,9 @@ ui <- fluidPage(
                          tags$div(class = "page1_title",
                           uiOutput("textInfographicTitle")
                           ),
+                         tags$div(class = "nation_state_infographic",
                          plotOutput("nation_state_infographic")
+                         )
                   )
                 )
                 )
@@ -386,11 +386,11 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col3_top",
               tags$br(),
-              tags$p(htmlOutput("determinant_text")),
+              htmlOutput("determinant_text"),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir")),
               tags$h5(htmlOutput("determinant_original_source")),
-              tags$p(uiOutput("determinant_link"))
+              tags$h5(uiOutput("determinant_link"))
                     ), # End of Column 3 top
             fluidRow(
               class = "page3_col3_bot",
@@ -401,15 +401,11 @@ ui <- fluidPage(
                 ),
                 uiOutput("county_selector")
               ), # End of pickerInput container
+              leafletOutput("determinants_plot5"),
               fluidRow(
                 class = "page3_col3_county_desc",
-                # tags$br(),
-                # tags$br(),
-                # tags$br(),
                 uiOutput("county_desc")
-              ),
-              
-              leafletOutput("determinants_plot5")
+              )
             ) # End of inner Column 3 bottom
 
             ) # End of Column 3
@@ -457,7 +453,7 @@ ui <- fluidPage(
                                            rates that are suppressed to preserve privacy by CDC WONDER were imputed using 
                                            the Amelia package in R. Multiple imputation could be added to the analysis 
                                            in the future. Details of data sources and preparation are available at ",
-                                           a("the MortalityMinder github wiki.",
+                                           a("the MortalityMinder GitHub wiki.",
                                              href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"
                                              , target="_blank"))),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
@@ -532,7 +528,7 @@ ui <- fluidPage(
                                            across the United States.")),
                             column(11, tags$h4("IMPLEMENTATION AND DEPLOYMENT",align="center"), 
                                    tags$h5("MortalityMinder is currently published via two publicly-accessible web locations. 
-                                           Our open-source R code is freely available via a github repository. Source 
+                                           Our open-source R code is freely available via a GitHub repository. Source 
                                            data and generated results may be downloaded from within the app. MM is 
                                            coded using the R language and environment for statistical computing and graphics, 
                                            incorporating best practices and using well-known packages whenever possible. 
@@ -541,7 +537,7 @@ ui <- fluidPage(
                                            time as either an open source package or within organizations such as AHRQ."),
                                    tags$h5("MM can be run from the public web locations; no user installation 
                                            is required to test the application. Alternatively, the ",
-                                           a("github repository",
+                                           a("GitHub repository",
                                              href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank"), 
                                            "may be cloned and the MM then run immediately in the user's RStudio environment, 
                                            either on a server or on a personal machine."), 
@@ -562,9 +558,9 @@ ui <- fluidPage(
                                  tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
-                                 tags$h5(a("MortalityMinder github repository",
+                                 tags$h5(a("MortalityMinder GitHub repository",
                                              href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank")),
-                                 tags$h5(a("MortalityMinder github Wiki",
+                                 tags$h5(a("MortalityMinder GitHub Wiki",
                                            href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki", target="_blank"))
                           )
                    ) # Close inner fluidRow
@@ -1402,11 +1398,11 @@ server <- function(input, output, session) {
     }
     
     tagList(
-      tags$h4(
+      tags$h5(
         as.character(
           SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
       ),
-      tags$h4(reason_text)
+      tags$h5(reason_text)
     )
   })
   
@@ -1422,7 +1418,7 @@ server <- function(input, output, session) {
   })
   
   output$determinant_original_source <- renderUI({
-    tagList(tags$h4(
+    tagList(tags$p(
       "Source: ",
       tags$a(
         determinant.source(),
@@ -2054,10 +2050,10 @@ server <- function(input, output, session) {
       tags$h2(
         paste0("State View: ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
-      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h4("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
-      tags$h4("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
-      tags$h4("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see county names and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
+      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$p("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
+      tags$p("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
+      tags$p("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see county names and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
       NULL
     )
   })
@@ -2086,7 +2082,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
+      tags$h4(
         title ="Midlife Mortality Rates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed.   See About page for details.",
         paste0("Midlife Mortality Rate: Deaths per 100,000 for people ages 25-to 64 due to ",
                names(which(cause.list == input$death_cause)), 
