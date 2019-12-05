@@ -2769,7 +2769,7 @@ server <- function(input, output, session) {
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
     style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); pointer-events:none;",
-                    "left:", hover$coords_css$x + 10, "px; top:", hover$coords_css$y - 30, "px; font-size: 7px")
+                    "left:", hover$coords_css$x+5, "px; top:", hover$coords_css$y+10, "px; font-size: 7px")
     
     #browser()
     # actual tooltip created as wellPanel
