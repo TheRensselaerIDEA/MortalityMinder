@@ -60,10 +60,10 @@ ui <- fluidPage(
     tags$div(
       class = "title",
       tags$h1(
-        tags$img(
-          src="RPIlogo_black.png"
-          # height="30px"
-          ),
+        # tags$img(
+        #   src="RPIlogo_black.png"
+        #   # height="30px"
+        #   ),
         "MortalityMinder")
       ),
     tags$div(
@@ -1107,7 +1107,7 @@ server <- function(input, output, session) {
         labs(
           # title = "Most Associated Factors",
           # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
@@ -1167,7 +1167,8 @@ server <- function(input, output, session) {
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
-        labs(y = input$determinant_choice, caption = "Plot will show only single values if the state has too few counties to cluster (6 or fewer). \n In these cases, the x-axis is individual counties rather than clusters.") + 
+        labs(y = input$determinant_choice, 
+             caption = "Plot will show only single values if the state has too few counties to cluster (6 or fewer). \n In these cases, the x-axis is individual counties rather than clusters.") + 
         theme.background() + 
         theme.text() + 
         theme(
@@ -1212,7 +1213,8 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
          
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
@@ -1242,7 +1244,8 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
           
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
@@ -1280,7 +1283,8 @@ server <- function(input, output, session) {
         geom_point(aes(fill = cluster)) + 
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
@@ -1314,7 +1318,8 @@ server <- function(input, output, session) {
         stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
@@ -1346,7 +1351,8 @@ server <- function(input, output, session) {
         #stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
@@ -1649,7 +1655,11 @@ server <- function(input, output, session) {
         theme.line.mort() + 
         theme(legend.position = "left") + 
         ylab("Average Midlife deaths per 100,000") +
-        labs(fill = "Cluster", color = "Cluster") +
+        labs(
+          fill = "Cluster", 
+          color = "Cluster",
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+        ) +
         guides(
           color = guide_legend(reverse = T)
         )
@@ -1693,7 +1703,10 @@ server <- function(input, output, session) {
           theme.line.mort() + 
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
-          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          labs(fill = "Counties and \n National Average", 
+               color = "Counties and \n National Average",
+               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
         
@@ -1731,7 +1744,10 @@ server <- function(input, output, session) {
           theme.line.mort() + 
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
-          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          labs(fill = "Counties and \n National Average", 
+               color = "Counties and \n National Average",
+               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
         
@@ -1769,7 +1785,10 @@ server <- function(input, output, session) {
           theme.line.mort() + 
           theme(legend.position = "left") + 
           guides(color = guide_legend(reverse = T)) +
-          labs(fill = "Counties and \n National Average", color = "Counties and \n National Average") + 
+          labs(fill = "Counties and \n National Average", 
+               color = "Counties and \n National Average",
+               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot 
         
@@ -1801,7 +1820,10 @@ server <- function(input, output, session) {
         theme.line.mort() + 
         theme(legend.position = "left") + 
         guides(color = guide_legend(reverse = T)) +
-        labs(fill = "Cluster", color = "Cluster") + 
+        labs(fill = "Cluster", 
+             color = "Cluster",
+             caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+        ) + 
         ylab("Average Midlife Deaths per 100,000") 
       
       if (is.null(county_choice())){
@@ -1997,7 +2019,10 @@ server <- function(input, output, session) {
                          #point.padding = 0.5,
                          direction = "both",
                          xlim = c(1.5, 5.5),
-                         show.legend = FALSE)
+                         show.legend = FALSE) +
+        labs(
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+        )
       
     } else {
       state_data <- dplyr::filter(
@@ -2086,7 +2111,10 @@ server <- function(input, output, session) {
                                        xlim = c(1.5, 5.5),
                                        ylim = ylim,
                                        show.legend = FALSE) + 
-                      scale_fill_manual(values = colors)
+                      scale_fill_manual(values = colors) +
+        labs(
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+        )
                                        
                       #geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = '#565254')
     }
@@ -2852,7 +2880,7 @@ server <- function(input, output, session) {
         labs(
           # title = "Most Associated Factors",
           # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
