@@ -26,30 +26,30 @@ frink <- image_read("Despair/6.png")
 frink_x <- image_transparent(frink, "white", fuzz = 0)
 image_write(frink_x, "Despair/6.png")
 
-# Add transparency to "Assault" images
-frink <- image_read("Assault/1.png")
-frink_x <- image_transparent(frink, "white", fuzz = 0)
-image_write(frink_x, "Assault/1.png")
-
-frink <- image_read("Assault/2.png")
-frink_x <- image_transparent(frink, "white", fuzz = 0)
-image_write(frink_x, "Assault/2.png")
-
-frink <- image_read("Assault/3.png")
-frink_x <- image_transparent(frink, "white", fuzz = 0)
-image_write(frink_x, "Assault/3.png")
-
-frink <- image_read("Assault/4.png")
-frink_x <- image_transparent(frink, "white", fuzz = 0)
-image_write(frink_x, "Assault/4.png")
-
-frink <- image_read("Assault/5.png")
-frink_x <- image_transparent(frink, "white", fuzz = 0)
-image_write(frink_x, "Assault/5.png")
-
-frink <- image_read("Assault/6.png")
-frink_x <- image_transparent(frink, "white", fuzz = 0)
-image_write(frink_x, "Assault/6.png")
+# # Add transparency to "Assault" images
+# frink <- image_read("Assault/1.png")
+# frink_x <- image_transparent(frink, "white", fuzz = 0)
+# image_write(frink_x, "Assault/1.png")
+# 
+# frink <- image_read("Assault/2.png")
+# frink_x <- image_transparent(frink, "white", fuzz = 0)
+# image_write(frink_x, "Assault/2.png")
+# 
+# frink <- image_read("Assault/3.png")
+# frink_x <- image_transparent(frink, "white", fuzz = 0)
+# image_write(frink_x, "Assault/3.png")
+# 
+# frink <- image_read("Assault/4.png")
+# frink_x <- image_transparent(frink, "white", fuzz = 0)
+# image_write(frink_x, "Assault/4.png")
+# 
+# frink <- image_read("Assault/5.png")
+# frink_x <- image_transparent(frink, "white", fuzz = 0)
+# image_write(frink_x, "Assault/5.png")
+# 
+# frink <- image_read("Assault/6.png")
+# frink_x <- image_transparent(frink, "white", fuzz = 0)
+# image_write(frink_x, "Assault/6.png")
 
 # Add transparency to "Cardio" images
 frink <- image_read("Cardio/1.png")
