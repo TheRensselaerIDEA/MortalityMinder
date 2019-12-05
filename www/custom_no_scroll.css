@@ -344,22 +344,37 @@
   display:block;
 }
 
-.page2 h3 {
+.page2_col2 h3 {
   color: black;
   font-size: 1.6vh; 
 }
 
-.page2 h4 {
+.page2_col2 h4 {
   color: black;
   font-size: 1.5vh; 
 }
 
-.page2 h5 {
+.page2_col2 h5 {
   color: black;
   font-size: 1.4vh; 
 }
 
-.page2 h6 {
+.page2_col2 h6 {
+  color: black;
+  font-size: 1.3vh; 
+}
+
+.page2_col2_bottom h4 {
+  color: black;
+  font-size: 1.5vh; 
+}
+
+.page2_col2_bottom h5 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page2_col2_bottom h6 {
   color: black;
   font-size: 1.3vh; 
 }

@@ -2138,14 +2138,15 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
-        title ="Midlife Mortality Rates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed.   See About page for details.",
+      tags$h4(
+        title ="Midlife mortality trates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed. See Project Overview for details.",
         paste0("Midlife Mortality Rate: Deaths per 100,000 for people ages 25-to 64 due to ",
                names(which(cause.list == input$death_cause)), 
                " for three year periods for counties (left) and state and nation (right) . Darker colors indicate higher rates. "
                ), icon("info-circle")
       ),
-      HTML("<h4>Data Source: CDC WONDER<br>Analysis: Institute for Data Exploration and Applications at Rensselaer Polytechnic Institute</h4>")
+      HTML("<h5>Data Source: CDC WONDER<br>Analysis: The Rensselaer Institute for Data Exploration and Applications 
+           (<a href='http://idea.rpi.edu' target=_Blank>The Rensselaer IDEA</a>)</h5>")
     )
   })
   
@@ -2185,8 +2186,7 @@ server <- function(input, output, session) {
     )
   })
   
-  # for a state or the US, creates the bulleted facts at the bottom of nationwide 
-  #  page
+  # For a state or the US, creates the bulleted facts at the bottom of nationwide page
   output$textMortFacts <- renderUI({
     if(input$state_choice == "United States") {
       # percent change for first bullet
@@ -2335,7 +2335,7 @@ server <- function(input, output, session) {
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
-               icon("info-circle")
+        icon("info-circle")
       ),
       tags$h6("Kendall Correlation between factors and mortality risk clusters. Destructive factors are positively correlated; protective factors are negatively correlated. Click on dot to explore a factor in more detail."),
       NULL
@@ -2355,6 +2355,7 @@ server <- function(input, output, session) {
           paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str), 
           icon("info-circle")
         ),
+        tags$h6("The average midlife death trends for each cluster; the national average is shown in blue."),
         NULL
       )
     }
@@ -2364,8 +2365,9 @@ server <- function(input, output, session) {
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average midlife death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
         paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
-          icon("info-circle")
+        icon("info-circle")
       ),
+      tags$h6("The average midlife death trends for each cluster; the national average is shown in blue. Click on any map to see the trend for a specific county."),
       NULL
     )
     }
@@ -2380,9 +2382,10 @@ server <- function(input, output, session) {
         title="This plot represents the distribution of midlife mortality rates (ages 25-64) for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ",
               location_str, " for ", input$year_selector),
-          icon("info-circle")
-        ),
-        NULL
+        icon("info-circle")
+      ),
+      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",location_str),
+      NULL
       )
     }
     else {
@@ -2392,6 +2395,7 @@ server <- function(input, output, session) {
         paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
         icon("info-circle")
       ),
+      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",names(which(state.list == input$state_choice))),
       NULL
     )
     }
@@ -2405,10 +2409,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the geographic distribution of clusters for the selected state.",
+          title="This plot represents the geographic distribution of risk clusters for the selected state.",
           paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ",location_str), 
           icon("info-circle")
         ),
+        tags$h6("Geographic distribution of risk clusters for ",location_str,". Darker clusters indicate higher mortality risk."),
         NULL
       )
     }
@@ -2420,6 +2425,7 @@ server <- function(input, output, session) {
         paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
+      tags$h6("Geographic distribution of risk clusters for ",names(which(state.list == input$state_choice)),". Darker clusters indicate higher mortality risk."),
       NULL
     )
     }
