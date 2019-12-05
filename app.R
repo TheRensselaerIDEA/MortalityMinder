@@ -403,11 +403,7 @@ ui <- fluidPage(
               ), # End of pickerInput container
               fluidRow(
                 class = "page3_col3_county_desc",
-                # tags$br(),
-                # tags$br(),
-                # tags$br(),
-                uiOutput("county_desc"),
-                uiOutput("textSDGeo")
+                uiOutput("county_desc")
               ),
               
               leafletOutput("determinants_plot5")
@@ -2445,7 +2441,7 @@ server <- function(input, output, session) {
       #   paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
       #   icon("info-circle")
       # ),
-      tags$h5("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
+      tags$h4("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
       NULL
     )
   }
@@ -2461,7 +2457,7 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
-          paste0("Select a ", input$state_choice," county below or by clicking the map:")
+          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values. Select from the drop-down for county details or click the map.")
         ),
         # tags$h6("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
         NULL
