@@ -210,9 +210,14 @@
   margin-bottom: 4vh;
 }
 
+
 .page1_col1 h4 {
   font-size: 1.55vh;
   color: white;
+}
+
+.page1_col1 li {
+  margin-left: 2.5vh;
 }
 
 .page1_col1 h5 {
