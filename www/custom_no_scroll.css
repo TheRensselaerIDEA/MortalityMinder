@@ -10,6 +10,11 @@
     src: url("AboveDemoRegular-lJMd.ttf") format("opentype");
 }
 
+/*** icon color ***/
+.fa {
+  color: #0571b0;
+}
+
 /******Framework Formatting*******/
 
 .container-fluid {
