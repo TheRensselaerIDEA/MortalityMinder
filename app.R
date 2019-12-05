@@ -270,7 +270,8 @@ ui <- fluidPage(
                                            choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
-                              leafletOutput("geo_mort_change2",width="82%",height="80%")
+                              leafletOutput("geo_mort_change2",width="82%",height="70%"),
+                              tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
                               ) # End of inner Column (Column 1 top right)
                      
                    ), # End of inner FluidRow (Column1 Top)
@@ -285,15 +286,16 @@ ui <- fluidPage(
                              class="page2_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
-                             leafletOutput("geo_cluster_kmean",width="100%",height="80%")
-                               ), # End of inner Column (Bottom Left)
+                             leafletOutput("geo_cluster_kmean",width="100%",height="70%"),
+                           tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
+                         ), # End of inner Column (Bottom Left)
                          column(5, 
                            class = "page2_col page2_col1_bot_right", 
                            tags$div(
                              class="page2_col1_bot_right_title",
                              uiOutput("textDeathTrends")
                                    ), # End of title div container
-                             plotOutput("mort_line",width="100%",height="80%")
+                             plotOutput("mort_line",width="100%",height="70%")
                                 ) # End of inner Column (Bottom Right)
                      
                             ) #End of inner fluidRow (Column 1 Bottom)
@@ -332,7 +334,7 @@ ui <- fluidPage(
               class = "col1_title",
               uiOutput("textDeterminants2")
                     ), # End title div container
-            plotOutput("determinants_plot1", height = "100%", width = "100%",
+            plotOutput("determinants_plot1", height = "80%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
                 ), # End Column 1
           
@@ -345,7 +347,7 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col2_top",
               uiOutput("textBoxplotTitle"),
-              plotOutput("determinants_plot2",width="100%",height="85%")
+              plotOutput("determinants_plot2",height="85%")
                     ), #End of Column 2 Top
             
             tags$div(class = "hr"),
@@ -355,7 +357,7 @@ ui <- fluidPage(
               style = "position: relative",
               uiOutput("textScatterplotTitle"),
               uiOutput("determinants_plot3_county_name"),
-              plotOutput("determinants_plot3",width="100%",height="85%",
+              plotOutput("determinants_plot3",height="80%",
                          click = clickOpts("determinants_plot3_click"), hover = hoverOpts("determinants_plot3_hover"))
             ) # End of Column 2 Bottom
           ), # End of Column 2
