@@ -34,7 +34,9 @@ state_natl_death_rates <- readRDS("../data/CDC/state_natl_death_rates.Rds")
 # Separated out function definitions 10/01/2019
 #source("Loader_CDC.R")     # Added write_rds 9/27/2019
 source("CDC_Lib.R")         # Function definitions from Loader_CDC.R
+cdc.unimputed.data <- readRDS("../data/cdc.data.rds")
 cdc.data <- readRDS("../data/CDC/cdc.data.imputed.Rds")
+cdc.suppress <- readRDS("../data/CDC/cdc.suppress.Rds")
 # cdc.data <- readRDS("cdc.data.dev.rds")
 # need impute non zero death_rate
 # cdc.data$death_rate[cdc.data$death_rate < 1] <- 1

@@ -10,7 +10,7 @@ var root = svg
 function sequenceMap(index,tooltip,cause) {
   var clusters = [1,2,3,4,5,6]
   
-  var color = d3.scale.threshold()
+  var color = d3.scale.ordinal()
   .domain(clusters)
   .range(["#fed976", "#fd8d3c", "#fc4e2a", "#e31a1c", "#bd0026", "#800026"]);
   svg.selectAll('.state').transition()  //select all the state element and prepare for a transition to new values
@@ -44,7 +44,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
   var usa_states = data[3];
   var clusters = [1,2,3,4,5,6]
   var death_rate = d3.map();
-  var color = d3.scale.threshold()
+  var color = d3.scale.ordinal()
   .domain(clusters)
   .range(["#fed976", "#fd8d3c", "#fc4e2a", "#e31a1c", "#bd0026", "#800026"]);
   
@@ -133,8 +133,7 @@ r2d3.onRender(function(data, svg, width, height, options) {
     }})
   .text(function(d){
     return d;
-  })
-  ;
+  });
   
   var index = 0;        
   var timer;
