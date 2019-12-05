@@ -2545,23 +2545,25 @@ server <- function(input, output, session) {
     if(input$state_choice == "United States") {
       location_str <- "the United States" 
       tagList(
-        tags$h2(
+        tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
           paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str), 
           icon("info-circle")
         ),
+        tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
         NULL
       )
     }
     else {
     tagList(
-      tags$h2(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
         paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
+      tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
       NULL
     )
   }
@@ -2573,7 +2575,7 @@ server <- function(input, output, session) {
     if(input$state_choice == "United States") {
       location_str <- "the United States" 
       tagList(
-        tags$h2(
+        tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Plot of mortality rate versus factor. Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down  as risk decreases. Click on a county to see its name and where it is located on the map.",
           paste0(input$determinant_choice, " and Mortality Relationship for ", location_str), 
@@ -2584,12 +2586,13 @@ server <- function(input, output, session) {
     }
     else {
     tagList(
-      tags$h2(
+      tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Plot of mortality rate versus factor. Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down  as risk decreases. Click on a county to see its name and where it is located on the map.",
         paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
+      tags$h6("Plot of mortality rate versus ",input$determinant_choice,". Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down as risk decreases. Click on a county to see its name and where it is located on the map."),
       NULL
     )
   }
