@@ -2906,9 +2906,20 @@ server <- function(input, output, session) {
     county_indices <- which(state_map@data$NAME %in% c(county_name))
     
     if (length(county_indices) != 1){
-      return()
+      all.county = state_map@data$NAME
+      highest.score = - Inf
+      polygon = NULL
+      for (index in seq(1, length(all.county))){
+        county = all.county[[index]]
+        curr.score =  stringdist::stringsim(county, county_name)
+        if (curr.score > highest.score){
+          highest.score = curr.score
+          polygon = state_map@polygons[[index]]
+        }
+      }
+    } else {
+      polygon <- state_map@polygons[[county_indices[[1]]]] 
     }
-    polygon <- state_map@polygons[[county_indices[[1]]]]
     
     draw_border("geo_cluster_kmean", polygon)
     draw_border("geo_mort_change2", polygon)
