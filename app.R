@@ -556,15 +556,18 @@ ui <- fluidPage(
                                     Polytechnic Institute with support from the United Health Foundation and the 
                                     Rensselaer Institute for Data Exploration and Applications. MortalityMinder was directed by 
                                     Kristin P. Bennett and John S. Erickson."),
-                                 tags$h5("The MortalityMinder Team would like to thank Jim Hendler, Director, The Rensselaer IDEA,
-                                    and Curt Breneman, Dean of the School of Science at Rensselaer for their support
-                                    and encouragement."),
+                                 tags$h5("The MortalityMinder Team would like to thank our team of external mentors, including
+                                         Anne Yau, United Health Foundation; Dan Fabius, Continuum Health; Melissa Kamal, New York State
+                                         Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP)."),
+                                 # tags$h5("The MortalityMinder Team would also like to thank Jim Hendler, Director, The Rensselaer IDEA,
+                                 #    and Curt Breneman, Dean of the School of Science at Rensselaer for their support
+                                 #    and encouragement."),
                                  tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
-                                 tags$h5(a("MortalityMinder github repository",
+                                 tags$h5(a("MortalityMinder GitHub Repository (public)",
                                              href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank")),
-                                 tags$h5(a("MortalityMinder github Wiki",
+                                 tags$h5(a("MortalityMinder GitHub Wiki (public)",
                                            href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki", target="_blank"))
                           )
                    ) # Close inner fluidRow
@@ -1046,6 +1049,7 @@ server <- function(input, output, session) {
   output$determinants_plot1 <- renderPlot({
     
     # Sort by kendall.cor
+    # TODO: Cache this; don't re-generate! 
     kendall.cor.new <- kendall.cor() %>% 
       dplyr::filter(kendall_p < 0.1) %>% 
       dplyr::arrange(desc(kendall_cor)) %>% 
@@ -1104,9 +1108,9 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          title = "Most Associated Factors",
-          subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+          # title = "Most Associated Factors",
+          # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
+          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
@@ -2318,9 +2322,10 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
-          paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
+          paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
+        tags$h6("Kendall Correlation between factors and mortality risk clusters. Destructive factors are positively correlated; protective factors are negatively correlated. Click on dot to explore a factor in more detail."),
         NULL
       )
     }
@@ -2329,11 +2334,12 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
-        paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
-          icon("info-circle")
+        paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
+               icon("info-circle")
       ),
+      tags$h6("Kendall Correlation between factors and mortality risk clusters. Destructive factors are positively correlated; protective factors are negatively correlated. Click on dot to explore a factor in more detail."),
       NULL
-      )
+    )
     }
   })
 
@@ -2475,6 +2481,7 @@ server <- function(input, output, session) {
           paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
+        tags$h6("Kendall Correlation between factors and mortality risk clusters. Destructive factors are positively correlated; protective factors are negatively correlated. Click on dot to explore a factor in more detail."),
         NULL
       )
     }
@@ -2484,10 +2491,11 @@ server <- function(input, output, session) {
         style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
         paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
-          icon("info-circle")
+        icon("info-circle")
       ),
+      tags$h6("Kendall Correlation between factors and mortality risk clusters. Destructive factors are positively correlated; protective factors are negatively correlated. Click on dot to explore a factor in more detail."),
       NULL
-      )
+    )
     }
   })
   
@@ -2845,9 +2853,9 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          title = "Most Associated Factors",
-          subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019",
+          # title = "Most Associated Factors",
+          # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
+          caption = "Data Source:\n\t1.CDCWONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
