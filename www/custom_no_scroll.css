@@ -211,17 +211,35 @@
 }
 
 .page1_col1 h4 {
-  color: #f7f7f7;
-  font-size: 1.55vh; 
+  font-size: 1.55vh;
+  color: white;
 }
 
 .page1_col1 h5 {
-  color: #f7f7f7;
+  font-size: 1.55vh;
+  color: white;
+}
+
+.page1_col1 h6 {
+  font-size: 1.55vh;
+  color: white;
+}
+
+.page1_col2 h4 {
+  color: black;
+  font-size: 1.55vh; 
+}
+
+.page1_col2 h5 {
+  color: black;
   font-size: 1.5vh; 
 }
 
-.page1_col2 {
+.page1_col2 h6 {
+  color: black;
+  font-size: 1.3vh; 
 }
+
 
 .page1_col2_top{
   width:100%;
@@ -326,6 +344,26 @@
   display:block;
 }
 
+.page2 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
+.page2 h4 {
+  color: black;
+  font-size: 1.5vh; 
+}
+
+.page2 h5 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page2 h6 {
+  color: black;
+  font-size: 1.3vh; 
+}
+
 /********Page 3 Styles**********/
 .page3 {}
 
@@ -370,19 +408,50 @@
   display:block;
 }
 
+.page3 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
+.page3 h4 {
+  color: black;
+  font-size: 1.5vh; 
+}
+
+.page3 h5 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page3 h6 {
+  color: black;
+  font-size: 1.3vh; 
+}
+
 /********Page 4 Styles**********/
 
 .page4 {
   height:95%;
 }
 
+.page4 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
 .page4 h4 {
-  font-size: 1.75vh;
+  color: black;
+  font-size: 1.4vh; 
 }
 
 .page4 h5 {
-  font-size: 1.25vh;
-  
+  color: black;
+  font-size: 1.3vh; 
+}
+
+.page4 h6 {
+  color: black;
+  font-size: 1.2vh; 
 }
 
 /********Shiny Styles**********/
