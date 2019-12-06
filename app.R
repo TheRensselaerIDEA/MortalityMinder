@@ -88,7 +88,7 @@ ui <- fluidPage(
       inputId = "state_choice",
       label = h4("State"), 
       choices = state.list,
-      selected = "PA",
+      selected = "OH",
       options = list(
         `live-search` = TRUE,
         "dropup-auto" = FALSE
