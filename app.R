@@ -137,14 +137,11 @@ ui <- fluidPage(
                       tags$h5(tags$i("Click << and >> for State and Factor views")
                               ),
                  tags$br(),
-                 # fluidRow(class="IDEA_Logo_Wrapper",
                           tags$img(
-                            # class="rensselaer_logo",
-                            src="RPIlogo.png", 
-                            width="80%", 
-                            style="bottom: 0; left: 0;")
-                 # )
-                 
+                            class="IDEA_Logo_Wrapper2",
+                            width = "80%",
+                            src="RPIlogo.png",
+                            alt = "Institute of Data Exploration and Applications")
           ), # End Column 1
           tags$div(
             class = "vl"
@@ -209,7 +206,8 @@ ui <- fluidPage(
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
-                    src = "Despair/1.png"
+                    src = "Despair/1.png",
+                    alt = "US National map plotting deaths of despair at the county level."
                     )
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
@@ -518,7 +516,9 @@ ui <- fluidPage(
                               class="Idea_Logo",
                               src="IDEA_logo_500.png", 
                               width="100%", 
-                              style="bottom: 0; left: 0;")
+                              style="bottom: 0; left: 0;",
+                              alt = "Institute of Data Exploration and Applications"
+                              )
                    )
                    ), # Close column
                    column(3, tags$h4("DESIGN AND DEVELOPMENT",align="center"),  offset=1,
