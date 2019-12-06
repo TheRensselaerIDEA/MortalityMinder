@@ -209,9 +209,8 @@
   color:  #565254;
 }
 
+
 .page1_col1_heading h3{
-  line-height: 1.3em;
-  margin-bottom: 0;
   padding: 4%;
 }
 
@@ -220,38 +219,13 @@
 }
 
 
-.page1_col1 h4 {
+.page1_col1 h4, h5, h6, i {
   color: white;
 }
 
 .page1_col1 li {
   margin-left: 3vh;
 }
-
-.page1_col1 h5 {
-  color: white;
-}
-
-.page1_col1 h6 {
-  /*font-size: 1.55vh;*/
-  color: white;
-}
-
-.page1_col2 h4 {
-  color: black;
-  /*font-size: 1.55vh; */
-}
-
-.page1_col2 h5 {
-  color: black;
-  /* font-size: 1.5vh; */
-}
-
-.page1_col2 h6 {
-  color: black;
- /* font-size: 1.3vh; */ 
-}
-
 
 .page1_col2_top{
   width:100%;
@@ -362,6 +336,7 @@
   display:block;
 }
 
+/*
 .page2_col2 h3 {
   color: black;
   font-size: 1.6vh; 
@@ -396,6 +371,7 @@
   color: black;
   font-size: 1vh; 
 }
+*/
 
 /********Page 3 Styles**********/
 .page3 {}
@@ -444,6 +420,7 @@
   display:block;
 }
 
+/*
 .page3 h3 {
   color: black;
   font-size: 1.6vh; 
@@ -463,6 +440,7 @@
   color: black;
   font-size: 1vh; 
 }
+*/
 
 /********Page 4 Styles**********/
 
@@ -725,62 +703,70 @@ div.form-group{
 p, blockquote, pre, .radio-inline{
  font-family: 'Work Sans', sans-serif;
  color: #565254;
- font-size: 12px;
+ font-size: 1.2vh;
 }
+
+
 
 h1, h2, h3, h4, h5, h6 {
 font-family: urw-din, sans-serif;
 font-weight: 200;
 font-style: normal;
-color: #565254;
+}
+
+h1, h2, h3, h4 {
+  color: ##2b292a;
+}
+
+h5, h6 {
+  color: #565254;
 }
 
 h1{
- font-size: 22px;
+ font-size: 2.1vh;
 
 }
 
 h2{
- font-size: 18px;
+ font-size: 1.9vh;
 
 }
 
 h3{
- font-size: 16px;
- line-height: 1.5em;
+ font-size: 1.7vh;
 }
 
 h4{
- font-size: 14px;
+ font-size: 1.5vh;
  line-height: 1.4em;
  font-weight: 400;
 }
 
 h5{
- font-size: 12px;
+ font-size: 1.3vh;
 }
 
 h6{
- font-size: 10px;
+ font-size: 1.1vh;
 }
 
 .data_source_footnote h6{
-   font-size: 8px;
+   font-size: 0.8vh;
 }
 
 
 blockquote {
-  font-size: 21px;
-  line-height: 30px; 
+  font-size: 2vh;
+  line-height: 2vh; 
 }
 
 pre {
-  font-size: 13px;
-  line-height: 18.5714px; 
+  font-size: 1.3vh;
+  line-height: 1.3vh; 
 }
 
 #textDescription p{
-  font-size: 10px;
+  font-size: 1.1vh;
 }
 /*
 #textMortFactsClosing h4{
@@ -793,80 +779,46 @@ li h4{
   
 }
 
-@media screen and (max-height: 800px) {
-  h1 {
-    font-size:20px;
-  }
-  h2 {
-    font-size: 16px;
-  }
-  
-  h3 {
-    font-size: 14px;
-  }
-  h4 {
-    font-size: 12px;
-  }
-  h5, h6 {
-    font-size: 11px;
-  }
-
-  blockquote {
-  font-size: 19px;
-  line-height: 20px; 
-}
-
-pre {
-  font-size: 12px;
-  line-height: 12px; 
-}
-
-
-
-p, blockquote, pre, .radio-inline{
- font-size: 10px;
-}
-#textDescription p{
-  font-size: 9px;
-}
-  
-}
-
 @media screen and (min-height: 1000px) {
   h1 {
-    font-size:32px;
+    font-size:2.5vh;
   }
   h2 {
-    font-size: 26px;
+    font-size: 2.2vh;
   }
   
   h3 {
-    font-size: 24px;
+    font-size: 2.0vh;
   }
   h4 {
-    font-size: 20px;
+    font-size: 1.8vh;
   }
-  h5, h6 {
-    font-size: 18px;
+  h5 {
+    font-size: 1.6vh;
   }
-
+  
+  h6 {
+    font-size: 1.4vh;
+  }
   blockquote {
-  font-size: 31.5px;
-  line-height: 30px; 
+  font-size: 2.4vh;
+  line-height: 2vh; 
 }
 
 pre {
-  font-size: 19.5px;
-  line-height: 18.5714px; 
+  font-size: 1.7vh;
+  line-height: 1.5vh; 
 }
 
-
+.data_source_footnote h6{
+   font-size: 1vh;
+}
 
 p, blockquote, pre, .radio-inline{
- font-size: 18px;
+ font-size: 1.4vh;
 }
 #textDescription p{
-  font-size: 15px;
+  font-size: 1.5vh;
 }
 }
 
