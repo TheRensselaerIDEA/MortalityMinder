@@ -250,10 +250,6 @@ ui <- fluidPage(
                      class="page2_col page2_col1_top",
                        column(4,
                               class = "page2_col page2_col1_top_left",
-                              # tags$div(
-                              #   title="The mortality rate used in MortalityMinder is the number of people per 100,000 that died prematurely in a given county during a three year period. A premature death is considered anyone that dies between the ages of 25 to 64 as a result of the selected cause.",
-                              #   tags$h2("Exploring Causes of Premature Death",  icon("info-circle"))
-                              #         ), # End of Heading Conrainer
                               uiOutput("textDescription")
                               
                              ), # End of inner Column (Column 1 Top Left)
@@ -271,7 +267,10 @@ ui <- fluidPage(
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
                               leafletOutput("geo_mort_change2",width="82%",height="70%"),
-                              tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
+                              tags$div(
+                                class="data_source_footnote",
+                                tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
+                                )
                               ) # End of inner Column (Column 1 top right)
                      
                    ), # End of inner FluidRow (Column1 Top)
@@ -287,7 +286,10 @@ ui <- fluidPage(
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
                              leafletOutput("geo_cluster_kmean",width="100%",height="70%"),
-                           tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
+                           tags$div(
+                             class="data_source_footnote",
+                             tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
+                           )
                          ), # End of inner Column (Bottom Left)
                          column(5, 
                            class = "page2_col page2_col1_bot_right", 
@@ -347,7 +349,7 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col2_top",
               uiOutput("textBoxplotTitle"),
-              plotOutput("determinants_plot2",height="85%")
+              plotOutput("determinants_plot2",height="80%")
                     ), #End of Column 2 Top
             
             tags$div(class = "hr"),
@@ -404,10 +406,14 @@ ui <- fluidPage(
                 ),
                 uiOutput("county_selector")
               ), # End of pickerInput container
-              leafletOutput("determinants_plot5"),
+              leafletOutput("determinants_plot5", width="100%",height="70%"),
               fluidRow(
                 class = "page3_col3_county_desc",
                 uiOutput("county_desc")
+              ),
+              tags$div(
+                class="data_source_footnote",
+                HTML("<h6 style='text-align: right;'>Data Source: County Health Rankings 2019<br>Analysis: The Rensselaer IDEA</h6>")
               )
             ) # End of inner Column 3 bottom
 
@@ -2376,8 +2382,8 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="This plot represents the average midlife death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
-          paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str), 
-          icon("info-circle")
+          paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str)
+          # , icon("info-circle")
         ),
         tags$h6("The average midlife death trends for each cluster; the national average is shown in blue."),
         NULL
@@ -2388,8 +2394,8 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average midlife death trends for each cluster. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
-        paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice))), 
-        icon("info-circle")
+        paste0(names(which(cause.list == input$death_cause)), " Trends for ", names(which(state.list == input$state_choice)))
+        # , icon("info-circle")
       ),
       tags$h6("The average midlife death trends for each cluster; the national average is shown in blue. Click on any map to see the trend for a specific county."),
       NULL
@@ -2405,8 +2411,8 @@ server <- function(input, output, session) {
       tagList(tags$h3(
         title="This plot represents the distribution of midlife mortality rates (ages 25-64) for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ",
-              location_str, " for ", input$year_selector),
-        icon("info-circle")
+              location_str, " for ", input$year_selector)
+        # , icon("info-circle")
       ),
       tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",location_str),
       NULL
@@ -2416,8 +2422,8 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         title="This plot represents the distribution of midlife mortality rates (ages 25-64) for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector), 
-        icon("info-circle")
+        paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector)
+        # , icon("info-circle")
       ),
       tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",names(which(state.list == input$state_choice))),
       NULL
@@ -2434,8 +2440,8 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="This plot represents the geographic distribution of risk clusters for the selected state.",
-          paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ",location_str), 
-          icon("info-circle")
+          paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ",location_str)
+          # ,icon("info-circle")
         ),
         tags$h6("Geographic distribution of risk clusters for ",location_str,". Darker clusters indicate higher mortality risk."),
         NULL
@@ -2446,8 +2452,8 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ", names(which(state.list == input$state_choice))), 
-        icon("info-circle")
+        paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ", names(which(state.list == input$state_choice)))
+        # ,icon("info-circle")
       ),
       tags$h6("Geographic distribution of risk clusters for ",names(which(state.list == input$state_choice)),". Darker clusters indicate higher mortality risk."),
       NULL
@@ -2462,12 +2468,6 @@ server <- function(input, output, session) {
     }
     else {
     tagList(
-      # tags$h3(
-      #   style = "padding-right: 20px; padding-left: 20px",
-      #   title="This plot represents the geographic distribution of the selected factor for the selected state.",
-      #   paste0(input$determinant_choice, " Distribution for ", names(which(state.list == input$state_choice))), 
-      #   icon("info-circle")
-      # ),
       tags$h4("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
       NULL
     )
@@ -2547,8 +2547,8 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
-          paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str), 
-          icon("info-circle")
+          paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str)
+          # , icon("info-circle")
         ),
         tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
         NULL
@@ -2559,8 +2559,8 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
-        paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice))), 
-        icon("info-circle")
+        paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice)))
+        # ,icon("info-circle")
       ),
       tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
       NULL
@@ -2577,8 +2577,8 @@ server <- function(input, output, session) {
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
           title="Plot of mortality rate versus factor. Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down  as risk decreases. Click on a county to see its name and where it is located on the map.",
-          paste0(input$determinant_choice, " and Mortality Relationship for ", location_str), 
-          icon("info-circle")
+          paste0(input$determinant_choice, " and Mortality Relationship for ", location_str)
+          # ,icon("info-circle")
         ),
         NULL
       )
@@ -2588,8 +2588,8 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="Plot of mortality rate versus factor. Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down  as risk decreases. Click on a county to see its name and where it is located on the map.",
-        paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice))), 
-        icon("info-circle")
+        paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice)))
+        # ,icon("info-circle")
       ),
       tags$h6("Plot of mortality rate versus ",input$determinant_choice,". Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down as risk decreases. Click on a county to see its name and where it is located on the map."),
       NULL
