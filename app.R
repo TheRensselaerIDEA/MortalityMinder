@@ -1218,8 +1218,8 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice#,
-          #caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
          
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
@@ -1249,8 +1249,8 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice#,
-          #caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice,
+          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
           
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
