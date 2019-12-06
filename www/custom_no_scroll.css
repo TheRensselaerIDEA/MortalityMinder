@@ -379,7 +379,7 @@
 
 .page2_col2 h6 {
   color: black;
-  font-size: 1.3vh; 
+  font-size: 1vh; 
 }
 
 .page2_col2_bottom h4 {
@@ -394,7 +394,7 @@
 
 .page2_col2_bottom h6 {
   color: black;
-  font-size: 1.3vh; 
+  font-size: 1vh; 
 }
 
 /********Page 3 Styles**********/
@@ -461,7 +461,7 @@
 
 .page3 h6 {
   color: black;
-  font-size: 1.3vh; 
+  font-size: 1vh; 
 }
 
 /********Page 4 Styles**********/
@@ -720,6 +720,7 @@ div.form-group{
  
 }
 
+
 /********** FONTS ***********/
 p, blockquote, pre, .radio-inline{
  font-family: 'Work Sans', sans-serif;
@@ -755,10 +756,17 @@ h4{
  font-weight: 400;
 }
 
-h5, h6{
+h5{
  font-size: 12px;
 }
 
+h6{
+ font-size: 10px;
+}
+
+.data_source_footnote h6{
+   font-size: 8px;
+}
 
 
 blockquote {
@@ -783,7 +791,6 @@ pre {
 li h4{
   margin-bottom: 0 px;
   
-
 }
 
 @media screen and (max-height: 800px) {
