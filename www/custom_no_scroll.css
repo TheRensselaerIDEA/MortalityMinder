@@ -110,7 +110,7 @@
   display:block;
   top:-100px;
   height:50px;
-  width:500px;
+  width:550px;
   background-color:#565254;
   float:right;
   margin-right:4%;
@@ -123,25 +123,25 @@
 
 #input_text1 {
   color:#f7f7f7;
-  width:34px;
+  width:113px;
   height:5px;
   border:none;
   margin:0;
   display:block;
   float:left;
-  margin-top:8px;
+  margin-top:3px;
   margin-left:40px;
 }
 
 #input_text2 {
   color:#f7f7f7;
-  width:91px;
+  width:43px;
   height:5px;
   border:none;
   margin:0;
   display:block;
   float:left;
-  margin-top:8px;
+  margin-top:3px;
 }
 
 .nav_bar_blank {
@@ -851,11 +851,11 @@ li h4{
   }
 
   #input_text1 {
-    font-size: 12px;
+    font-size: 16px;
   }
   
   #input_text2 {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   blockquote {
@@ -898,11 +898,11 @@ p, blockquote, pre, .radio-inline{
   }
 
   #input_text1 {
-    font-size: 12px;
+    font-size: 16px;
   }
   
   #input_text2 {
-    font-size: 12px;
+    font-size: 16px;
   }
   
   blockquote {

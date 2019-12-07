@@ -69,7 +69,7 @@ ui <- fluidPage(
 
     tags$div(
       class = "input",
-      tags$h5(id = "input_text1", "State:"),
+      tags$h3(id = "input_text1", "Cause of Death:"),
       pickerInput(
         inputId = "death_cause",
         label = h4("Cause of Death"),
@@ -79,7 +79,7 @@ ui <- fluidPage(
           "dropup-auto" = FALSE
         )
       ),
-      tags$h5(id = "input_text2", "Cause of Death:"),
+      tags$h3(id = "input_text2", "State:"),
       pickerInput(
         inputId = "state_choice",
         label = h4("State"), 
