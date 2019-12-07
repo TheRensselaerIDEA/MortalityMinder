@@ -110,7 +110,7 @@
   display:block;
   top:-100px;
   height:50px;
-  width:550px;
+  width:600px;
   background-color:#565254;
   float:right;
   margin-right:4%;
@@ -542,7 +542,7 @@
 
 .shiny-input-container:not(.shiny-input-container-inline){
   max-width: none;
-  width: 147px;
+  width: 179px;
   display:block;
   float:left;
 }
