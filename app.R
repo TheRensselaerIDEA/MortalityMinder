@@ -399,7 +399,7 @@ ui <- fluidPage(
               ),
               tags$div(
                 class="data_source_footnote",
-                HTML("<h6 style='text-align: right;'>Data Source:<br>1. Mortality Data: CDC Wonder Detailed Mortality<br>2. Feature Data: County Health Rankings<br>3. Analysis: The Rensselaer IDEA</h6>")
+                HTML("<h6 style='text-align: right;'>Mortality Data: CDC Wonder Detailed Mortality<br>Feature Data: County Health Rankings<br>Analysis: The Rensselaer IDEA</h6>")
               )
             ) # End of inner Column 3 bottom
 
@@ -1642,7 +1642,7 @@ server <- function(input, output, session) {
         labs(
           fill = "Cluster", 
           color = "Cluster",
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) +
         guides(
           color = guide_legend(reverse = T)
@@ -1689,7 +1689,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+               caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
@@ -1730,7 +1730,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1. Mortality Data: CDC Wonder Detailed Mortality\n\t2.Feature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
+               caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
@@ -1771,7 +1771,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1. Mortality Data: CDC Wonder Detailed Mortality\n\t2.Feature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
+               caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot 
@@ -1806,7 +1806,7 @@ server <- function(input, output, session) {
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster", 
              color = "Cluster",
-             caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+             caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) + 
         ylab("Average Midlife Deaths per 100,000") 
       
