@@ -606,7 +606,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
-      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
+      assign("state_map", readRDS(paste("shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
         state_abbr == input$state_choice,
@@ -636,7 +636,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
-      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
+      assign("state_map", readRDS(paste("shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.unimputed.data %>% dplyr::filter(
         death_cause == input$death_cause,
         state_abbr == input$state_choice,
