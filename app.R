@@ -66,7 +66,6 @@ ui <- fluidPage(
         #   ),
         "MortalityMinder")
       ),
-
     tags$div(
       class = "input",
       tags$h3(id = "input_text1", "Cause of Death:"),
@@ -88,11 +87,11 @@ ui <- fluidPage(
         options = list(
           `live-search` = TRUE,
           "dropup-auto" = FALSE
-        )
+        )      
       )
     )
     
-    
+
     
     
   ),
