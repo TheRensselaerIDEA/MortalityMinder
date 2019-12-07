@@ -2,6 +2,7 @@ setwd("init")
 source("Curl_fixer.R")
 source("Librarian.R")
 library(withr)
+library(stringdist)
 # Separated out function definitions 10/01/2019
 #source("Loader_CHR2019.R") # Added write_rds 9/27/2019
 source("CHR2019_Lib.R")     # Function definitions from Loader_CHR2019.R
