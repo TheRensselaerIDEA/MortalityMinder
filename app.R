@@ -2175,7 +2175,7 @@ server <- function(input, output, session) {
       tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
       tags$p("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
       tags$p("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
-      tags$p("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see county names and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
+      tags$p("Darker colors indicate increased mortality risk. Hover to see information and definitions. Click on maps to see county names and mortality rates. Zoom maps with buttons or mouse. Click on right or left to learn more."),
       NULL
     )
   })
