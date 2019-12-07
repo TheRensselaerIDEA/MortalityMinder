@@ -14,8 +14,8 @@ deps <- list("topojson.min.js",
 
 ui <- fluidPage(
   # include css
-  tags$head(includeCSS("www/custom_no_scroll.css")),
-  tags$head(includeCSS("www/geoattr.css")),
+  tags$head(includeCSS("../www/custom_no_scroll.css")),
+  tags$head(includeCSS("../www/geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -54,8 +54,8 @@ data_to_json <- function(data) {
 
 server <- function(input, output) {
   output$d3 <- renderD3({
-    data_geo <- jsonlite::read_json("www/all-counties.json")
-    usa_states <- jsonlite::read_json("www/usa-states.json")
+    data_geo <- jsonlite::read_json("../www/all-counties.json")
+    usa_states <- jsonlite::read_json("../www/usa-states.json")
     
     causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio", "All Cause")
     
@@ -77,11 +77,11 @@ server <- function(input, output) {
 
       map <- r2d3(data = list(data_geo,data_to_json(dataset),data_to_json(cause), usa_states),
                   d3_version = 3,
-                  dependencies = "topojson.min.js",
-                  css = "www/geoattr.css",
-                  script = "www/d3_geo_animation.js")
+                  dependencies = "../www/topojson.min.js",
+                  css = "../www/geoattr.css",
+                  script = "../www/d3_geo_animation.js")
       
-      address <- paste0("www/National_geo_image/",cause)
+      address <- paste0("../www/National_geo_image/",cause)
       address <- paste0(address,".png")
       
       print(paste("Saving", cause))
