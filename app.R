@@ -2328,7 +2328,7 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2340,7 +2340,7 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2478,7 +2478,7 @@ server <- function(input, output, session) {
           paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2490,7 +2490,7 @@ server <- function(input, output, session) {
         paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
