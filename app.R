@@ -260,11 +260,7 @@ ui <- fluidPage(
                                            choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
-                              leafletOutput("geo_mort_change2",width="82%",height="70%"),
-                              tags$div(
-                                class="data_source_footnote",
-                                tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
-                                )
+                              leafletOutput("geo_mort_change2",width="82%",height="75%")
                               ) # End of inner Column (Column 1 top right)
                      
                    ), # End of inner FluidRow (Column1 Top)
@@ -279,11 +275,7 @@ ui <- fluidPage(
                              class="page2_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
-                             leafletOutput("geo_cluster_kmean",width="100%",height="70%"),
-                           tags$div(
-                             class="data_source_footnote",
-                             tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
-                           )
+                             leafletOutput("geo_cluster_kmean",width="100%",height="75%")
                          ), # End of inner Column (Bottom Left)
                          column(5, 
                            class = "page2_col page2_col1_bot_right", 
@@ -330,7 +322,7 @@ ui <- fluidPage(
               class = "col1_title",
               uiOutput("textDeterminants2")
                     ), # End title div container
-            plotOutput("determinants_plot1", height = "80%", width = "100%",
+            plotOutput("determinants_plot1", height = "95%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
                 ), # End Column 1
           
@@ -407,7 +399,7 @@ ui <- fluidPage(
               ),
               tags$div(
                 class="data_source_footnote",
-                HTML("<h6 style='text-align: right;'>Data Source: County Health Rankings 2019<br>Analysis: The Rensselaer IDEA</h6>")
+                HTML("<h6 style='text-align: right;'>Data Source:<br>1. Mortality Data: CDC Wonder Detailed Mortality<br>2. Feature Data: County Health Rankings<br>3. Analysis: The Rensselaer IDEA</h6>")
               )
             ) # End of inner Column 3 bottom
 
@@ -1106,9 +1098,6 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          # title = "Most Associated Factors",
-          # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
@@ -1214,8 +1203,7 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
          
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
@@ -1245,9 +1233,7 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
-          
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
@@ -1284,8 +1270,7 @@ server <- function(input, output, session) {
         geom_point(aes(fill = cluster)) + 
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
@@ -1319,8 +1304,7 @@ server <- function(input, output, session) {
         stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
@@ -1352,8 +1336,7 @@ server <- function(input, output, session) {
         #stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
@@ -1747,7 +1730,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+               caption = "Data Sources:\n\t1. Mortality Data: CDC Wonder Detailed Mortality\n\t2.Feature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
@@ -1788,7 +1771,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+               caption = "Data Sources:\n\t1. Mortality Data: CDC Wonder Detailed Mortality\n\t2.Feature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot 
@@ -2020,10 +2003,7 @@ server <- function(input, output, session) {
                          #point.padding = 0.5,
                          direction = "both",
                          xlim = c(1.5, 5.5),
-                         show.legend = FALSE) +
-        labs(
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
-        )
+                         show.legend = FALSE)
       
     } else {
       state_data <- dplyr::filter(
@@ -2112,10 +2092,7 @@ server <- function(input, output, session) {
                                        xlim = c(1.5, 5.5),
                                        ylim = ylim,
                                        show.legend = FALSE) + 
-                      scale_fill_manual(values = colors) +
-        labs(
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
-        )
+                      scale_fill_manual(values = colors)
                                        
                       #geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = '#565254')
     }
@@ -2351,7 +2328,7 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
         NULL
       )
     }
@@ -2363,7 +2340,7 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
       NULL
     )
     }
@@ -2501,7 +2478,7 @@ server <- function(input, output, session) {
           paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
         NULL
       )
     }
@@ -2513,7 +2490,7 @@ server <- function(input, output, session) {
         paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h5>"),
       NULL
     )
     }
@@ -2876,14 +2853,11 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          # title = "Most Associated Factors",
-          # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
           color = "Relationship"
-         ) + 
+        ) +
         theme_minimal() +
         theme.text() + 
         theme.background() + 
