@@ -2146,13 +2146,13 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h2(
+      tags$h3(
         paste0("State View: ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
-      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$p("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
-      tags$p("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
-      tags$p("Darker colors indicate increased mortality risk. Hover to see information and definitions. Click on maps to see county names and mortality rates. Zoom maps with buttons or mouse. Click on right or left to learn more."),
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$h4("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
+      tags$h4("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
+      tags$h4("Darker colors indicate increased mortality risk. Hover to see information and definitions. Click on maps to see county names and mortality rates. Zoom maps with buttons or mouse. Click on right or left to learn more."),
       NULL
     )
   })
