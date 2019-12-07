@@ -66,36 +66,33 @@ ui <- fluidPage(
         #   ),
         "MortalityMinder")
       ),
+
     tags$div(
-      class = "nav_container",
-    
-    tags$div(
-      class = "prompt_text",
-      # "Select cause of death and state: "
-      "Select State and Cause of Death:  "
-    ),
-    
-    pickerInput(
-      inputId = "death_cause",
-      label = h4("Cause of Death"),
-      choices = cause.list,
-      choicesOpt = list(
-        subtext = c("Self-Harm and some other causes"),
-        "dropup-auto" = FALSE
-      )
-    ),
-    pickerInput(
-      inputId = "state_choice",
-      label = h4("State"), 
-      choices = state.list,
-      selected = "OH",
-      options = list(
-        `live-search` = TRUE,
-        "dropup-auto" = FALSE
+      class = "input",
+      tags$h5(id = "input_text1", "State:"),
+      pickerInput(
+        inputId = "death_cause",
+        label = h4("Cause of Death"),
+        choices = cause.list,
+        choicesOpt = list(
+          subtext = c("Self-Harm and some other causes"),
+          "dropup-auto" = FALSE
+        )
+      ),
+      tags$h5(id = "input_text2", "Cause of Death:"),
+      pickerInput(
+        inputId = "state_choice",
+        label = h4("State"), 
+        choices = state.list,
+        selected = "OH",
+        options = list(
+          `live-search` = TRUE,
+          "dropup-auto" = FALSE
+        )
       )
     )
     
-    )
+    
     
     
   ),
