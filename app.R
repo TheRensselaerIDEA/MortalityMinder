@@ -1637,7 +1637,7 @@ server <- function(input, output, session) {
     
     if (input$state_choice == "United States"){
       
-      total.data <- mort.avg.cluster.ord()
+      total.data <- rbind(mort.avg.cluster.ord(), national.mean())
       total.data$cluster[total.data$cluster == 1] <- "1: Low"
       total.data$cluster[total.data$cluster == 6] <- "6: High"
       
