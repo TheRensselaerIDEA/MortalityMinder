@@ -172,7 +172,7 @@ html.fp-enabled,
     height: 5px;
     width: 5px;
     border: 0;
-    background: #333;
+    background: rgb(5,113,176);
     left: 50%;
     top: 50%;
     margin: -2.5px 0 0 -2.5px;
