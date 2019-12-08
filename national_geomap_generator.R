@@ -14,8 +14,8 @@ deps <- list("topojson.min.js",
 
 ui <- fluidPage(
   # include css
-  tags$head(includeCSS("~/data/AHRQ_Challenge/App_develop/custom_no_scroll.css")),
-  tags$head(includeCSS("~/data/AHRQ_Challenge/Code_by_ziyi/git2/MortalityMinder/www/geoattr.css")),
+  tags$head(includeCSS("www/custom_no_scroll.css")),
+  tags$head(includeCSS("www/geoattr.css")),
   tags$head(
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
@@ -60,6 +60,8 @@ server <- function(input, output) {
     causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio", "All Cause")
     
     for(cause in causes_of_death){
+      print(paste("Starting", cause))
+      
       if (cause == "Cardio") {
         cause = paste(cause, "vascular", sep = "")
       }
@@ -82,8 +84,12 @@ server <- function(input, output) {
       address <- paste0("www/National_geo_image/",cause)
       address <- paste0(address,".png")
       
+      print(paste("Saving", cause))
+      
       save_d3_png(map, address, width = 992,
                   height = 544, delay = 1, zoom = 1)
+      
+      print(paste("End", cause))
     }
     print("finished generating map")
   })

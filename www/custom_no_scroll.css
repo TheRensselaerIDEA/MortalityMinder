@@ -10,6 +10,11 @@
     src: url("AboveDemoRegular-lJMd.ttf") format("opentype");
 }
 
+/*** icon color ***/
+.fa {
+  color: #0571b0;
+}
+
 /******Framework Formatting*******/
 
 .container-fluid {
@@ -95,16 +100,56 @@
   position:fixed;
   /*top:20px;*/
   width:100%;
-  height:60px;
+  max-height:60px;
+  height:20%;
   margin-bottom:0;
   opacity:1;
   
 }
 
+.input {
+  display:block;
+  top:-100px;
+  height:50px;
+  width:600px;
+  background-color:#565254;
+  float:right;
+  margin-right:4%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding-top:10px;
+  position:relative;
+  top:0px;
+}
+
+#input_text1 {
+  color:#f7f7f7;
+  width:113px;
+  height:5px;
+  border:none;
+  margin:0;
+  display:block;
+  float:left;
+  margin-top:3px;
+  margin-left:40px;
+}
+
+#input_text2 {
+  color:#f7f7f7;
+  width:43px;
+  height:5px;
+  border:none;
+  margin:0;
+  display:block;
+  float:left;
+  margin-top:3px;
+}
+
 
 .nav_bar_blank {
   width:100%;
-  height:50px;
+  height: 16%;
+  max-height:50px;
   float:left;
   display:block;
 }
@@ -161,12 +206,20 @@
 .landing_page_map {
   display: block;
   margin: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 75%;
+}
+
+.nation_state_infographic {
+  height: 75%;
 }
 
 .page1 {}
 
 .page1_title {
-  padding: 10px;
+  padding: 3px;
 }
 
 .page1_col{
@@ -195,7 +248,6 @@
 }
 
 .page1_col1_heading h3{
-  font-size: 2.2vh;
   line-height: 1.3em;
   margin-bottom: 0;
   padding: 4%;
@@ -205,18 +257,39 @@
   margin-bottom: 4vh;
 }
 
+
 .page1_col1 h4 {
-  color: #f7f7f7;
-  font-size: 1.55vh; 
+  color: white;
+}
+
+.page1_col1 li {
+  margin-left: 3vh;
 }
 
 .page1_col1 h5 {
-  color: #f7f7f7;
-  font-size: 1.5vh; 
+  color: white;
 }
 
-.page1_col2 {
+.page1_col1 h6 {
+  /*font-size: 1.55vh;*/
+  color: white;
 }
+
+.page1_col2 h4 {
+  color: black;
+  /*font-size: 1.55vh; */
+}
+
+.page1_col2 h5 {
+  color: black;
+  /* font-size: 1.5vh; */
+}
+
+.page1_col2 h6 {
+  color: black;
+ /* font-size: 1.3vh; */ 
+}
+
 
 .page1_col2_top{
   width:100%;
@@ -227,6 +300,10 @@
   width:45%;
   float:left;
   display:block;
+}
+
+.page1_col2_graphics_row {
+  
 }
 
 .page1_col2_middle_left{
@@ -277,6 +354,7 @@
 
 .page2_col1_top_right {
   width: 60%;
+  height: 80%;
 }
 
 
@@ -310,6 +388,7 @@
 
 .page2_col2 {
   width:30%;
+  height: 90%;
 }
 
 .page2_col2_title {}
@@ -319,6 +398,41 @@
   height:95%;
   float:left;
   display:block;
+}
+
+.page2_col2 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
+.page2_col2 h4 {
+  color: black;
+  font-size: 1.5vh; 
+}
+
+.page2_col2 h5 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page2_col2 h6 {
+  color: black;
+  font-size: 1vh; 
+}
+
+.page2_col2_bottom h4 {
+  color: black;
+  font-size: 1.5vh; 
+}
+
+.page2_col2_bottom h5 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page2_col2_bottom h6 {
+  color: black;
+  font-size: 1vh; 
 }
 
 /********Page 3 Styles**********/
@@ -331,13 +445,16 @@
   display:block;  
 }
 
-.page3_col1 {}
+.page3_col1 {
+  height:100%;
+}
 
 .page3_col2 {
   width:calc(100% / 3 - 1px);
 }
 
 .page3_col3 {
+  height: 80%;
   width:calc(100% / 3 - 1px);
 }
 
@@ -365,20 +482,53 @@
   display:block;
 }
 
+.page3 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
+.page3 h4 {
+  color: black;
+  font-size: 1.5vh; 
+}
+
+.page3 h5 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page3 h6 {
+  color: black;
+  font-size: 1vh; 
+}
+
 /********Page 4 Styles**********/
 
 .page4 {
   height:95%;
 }
 
+/*
+.page4 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
 .page4 h4 {
-  font-size: 1.75vh;
+  color: black;
+  font-size: 1.4vh; 
 }
 
 .page4 h5 {
-  font-size: 1.25vh;
-  
+  color: black;
+  font-size: 1.3vh; 
 }
+
+.page4 h6 {
+  color: black;
+  font-size: 1.2vh; 
+}
+*/
 
 /********Shiny Styles**********/
 
@@ -394,7 +544,11 @@
 
 .shiny-input-container:not(.shiny-input-container-inline){
   max-width: none;
-  width: 30%;
+  width: 179px;
+  display:block;
+  float:left;
+
+  
 }
 
 .shiny-input-container br {
@@ -431,7 +585,6 @@
     background: #f7f7f7;
     color: #565254;
     width: 100%;
-    font-size: 1.2em;
   }
   
  .radio-inline {
@@ -609,11 +762,12 @@ div.form-group{
  
 }
 
+
 /********** FONTS ***********/
 p, blockquote, pre, .radio-inline{
  font-family: 'Work Sans', sans-serif;
- color: #cccccc;
- font-size: 1.0vh;
+ color: #565254;
+ font-size: 12px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -621,36 +775,39 @@ font-family: urw-din, sans-serif;
 font-weight: 200;
 font-style: normal;
 color: #565254;
-font-size: 1.0vh;
 }
 
 h1{
- font-size: 0.8em;
+ font-size: 22px;
 
 }
 
 h2{
- font-size: 1.0em;
+ font-size: 18px;
 
 }
 
 h3{
- font-size: 1.0em;
+ font-size: 16px;
  line-height: 1.5em;
 }
 
 h4{
- font-size: 0.9em;
+ font-size: 14px;
  line-height: 1.4em;
  font-weight: 400;
 }
 
 h5{
- font-size: 13px;
+ font-size: 12px;
 }
 
 h6{
- font-size: 12px;
+ font-size: 10px;
+}
+
+.data_source_footnote h6{
+   font-size: 8px;
 }
 
 
@@ -665,18 +822,113 @@ pre {
 }
 
 #textDescription p{
-  font-size: 0.8em;
+  font-size: 10px;
 }
-
+/*
 #textMortFactsClosing h4{
   font-size: 0.4em;
 }
+*/
 
 li h4{
   margin-bottom: 0 px;
   
-
 }
+
+@media screen and (max-height: 800px) {
+  h1 {
+    font-size:20px;
+  }
+  h2 {
+    font-size: 16px;
+  }
+  
+  h3 {
+    font-size: 14px;
+  }
+  h4 {
+    font-size: 12px;
+  }
+  h5, h6 {
+    font-size: 11px;
+  }
+
+  #input_text1 {
+    font-size: 16px;
+  }
+  
+  #input_text2 {
+    font-size: 16px;
+  }
+
+  blockquote {
+  font-size: 19px;
+  line-height: 20px; 
+}
+
+pre {
+  font-size: 12px;
+  line-height: 12px; 
+}
+
+
+
+p, blockquote, pre, .radio-inline{
+ font-size: 10px;
+}
+#textDescription p{
+  font-size: 9px;
+}
+  
+}
+
+@media screen and (min-height: 1000px) {
+  h1 {
+    font-size:32px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  
+  h3 {
+    font-size: 24px;
+  }
+  h4 {
+    font-size: 20px;
+  }
+  h5, h6 {
+    font-size: 18px;
+  }
+
+  #input_text1 {
+    font-size: 16px;
+  }
+  
+  #input_text2 {
+    font-size: 16px;
+  }
+  
+
+  blockquote {
+  font-size: 31.5px;
+  line-height: 30px; 
+}
+
+pre {
+  font-size: 19.5px;
+  line-height: 18.5714px; 
+}
+
+
+
+p, blockquote, pre, .radio-inline{
+ font-size: 18px;
+}
+#textDescription p{
+  font-size: 15px;
+}
+}
+
 
 /********Misc Styles**********/
 

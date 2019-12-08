@@ -55,7 +55,7 @@ server <- function(input, output) {
     data_geo <- jsonlite::read_json("www/all-counties.json")
     usa_states <- jsonlite::read_json("www/usa-states.json")
     
-    causes_of_death <- c("Despair", "Assault", "Cancer", "Cardio","All Cause")
+    causes_of_death <- c("All Cause")
     for(cause in causes_of_death){
       data_stat <- cdc.mort.mat(cdc.data,"US",cause)
       if(cause == "Cardio"){
@@ -69,6 +69,9 @@ server <- function(input, output) {
       interval <- c(0,1,2,3,4,5)
       for(i in interval){
         a <- i+1
+        if(cause == "All Cause"){
+          cause <- "All_Cause"
+        }
         address <- paste0("www/National_image/",cause)
         address <- paste0(address, "/")
         address <- paste0(address,as.character(a))
