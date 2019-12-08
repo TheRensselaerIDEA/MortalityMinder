@@ -2563,7 +2563,7 @@ server <- function(input, output, session) {
           paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str)
           # , icon("info-circle")
         ),
-        tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
+        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
         NULL
       )
     }
@@ -2575,7 +2575,7 @@ server <- function(input, output, session) {
         paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
+      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
       NULL
     )
   }
@@ -2604,7 +2604,7 @@ server <- function(input, output, session) {
         paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("Plot of mortality rate versus ",input$determinant_choice,". Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down as risk decreases. Click on a county to see its name and where it is located on the map."),
+      tags$h5("Each dot represents a county's mortality rate, factor, and risk group. Click county to see map location and name."),
       NULL
     )
   }
