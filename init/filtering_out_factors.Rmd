@@ -11,6 +11,7 @@ Note: Re-used some of the code written by: Yuxuan Wang, Shengjin Li, and Ziyi Wa
 
 Importing Source.R so it is possible to use variables such chr.data.2019 and cdc.data that are defined in Source.R
 ```{r}
+setwd("~/MortalityMinder")
 source("Source.R")
 
 ```
@@ -628,20 +629,21 @@ print(selected_SDs_final)
 Creating a dataframe that only contains the final selected social determinants
 ```{r}
 selected_SDs_final <- selected_SDs_final[-1]
-saveRDS(selected_SDs_final, "init/reduced.chr.list")
+saveRDS(selected_SDs_final, "reduced.chr.list.rds")
 
-reduced.chr.list <- readRDS("init/reduced.chr.list")
+reduced.chr.list <- readRDS("reduced.chr.list.rds")
 reduced.chr.list <- append(reduced.chr.list, "county_fips", after = 0)
 chr.data.2019_fewer_SDs <- chr.data.2019 %>%
   as_data_frame %>%
   select(reduced.chr.list)
 head(chr.data.2019_fewer_SDs)
 
-saveRDS(chr.data.2019_fewer_SDs, "init/chr.data.2019.reduced.rds")
+saveRDS(chr.data.2019_fewer_SDs, "chr.data.2019.reduced.rds")
 ```
 
+Reading the factors data from an RDS file that only has the few selected factors (just to test it out)
 ```{r}
-reduced.chr.list <- readRDS("init/chr.data.2019.reduced.rds")
+reduced.chr.list <- readRDS("chr.data.2019.reduced.rds")
 print(reduced.chr.list)
 ```
 
