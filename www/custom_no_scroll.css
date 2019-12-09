@@ -997,6 +997,14 @@ width: 40px;
     left: 0;
 }
 
+.IDEA_Logo_Wrapper3{
+  position: relative;
+    width: 25%;
+    padding-left: 0;
+    padding-right: 0;
+    float: right;
+}
+
 .rensselaer_logo{
   position: relative;
     width: 100%;

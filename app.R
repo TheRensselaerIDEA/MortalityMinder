@@ -136,18 +136,7 @@ ui <- fluidPage(
                             class="IDEA_Logo_Wrapper2",
                             width = "80%",
                             src="RPIlogo.png",
-                            alt = "Institute of Data Exploration and Applications"),
-                 tags$br(),
-                 tags$br(),
-                 tags$br(),
-                 tags$br(),
-                 tags$h6("MortalityMinder has been optimized for laptop and large-screen use."),
-                 tags$h6("Use with mobile devices is not recommended."),
-                 tags$img(
-                   class="IDEA_Logo_Wrapper2",
-                   width = "50%",
-                   src="no_mobile.png",
-                   alt = "Do not use with mobile devices")
+                            alt = "Institute of Data Exploration and Applications")
                  
           ), # End Column 1
           tags$div(
@@ -467,13 +456,20 @@ ui <- fluidPage(
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>the 
                                            MortalityMinder GitHub wiki.</a></h5>")),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
-                                   downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
-                                   downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
-                                   downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
+                                   downloadButton("downloadCDCData", "County Deathrate Data"), ##tags$br(),
+                                   downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), ##tags$br(),
+                                   downloadButton("downloadFactorDesc", "Factor Descriptions"), ##tags$br(),
                                    tags$h4("DOWNLOAD CURRENT RESULTS",align="center"), 
-                                   downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
-                                   downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
-                                   downloadButton("downloadCorr", "Current Factor Correlations"))
+                                   downloadButton("downloadClusters", "Current State Clusters"), ##tags$br(),
+                                   downloadButton("downloadClusterTime", "Current State Clusters Through Time"), ##tags$br(),
+                                   downloadButton("downloadCorr", "Current Factor Correlations")), 
+                            column(11,
+                                   tags$img(
+                                     class="IDEA_Logo_Wrapper3",
+                                     src="no_mobile.png",
+                                     alt = "Do not use with mobile devices"),
+                                   tags$h6("MortalityMinder has been optimized for laptop and large-screen use. Use with mobile devices is not recommended.")
+                            )
                           ) # Close row
                    ), #close column
                    column(3, tags$h4("INNOVATION",align="center"),   offset=1,
@@ -569,17 +565,12 @@ ui <- fluidPage(
                                     Kristin P. Bennett and John S. Erickson."),
                                  tags$h5("The MortalityMinder Team would like to thank our team of external mentors, including
                                          Anne Yau, United Health Foundation; Dan Fabius, Continuum Health; Melissa Kamal, New York State
-                                         Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP)."),
-                                 # tags$h5("The MortalityMinder Team would also like to thank Jim Hendler, Director, The Rensselaer IDEA,
-                                 #    and Curt Breneman, Dean of the School of Science at Rensselaer for their support
-                                 #    and encouragement."),
-                                 tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
+                                         Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP).")
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
-                                 tags$h5(a("MortalityMinder GitHub Repository (public)",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank")),
-                                 tags$h5(a("MortalityMinder GitHub Wiki (public)",
-                                           href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki", target="_blank"))
+                                 HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
+                                           Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a></h5>")
                           )
                    ) # Close inner fluidRow
           )
