@@ -1,4 +1,4 @@
-The following is a list of links to the `LICENSE` files of all CRAN-listed R packages imported by MortalityMinder. 
+The following is a list of links to the `LICENSE` files or other copyright statements of all CRAN-listed R packages imported by MortalityMinder. 
 
 NOTE: In some cases these `LICENSE` files simply list the copyright owner. 
 
@@ -8,9 +8,9 @@ curl: https://cran.r-project.org/web/packages/curl/LICENSE
 
 readr: https://cran.r-project.org/web/packages/readr/LICENSE
 
-https://cran.r-project.org/web/packages/readxl/LICENSE
+readxl: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/lubridate/LICENSE
+lubridate: https://cran.r-project.org/web/licenses/GPL-3
 
 tidyr: https://cran.r-project.org/web/packages/tidyr/LICENSE
 
@@ -22,9 +22,9 @@ janitor: https://cran.r-project.org/web/packages/janitor/LICENSE
 
 purrr: https://cran.r-project.org/web/packages/purrr/LICENSE
 
-https://cran.r-project.org/web/packages/textshape/LICENSE
+textshape: https://cran.r-project.org/web/licenses/GPL-2
 
-https://cran.r-project.org/web/packages/stats/LICENSE
+stats: https://cran.r-project.org/web/licenses/GPL-3
 
 magrittr: https://cran.r-project.org/web/packages/magrittr/LICENSE
 
