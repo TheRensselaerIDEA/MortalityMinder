@@ -275,7 +275,7 @@ ui <- fluidPage(
                              class="page2_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
-                             leafletOutput("geo_cluster_kmean",width="100%",height="75%")
+                             leafletOutput("geo_cluster_kmean",width="82%",height="75%")
                          ), # End of inner Column (Bottom Left)
                          column(5, 
                            class = "page2_col page2_col1_bot_right", 
@@ -393,7 +393,7 @@ ui <- fluidPage(
                 ),
                 uiOutput("county_selector")
               ), # End of pickerInput container
-              leafletOutput("determinants_plot5", width="100%",height="70%"),
+              leafletOutput("determinants_plot5", width="82%",height="75%"),
               fluidRow(
                 class = "page3_col3_county_desc",
                 uiOutput("county_desc")
