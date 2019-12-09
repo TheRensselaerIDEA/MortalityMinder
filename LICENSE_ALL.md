@@ -6,27 +6,27 @@ devtools: https://cran.r-project.org/web/licenses/GPL-3
 
 curl: https://cran.r-project.org/web/packages/curl/LICENSE
 
-https://cran.r-project.org/web/packages/readr/LICENSE
+readr: https://cran.r-project.org/web/packages/readr/LICENSE
 
 https://cran.r-project.org/web/packages/readxl/LICENSE
 
 https://cran.r-project.org/web/packages/lubridate/LICENSE
 
-https://cran.r-project.org/web/packages/tidyr/LICENSE
+tidyr: https://cran.r-project.org/web/packages/tidyr/LICENSE
 
-https://cran.r-project.org/web/packages/dplyr/LICENSE
+dplyr: https://cran.r-project.org/web/packages/dplyr/LICENSE
 
-https://cran.r-project.org/web/packages/stringr/LICENSE
+stringr: https://cran.r-project.org/web/packages/stringr/LICENSE
 
-https://cran.r-project.org/web/packages/janitor/LICENSE
+janitor: https://cran.r-project.org/web/packages/janitor/LICENSE
 
-https://cran.r-project.org/web/packages/purrr/LICENSE
+purrr: https://cran.r-project.org/web/packages/purrr/LICENSE
 
 https://cran.r-project.org/web/packages/textshape/LICENSE
 
 https://cran.r-project.org/web/packages/stats/LICENSE
 
-https://cran.r-project.org/web/packages/magrittr/LICENSE
+magrittr: https://cran.r-project.org/web/packages/magrittr/LICENSE
 
 https://cran.r-project.org/web/packages/zoo/LICENSE
 
@@ -38,7 +38,7 @@ https://cran.r-project.org/web/packages/randomForest/LICENSE
 
 https://cran.r-project.org/web/packages/cluster/LICENSE
 
-https://cran.r-project.org/web/packages/shiny/LICENSE
+shiny: https://cran.r-project.org/web/packages/shiny/LICENSE
 
 https://cran.r-project.org/web/packages/shinythemes/LICENSE
 
