@@ -130,8 +130,7 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
                       tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      tags$h5(tags$i("Click << and >> for State and Factor views")
-                              ),
+                      HTML("<h5><i>Click</i> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <i>and</i> <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <i>for State and Factor views</i></h5>"),
                  tags$br(),
                           tags$img(
                             class="IDEA_Logo_Wrapper2",
@@ -424,10 +423,11 @@ ui <- fluidPage(
                                            visualization tool that enables interactive exploration of social, 
                                            economic and geographic factors associated with premature mortality 
                                            among mid-life adults ages 25-64 across the United States. Using 
-                                           authoritative data from the CDC and other sources, MM is a publicly-available, 
-                                           open source, easily maintained tool designed to help health policy 
-                                           decision makers in the public and private sectors identify and 
-                                           address unmet healthcare needs, healthcare costs, and healthcare utilization.</h5>")), 
+                                        authoritative data from the CDC and other sources, MM is a freely available, 
+                                        publicly-accessible, open source, easily maintained tool designed to help 
+                                        healthcare payers, providers and policy makers at the national, state, 
+                                        county and community levels identify and address unmet healthcare needs, 
+                                        healthcare costs, and healthcare utilization.</h5>")), 
                             column(11, tags$h4("DATA UTILIZATION AND PREPARATION",align="center"), 
                                    HTML("<h5>MortalityMinder uses county-level mortality rates and social and 
                                            economic factors measurements available from well-known public portals.  
