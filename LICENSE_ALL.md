@@ -2,9 +2,9 @@ The following is a list of links to the `LICENSE` files of all CRAN-listed R pac
 
 NOTE: In some cases these `LICENSE` files simply list the copyright owner. 
 
-https://cran.r-project.org/web/packages/devtools/LICENSE
+devtools: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/curl/LICENSE
+curl: https://cran.r-project.org/web/packages/curl/LICENSE
 
 https://cran.r-project.org/web/packages/readr/LICENSE
 
