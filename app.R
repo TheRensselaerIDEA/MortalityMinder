@@ -132,11 +132,23 @@ ui <- fluidPage(
                       tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
                       HTML("<h5><i>Click</i> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <i>and</i> <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <i>for State and Factor views</i></h5>"),
                  tags$br(),
-                          tags$img(
+                 tags$img(
                             class="IDEA_Logo_Wrapper2",
                             width = "80%",
                             src="RPIlogo.png",
-                            alt = "Institute of Data Exploration and Applications")
+                            alt = "Institute of Data Exploration and Applications"),
+                 tags$br(),
+                 tags$br(),
+                 tags$br(),
+                 tags$br(),
+                 tags$h6("MortalityMinder has been optimized for laptop and large-screen use."),
+                 tags$h6("Use with mobile devices is not recommended."),
+                 tags$img(
+                   class="IDEA_Logo_Wrapper2",
+                   width = "50%",
+                   src="no_mobile.png",
+                   alt = "Do not use with mobile devices")
+                 
           ), # End Column 1
           tags$div(
             class = "vl"
