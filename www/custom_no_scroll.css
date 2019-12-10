@@ -107,6 +107,46 @@
   
 }
 
+.input {
+  display:block;
+  top:-100px;
+  height:50px;
+/*  width:600px; */
+  min-width: 600px;
+  max-width: 25vw;
+  background-color:#565254;
+  float:right;
+  margin-right:4%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding-top:10px;
+  position:relative;
+  top:0px;
+}
+
+#input_text1 {
+  color:#f7f7f7;
+  width:113px;
+  height:5px;
+  border:none;
+  margin:0;
+  display:block;
+  float:left;
+  margin-top:3px;
+  margin-left:40px;
+}
+
+#input_text2 {
+  color:#f7f7f7;
+  width:43px;
+  height:5px;
+  border:none;
+  margin:0;
+  display:block;
+  float:left;
+  margin-top:3px;
+}
+
 
 .nav_bar_blank {
   width:100%;
@@ -384,7 +424,7 @@
 }
 
 .page3_col1 {
-  height:100%;
+  height:90%;
 }
 
 .page3_col2 {
@@ -448,27 +488,7 @@
   height:95%;
 }
 
-/*
-.page4 h3 {
-  color: black;
-  font-size: 1.6vh; 
-}
-
-.page4 h4 {
-  color: black;
-  font-size: 1.4vh; 
-}
-
-.page4 h5 {
-  color: black;
-  font-size: 1.3vh; 
-}
-
-.page4 h6 {
-  color: black;
-  font-size: 1.2vh; 
-}
-*/
+/* Page 4 fonts moved down */
 
 /********Shiny Styles**********/
 
@@ -484,7 +504,11 @@
 
 .shiny-input-container:not(.shiny-input-container-inline){
   max-width: none;
-  width: 30%;
+  width: 179px;
+  display:block;
+  float:left;
+
+  
 }
 
 .shiny-input-container br {
@@ -547,7 +571,7 @@
     left: 0;
     border: none;
     width: 20px !important;
-    height: 20px;
+    height: 60px;
     background: url(left.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
@@ -558,7 +582,7 @@
     right: 0;
     border: none;
     width: 20px;
-    height: 20px;
+    height: 60px;
     background: url(right.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
@@ -695,7 +719,7 @@ div.form-group{
 .dropdown {
   width:100%;
   border:  #565254;
- 
+  width:30px;
 }
 
 
@@ -722,6 +746,7 @@ h5, h6 {
   color: #565254;
 }
 
+/* The following are defaults for most pages */
 h1{
  font-size: 2.1vh;
 
@@ -753,6 +778,28 @@ h6{
 .data_source_footnote h6{
    font-size: 0.8vh;
 }
+
+/* These make Page 4 work (10 Dec) */
+.page4 h3 {
+  color: black;
+  font-size: 1.6vh; 
+}
+
+.page4 h4 {
+  color: black;
+  font-size: 1.4vh; 
+}
+
+.page4 h5 {
+  color: black;
+  font-size: 1.3vh; 
+}
+
+.page4 h6 {
+  color: black;
+  font-size: 1.2vh; 
+}
+
 
 
 blockquote {
@@ -796,10 +843,53 @@ li h4{
   h5 {
     font-size: 1.6vh;
   }
+
+  #input_text1 {
+    font-size: 16px;
+  }
+  
+  #input_text2 {
+    font-size: 16px;
+  }
+
+  blockquote {
+  font-size: 19px;
+  line-height: 20px; 
+}
+
+pre {
+  font-size: 12px;
+  line-height: 12px; 
+}
+
+
+
+p, blockquote, pre, .radio-inline{
+ font-size: 10px;
+}
+#textDescription p{
+  font-size: 9px;
+}
   
   h6 {
     font-size: 1.4vh;
   }
+
+  h4 {
+    font-size: 20px;
+  }
+  h5, h6 {
+    font-size: 18px;
+  }
+
+  #input_text1 {
+    font-size: 16px;
+  }
+  
+  #input_text2 {
+    font-size: 16px;
+  }
+  
   blockquote {
   font-size: 2.4vh;
   line-height: 2vh; 
@@ -888,6 +978,14 @@ width: 40px;
     text-align: left;
     bottom: 9%;
     left: 0;
+}
+
+.IDEA_Logo_Wrapper3{
+  position: relative;
+    width: 25%;
+    padding-left: 0;
+    padding-right: 0;
+    float: right;
 }
 
 .rensselaer_logo{

@@ -21,14 +21,14 @@ names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
 # Cause list with Assault
-# cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
+# cause.list <- c("All Cause" = "All Cause", "Deaths by Assault"="Assault","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular","Deaths of Despair"="Despair")
 # cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
 #                        "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
 #                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
 #                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 
 # Cause list with Assault commented out
-cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
+cause.list <- c("All Cause" = "All Cause","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular","Deaths of Despair"="Despair")
 cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
@@ -67,35 +67,32 @@ ui <- fluidPage(
         "MortalityMinder")
       ),
     tags$div(
-      class = "nav_container",
-    
-    tags$div(
-      class = "prompt_text",
-      # "Select cause of death and state: "
-      "Select State and Cause of Death:  "
-    ),
-    
-    pickerInput(
-      inputId = "death_cause",
-      label = h4("Cause of Death"),
-      choices = cause.list,
-      choicesOpt = list(
-        subtext = c("Self-Harm and some other causes"),
-        "dropup-auto" = FALSE
-      )
-    ),
-    pickerInput(
-      inputId = "state_choice",
-      label = h4("State"), 
-      choices = state.list,
-      selected = "OH",
-      options = list(
-        `live-search` = TRUE,
-        "dropup-auto" = FALSE
+      class = "input",
+      tags$h3(id = "input_text1", "Cause of Death:"),
+      pickerInput(
+        inputId = "death_cause",
+        label = h4("Cause of Death"),
+        choices = cause.list,
+        selected = "Despair",
+        choicesOpt = list(
+          subtext = c(" "," "," ","Self-Harm and some other causes"),
+          "dropup-auto" = FALSE
+        )
+      ),
+      tags$h3(id = "input_text2", "State:"),
+      pickerInput(
+        inputId = "state_choice",
+        label = h4("State"), 
+        choices = state.list,
+        selected = "OH",
+        options = list(
+          `live-search` = TRUE,
+          "dropup-auto" = FALSE
+        )      
       )
     )
     
-    )
+
     
     
   ),
@@ -133,17 +130,14 @@ ui <- fluidPage(
                       tags$li(tags$h4("All Causes"))
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
-                      tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      tags$h5(tags$i("Click << and >> for State and Factor views")
-                              ),
+                      HTML("<h4>Choose <b>Cause of Death</b> and <b>State</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
+                      HTML("<h5><i>Click</i> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <i>and</i> <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <i>for <b>State</b> and <b>Factor</b> views</i></h5>"),
                  tags$br(),
-                 # fluidRow(class="IDEA_Logo_Wrapper",
-                          tags$img(
-                            # class="rensselaer_logo",
-                            src="RPIlogo.png", 
-                            width="80%", 
-                            style="bottom: 0; left: 0;")
-                 # )
+                 tags$img(
+                            class="IDEA_Logo_Wrapper2",
+                            width = "80%",
+                            src="RPIlogo.png",
+                            alt = "Institute of Data Exploration and Applications")
                  
           ), # End Column 1
           tags$div(
@@ -209,7 +203,8 @@ ui <- fluidPage(
                   tags$img(
                     id = "national_map_new",
                     class = "landing_page_map",
-                    src = "Despair/1.png"
+                    src = "Despair/1.png",
+                    alt = "US National map plotting deaths of despair at the county level."
                     )
                   ) # End of Image DIV container
                   ), # End of Middle inner Column
@@ -266,11 +261,7 @@ ui <- fluidPage(
                                            choiceNames = c("2000-02", "2003-05", "2006-08", "2009-11", "2012-14", "2015-17"),
                                            choiceValues = c("2000-2002", "2003-2005", "2006-2008", "2009-2011", "2012-2014", "2015-2017"),
                                            inline = TRUE),
-                              leafletOutput("geo_mort_change2",width="82%",height="70%"),
-                              tags$div(
-                                class="data_source_footnote",
-                                tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
-                                )
+                              leafletOutput("geo_mort_change2",width="82%",height="75%")
                               ) # End of inner Column (Column 1 top right)
                      
                    ), # End of inner FluidRow (Column1 Top)
@@ -285,11 +276,7 @@ ui <- fluidPage(
                              class="page2_col1_bot_left_title",
                              uiOutput("textClusterGeo")
                                    ), # End of title div container
-                             leafletOutput("geo_cluster_kmean",width="100%",height="70%"),
-                           tags$div(
-                             class="data_source_footnote",
-                             tags$h6("Data Source: CDC WONDER Multi-Cause of Death. Analysis: The Rensselaer IDEA")
-                           )
+                             leafletOutput("geo_cluster_kmean",width="82%",height="75%")
                          ), # End of inner Column (Bottom Left)
                          column(5, 
                            class = "page2_col page2_col1_bot_right", 
@@ -336,7 +323,7 @@ ui <- fluidPage(
               class = "col1_title",
               uiOutput("textDeterminants2")
                     ), # End title div container
-            plotOutput("determinants_plot1", height = "80%", width = "100%",
+            plotOutput("determinants_plot1", height = "95%", width = "100%",
                        click = clickOpts("page2_bar_plot_click"))
                 ), # End Column 1
           
@@ -396,6 +383,7 @@ ui <- fluidPage(
               tags$h5(htmlOutput("determinant_original_source")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir"))
+              , tags$hr() 
                     ), # End of Column 3 top
             fluidRow(
               class = "page3_col3_bot",
@@ -406,14 +394,14 @@ ui <- fluidPage(
                 ),
                 uiOutput("county_selector")
               ), # End of pickerInput container
-              leafletOutput("determinants_plot5", width="100%",height="70%"),
+              leafletOutput("determinants_plot5", width="82%",height="75%"),
               fluidRow(
                 class = "page3_col3_county_desc",
                 uiOutput("county_desc")
               ),
               tags$div(
                 class="data_source_footnote",
-                HTML("<h6 style='text-align: right;'>Data Source: County Health Rankings 2019<br>Analysis: The Rensselaer IDEA</h6>")
+                HTML("<h6 style='text-align: right;'>Mortality Data: CDC Wonder Detailed Mortality<br>Feature Data: County Health Rankings<br>Analysis: The Rensselaer IDEA</h6>")
               )
             ) # End of inner Column 3 bottom
 
@@ -432,47 +420,57 @@ ui <- fluidPage(
                    column(3, tags$h4("ABOUT MORTALITYMINDER",align="center"),
                           fluidRow(
                             column(11, 
-                                   tags$h5("Mortality rates are rising in the United State with significant 
+                                   HTML("<h5>Mortality rates are rising in the United State with significant 
                                            community and regional variations. MortalityMinder (MM) is a web-based 
                                            visualization tool that enables interactive exploration of social, 
                                            economic and geographic factors associated with premature mortality 
                                            among mid-life adults ages 25-64 across the United States. Using 
-                                           authoritative data from the CDC and other sources, MM is a publicly-available, 
-                                           open source, easily maintained tool designed to help health policy 
-                                           decision makers in the public and private sectors identify and 
-                                           address unmet healthcare needs, healthcare costs, and healthcare utilization.")), 
+                                        authoritative data from the CDC and other sources, MM is a freely available, 
+                                        publicly-accessible, open source, easily maintained tool designed to help 
+                                        healthcare payers, providers and policy makers at the national, state, 
+                                        county and community levels identify and address unmet healthcare needs, 
+                                        healthcare costs, and healthcare utilization.</h5>")), 
                             column(11, tags$h4("DATA UTILIZATION AND PREPARATION",align="center"), 
-                                   tags$h5("MortalityMinder uses county-level mortality rates and social and 
+                                   HTML("<h5>MortalityMinder uses county-level mortality rates and social and 
                                            economic factors measurements available from well-known public portals.  
-                                           Mortality rates  from 2000-2017 are obtained through the CDC WONDER portal, 
-                                           the definitive source of mortality information in the United States. Social 
-                                           factors data  for 2015-2017 are obtained through County Health Rankings (CHR), 
+                                           <b>Mortality rates from 2000-2017</b> are obtained through the 
+                                           <a href='https://wonder.cdc.gov/mcd.html' target=_blank>CDC WONDER portal</a>, 
+                                           the definitive source of mortality information in the United States. <b>Social 
+                                           factors data for 2015-2017</b> are obtained through 
+                                           <a href='https://www.countyhealthrankings.org/' target=_blank>County Health Rankings (CHR)</a>, 
                                            an aggregate of county level data curated by the Robert Wood Johnson Foundation. 
                                            MM considers 168 factors from twenty (20) sources, including 
                                            datasets such as AHRQ, BRFSS, the Bureau of Labor Statistics, the FBI, and many 
-                                           others.  This version of MM focuses on midlife deaths attributed to leading 
-                                           causes of death including 'Deaths of Despair', 'CardioVascular', 'Cancer' and 
+                                           others.  This version of MM focuses on <b>midlife deaths</b> attributed to leading 
+                                           causes of death including 'Deaths of Despair', 'Cardiovascular', 'Cancer' and 
                                            'All Causes',  but the approach can be readily generalized to any health problem 
-                                           of interest."), 
-                                   tags$h5("Age-specific mortality rates were calculated in three-year chunks to 
+                                           of interest.</h5>"), 
+                                   HTML("<h5>Age-specific mortality rates were calculated in three-year chunks to 
                                            allow more robust estimation by considering multiple years. MM aims to capture 
                                            the actual experience of mortality by Americans in a community, so our analysis 
                                            does not age-adjust. In the future, age-adjustment could easily be added to MM. 
                                            To provide for more complete data for effective visualizations, county mortality 
                                            rates that are suppressed to preserve privacy by CDC WONDER were imputed using 
-                                           the Amelia package in R. Multiple imputation could be added to the analysis 
-                                           in the future. Details of data sources and preparation are available at ",
-                                           a("the MortalityMinder GitHub wiki.",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki"
-                                             , target="_blank"))),
+                                           the <a href='https://cran.r-project.org/web/packages/Amelia/index.html' target=_blank>
+                                           Amelia package</a> in R. Multiple imputation could be added to the analysis 
+                                           in the future. Details of data sources and preparation are available at
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>the 
+                                           MortalityMinder GitHub wiki.</a></h5>")),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
-                                   downloadButton("downloadCDCData", "County Deathrate Data"), tags$br(),
-                                   downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), tags$br(),
-                                   downloadButton("downloadFactorDesc", "Factor Descriptions"), tags$br(),
+                                   downloadButton("downloadCDCData", "County Deathrate Data"), ##tags$br(),
+                                   downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), ##tags$br(),
+                                   downloadButton("downloadFactorDesc", "Factor Descriptions"), ##tags$br(),
                                    tags$h4("DOWNLOAD CURRENT RESULTS",align="center"), 
-                                   downloadButton("downloadClusters", "Current State Clusters"), tags$br(),
-                                   downloadButton("downloadClusterTime", "Current State Clusters Through Time"), tags$br(),
-                                   downloadButton("downloadCorr", "Current Factor Correlations"))
+                                   downloadButton("downloadClusters", "Current State Clusters"), ##tags$br(),
+                                   downloadButton("downloadClusterTime", "Current State Clusters Through Time"), ##tags$br(),
+                                   downloadButton("downloadCorr", "Current Factor Correlations")), 
+                            column(11,
+                                   tags$img(
+                                     class="IDEA_Logo_Wrapper3",
+                                     src="no_mobile.png",
+                                     alt = "Do not use with mobile devices"),
+                                   tags$h6("MortalityMinder has been optimized for laptop and large-screen use. Use with mobile devices is not recommended.")
+                            )
                           ) # Close row
                    ), #close column
                    column(3, tags$h4("INNOVATION",align="center"),   offset=1,
@@ -491,34 +489,40 @@ ui <- fluidPage(
                                            visualizes the geographic distribution of those clusters; and illustrates the 
                                            mortality trends of those clusters and user-selected counties over time.  MM does
                                            a similar analysis for the entire United States, only using six clusters."),
-                                   tags$h5("The app determines the correlation of social factors and visualizes the most 
+                                   HTML("<h5>The app determines the <a href='https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient' 
+                                           target=_blank>correlation</a> of social factors and visualizes the most 
                                            significant, highlighting whether those factors are protective or destructive. 
-                                           Users can select individual factors to explore more deeply at the state level."),
+                                           Users can select individual factors to explore more deeply at the state level.</h5>"),
                                    tags$h5("Demonstrations and user testing by our advisory panel of health care experts and 
                                            other testers have shown that MortalityMinder is compelling and highly engaging. The 
                                            page-oriented organization of the app lends itself to user-driven investigation and 
                                            storytelling, like a highly interactive slideshow.")),
                             column(11, tags$h4("INSIGHTS",align="center"), 
-                                   tags$h5("MortalityMinder provides striking insights into the disturbing rise in 'Deaths 
+                                   HTML("<h5>MortalityMinder provides striking insights into the disturbing rise in 'Deaths 
                                            of Despair' due to suicide, overdose, and self-harm. The app was inspired by 
-                                           'Mortality and morbidity in the 21st century' (Case and Dean, 2017) which described 
+                                           'Mortality and morbidity in the 21st century' 
+                                           (<a href='https://www.ncbi.nlm.nih.gov/pubmed/29033460' target=_blank>Case and Dean, 2017</a>) which described 
                                            the disturbing rise in mortality rates by 'deaths of despair.'  The app highlights 
                                            great disparities in mortality rates between counties across and within 
-                                           states with both common and distinct associated factors. Such an insight can be used to 
-                                           create regional specific interventions and determine best practices."), 
-                                   tags$h5("MortalityMinder further provides a county-level confirmation of the trends and 
+                                           states with both common and distinct associated factors. Such an insight may be used to 
+                                           create regional specific interventions and determine best practices.</h5>"), 
+                                   HTML("<h5>MortalityMinder further provides a county-level confirmation of the trends and 
                                           hypothesized causes  in 'Life Expectancy and Mortality Rates in the United States, 
-                                          1959-2017' (Woof and Schoomaker 2019). MM shows, however, that rates due to other causes 
+                                          1959-2017' 
+                                          (<a href='https://jamanetwork.com/journals/jama/article-abstract/2756187' target=_blank>Woof and Schoomaker 2019</a>). 
+                                          MM shows, however, that rates due to other causes 
                                           including cancer, cardiovascular disease and all causes are also on the rise. MM confirms the midlife 
                                           mortality rate increases in (Woolf and Schoomaker), but it provides much greater insight 
-                                          into community level variations and their associated factors that may be actionable.")) 
+                                          into community level variations and their associated factors that may be actionable.</h5>")) 
                    ), 
                    fluidRow(class="IDEA_Logo_Wrapper",
                             tags$img(
                               class="Idea_Logo",
                               src="IDEA_logo_500.png", 
                               width="100%", 
-                              style="bottom: 0; left: 0;")
+                              style="bottom: 0; left: 0;",
+                              alt = "Institute of Data Exploration and Applications"
+                              )
                    )
                    ), # Close column
                    column(3, tags$h4("DESIGN AND DEVELOPMENT",align="center"),  offset=1,
@@ -544,12 +548,11 @@ ui <- fluidPage(
                                            Data Loader scripts enable additional years and types of data to be easily incorporated.  
                                            The result is a robust, extensible package that can be maintained and grown over 
                                            time as either an open source package or within organizations such as AHRQ."),
-                                   tags$h5("MM can be run from the public web locations; no user installation 
-                                           is required to test the application. Alternatively, the ",
-                                           a("GitHub repository",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank"), 
-                                           "may be cloned and the MM then run immediately in the user's RStudio environment, 
-                                           either on a server or on a personal machine."), 
+                                   HTML("<h5>MM can be run from the public web locations; no user installation 
+                                           is required to test the application. Alternatively, the 
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/', target=_blank>GitHub repository</a> 
+                                           may be cloned and the MM then run immediately in the user's RStudio environment, 
+                                           either on a server or on a personal machine.</h5>"), 
                                    tags$h5("MM utilizes the R Shiny platform for web interactivity; most of the visualizations
                                            presented in MM are generated in real time based on data loaded when the app is launched. 
                                            Data analysts and software engineers familiar with the R language and reactive coding 
@@ -563,17 +566,12 @@ ui <- fluidPage(
                                     Kristin P. Bennett and John S. Erickson."),
                                  tags$h5("The MortalityMinder Team would like to thank our team of external mentors, including
                                          Anne Yau, United Health Foundation; Dan Fabius, Continuum Health; Melissa Kamal, New York State
-                                         Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP)."),
-                                 # tags$h5("The MortalityMinder Team would also like to thank Jim Hendler, Director, The Rensselaer IDEA,
-                                 #    and Curt Breneman, Dean of the School of Science at Rensselaer for their support
-                                 #    and encouragement."),
-                                 tags$h5("Please send questions and comments about MortalityMinder to: erickj4@rpi.edu.")
+                                         Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP).")
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
-                                 tags$h5(a("MortalityMinder GitHub Repository (public)",
-                                             href="https://github.com/TheRensselaerIDEA/MortalityMinder/", target="_blank")),
-                                 tags$h5(a("MortalityMinder GitHub Wiki (public)",
-                                           href="https://github.com/TheRensselaerIDEA/MortalityMinder/wiki", target="_blank"))
+                                 HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
+                                           Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a></h5>")
                           )
                    ) # Close inner fluidRow
           )
@@ -1110,9 +1108,6 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          # title = "Most Associated Factors",
-          # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
@@ -1218,8 +1213,7 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
          
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
@@ -1249,9 +1243,7 @@ server <- function(input, output, session) {
         ) + 
         labs(
           x = "Cluster",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
-          
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
@@ -1288,8 +1280,7 @@ server <- function(input, output, session) {
         geom_point(aes(fill = cluster)) + 
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship")) +
         theme.line.mort() + 
@@ -1323,8 +1314,7 @@ server <- function(input, output, session) {
         stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
@@ -1356,8 +1346,7 @@ server <- function(input, output, session) {
         #stat_density_2d(aes(alpha = ..level.., fill=cluster), geom = "polygon") +
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
-          y = input$determinant_choice,
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          y = input$determinant_choice
         ) + 
         # ggtitle(paste(input$determinant_choice, "and Mortality Relationship"))+
         theme.line.mort() + 
@@ -1459,15 +1448,15 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h3(
-        as.character(
+        paste0("DEFINITION: ", as.character(
           SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
-      ),
-      tags$h5(reason_text)
+      )),
+      tags$h5(paste0("EXPLANATION: ",reason_text))
     )
   })
   
   output$determinant_link <- renderUI({
-    tagList(tags$h4(
+    tagList(tags$h5(
       "Text Source: ",
       tags$a(
         "County Health Rankings",
@@ -1479,7 +1468,7 @@ server <- function(input, output, session) {
   })
   
   output$determinant_original_source <- renderUI({
-    tagList(tags$h4(
+    tagList(tags$h5(
       "Data Source: ",
       tags$a(
         determinant.source(),
@@ -1641,7 +1630,7 @@ server <- function(input, output, session) {
     
     if (input$state_choice == "United States"){
       
-      total.data <- mort.avg.cluster.ord()
+      total.data <- rbind(mort.avg.cluster.ord(), national.mean())
       total.data$cluster[total.data$cluster == 1] <- "1: Low"
       total.data$cluster[total.data$cluster == 6] <- "6: High"
       
@@ -1663,7 +1652,7 @@ server <- function(input, output, session) {
         labs(
           fill = "Cluster", 
           color = "Cluster",
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+          caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) +
         guides(
           color = guide_legend(reverse = T)
@@ -1710,7 +1699,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+               caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
@@ -1751,7 +1740,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+               caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot
@@ -1792,7 +1781,7 @@ server <- function(input, output, session) {
           guides(color = guide_legend(reverse = T)) +
           labs(fill = "Counties and \n National Average", 
                color = "Counties and \n National Average",
-               caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+               caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
           ylab("Average Midlife deaths per 100,000")
         line_plot 
@@ -1827,7 +1816,7 @@ server <- function(input, output, session) {
         guides(color = guide_legend(reverse = T)) +
         labs(fill = "Cluster", 
              color = "Cluster",
-             caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
+             caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) + 
         ylab("Average Midlife Deaths per 100,000") 
       
@@ -1841,9 +1830,49 @@ server <- function(input, output, session) {
           dplyr::filter(
             death_cause == input$death_cause
           )
-        
-        if (any(canShow$death_num == 0.5) | nrow(county_data) == 0) {
-          line_plot + xlab("period\nCould not plot county as data suppressed by CDC")
+        if (nrow(county_data) == 0 | all(canShow$death_num == 0.5)) {
+          line_plot + xlab("period\nWarning: Could not plot county as data suppressed by CDC")
+        } else if (any(canShow$death_num == 0.5)) {
+
+          available.data <- canShow[canShow$death_num != 0.5,]
+          
+          possible.clusters <- c()
+          for (row in 1:nrow(available.data)) {
+            temp.data <- total.data[total.data$period == available.data[row, "period"],]
+            temp.data$diff <- abs(temp.data$death_rate - available.data[row, "death_rate"])
+            possible.clusters <- c(possible.clusters, temp.data[temp.data$diff == min(temp.data$diff),]$cluster)
+          }
+          
+          counts <- table(possible.clusters)
+          final.cluster <- names(counts)[which.max(counts)]
+          
+          county_data <- county_data %>%
+            dplyr::select(-drop.cols) %>%
+            tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
+            dplyr::mutate("county" = county_choice())
+
+          data.to.change <- canShow[canShow$death_num == 0.5,]
+          for (row in 1:nrow(data.to.change)) {
+            res <- total.data[total.data$period == data.to.change[row, "period"],] %>% 
+              dplyr::filter(cluster == final.cluster)
+            county_data[county_data$period == data.to.change[row, "period"],]$death_rate = res$death_rate
+          }
+          
+          line_plot +
+            geom_line(
+              mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
+              data = county_data, color = "#565254", size = 1.3
+            ) +
+            geom_point(
+              mapping = aes(x = period, y = death_rate),
+              data = county_data, color = "#565254", shape = 21, 
+              fill = "#f7f7f7", inherit.aes = FALSE, size = 2
+            ) +
+            scale_linetype_manual(name = "County",
+                                  values = c("twodash"),
+                                  guide = guide_legend(override.aes = list(color = c("#565254")))
+            ) +
+            xlab("period\nWarning: Data visualized by imputation")
         } else {
             county_data <- county_data %>%
               dplyr::select(-drop.cols) %>%
@@ -2024,10 +2053,7 @@ server <- function(input, output, session) {
                          #point.padding = 0.5,
                          direction = "both",
                          xlim = c(1.5, 5.5),
-                         show.legend = FALSE) +
-        labs(
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
-        )
+                         show.legend = FALSE)
       
     } else {
       state_data <- dplyr::filter(
@@ -2116,10 +2142,7 @@ server <- function(input, output, session) {
                                        xlim = c(1.5, 5.5),
                                        ylim = ylim,
                                        show.legend = FALSE) + 
-                      scale_fill_manual(values = colors) +
-        labs(
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA"
-        )
+                      scale_fill_manual(values = colors)
                                        
                       #geom_point(data = label_data, mapping = aes(x = x, y = death_rate), color = '#565254')
     }
@@ -2133,13 +2156,14 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h2(
+      tags$h3(
         paste0("State View: ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
-      tags$p(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$p("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
-      tags$p("The top map shows how counties are grouped into disparate risk clusters within a state based on their midlifemortality rate trends. The lower map shows the risk cluster of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
-      tags$p("Darker colors indicate increased mortality risk. Hover to see information and definitions.  Click on maps to see county names and mortality rates.  Zoom maps with buttons or mouse. Click on right or onto learn more. "),
+      tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
+      tags$h5("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
+      HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk cluster</b> of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
+      HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
+      HTML("<h5><i>Click <b><span style='color:#00bfc4'>&lt;&lt;</span></b> or <b><span style='color:#00bfc4'>&gt;&gt;</span></b> to learn more.</i></h5>"),
       NULL
     )
   })
@@ -2355,7 +2379,7 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2367,7 +2391,7 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2505,7 +2529,7 @@ server <- function(input, output, session) {
           paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2517,7 +2541,7 @@ server <- function(input, output, session) {
         paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h6>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positive correlations</span> indicate potential <span style='color:#f8766d'>destructive determinants</span> of mortality. <span style='color:#00bfc4'>Negative correlations</span> indicate potential <span style='color:#00bfc4'>protective determinants</span> of mortality. Click on dot to explore factor in more detail.</h6>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2550,7 +2574,7 @@ server <- function(input, output, session) {
           paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str)
           # , icon("info-circle")
         ),
-        tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
+        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
         NULL
       )
     }
@@ -2562,7 +2586,7 @@ server <- function(input, output, session) {
         paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("Distribution of ",input$determinant_choice," within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters."),
+      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
       NULL
     )
   }
@@ -2591,7 +2615,7 @@ server <- function(input, output, session) {
         paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("Plot of mortality rate versus ",input$determinant_choice,". Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down as risk decreases. Click on a county to see its name and where it is located on the map."),
+      tags$h5("Each dot represents a county's mortality rate, factor, and risk group. Click county to see map location and name."),
       NULL
     )
   }
@@ -2721,25 +2745,7 @@ server <- function(input, output, session) {
     req(input$plot_hover) # Same as if-not-NULL
     hover <- input$plot_hover
 
-    #   Replaced with new definition (from above) 
-    kendall.cor.new <- mort.rate() %>% 
-      dplyr::mutate(VAR = death_rate) %>%
-      kendall.func(chr.data.2019) %>%
-      dplyr::mutate(
-        DIR = dplyr::if_else(
-          kendall_cor <= 0,
-          "Protective",
-          "Destructive"
-        ),
-        chr_code = chr.namemap.2019[chr_code, 1]
-      ) %>% na.omit() %>% 
-      dplyr::filter(kendall_p < 0.1) %>% 
-      dplyr::arrange(desc(kendall_cor)) %>% 
-      dplyr::top_n(15, kendall_cor) %>% 
-      dplyr::mutate(chr_code = reorder(chr_code, kendall_cor))
-    
-    
-    point <- nearPoints(kendall.cor.new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
+    point <- nearPoints(kendall_cor_new, hover, threshold = 50, maxpoints = 1, addDist = TRUE)
     
     if (nrow(point) == 0) return(NULL)
     
@@ -2880,14 +2886,11 @@ server <- function(input, output, session) {
         # Themes
         geom_hline(yintercept = .0, linetype = "dashed") + 
         labs(
-          # title = "Most Associated Factors",
-          # subtitle = "Kendall Correlation between Factors and Mortality Risk Cluster\nClick dot for details",
-          caption = "Data Sources:\n\t1.CDC WONDER Multi-Cause of Death\n\t2.County Health Ranking 2019\nAnalysis: The Rensselaer IDEA",
           y = "Correlation",
           x = NULL,
           fill = "Relationship",
           color = "Relationship"
-         ) + 
+        ) +
         theme_minimal() +
         theme.text() + 
         theme.background() + 
