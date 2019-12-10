@@ -111,7 +111,9 @@
   display:block;
   top:-100px;
   height:50px;
-  width:600px;
+/*  width:600px; */
+  min-width: 600px;
+  max-width: 25vw;
   background-color:#565254;
   float:right;
   margin-right:4%;
