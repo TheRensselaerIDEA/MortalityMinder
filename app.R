@@ -130,8 +130,8 @@ ui <- fluidPage(
                       tags$li(tags$h4("All Causes"))
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
-                      tags$h4("Pick state (or United States) and cause of death on the menu bar at the top of the page to see how mortality rates in the United States have changed from 2000 to 2017.\n"), 
-                      HTML("<h5><i>Click</i> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <i>and</i> <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <i>for State and Factor views</i></h5>"),
+                      HTML("<h4>Choose <b>Cause of Death</b> and <b>State</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
+                      HTML("<h5><i>Click</i> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <i>and</i> <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <i>for <b>State</b> and <b>Factor</b> views</i></h5>"),
                  tags$br(),
                  tags$img(
                             class="IDEA_Logo_Wrapper2",
