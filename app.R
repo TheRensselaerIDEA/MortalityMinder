@@ -21,14 +21,14 @@ names(state.list) <- state.name
 state.list <- append(state.list, "United States", after = 0)
 
 # Cause list with Assault
-# cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Deaths by Assault"="Assault","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
+# cause.list <- c("All Cause" = "All Cause", "Deaths by Assault"="Assault","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular","Deaths of Despair"="Despair")
 # cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
 #                        "\"Deaths by Assault\" are deaths caused by injuries inflicted by another person with intent to injure or kill, by any means"="Assault",
 #                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
 #                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 
 # Cause list with Assault commented out
-cause.list <- c("Deaths of Despair"="Despair","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular", "All Cause" = "All Cause")
+cause.list <- c("All Cause" = "All Cause","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular","Deaths of Despair"="Despair")
 cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
@@ -73,8 +73,9 @@ ui <- fluidPage(
         inputId = "death_cause",
         label = h4("Cause of Death"),
         choices = cause.list,
+        selected = "Despair",
         choicesOpt = list(
-          subtext = c("Self-Harm and some other causes"),
+          subtext = c(" "," "," ","Self-Harm and some other causes"),
           "dropup-auto" = FALSE
         )
       ),
