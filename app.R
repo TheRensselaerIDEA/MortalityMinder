@@ -1834,47 +1834,6 @@ server <- function(input, output, session) {
           )
         if (nrow(county_data) == 0 | all(canShow$death_num == 0.5)) {
           line_plot + xlab("period\nWarning: Could not plot county as data suppressed by CDC")
-        } else if (any(canShow$death_num == 0.5)) {
-
-          available.data <- canShow[canShow$death_num != 0.5,]
-          
-          possible.clusters <- c()
-          for (row in 1:nrow(available.data)) {
-            temp.data <- total.data[total.data$period == available.data[row, "period"],]
-            temp.data$diff <- abs(temp.data$death_rate - available.data[row, "death_rate"])
-            possible.clusters <- c(possible.clusters, temp.data[temp.data$diff == min(temp.data$diff),]$cluster)
-          }
-          
-          counts <- table(possible.clusters)
-          final.cluster <- names(counts)[which.max(counts)]
-          
-          county_data <- county_data %>%
-            dplyr::select(-drop.cols) %>%
-            tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
-            dplyr::mutate("county" = county_choice())
-
-          data.to.change <- canShow[canShow$death_num == 0.5,]
-          for (row in 1:nrow(data.to.change)) {
-            res <- total.data[total.data$period == data.to.change[row, "period"],] %>% 
-              dplyr::filter(cluster == final.cluster)
-            county_data[county_data$period == data.to.change[row, "period"],]$death_rate = res$death_rate
-          }
-          
-          line_plot +
-            geom_line(
-              mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-              data = county_data, color = "#565254", size = 1.3
-            ) +
-            geom_point(
-              mapping = aes(x = period, y = death_rate),
-              data = county_data, color = "#565254", shape = 21, 
-              fill = "#f7f7f7", inherit.aes = FALSE, size = 2
-            ) +
-            scale_linetype_manual(name = "County",
-                                  values = c("twodash"),
-                                  guide = guide_legend(override.aes = list(color = c("#565254")))
-            ) +
-            xlab("period\nWarning: Data visualized by imputation")
         } else {
             county_data <- county_data %>%
               dplyr::select(-drop.cols) %>%
