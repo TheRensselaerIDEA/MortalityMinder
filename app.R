@@ -1652,7 +1652,9 @@ server <- function(input, output, session) {
           caption = "Mortality Data: CDC WONDER Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) +
         guides(
-          color = guide_legend(reverse = T)
+          color = guide_legend(
+            reverse = T,
+            title = "Group:")
         )
     } else {
 
@@ -1810,7 +1812,9 @@ server <- function(input, output, session) {
           values = theme.categorical.colors.accent(nclusters)) +
         theme.line.mort() + 
         theme(legend.position = "left") + 
-        guides(color = guide_legend(reverse = T)) +
+        guides(color = guide_legend(
+          reverse = T,
+          title = "Group:")) +
         labs(fill = "Cluster", 
              color = "Cluster",
              caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
@@ -2607,7 +2611,7 @@ server <- function(input, output, session) {
       dplyr::mutate(cluster = as.character(cluster)) %>%
       dplyr::arrange(desc(cluster)) %>%
       dplyr::rename(
-        "Trend Grp." = "cluster",
+        "Trend Group" = "cluster",
         "Count" = "count"
       )
   })
