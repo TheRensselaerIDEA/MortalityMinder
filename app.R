@@ -463,8 +463,8 @@ ui <- fluidPage(
                                    downloadButton("downloadCHRData", "County Health Rankings (CHR) Factor Data"), ##tags$br(),
                                    downloadButton("downloadFactorDesc", "Factor Descriptions"), ##tags$br(),
                                    tags$h4("DOWNLOAD CURRENT RESULTS",align="center"), 
-                                   downloadButton("downloadClusters", "Current State Clusters"), ##tags$br(),
-                                   downloadButton("downloadClusterTime", "Current State Clusters Through Time"), ##tags$br(),
+                                   downloadButton("downloadClusters", "Current State Groups (Clusters)"), ##tags$br(),
+                                   downloadButton("downloadClusterTime", "Current State Groups (Clusters) Through Time"), ##tags$br(),
                                    downloadButton("downloadCorr", "Current Factor Correlations")), 
                             column(11,
                                    tags$img(
@@ -486,11 +486,11 @@ ui <- fluidPage(
                                                for each state, and the distribution of those factors within each state."), 
                                    tags$h5("MM allows the user to visually explore the growth of mortality rates in the United 
                                            States using county level three-year averages from 2000-2017, providing 
-                                           both national and state views. For each cause of death, MM clusters counties in 
-                                           each state, categorizing each county into high/medium/low mortality clusters; 
-                                           visualizes the geographic distribution of those clusters; and illustrates the 
-                                           mortality trends of those clusters and user-selected counties over time.  MM does
-                                           a similar analysis for the entire United States, only using six clusters."),
+                                           both national and state views. For each cause of death, MM categorizes counties in 
+                                           each state, categorizing each county into high/medium/low mortality groups; 
+                                           visualizes the geographic distribution of those groups; and illustrates the 
+                                           mortality trends of those groups and user-selected counties over time.  MM does
+                                           a similar analysis for the entire United States, only using six groups."),
                                    HTML("<h5>The app determines the <a href='https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient' 
                                            target=_blank>correlation</a> of social factors and visualizes the most 
                                            significant, highlighting whether those factors are protective or destructive. 
@@ -1220,11 +1220,11 @@ server <- function(input, output, session) {
           legend.position = "none"
         ) + 
         labs(
-          x = "Cluster",
+          x = "Risk Group",
           y = input$determinant_choice
          
         ) + 
-        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        # ggtitle(paste(input$determinant_choice, "and Risk Group Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
       
@@ -1250,10 +1250,10 @@ server <- function(input, output, session) {
           legend.position = "none"
         ) + 
         labs(
-          x = "Cluster",
+          x = "Risk Group",
           y = input$determinant_choice
         ) + 
-        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        # ggtitle(paste(input$determinant_choice, "and Risk Group Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
     }
     
@@ -1672,7 +1672,7 @@ server <- function(input, output, session) {
         labs(
           fill = "Cluster", 
           color = "Cluster",
-          caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
+          caption = "Mortality Data: CDC WONDER Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) +
         guides(
           color = guide_legend(reverse = T)
@@ -2139,8 +2139,8 @@ server <- function(input, output, session) {
       paste0("<h3><b>State View:</b> ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities</h3>")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      HTML("<h5>Counties are grouped into disparate <b>risk clusters</b> within a state based on their midlife mortality rate trends.</h5>"),
-      HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk cluster</b> of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
+      HTML("<h5>Counties are categorized into <b>risk groups</b> according to risk based on their midlife mortality rate trends.</h5>"),
+      HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk group</b> of each county. The line graph compares the average mortality rates per year for each risk group  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
       HTML("<h5>Click <b>BACK (<span style='color:#0571b0'>&lt;&lt;</span>)</b> and <b>NEXT (<span style='color:#0571b0'>&gt;&gt;</span>)</b> for <b>Nationwide</b> and <b>Factor</b> views.</h5>"),
       NULL
@@ -2354,11 +2354,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups For more information on the method of determining correlation please see Project Overview.", 
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2366,11 +2366,11 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.", 
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2442,11 +2442,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the geographic distribution of risk clusters for the selected state.",
-          paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ",location_str)
+          title="This plot represents the geographic distribution of risk groups for the selected state.",
+          paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ",location_str)
           # ,icon("info-circle")
         ),
-        tags$h6("Geographic distribution of risk clusters for ",location_str),
+        tags$h6("Geographic distribution of risk groups for ",location_str),
         NULL
       )
     }
@@ -2455,10 +2455,10 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ", names(which(state.list == input$state_choice)))
+        paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("Geographic distribution of risk clusters for ",names(which(state.list == input$state_choice))),
+      tags$h6("Geographic distribution of risk groups for ",names(which(state.list == input$state_choice))),
       NULL
     )
     }
@@ -2503,11 +2503,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
           paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2515,11 +2515,11 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
         paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2548,11 +2548,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
-          paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str)
+          title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk groups. For protective factors, boxes will shift down for high risk groups.",
+          paste0(input$determinant_choice, " and Risk Group Relationship for ", location_str)
           # , icon("info-circle")
         ),
-        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
+        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
         NULL
       )
     }
@@ -2560,11 +2560,11 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
-        paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice)))
+        title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk groups. For protective factors, boxes will shift down for high risk groups.",
+        paste0(input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
+      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
       NULL
     )
   }
