@@ -192,9 +192,11 @@
   width: 74%;
 }
 
+/*
 .col-sm-3{
   width: 32%;
 }
+*/
 
 .col-sm-offset-1{
   margin-left: 0;
@@ -430,7 +432,7 @@
 .page3 {}
 
 .page3_col {
-  width:calc(100% / 3);
+  /*width:calc(100% / 3);*/
   height:95%;
   float:left;
   display:block;  
@@ -523,6 +525,11 @@
 
 .page4 {
   height:95%;
+}
+
+.dbutton {
+  width: 100%;
+  font-size: 1.4vh;
 }
 
 /* Page 4 fonts moved down */
@@ -769,7 +776,7 @@ p, blockquote, pre, .radio-inline{
 
 
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, li {
 font-family: urw-din, sans-serif;
 font-weight: 200;
 font-style: normal;
@@ -779,7 +786,7 @@ h1, h2, h3, h4 {
   color: ##2b292a;
 }
 
-h5, h6 {
+h5, h6, li {
   color: #565254;
 }
 
@@ -804,7 +811,7 @@ h4{
  font-weight: 400;
 }
 
-h5{
+h5, li{
  font-size: 1.3vh;
 }
 
@@ -814,27 +821,6 @@ h6{
 
 .data_source_footnote h6{
    font-size: 0.8vh;
-}
-
-/* These make Page 4 work (10 Dec) */
-.page4 h3 {
-  color: black;
-  font-size: 1.6vh; 
-}
-
-.page4 h4 {
-  color: black;
-  font-size: 1.4vh; 
-}
-
-.page4 h5 {
-  color: black;
-  font-size: 1.3vh; 
-}
-
-.page4 h6 {
-  color: black;
-  font-size: 1.2vh; 
 }
 
 
@@ -877,7 +863,7 @@ li h4{
   h4 {
     font-size: 1.8vh;
   }
-  h5 {
+  h5, li {
     font-size: 1.6vh;
   }
 
@@ -912,13 +898,7 @@ p, blockquote, pre, .radio-inline{
     font-size: 1.4vh;
   }
 
-  h4 {
-    font-size: 20px;
-  }
-  h5, h6 {
-    font-size: 18px;
-  }
-
+  
   #input_text1 {
     font-size: 16px;
   }
@@ -927,10 +907,6 @@ p, blockquote, pre, .radio-inline{
     font-size: 16px;
   }
   
-  blockquote {
-  font-size: 2.4vh;
-  line-height: 2vh; 
-}
 
 pre {
   font-size: 1.7vh;
