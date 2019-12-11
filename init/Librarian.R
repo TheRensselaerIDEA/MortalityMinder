@@ -20,7 +20,7 @@ LIBS_LOADER <- c(
   
   # Data manipulation
   "lubridate", "tidyr", "dplyr", "stringr", "janitor", "purrr", "textshape", "stats", 
-  "magrittr", "zoo", "textshape", "forcats"
+  "magrittr", "zoo", "textshape", "forcats", "stringdist"
 )
 
 # All libraries for analysis should be listed below
