@@ -131,7 +131,7 @@ ui <- fluidPage(
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
                       HTML("<h4>Choose <b>Cause of Death</b> and <b>State</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
-                      HTML("<h5><i>Click</i> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <i>and</i> <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <i>for <b>State</b> and <b>Factor</b> views</i></h5>"),
+                      HTML("<h5>Click <b><span style='color:#0571b0'>&lt;&lt;</span></b> and <b><span style='color:#0571b0'>&gt;&gt;</span></b> for <b>State</b> and <b>Factor</b> views</h5>"),
                  tags$br(),
                  tags$img(
                             class="IDEA_Logo_Wrapper2",
@@ -2160,10 +2160,10 @@ server <- function(input, output, session) {
         paste0("State View: ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      tags$h5("Counties are grouped into disparate risk clusters within a state based on their midlife mortality rate trends."),
+      HTML("<h5>Counties are grouped into disparate <b>risk clusters</b> within a state based on their midlife mortality rate trends.</h5>"),
       HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk cluster</b> of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
-      HTML("<h5><i>Click <b><span style='color:#00bfc4'>&lt;&lt;</span></b> or <b><span style='color:#00bfc4'>&gt;&gt;</span></b> to learn more.</i></h5>"),
+      HTML("<h5>Click <b><span style='color:#0571b0'>&lt;&lt;</span></b> and <b><span style='color:#0571b0'>&gt;&gt;</span></b> for <b>Nationwide</b> and <b>Factor</b> views</h5>"),
       NULL
     )
   })
