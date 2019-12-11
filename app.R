@@ -1832,7 +1832,7 @@ server <- function(input, output, session) {
           dplyr::filter(
             death_cause == input$death_cause
           )
-        if (nrow(county_data) == 0 | all(canShow$death_num == 0.5)) {
+        if (nrow(county_data) == 0 | any(canShow$death_num == 0.5)) {
           line_plot + xlab("period\nWarning: Could not plot county as data suppressed by CDC")
         } else {
             county_data <- county_data %>%
