@@ -133,7 +133,7 @@ ui <- fluidPage(
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
                       HTML("<h4>Choose <b>Cause of Death</b> and <b>State</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
                       HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b>(<span style='color:#0571b0'>&lt;&lt;</span>)</b> <span style='color:white'>and <b>NEXT</b> </span>
-                           <b>(<span style='color:#0571b0'>&gt;&gt;</span>)</b> <span style='color:white'>for</span> <span style='color:white'><b>State</b> and <b>Factor</b> views</span></h5>"),
+                           <b>(<span style='color:#0571b0'>&gt;&gt;</span>)</b> <span style='color:white'>for</span> <span style='color:white'><b>State</b> and <b>Factor</b> views.</span></h5>"),
                  tags$br(),
                  tags$img(
                             class="IDEA_Logo_Wrapper2",
@@ -2158,14 +2158,14 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h3(
-        paste0("State View: ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities")
+      HTML(
+      paste0("<h3><b>State View:</b> ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities</h3>")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
       HTML("<h5>Counties are grouped into disparate <b>risk clusters</b> within a state based on their midlife mortality rate trends.</h5>"),
       HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk cluster</b> of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
-      HTML("<h5>Click <b>BACK (<span style='color:#0571b0'>&lt;&lt;</span>)</b> and <b>NEXT (<span style='color:#0571b0'>&gt;&gt;</span>)</b> for <b>Nationwide</b> and <b>Factor</b> views</h5>"),
+      HTML("<h5>Click <b>BACK (<span style='color:#0571b0'>&lt;&lt;</span>)</b> and <b>NEXT (<span style='color:#0571b0'>&gt;&gt;</span>)</b> for <b>Nationwide</b> and <b>Factor</b> views.</h5>"),
       NULL
     )
   })
@@ -2196,7 +2196,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h4(
         title ="Midlife mortality trates are obtained from the Detailed Mortality Online Mortality Database at https://wonder.cdc.gov/.  Separate crude death rates are queried  for adults 25 to 64 at the county, state, and nationwide levels for each cause of death.  Rates are not age adjusted. Unreliable or missing rates are imputed. See Project Overview for details.",
-        paste0("Midlife Mortality Rate: Deaths per 100,000 for people ages 25-to 64 due to ",
+        paste0("Midlife Mortality Rate: Deaths per 100,000 for adults ages 25-64 due to ",
                names(which(cause.list == input$death_cause)), 
                " for three year periods for counties (left) and state and nation (right)."
                ), icon("info-circle")
@@ -2510,9 +2510,8 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
-          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values. Select from the drop-down for county details or click the map.")
+          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Select from the drop-down for county details or click the map.")
         ),
-        # tags$h6("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Darker colors indicate higher values."),
         NULL
       )
     }

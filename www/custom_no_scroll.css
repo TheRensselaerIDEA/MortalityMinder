@@ -324,8 +324,14 @@
   height:calc(50% - 1px);
 }
 
-.page2_col1_top_left {
+/*.page2_col1_top_left {
   width: 40%;
+}*/
+
+.page2_col1_top_left {
+  width:40%;
+  background-color: #565254;
+  color: #f7f7f7;
 }
 
 .page2_col1_top_right {
@@ -333,6 +339,13 @@
   height: 80%;
 }
 
+.page2_col1_top_left h4 {
+  color: #f7f7f7;
+}
+
+.page2_col1_top_left h5 {
+  color: #f7f7f7;
+}
 
 
 .page2_col1_top_right_title{
