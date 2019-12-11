@@ -449,10 +449,34 @@
   width:calc(100% / 3 - 1px);
 }
 
+/*.page3_col3_top {
+  padding: 10px 20px 0px 20px; 
+  margin-right: 20px;
+}*/
+
 .page3_col3_top {
   padding: 10px 20px 0px 20px; 
   margin-right: 20px;
+  background-color: #565254;
+  color: #f7f7f7;
 }
+
+.page3_col3_top h3 {
+  color: #f7f7f7;
+}
+
+.page3_col3_top h4 {
+  color: #f7f7f7;
+}
+
+.page3_col3_top h5 {
+  color: #f7f7f7;
+}
+
+.page3_col3_top h6 {
+  color: #f7f7f7;
+}
+
 
 .page3_col3_bot {
   width:100%;

@@ -380,7 +380,7 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col3_top",
               tags$br(),
-              tags$p(htmlOutput("determinant_text")),
+              tags$h4(htmlOutput("determinant_text")),
               tags$h5(uiOutput("determinant_link")),
               tags$h5(htmlOutput("determinant_original_source")),
               tags$h5(htmlOutput("determinant_corr")),
