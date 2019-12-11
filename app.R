@@ -1392,7 +1392,9 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
-      if(input$state_choice == "United States"){
+    
+    
+    if(input$state_choice == "United States"){
       # If "United States" suppress plot
       # sd.data <- dplyr::filter(
       #   cdc.data,
@@ -1415,7 +1417,12 @@ server <- function(input, output, session) {
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
         tidyr::drop_na()
-        
+      
+      if (input$state_choice == "FL"){
+        sd.data <- sd.data[-c(47), ]
+        sd.data$county_name[[46]] = "Okaloosa"
+      }  
+      
       # NOTE: The column we care about is now called VAR
       geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017")
       
