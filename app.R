@@ -947,13 +947,13 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------------
   # Functions for data download
   
-  # Outputs cdc.data as a csv
+  # Outputs cdc.unimputed.data as a csv
   output$downloadCDCData <- downloadHandler(
     filename = function() {
       "cdc_data.csv"
     },
     content = function(file) {
-      write.csv(cdc.data, file, row.names = FALSE)
+      write.csv(cdc.unimputed.data, file, row.names = FALSE)
     }
   )
   
