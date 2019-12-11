@@ -253,7 +253,7 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
               addLegend("topright",
                         colors = rev(colors),
                         labels = rev(labels),
-                        title = "Risk\nClusters",
+                        title = "Risk\nGroups:",
                         opacity = 1) %>%
               setMapWidgetStyle(style = list(background = "transparent"))
     )
@@ -634,7 +634,7 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
               addLegend("bottomleft",
                         colors = colors[1],
                         labels = labels[1],
-                        title = "Rate;",
+                        title = "Mortality&nbsp;&nbsp;Rate&nbsp;&nbsp;per&nbsp;&nbsp;100,000:",
                         opacity = 1) %>% 
               setMapWidgetStyle(style = list(background = "transparent"))
     )
@@ -684,7 +684,7 @@ geo.us.plot <- function(death.cause, period) {
   )
 }
 
-geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
+geo.sd.plot <- function(state.choice, sd.choice, sd.data, period, legend_title="Rate") {
   #  browser()
   dataset <- geo.map.fetch(state.choice, sd.data) %>% 
     dplyr::rename(VAR_ = VAR) %>%
@@ -730,7 +730,7 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
       addLegend("topright",
                 pal = pal,
                 values = ~dataset$VAR,
-                title = "Rate",
+                title = legend_title,
                 opacity = 1) %>% 
       setMapWidgetStyle(style = list(background = "transparent"))
     

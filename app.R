@@ -1431,7 +1431,7 @@ server <- function(input, output, session) {
         tidyr::drop_na()
         
       # NOTE: The column we care about is now called VAR
-      geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017")
+      geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017", "Scale:")
       
     }
     
