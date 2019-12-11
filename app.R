@@ -485,6 +485,7 @@ ui <- fluidPage(
                                                   a county level for each state, and the distribution of those factors within each state.")),
                                      tags$li(HTML("Selecting 'United States' for <b>State</b> initiates nationwide analysis."))
                                    )),
+
                             column(11, tags$h4("INSIGHTS",align="center"), 
                                    HTML("<h5>MM provides a compelling and engaging tool to investigate the social and economic determinants of mortality. </h5>"), 
                                    tags$ul(
@@ -921,13 +922,13 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------------
   # Functions for data download
   
-  # Outputs cdc.data as a csv
+  # Outputs cdc.unimputed.data as a csv
   output$downloadCDCData <- downloadHandler(
     filename = function() {
       "cdc_data.csv"
     },
     content = function(file) {
-      write.csv(cdc.data, file, row.names = FALSE)
+      write.csv(cdc.unimputed.data, file, row.names = FALSE)
     }
   )
   
@@ -1125,6 +1126,7 @@ server <- function(input, output, session) {
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
     res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017",
                                         death_cause == input$death_cause,
@@ -1139,7 +1141,12 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>% 
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
+    if (nrow(sd.select) == 0) {
+      
+      ggplot() + 
+        ggtitle("Error: sd.select is empty. Aborting boxplot creation.")
+      
+    } else if (nrow(sd.select) <= 6){
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
@@ -1188,11 +1195,11 @@ server <- function(input, output, session) {
           legend.position = "none"
         ) + 
         labs(
-          x = "Cluster",
+          x = "Risk Group",
           y = input$determinant_choice
          
         ) + 
-        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        # ggtitle(paste(input$determinant_choice, "and Risk Group Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
       
@@ -1218,10 +1225,10 @@ server <- function(input, output, session) {
           legend.position = "none"
         ) + 
         labs(
-          x = "Cluster",
+          x = "Risk Group",
           y = input$determinant_choice
         ) + 
-        # ggtitle(paste(input$determinant_choice, "and Risk Cluster Relationship"))+
+        # ggtitle(paste(input$determinant_choice, "and Risk Group Relationship"))+
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
     }
     
@@ -1231,6 +1238,7 @@ server <- function(input, output, session) {
   output$determinants_plot3 <- renderPlot({
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
@@ -1239,7 +1247,11 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
+    if (nrow(sd.select) == 0) {
+      ggplot() + 
+        ggtitle("Error: sd.select is empty. Aborting dot plot creation.")
+      
+    } else if (nrow(sd.select) <= 6){
       
       dplyr::filter(
         cdc.unimputed.data,
@@ -1369,7 +1381,9 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
-      if(input$state_choice == "United States"){
+    
+    
+    if(input$state_choice == "United States"){
       # If "United States" suppress plot
       # sd.data <- dplyr::filter(
       #   cdc.data,
@@ -1392,9 +1406,14 @@ server <- function(input, output, session) {
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
         tidyr::drop_na()
-        
+      
+      if (input$state_choice == "FL"){
+        sd.data <- sd.data[-c(47), ]
+        sd.data$county_name[[46]] = "Okaloosa"
+      }  
+      
       # NOTE: The column we care about is now called VAR
-      geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017")
+      geo.sd.plot(input$state_choice, input$determinant_choice, sd.data, "2015-2017", "Scale:")
       
     }
     
@@ -1630,7 +1649,7 @@ server <- function(input, output, session) {
         labs(
           fill = "Cluster", 
           color = "Cluster",
-          caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
+          caption = "Mortality Data: CDC WONDER Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
         ) +
         guides(
           color = guide_legend(reverse = T)
@@ -1808,49 +1827,8 @@ server <- function(input, output, session) {
           dplyr::filter(
             death_cause == input$death_cause
           )
-        if (nrow(county_data) == 0 | all(canShow$death_num == 0.5)) {
+        if (nrow(county_data) == 0 | any(canShow$death_num == 0.5)) {
           line_plot + xlab("period\nWarning: Could not plot county as data suppressed by CDC")
-        } else if (any(canShow$death_num == 0.5)) {
-
-          available.data <- canShow[canShow$death_num != 0.5,]
-          
-          possible.clusters <- c()
-          for (row in 1:nrow(available.data)) {
-            temp.data <- total.data[total.data$period == available.data[row, "period"],]
-            temp.data$diff <- abs(temp.data$death_rate - available.data[row, "death_rate"])
-            possible.clusters <- c(possible.clusters, temp.data[temp.data$diff == min(temp.data$diff),]$cluster)
-          }
-          
-          counts <- table(possible.clusters)
-          final.cluster <- names(counts)[which.max(counts)]
-          
-          county_data <- county_data %>%
-            dplyr::select(-drop.cols) %>%
-            tidyr::gather("period", "death_rate", "2000-2002":"2015-2017") %>%
-            dplyr::mutate("county" = county_choice())
-
-          data.to.change <- canShow[canShow$death_num == 0.5,]
-          for (row in 1:nrow(data.to.change)) {
-            res <- total.data[total.data$period == data.to.change[row, "period"],] %>% 
-              dplyr::filter(cluster == final.cluster)
-            county_data[county_data$period == data.to.change[row, "period"],]$death_rate = res$death_rate
-          }
-          
-          line_plot +
-            geom_line(
-              mapping = aes(x = period, y = death_rate, group = county, linetype=county_choice()),
-              data = county_data, color = "#565254", size = 1.3
-            ) +
-            geom_point(
-              mapping = aes(x = period, y = death_rate),
-              data = county_data, color = "#565254", shape = 21, 
-              fill = "#f7f7f7", inherit.aes = FALSE, size = 2
-            ) +
-            scale_linetype_manual(name = "County",
-                                  values = c("twodash"),
-                                  guide = guide_legend(override.aes = list(color = c("#565254")))
-            ) +
-            xlab("period\nWarning: Data visualized by imputation")
         } else {
             county_data <- county_data %>%
               dplyr::select(-drop.cols) %>%
@@ -2138,8 +2116,8 @@ server <- function(input, output, session) {
       paste0("<h3><b>State View:</b> ", names(which(cause.list == input$death_cause)), " in the State of ", names(which(state.list == input$state_choice)), " and their Associated Disparities</h3>")
       ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
-      HTML("<h5>Counties are grouped into disparate <b>risk clusters</b> within a state based on their midlife mortality rate trends.</h5>"),
-      HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk cluster</b> of each county. The line graph compares the average mortality rates per year for each risk cluster  with the national mean (blue)."),
+      HTML("<h5>Counties are categorized into <b>risk groups</b> according to risk based on their midlife mortality rate trends.</h5>"),
+      HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk group</b> of each county. The line graph compares the average mortality rates per year for each risk group  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
       HTML("<h5>Click <b>BACK (<span style='color:#00bfc4'>&lt;&lt;</span>)</b> and <b>NEXT (<span style='color:#00bfc4'>&gt;&gt;</span>)</b> for <b>Nationwide</b> and <b>Factor</b> views.</h5>"),
       NULL
@@ -2353,11 +2331,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups For more information on the method of determining correlation please see Project Overview.", 
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2365,11 +2343,11 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.", 
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.", 
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2441,11 +2419,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="This plot represents the geographic distribution of risk clusters for the selected state.",
-          paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ",location_str)
+          title="This plot represents the geographic distribution of risk groups for the selected state.",
+          paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ",location_str)
           # ,icon("info-circle")
         ),
-        tags$h6("Geographic distribution of risk clusters for ",location_str),
+        tags$h6("Geographic distribution of risk groups for ",location_str),
         NULL
       )
     }
@@ -2454,10 +2432,10 @@ server <- function(input, output, session) {
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
-        paste0(names(which(cause.list == input$death_cause)), " Risk Clusters for ", names(which(state.list == input$state_choice)))
+        paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("Geographic distribution of risk clusters for ",names(which(state.list == input$state_choice))),
+      tags$h6("Geographic distribution of risk groups for ",names(which(state.list == input$state_choice))),
       NULL
     )
     }
@@ -2502,11 +2480,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
           paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2514,11 +2492,11 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk cluster; or Protective, meaning it has a negative correlation with the risk cluster. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk clusters. For more information on the method of determining correlation please see Project Overview.",
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
         paste0("Factor View: Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk clusters. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2547,11 +2525,11 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "padding-right: 20px; padding-left: 20px",
-          title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
-          paste0(input$determinant_choice, " and Risk Cluster Relationship for ", location_str)
+          title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk groups. For protective factors, boxes will shift down for high risk groups.",
+          paste0(input$determinant_choice, " and Risk Group Relationship for ", location_str)
           # , icon("info-circle")
         ),
-        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
+        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
         NULL
       )
     }
@@ -2559,11 +2537,11 @@ server <- function(input, output, session) {
     tagList(
       tags$h3(
         style = "padding-right: 20px; padding-left: 20px",
-        title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk clusters. For protective factors, boxes will shift down for high risk clusters.",
-        paste0(input$determinant_choice, " and Risk Cluster Relationship for ", names(which(state.list == input$state_choice)))
+        title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk groups. For protective factors, boxes will shift down for high risk groups.",
+        paste0(input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk clusters."),
+      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
       NULL
     )
   }
