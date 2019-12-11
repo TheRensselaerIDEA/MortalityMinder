@@ -303,6 +303,10 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
   # > cdc.supp.wide <- cdc.pop.mat(cdc.data, "ALL", "Despair")
   # > cdc.data.state.wide <- cdc.mort.state.mat(cdc.data.state, "ALL", "Despair")
   
+  # convert long format to wide format
+  # should be a n*6 matrix
+  # each column represent rate for a time-period
+  
   cdc.data.wide <- cdc.mort.mat(cdc.data.long, state.abbr, death.cause)
   cdc.data.wide[is.na(cdc.data.wide)] <- NaN
   
@@ -326,12 +330,18 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
   
   set.seed(88)
   
+  # get a upper bound for rates
+  # missing counties should have 9/pop*10^5 for upper bound
+  # non-missing counties should have Inf as upper bound
+  
   miss_index <- which(is.na(cdc.data.wide[,-1]),arr.ind=TRUE)
   get_pop_index <- t(matrix(c(0,8), nrow=ncol(miss_index), ncol=nrow(miss_index)))
   hi_bound[miss_index] <- 
     dplyr::if_else( is.na(cdc.supp.wide[(miss_index+get_pop_index)]), Inf,
                     9 / as.numeric( cdc.supp.wide[(miss_index+get_pop_index)] ) * 10^5)
     
+  # randomly generates number from 1-4, 5-8
+  
   random1[miss_index] <- 
     dplyr::if_else( is.na(cdc.supp.wide[(miss_index+get_pop_index)]), Inf,
                     sample(c(1:4), 1, replace=TRUE) / 
@@ -347,6 +357,8 @@ cdc.impute <- function(cdc.data.long, cdc.data.state.long, state.abbr, death.cau
   cdc.states.split <- split(cdc.data.wide, cdc.supp.wide$state_abbr) 
   
   complt.df <- data.frame()
+  
+  # imputation by states
   
   # for each state
   for (i in 1:length(cdc.states.split)) {
@@ -732,11 +744,15 @@ cdc.files.cardiovascular.excluded <- c(
 
 ######################
 
+# original CDC Wonder Data for each cause
+
 cdc.data.despair <- cdc.reader.batch(cdc.files.despair, cdc.periods, "Despair")
 cdc.data.assault <- cdc.reader.batch(cdc.files.assault, cdc.periods, "Assault")
 cdc.data.cancer <- cdc.reader.batch(cdc.files.cancer, cdc.periods, "Cancer")
 cdc.data.cardiovascular <- cdc.reader.batch(cdc.files.cardiovascular, cdc.periods, "Cardiovascular")
 cdc.data.allcause <- cdc.reader.batch(cdc.files.allcause, cdc.periods, "All Cause")
+
+# binded in one data frame
 
 cdc.data.ori <- dplyr::bind_rows(
     cdc.data.despair, 
@@ -747,11 +763,15 @@ cdc.data.ori <- dplyr::bind_rows(
   ) %>% 
   as.data.frame()
 
+# state mean data from CDC Wonder
+
 cdc.data.despair.state <- cdc.reader.state.batch(cdc.files.despair.state, cdc.periods, "Despair")
 cdc.data.assault.state <- cdc.reader.state.batch(cdc.files.assault.state, cdc.periods, "Assault")
 cdc.data.cancer.state <- cdc.reader.state.batch(cdc.files.cancer.state, cdc.periods, "Cancer")
 cdc.data.cardiovascular.state <- cdc.reader.state.batch(cdc.files.cardiovascular.state, cdc.periods, "Cardiovascular")
 cdc.data.allcause.state <- cdc.reader.state.batch(cdc.files.allcause.state, cdc.periods, "All Cause")
+
+# binded in one data frame
 
 cdc.data.state <- 
   dplyr::bind_rows(cdc.data.despair.state, cdc.data.assault.state, cdc.data.cancer.state,
@@ -785,16 +805,22 @@ cdc.suppress <- cdc.miss_last_period %>%
 saveRDS(cdc.suppress, "../data/CDC/cdc.suppress.Rds")
 ########################################################################################################
 
+# data from CDC wonder excluding the ICD-10 code for causes we need
+
 cdc.data.despair.excluded <- cdc.reader.batch(cdc.files.despair.excluded, cdc.periods, "-Despair")
 cdc.data.assault.excluded <- cdc.reader.batch(cdc.files.assault.excluded, cdc.periods, "-Assault")
 cdc.data.cancer.excluded <- cdc.reader.batch(cdc.files.cancer.excluded, cdc.periods, "-Cancer")
 cdc.data.cardiovascular.excluded <- cdc.reader.batch(cdc.files.cardiovascular.excluded, cdc.periods, "-Cardiovascular")
+
+# Use a function to get a difference between all cause and excluded data, fill the original data
+# data.fill = data.allcause - data.excluded
 
 cdc.data.despair.fill <- cdc.fill.by.excl(cdc.data.despair, cdc.data.allcause, cdc.data.despair.excluded)
 cdc.data.assault.fill <- cdc.fill.by.excl(cdc.data.assault, cdc.data.allcause, cdc.data.assault.excluded)
 cdc.data.cancer.fill <- cdc.fill.by.excl(cdc.data.cancer, cdc.data.allcause, cdc.data.cancer.excluded)
 cdc.data.cardiovascular.fill <- cdc.fill.by.excl(cdc.data.cardiovascular, cdc.data.allcause, cdc.data.cardiovascular.excluded)
 
+# binded in one data frame
 
 cdc.data <- dplyr::bind_rows(cdc.data.despair.fill, cdc.data.assault.fill, cdc.data.cancer.fill, 
                              cdc.data.cardiovascular.fill, cdc.data.allcause) %>% 

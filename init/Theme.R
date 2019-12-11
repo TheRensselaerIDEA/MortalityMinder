@@ -684,7 +684,7 @@ geo.us.plot <- function(death.cause, period) {
   )
 }
 
-geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
+geo.sd.plot <- function(state.choice, sd.choice, sd.data, period, legend_title="Rate") {
   #  browser()
   dataset <- geo.map.fetch(state.choice, sd.data) %>% 
     dplyr::rename(VAR_ = VAR) %>%
@@ -730,7 +730,7 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period) {
       addLegend("topright",
                 pal = pal,
                 values = ~dataset$VAR,
-                title = "Rate",
+                title = legend_title,
                 opacity = 1) %>% 
       setMapWidgetStyle(style = list(background = "transparent"))
     
