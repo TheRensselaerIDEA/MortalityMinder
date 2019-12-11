@@ -1151,6 +1151,7 @@ server <- function(input, output, session) {
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
     res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017",
                                         death_cause == input$death_cause,
@@ -1165,7 +1166,12 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>% 
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
+    if (nrow(sd.select) == 0) {
+      
+      ggplot() + 
+        ggtitle("Error: sd.select is empty. Aborting boxplot creation.")
+      
+    } else if (nrow(sd.select) <= 6){
       
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
@@ -1257,6 +1263,7 @@ server <- function(input, output, session) {
   output$determinants_plot3 <- renderPlot({
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
@@ -1265,7 +1272,11 @@ server <- function(input, output, session) {
       dplyr::inner_join(geo.namemap, by = "county_fips") %>%
       tidyr::drop_na()
     
-    if (nrow(sd.select) <= 6){
+    if (nrow(sd.select) == 0) {
+      ggplot() + 
+        ggtitle("Error: sd.select is empty. Aborting dot plot creation.")
+      
+    } else if (nrow(sd.select) <= 6){
       
       dplyr::filter(
         cdc.unimputed.data,
