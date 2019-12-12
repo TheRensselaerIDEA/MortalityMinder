@@ -338,10 +338,10 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col2_top",
               uiOutput("textBoxplotTitle"),
-              plotOutput("determinants_plot2",height="80%")
+              plotOutput("determinants_plot2",height="70%")
                     ), #End of Column 2 Top
             
-            tags$div(class = "hr"),
+            #tags$div(class = "hr"),
             
             fluidRow(
               class = "page3_col2_bot",
