@@ -468,7 +468,9 @@ ui <- fluidPage(
                                           "Publicly-accessible, freely available, easily maintained, and readily extensible 
                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>open source</a> web tool.")
                                         )
-                                      )
+                                      ),
+                                   HTML("<h5>Warning: Associated factors are correlated to mortality rates. 
+                                        Further investigation is needed to see if they actually cause changes in mortality rate.</h5>")
                                    ),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
                                    fluidRow(downloadButton("downloadCDCData", "Mortality Data", class = "dbutton")), ##tags$br(),
@@ -565,7 +567,9 @@ ui <- fluidPage(
                           column(11, tags$h4("LINKS", align = "center"), 
                                  HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
-                                           Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a></h5>")
+                                           Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a><br>
+                                           <a href='link' target=_blank>Overview video</a><br>
+                                           <a href='link' target=_blank>Overview slides</a></h5>")
                           )
                    )
                     # Close inner fluidRow
