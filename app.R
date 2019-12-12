@@ -2487,8 +2487,9 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
-          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Select from the drop-down for county details or click the map.")
+          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)))
         ),
+        tags$h6("Select from the drop-down for county details or click the map."),
         NULL
       )
     }
