@@ -487,6 +487,7 @@ ui <- fluidPage(
                                                factors to help determine remedies."), 
                                    HTML("<h5>Using authoritative data from the CDC and other sources, MM is designed to help health policy decision makers in the 
                                             public and private sectors identify and address unmet healthcare needs, healthcare costs, and healthcare utilization.</h5>"),
+                                   HTML("<h5>Innovative analysis divides counties into <b>risk groups</b> for visualization and correlation analysis using K-Means clustering and Kendall correlation.</h5>"),
                                    HTML("<h5>For each State and Cause of Death, MM dynamically creates three analysis and visualization infographics:</h5>"),
                                    tags$ul(
                                      tags$li(HTML("<b>National View</b> reveals mortality rates  through time and compares state and national trends.")),
@@ -546,13 +547,13 @@ ui <- fluidPage(
                                    ),
                           column(11, tags$h4("ACKNOWLEDGEMENTS", align = "center"), 
                                  tags$h5("MortalityMinder was created by undergraduate and graduate students in the Health Analytics Challenge Lab at Rensselaer Polytechnic Institute with generous support from the United Health Foundation and the Rensselaer Institute for Data Exploration and Applications (IDEA). MortalityMinder was directed by Kristin P. Bennett and John S. Erickson."),
-                                 tags$h5("The MortalityMinder Team would like to thank our team of external mentors, including Anne Yau, United Health Foundation; Dan Fabius, Continuum Health; Melissa Kamal, New York State Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP).")
+                                 tags$h5("The MortalityMinder Team would like to thank our advisory board, including Ms. Anne Yau, United Health Foundation; Dr. Dan Fabius, Continuum Health; Ms. Melissa Kamal, New York State Department of Health; and Dr. Tom White, Capital District Physicians' Health Plan (CDPHP).")
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
                                  HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
                                            <a href='https://bit.ly/mortalityminder_video' target=_blank>Mortality Minder Video</a><br>
-                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/tree/master/HRQ%20document/Mortality%20Minder%20Overview.pdf' target=_blank>Mortality Minder Slides</a><br>
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/tree/master/HRQ%20document/Mortality%20Minder%20Overview.pdf' target=_blank>Mortality Minder Slides</a><br><br>
                                            Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a></h5>")
                           )
                    )
