@@ -517,9 +517,9 @@ ui <- fluidPage(
                    ), # Close column
                    column(4,
                           column(11, tags$h4("IMPLEMENTATION AND DEPLOYMENT",align="center"), 
-                                   tags$ul(
-                                    tags$li(HTML("MortalityMinder is an open-source R project freely available with full documentation via a 
-                                                 <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/', target=_blank>GitHub repository</a>.")),
+                                 HTML("<h5>MortalityMinder is an open-source R project freely available with full documentation via a 
+                                                 <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/', target=_blank>GitHub repository</a>.</h5>"),
+                                 tags$ul(
                                     tags$li("R was chosen for its powerful environment for statistical computing and graphics using standard packages. "), 
                                     tags$li(HTML("MM utilizes the <a href='https://shiny.rstudio.com/' target='_blank'>R Shiny</a> and 
                                             <a href='https://github.com/alvarotrigo/fullPage.js' target='_blank'>FullPage Javascript</a>
@@ -1151,7 +1151,7 @@ server <- function(input, output, session) {
       ggplot(sd.select, aes(x = cluster, y = VAR, fill = cluster)) + 
         geom_boxplot() +
         labs(y = input$determinant_choice, 
-             caption = "Plot will show only single values if the state has too few counties to cluster (6 or fewer). \n In these cases, the x-axis is individual counties rather than clusters.") + 
+             caption = "Plot will show only single values if the state has too few counties to group (6 or fewer). \n In these cases, the x-axis is individual counties rather than risk groups.") + 
         theme.background() + 
         theme.text() + 
         theme(
@@ -1309,7 +1309,7 @@ server <- function(input, output, session) {
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
         color.line.cluster(input$state_choice, max(sd.select$cluster)) +
-        scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+        scale_fill_manual(name="Risk Group:", values = theme.categorical.colors(max(mort.cluster.ord()$cluster))) 
       
     } else {
       
@@ -1341,7 +1341,8 @@ server <- function(input, output, session) {
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
         color.line.cluster(input$state_choice, max(sd.select$cluster)) +
-        scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
+        scale_fill_manual(name="Risk Group:", values = theme.categorical.colors(max(mort.cluster.ord()$cluster))) 
+      
       
       if (is.null(county_choice())){
         plot
@@ -1645,7 +1646,7 @@ server <- function(input, output, session) {
           values = theme.categorical.colors.accent(max(mort.cluster.ord()$cluster))) +
         theme.line.mort() + 
         theme(legend.position = "left") + 
-        ylab("Average Midlife deaths per 100,000") +
+        ylab("Average Midlife Deaths per 100,000") +
         labs(
           fill = "Cluster", 
           color = "Cluster",
@@ -1700,7 +1701,7 @@ server <- function(input, output, session) {
                color = "Counties and \n National Average",
                caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
-          ylab("Average Midlife deaths per 100,000")
+          ylab("Average Midlife Deaths per 100,000")
         line_plot
         
       } else if (input$state_choice == "HI") {
@@ -1782,7 +1783,7 @@ server <- function(input, output, session) {
                color = "Counties and \n National Average",
                caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
           ) + 
-          ylab("Average Midlife deaths per 100,000")
+          ylab("Average Midlife Deaths per 100,000")
         line_plot 
         
       } else {
