@@ -2344,7 +2344,6 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
           title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups For more information on the method of determining correlation please see Project Overview.", 
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
@@ -2356,7 +2355,6 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.", 
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
@@ -2374,7 +2372,6 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
           title="This plot represents the average midlife death trends for each risk group. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
           paste0(names(which(cause.list == input$death_cause)), " Trends for Risk Groups across ", location_str)
           # , icon("info-circle")
@@ -2386,7 +2383,6 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the average midlife death trends for each risk group. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
         paste0(names(which(cause.list == input$death_cause)), " Trends for Risk Groups across ", names(which(state.list == input$state_choice)))
         # , icon("info-circle")
@@ -2432,7 +2428,6 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
           title="This plot represents the geographic distribution of risk groups for the selected state.",
           paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ",location_str)
           # ,icon("info-circle")
@@ -2444,7 +2439,6 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="This plot represents the geographic distribution of clusters for the selected state.",
         paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
@@ -2477,7 +2471,7 @@ server <- function(input, output, session) {
     else {
       tagList(
         tags$h3(
-          style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
+          style = "margin-top: 0;",
           paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)))
         ),
         tags$h6("Select from the drop-down for county details or click the map."),
@@ -2494,7 +2488,6 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
           title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
@@ -2506,7 +2499,6 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
@@ -2523,7 +2515,6 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h2(
-        style = "padding-right: 20px; padding-left: 20px",
         title="Help text for cluster distribution bar plots",
         paste0("Distribution of '",input$determinant_choice, "' across ", names(which(cause.list == input$death_cause)), " clusters for ", names(which(state.list == input$state_choice))), 
           icon("info-circle")
@@ -2539,7 +2530,6 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
           title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk groups. For protective factors, boxes will shift down for high risk groups.",
           paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", location_str)
           # , icon("info-circle")
@@ -2551,7 +2541,6 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="Boxplot shows the distribution of the factor within each cluster. The middle line is the median. For destructive factors, boxes will shift up for higher risk groups. For protective factors, boxes will shift down for high risk groups.",
         paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
@@ -2569,7 +2558,6 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          style = "padding-right: 20px; padding-left: 20px",
           title="Plot of mortality rate versus factor. Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down  as risk decreases. Click on a county to see its name and where it is located on the map.",
           paste0(input$determinant_choice, " and Mortality Relationship for ", location_str)
           # ,icon("info-circle")
@@ -2580,7 +2568,6 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        style = "padding-right: 20px; padding-left: 20px",
         title="Plot of mortality rate versus factor. Each dot represents a county colored by its risk group. For destructive factors, counties will shift up as risk increases. For protective factors, counties will shift down  as risk decreases. Click on a county to see its name and where it is located on the map.",
         paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
@@ -2597,7 +2584,6 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h4(
-        style = "padding-right: 20px; padding-left: 20px",
         title="Geographic distribution of selected determinant across selected state",
         paste0("Distribution of '",input$determinant_choice, "' for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
