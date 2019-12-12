@@ -917,12 +917,11 @@ server <- function(input, output, session) {
   output$page1_main_header <- renderUI({
     if (input$state_choice == "United States") {
       tags$h3(
-        paste0("What are the trends in ", input$death_cause, " mortality rates across the United States?")
+        paste0("What are the trends in midlife mortality rates for ", names(which(cause.list == input$death_cause)), " across the United States?")
       )
     } else {
       tags$h3(
-        paste0("What are the trends in ", input$death_cause, 
-               " mortality rates across the United States and in ", 
+        paste0("What are the trends in midlife mortality rates for ", names(which(cause.list == input$death_cause)), " across the United States and in ", 
                names(which(state.list == input$state_choice)), "?")
       )
     }
@@ -931,23 +930,23 @@ server <- function(input, output, session) {
   
   output$page2_main_header <- renderUI({
     if (input$state_choice == "United States") {
-      location_str = " the United States"
+      location_str = "the United States"
     } else {
       location_str = names(which(state.list == input$state_choice))
     }
     tags$h3(
-      paste0("Which county-level social and economic factors are associated with ", input$death_cause, " mortality in ", location_str, "?")
+      paste0("How do midlife mortality rates for ", names(which(cause.list == input$death_cause)), " vary by county across ", location_str, " and why?")
     )
   })
   
   output$page3_main_header <- renderUI({
     if (input$state_choice == "United States") {
-      location_str = " the United States"
+      location_str = "the United States"
     } else {
       location_str = names(which(state.list == input$state_choice))
     }
     tags$h3(
-      paste0("How are county-level social and economic factors associated with mortality in ", location_str,"?")
+      paste0("How are county-level social and economic factors associated with midlife mortality rates for ", names(which(cause.list == input$death_cause)), " in ", location_str,"?")
     )
   })
   
