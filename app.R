@@ -28,10 +28,10 @@ state.list <- append(state.list, "United States", after = 0)
 #                        "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
 
 # Cause list with Assault commented out
-cause.list <- c("All Cause" = "All Cause","Cancer Deaths"="Cancer","Cardiovascular Disease"="Cardiovascular","Deaths of Despair"="Despair")
+cause.list <- c("All Cause" = "All Cause","Cancer"="Cancer","Cardiovascular Disease"="Cardiovascular","Deaths of Despair"="Despair")
 cause.definitions <- c("\"Deaths of Despair\" are deaths due to suicide, overdose, substance abuse and poisonings"="Despair",
                        "\"Cardiovascular Disease\" are deaths due to diseases of the circulatory systems such as heart disease and stroke"="Cardiovascular",
-                       "\"Cancer Deaths\" are deaths due to cancer and neoplasm"="Cancer")
+                       "\"Cancer\" refers to deaths due to cancer and neoplasm"="Cancer")
 
 period.list <- c("2000-2002","2003-2005","2006-2008","2009-2011","2012-2014","2015-2017")
 
