@@ -2360,10 +2360,10 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           title="This plot represents the average midlife death trends for each risk group. The blue line represents the national average.  Click on a map to see the line for a specific county. If a state has 6 or fewer counties, the average for each county is shown.",
-          paste0(names(which(cause.list == input$death_cause)), " Trends for ", location_str)
+          paste0(names(which(cause.list == input$death_cause)), " Trends for Risk Groups across ", location_str)
           # , icon("info-circle")
         ),
-        tags$h6("The average midlife death trends for each risk group; the national average is shown in blue."),
+        tags$h6("The average midlife death trends for each risk group conpared with the national average (in blue)."),
         NULL
       )
     }
