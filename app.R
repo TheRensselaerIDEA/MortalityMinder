@@ -124,10 +124,10 @@ ui <- fluidPage(
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
-                      tags$li(tags$h4("All Causes")),
-                      tags$li(tags$h4("Cancer")),
-                      tags$li(tags$h4("Deaths of Despair")),
-                      tags$li(tags$h4("Cardiovascular Disease"))
+                      tags$li("All Causes"),
+                      tags$li("Cancer"),
+                      tags$li("Deaths of Despair"),
+                      tags$li("Cardiovascular Disease")
                       # tags$li(tags$h4("Assault Deaths"))
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
@@ -338,10 +338,10 @@ ui <- fluidPage(
             fluidRow(
               class = "page3_col2_top",
               uiOutput("textBoxplotTitle"),
-              plotOutput("determinants_plot2",height="80%")
+              plotOutput("determinants_plot2",height="70%")
                     ), #End of Column 2 Top
             
-            tags$div(class = "hr"),
+            #tags$div(class = "hr"),
             
             fluidRow(
               class = "page3_col2_bot",
@@ -2141,7 +2141,8 @@ server <- function(input, output, session) {
       HTML("<h5>Counties are categorized into <b>risk groups</b> according to risk based on their midlife mortality rate trends.</h5>"),
       HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk group</b> of each county. The line graph compares the average mortality rates per year for each risk group  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
-      HTML("<h5>Click <b>BACK (<span style='color:#00bfc4'>&lt;&lt;</span>)</b> and <b>NEXT (<span style='color:#00bfc4'>&gt;&gt;</span>)</b> for <b>Nationwide</b> and <b>Factor</b> views.</h5>"),
+      HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
+            <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
       NULL
     )
   })
@@ -2486,8 +2487,9 @@ server <- function(input, output, session) {
       tagList(
         tags$h3(
           style = "margin-top: 0; padding-right: 20px; padding-left: 20px",
-          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)),". Select from the drop-down for county details or click the map.")
+          paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)))
         ),
+        tags$h6("Select from the drop-down for county details or click the map."),
         NULL
       )
     }
