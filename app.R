@@ -1655,7 +1655,7 @@ server <- function(input, output, session) {
         guides(
           color = guide_legend(
             reverse = T,
-            title = "Group:")
+            title = "Risk Group:")
         )
     } else {
 
@@ -1815,7 +1815,7 @@ server <- function(input, output, session) {
         theme(legend.position = "left") + 
         guides(color = guide_legend(
           reverse = T,
-          title = "Group:")) +
+          title = "Risk Group:")) +
         labs(fill = "Cluster", 
              color = "Cluster",
              caption = "Mortality Data: CDC Wonder Detailed Mortality\nFeature Data: County Health Rankings\nAnalysis: The Rensselaer IDEA"
