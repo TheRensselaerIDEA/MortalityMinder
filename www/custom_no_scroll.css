@@ -232,6 +232,8 @@
   
 }
 
+
+
 .page1_col1 {
   width:25%;
   padding-left: 2%;
@@ -261,12 +263,25 @@
 }
 
 
-.page1_col1 h4, h5, h6, i {
+.page1_col1 h4, h5, h6, i, li {
   color: white;
+}
+
+.page1_col1 ul {
+  list-style: none; /* Remove default bullets */
+}
+
+.page1_col1 ul li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: white;
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 1em; /* Also needed for space (tweak if needed) */
+  margin-left: -1em; /* Also needed for space (tweak if needed) */
 }
 
 .page1_col1 li {
   margin-left: 3vh;
+  color: white;
 }
 
 .page1_col2_top{
@@ -750,6 +765,11 @@ h4{
  font-weight: 400;
 }
 
+.page1 li {
+    font-size: 1.5vh;
+    line-height: 1.4em;
+  }
+  
 h5, li{
  font-size: 1.3vh;
 }
@@ -777,16 +797,7 @@ pre {
 #textDescription p{
   font-size: 1.1vh;
 }
-/*
-#textMortFactsClosing h4{
-  font-size: 0.4em;
-}
-*/
 
-li h4{
-  margin-bottom: 0 px;
-  
-}
 
 @media screen and (min-height: 1000px) {
   h1 {
@@ -802,6 +813,10 @@ li h4{
   h4 {
     font-size: 1.8vh;
   }
+  .page1 li {
+    font-size: 1.6vh;
+  }
+  
   h5, li {
     font-size: 1.6vh;
   }

@@ -124,10 +124,10 @@ ui <- fluidPage(
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
-                      tags$li(tags$h4("All Causes")),
-                      tags$li(tags$h4("Cancer")),
-                      tags$li(tags$h4("Deaths of Despair")),
-                      tags$li(tags$h4("Cardiovascular Disease"))
+                      tags$li("All Causes"),
+                      tags$li("Cancer"),
+                      tags$li("Deaths of Despair"),
+                      tags$li("Cardiovascular Disease")
                       # tags$li(tags$h4("Assault Deaths"))
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
