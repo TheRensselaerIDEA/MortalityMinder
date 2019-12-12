@@ -432,20 +432,21 @@ ui <- fluidPage(
                                         ),
                                         tags$li(
                                           HTML("Identifies social and economic factors associated with increased mortality trends at the 
-                                               county-level for each state and nation obtained from <a href=\"https://www.countyhealthrankings.org/\"
+                                               county-level for each state and the nation obtained from <a href=\"https://www.countyhealthrankings.org/\"
                                                target=\"_blank\">County Health Rankings (CHR)</a>, an aggregate of county-level data from 20 sources 
                                                curated by the Robert Wood Johnson Foundation.")
                                         ),
-                                        tags$li("Factors address health behaviors, clinical care, education, employment, social supports, 
+                                        tags$li("Addresses factors including health behaviors, clinical care, education, employment, social supports, 
                                                 community safety and physical environment domains."),
                                         tags$li(
                                           "Interactively visualizes potential determinants and their impact on mortality trends."
                                           ),
                                         tags$li(
-                                          "Investigates deaths due to All Causes, Cancer Deaths, Cardiovascular  Deaths, Cancer Deaths, Deaths of Despair (suicide and self harm)."
+                                          "Investigates deaths due to All Causes, Cancer Deaths, Cardiovascular Deaths, Deaths of Despair (suicide, self harm and overdose)."
                                           ),
-                                        tags$li(
-                                          "Publicly-accessible, freely available, easily maintained, and readily extensible open source web tool."
+                                        tags$li(HTML(
+                                          "Publicly-accessible, freely available, easily maintained, and readily extensible 
+                                          <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>open source</a> web tool.")
                                         )
                                       )
                                    ),
@@ -469,40 +470,36 @@ ui <- fluidPage(
                    ), #close column
                    column(4, tags$h4("INNOVATION",align="center"),   offset=1,
                           fluidRow(
-                            column(11, tags$h5("MortalityMinder dramatically illustrates  midlife mortality rate increases reported in  (e.g. Wolf and Schoomaker, 
+                            column(11, tags$h5("MortalityMinder (MM) dramatically illustrates  midlife mortality rate increases reported in  (Wolf and Schoomaker, 
                                                JAMA 2019), while providing greater insight into community-level variations and their associated 
                                                factors to help determine remedies."), 
                                    HTML("<h5>Using authoritative data from the CDC and other sources, MM is designed to help health policy decision makers in the 
-                                            public and private sectors identify and address unmet healthcare needs, healthcare costs, and healthcare utilization.
-                                            <br>For each State and Cause of Death, MM dynamically creates three analysis and visualization infographics:
-                                            </h5>"),
+                                            public and private sectors identify and address unmet healthcare needs, healthcare costs, and healthcare utilization.</h5>"),
+                                   HTML("<h5>For each State and Cause of Death, MM dynamically creates three analysis and visualization infographics:</h5>"),
                                    tags$ul(
                                      tags$li(HTML("<b>National View</b> reveals mortality rates  through time and compares state and national trends.")),
-                                     tags$li(HTML("<b>State View</b> categorizes county into risk groups based on their midlife mortality rates over time. 
-                                                  The app determines correlation of factors to risk groups and  visualizes the most significant protective 
+                                     tags$li(HTML("<b>State View</b> categorizes counties into risk groups based on their midlife mortality rates over time. 
+                                                  The app determines correlations of factors to risk groups and  visualizes the most significant protective 
                                                   and destructive factors. ")),
-                                     tags$li(HTML("<b>Factor View</b>  allows user to explore individual factors include their relation to the selected cause at 
-                                                  a county level for each state, and the distribution of those factors within each state.")),
+                                     tags$li(HTML("<b>Factor View</b> enables users to explore individual factors including their relation to the selected cause at 
+                                                  a county level for each state and the distribution of those factors within each state.")),
                                      tags$li(HTML("Selecting 'United States' for <b>State</b> initiates nationwide analysis."))
                                    )),
 
                             column(11, tags$h4("INSIGHTS",align="center"), 
-                                   HTML("<h5>MM provides a compelling and engaging tool to investigate the social and economic determinants of mortality. </h5>"), 
+                                   HTML("<h5>MortalityMinder provides a compelling and engaging tool to investigate the social and economic determinants of mortality. MM:</h5>"), 
                                    tags$ul(
-                                     tags$li("MM  documents the disturbing rise in mid-life Deaths of Despair due to suicide, overdose, and self-harm and other 
-                                             national/regional increases in midlife mortality rates due to All Causes, Cancer, and Cardiovascular Disease."),
-                                     tags$li("Highlights potential social determinants through statistical analysis of factors associated with disparities 
-                                             in regional trends in mortality rates.",
-                                             tags$ul(class = "page4_ul",
-                                               tags$li("Provides county-level confirmation of trends and hypothesized causes."),
-                                               tags$li("Insights can be used to create region-specific interventions and best practices to meet unmet healthcare needs."),
-                                               tags$li("Confirms the mid-life mortality rate increases in recent literature (e.g. Wolf and Schoomaker, JAMA 2019), 
-                                                       while providing much greater insight into community-level variations and their associated factors."),
-                                               tags$li("Enables rigorous analysis of potential determinants of health by local, state, and national healthcare 
-                                                        organizations to support development of programs, policies, and procedures to improve longevity.  ")
-                                             )
-                                             )
-                                   )
+                                      tags$li("Documents the disturbing rise in mid-life Deaths of Despair due to suicide, overdose, and self-harm and other 
+                                              national/regional increases in midlife mortality rates due to All Causes, Cancer, and Cardiovascular Disease."),
+                                      tags$li("Highlights potential social determinants through statistical analysis of factors associated with disparities 
+                                              in regional trends in mortality rates."),
+                                      tags$li("Provides county-level confirmation of trends and hypothesized causes."),
+                                      tags$li("Yields insights that can be used to create region-specific interventions and best practices to meet unmet healthcare needs."),
+                                      tags$li("Confirms the mid-life mortality rate increases in recent literature (e.g. Wolf and Schoomaker, JAMA 2019), 
+                                              while providing much greater insight into community-level variations and their associated factors."),
+                                      tags$li("Enables rigorous analysis of potential determinants of health by local, state, and national healthcare 
+                                              organizations to support development of programs, policies, and procedures to improve longevity.  ")
+                                             ) # End of list
                                    ) 
                    ), 
                    fluidRow(class="IDEA_Logo_Wrapper",
@@ -527,10 +524,10 @@ ui <- fluidPage(
                                     tags$li("Source data preparation is documented on the GitHub Wiki. Data Loader scripts enable new data sources 
                                             and preparations to be easily incorporated. Data may be downloaded under 'DOWNLOAD SOURCE DATA'."),
                                     tags$li("MM can be run from the public web locations or installed locally."), 
-                                    tags$li("Code is easily customized, extended and maintained. The app continuously evolves in an agile framework
+                                    tags$li("Code is easily customized, extended, and maintained. The app continuously evolves in an agile framework
                                             to incorporate user feedback and introductions of new data streams, analyses, visualization, and health 
                                             care problems."),
-                                    tags$li("App design based on formal usability study of 20+ users and recommendations of our advisory board of 
+                                    tags$li("App design based on formal usability study of 20+ users and recommendations from our advisory board of 
                                             healthcare and design professionals."),
                                     tags$li("The innovative visualizations and analytics in MortalityMinder can be adapted into other applications 
                                             or formats by using the provided code and data.")
