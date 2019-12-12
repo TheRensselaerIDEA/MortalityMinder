@@ -321,27 +321,12 @@ ui <- fluidPage(
           class = "page page3",
           column(4,
                  class = "page3_col page3_col3",
-                 # tags$div(
-                 #   tags$div(
-                 #     class = "prompt_text",
-                 #     "Select a factor:"              
-                 #   ),
-                 #   pickerInput(
-                 #     inputId = "determinant_choice",
-                 #     label = "Selected Determinant: ",
-                 #     choices = str_sort(chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),]),
-                 #     selected = "Socio-Economic",
-                 #     width = "100%",
-                 #     inline = TRUE,
-                 #     options = list(
-                 #       `live-search` = TRUE,
-                 #       "dropup-auto" = TRUE
-                 #                   ) # End of Options
-                 #               ) # End of pickerInput
-                 #         ), # End of pickerInput container
-                 
                  fluidRow(
                    class = "page3_col3_top",
+                   tags$div(
+                     class = "page3_col1_heading",
+                     tags$h3("How are county-level social and economic factors associated with mortality?")
+                   ),
                    tags$div(
                      tags$div(
                        class = "prompt_text",
