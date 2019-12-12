@@ -120,7 +120,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("What are the trends in XXX mortality rates across the United States and in YYY?")
+                   htmlOutput("page1_main_header")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -250,7 +250,7 @@ ui <- fluidPage(
                               class = "page2_col page2_col1_top_left",
                               tags$div(
                                 class = "page2_col1_heading",
-                                tags$h3("Which county-level social and economic factors are associated with XXX mortality in YYY")
+                                htmlOutput("page2_main_header")
                               ),
                               uiOutput("textDescription")
                               
@@ -330,7 +330,7 @@ ui <- fluidPage(
                    class = "page3_col3_top",
                    tags$div(
                      class = "page3_col1_heading",
-                     tags$h3("How are county-level social and economic factors associated with mortality in XXX?")
+                     htmlOutput("page3_main_header")
                    ),
                    tags$div(
                      tags$div(
@@ -914,6 +914,43 @@ server <- function(input, output, session) {
       count = rep(NA, 6))
   })
   
+  output$page1_main_header <- renderUI({
+    if (input$state_choice == "United States") {
+      tags$h3(
+        paste0("What are the trends in ", input$death_cause, " mortality rates across the United States?")
+      )
+    } else {
+      tags$h3(
+        paste0("What are the trends in ", input$death_cause, 
+               " mortality rates across the United States and in ", 
+               names(which(state.list == input$state_choice)), "?")
+      )
+    }
+    
+  })
+  
+  output$page2_main_header <- renderUI({
+    if (input$state_choice == "United States") {
+      location_str = " the United States"
+    } else {
+      location_str = names(which(state.list == input$state_choice))
+    }
+    tags$h3(
+      paste0("Which county-level social and economic factors are associated with ", input$death_cause, " mortality in ", location_str, "?")
+    )
+  })
+  
+  output$page3_main_header <- renderUI({
+    if (input$state_choice == "United States") {
+      location_str = " the United States"
+    } else {
+      location_str = names(which(state.list == input$state_choice))
+    }
+    tags$h3(
+      paste0("How are county-level social and economic factors associated with mortality in ", location_str,"?")
+    )
+  })
+  
   #Extracting the national mean
   determinant.url <- reactive({
     return(as.character(
@@ -1015,6 +1052,7 @@ server <- function(input, output, session) {
   },
   ignoreInit = TRUE
   )
+  
   
   
   # ----------------------------------------------------------------------
