@@ -720,7 +720,7 @@ server <- function(input, output, session) {
   # get unfiltered kendal cors
   kendall.cor <- reactive({
     
-    kendall.cor.new <- mort.rate.original() %>% 
+    kendall.cor.new <- mort.rate() %>% 
       dplyr::mutate(VAR = death_rate) %>%
       kendall.func(chr.data.2019) %>%
       dplyr::mutate(
@@ -1128,10 +1128,9 @@ server <- function(input, output, session) {
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
     geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
-    res <- cdc.unimputed.data %>% dplyr::filter(period == "2015-2017",
+    res <- cdc.data %>% dplyr::filter(period == "2015-2017",
                                         death_cause == input$death_cause,
-                                        state_abbr == input$state_choice,
-                                        death_num != 0.5)
+                                        state_abbr == input$state_choice)
 
     res <- dplyr::inner_join(mort.cluster.ord(), res, by = 'county_fips')
     
@@ -1254,10 +1253,9 @@ server <- function(input, output, session) {
     } else if (nrow(sd.select) <= 6){
       
       dplyr::filter(
-        cdc.unimputed.data,
+        cdc.data,
         period == "2015-2017", 
-        death_cause == input$death_cause,
-        death_num != 0.5
+        death_cause == input$death_cause
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
@@ -1312,12 +1310,11 @@ server <- function(input, output, session) {
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
       
     } else {
-      
+     
       data <- dplyr::filter(
-        cdc.unimputed.data,
+        cdc.data,
         period == "2015-2017", 
-        death_cause == input$death_cause,
-        death_num != 0.5
+        death_cause == input$death_cause
       ) %>% 
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
@@ -1352,7 +1349,7 @@ server <- function(input, output, session) {
                       )
         
         if (nrow(county_data) == 0) {
-          plot + xlab("Midlife Mortality Rate (2015-2017)\nCould not plot county as data suppressed by CDC")
+          plot + xlab("Midlife Mortality Rate (2015-2017)\nCould not plot county as data suppressed")
         } else {
           plot + 
             geom_point(
@@ -1533,27 +1530,27 @@ server <- function(input, output, session) {
     }
     
     county.data.00.02 <- dplyr::filter(
-      cdc.unimputed.data,
+      cdc.original.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
       period == "2000-2002",
-      death_num != 0.5
+      is.na(death_rate)
     )
     county.data.15.17 <- dplyr::filter(
-      cdc.unimputed.data,
+      cdc.original.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
       period == "2015-2017",
-      death_num != 0.5
+      is.na(death_rate)
     )
     
     if (nrow(county.data.15.17) == 0 | nrow(county.data.00.02) == 0) {
       return(
         tagList(
           tags$h5(paste0(
-            "Data suppressed for ", input$county_drop_choice, ", ", input$state_choice, " by CDC")
+            "Data estimated for ", input$county_drop_choice, ", ", input$state_choice, ".")
           )
         )
       )
@@ -1827,12 +1824,12 @@ server <- function(input, output, session) {
         drop.cols <- c('county_fips')
         county_data <- cdc.countymort.mat(cdc.data, input$state_choice, county_choice(), input$death_cause)
         
-        canShow <- dplyr::inner_join(county_data, cdc.unimputed.data, by = 'county_fips') %>% 
+        canShow <- dplyr::inner_join(county_data, cdc.original.data, by = 'county_fips') %>% 
           dplyr::filter(
             death_cause == input$death_cause
           )
-        if (nrow(county_data) == 0 | any(canShow$death_num == 0.5)) {
-          line_plot + xlab("period\nWarning: Could not plot county as data suppressed by CDC")
+        if (nrow(county_data) == 0 | any(is.na(canShow$death_rate))) {
+          line_plot + xlab("period\nCould not plot county as data suppressed")
         } else {
             county_data <- county_data %>%
               dplyr::select(-drop.cols) %>%
