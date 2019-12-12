@@ -433,10 +433,10 @@ ui <- fluidPage(
                             column(11, 
                                    HTML("<h5>The goal of MortalityMinder (MM)  is to enable healthcare researchers, providers, 
                                             payers, and policy makers to gain actionable insights into how, where, 
-                                            and why mortality rates are rising in the United States (US).  
+                                            and why midlife mortality rates are rising in the United States (US).  
                                             </h5>"),
                                       tags$ul(
-                                          tags$li(HTML("Explores mortality trends for mid-life adults ages 25-64 across the United 
+                                          tags$li(HTML("Explores mortality trends for midlife adults ages 25-64 across the United 
                                                        States from 2000 to 2017 using data from <a href=\"https://wonder.cdc.gov/mcd.html\" 
                                                        target=\"_blank\">CDC WONDER</a>, the definitive source of US mortality data.")
                                         ),
@@ -459,7 +459,7 @@ ui <- fluidPage(
                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>open source</a> web tool.")
                                         )
                                       ),
-                                   HTML("<h5>Warning: Associated factors are correlated to mortality rates. 
+                                   HTML("<h5>Warning: Associated factors are correlated to midlife mortality rates. 
                                         Further investigation is needed to see if they actually cause changes in mortality rate.</h5>")
                                    ),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
@@ -489,7 +489,7 @@ ui <- fluidPage(
                                             public and private sectors identify and address unmet healthcare needs, healthcare costs, and healthcare utilization.</h5>"),
                                    HTML("<h5>For each State and Cause of Death, MM dynamically creates three analysis and visualization infographics:</h5>"),
                                    tags$ul(
-                                     tags$li(HTML("<b>National View</b> reveals mortality rates  through time and compares state and national trends.")),
+                                     tags$li(HTML("<b>National View</b> reveals midlife mortality rates  through time and compares state and national trends.")),
                                      tags$li(HTML("<b>State View</b> categorizes counties into risk groups based on their midlife mortality rates over time. 
                                                   The app determines correlations of factors to risk groups and  visualizes the most significant protective 
                                                   and destructive factors. ")),
@@ -501,13 +501,13 @@ ui <- fluidPage(
                             column(11, tags$h4("INSIGHTS",align="center"), 
                                    HTML("<h5>MortalityMinder provides a compelling and engaging tool to investigate the social and economic determinants of mortality. MM:</h5>"), 
                                    tags$ul(
-                                      tags$li("Documents the disturbing rise in mid-life Deaths of Despair due to suicide, overdose, and self-harm and other 
+                                      tags$li("Documents the disturbing rise in midlife Deaths of Despair due to suicide, overdose, and self-harm and other 
                                               national/regional increases in midlife mortality rates due to All Causes, Cancer, and Cardiovascular Disease."),
                                       tags$li("Highlights potential social determinants through statistical analysis of factors associated with disparities 
-                                              in regional trends in mortality rates."),
+                                              in regional trends in midlife mortality rates."),
                                       tags$li("Provides county-level confirmation of trends and hypothesized causes."),
                                       tags$li("Yields insights that can be used to create region-specific interventions and best practices to meet unmet healthcare needs."),
-                                      tags$li("Confirms the mid-life mortality rate increases in recent literature (e.g. Wolf and Schoomaker, JAMA 2019), 
+                                      tags$li("Confirms the midlife mortality rate increases in recent literature (e.g. Wolf and Schoomaker, JAMA 2019), 
                                               while providing much greater insight into community-level variations and their associated factors."),
                                       tags$li("Enables rigorous analysis of potential determinants of health by local, state, and national healthcare 
                                               organizations to support development of programs, policies, and procedures to improve longevity.  ")
@@ -2168,8 +2168,8 @@ server <- function(input, output, session) {
       # ),
       tags$h4(paste0(names(which(cause.definitions == input$death_cause)))),
       HTML("<h5>In this analysis, counties are categorized into <b>risk groups</b> according to risk based on their midlife mortality rate trends.</h5>"),
-      HTML("<h5>The <b>upper map</b> to the right shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> on the left shows the <b>risk group</b> of each county. The <b>line graph</b> on the lower left compares the average mortality rates per year for each risk group  with the national mean (blue)."),
-      HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
+      HTML("<h5>The <b>upper map</b> to the right shows the <b>midlife mortality rates</b> of the counties over time. The <b>lower map</b> on the left shows the <b>risk group</b> of each county. The <b>line graph</b> on the lower left compares the average mortality rates per year for each risk group  with the national mean (blue)."),
+      HTML("<h5><b>Darker colors</b> indicate increased midlife mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
       HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
             <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
       NULL
@@ -2610,7 +2610,7 @@ server <- function(input, output, session) {
         paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h5("Each dot represents a county's mortality rate, factor, and risk group. Click county to see map location and name."),
+      tags$h5("Each dot represents a county's midlife mortality rate, factor, and risk group. Click county to see map location and name."),
       NULL
     )
   }
