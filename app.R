@@ -131,9 +131,9 @@ ui <- fluidPage(
                       # tags$li(tags$h4("Assault Deaths"))
                        ), # End List
                       tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
-                      HTML("<h4>Choose <b>Cause of Death</b> and <b>State</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
-                      HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b>(<span style='color:#00bfc4'>&lt;&lt;</span>)</b> <span style='color:white'>and <b>NEXT</b> </span>
-                           <b>(<span style='color:#00bfc4'>&gt;&gt;</span>)</b> <span style='color:white'>for</span> <span style='color:white'><b>State</b> and <b>Factor</b> views.</span></h5>"),
+                 HTML("<h4>Choose <b>State</b> and <b>Cause of Death</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
+                 HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
+                           <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
                  tags$br(),
                  tags$img(
                             class="IDEA_Logo_Wrapper2",
@@ -358,34 +358,54 @@ ui <- fluidPage(
           
           column(4,
             class = "page3_col page3_col3",
-            tags$div(
-              tags$div(
-                class = "prompt_text",
-                "Select a factor:"              
-              ),
-              pickerInput(
-                inputId = "determinant_choice",
-                label = "Selected Determinant: ",
-                choices = str_sort(chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),]),
-                selected = "Socio-Economic",
-                width = "100%",
-                inline = TRUE,
-                options = list(
-                  `live-search` = TRUE,
-                  "dropup-auto" = TRUE
-                              ) # End of Options
-                          ) # End of pickerInput
-                    ), # End of pickerInput container
+            # tags$div(
+            #   tags$div(
+            #     class = "prompt_text",
+            #     "Select a factor:"              
+            #   ),
+            #   pickerInput(
+            #     inputId = "determinant_choice",
+            #     label = "Selected Determinant: ",
+            #     choices = str_sort(chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),]),
+            #     selected = "Socio-Economic",
+            #     width = "100%",
+            #     inline = TRUE,
+            #     options = list(
+            #       `live-search` = TRUE,
+            #       "dropup-auto" = TRUE
+            #                   ) # End of Options
+            #               ) # End of pickerInput
+            #         ), # End of pickerInput container
             
             fluidRow(
               class = "page3_col3_top",
+              tags$div(
+                tags$div(
+                  class = "prompt_text",
+                  "Select a factor:"              
+                ),
+                pickerInput(
+                  inputId = "determinant_choice",
+                  label = "Selected Determinant: ",
+                  choices = str_sort(chr.namemap.2019[intersect(colnames(chr.data.2019), rownames(chr.namemap.2019)),]),
+                  selected = "Socio-Economic",
+                  width = "100%",
+                  inline = TRUE,
+                  options = list(
+                    `live-search` = TRUE,
+                    "dropup-auto" = TRUE
+                  ) # End of Options
+                ) # End of pickerInput
+              ), # End of pickerInput container
+              
               tags$br(),
               tags$h4(htmlOutput("determinant_text")),
               tags$h5(uiOutput("determinant_link")),
               tags$h5(htmlOutput("determinant_original_source")),
               tags$h5(htmlOutput("determinant_corr")),
               tags$h5(htmlOutput("determinant_dir"))
-                    ), # End of Column 3 top
+                    ),# End of Column 3 top
+            tags$br(),
             fluidRow(
               class = "page3_col3_bot",
               tags$div(
@@ -396,13 +416,13 @@ ui <- fluidPage(
                 uiOutput("county_selector")
               ), # End of pickerInput container
               leafletOutput("determinants_plot5", width="82%",height="75%"),
-              fluidRow(
-                class = "page3_col3_county_desc",
-                uiOutput("county_desc")
-              ),
               tags$div(
                 class="data_source_footnote",
                 HTML("<h6 style='text-align: right;'>Mortality Data: CDC Wonder Detailed Mortality<br>Feature Data: County Health Rankings<br>Analysis: The Rensselaer IDEA</h6>")
+              ),
+              fluidRow(
+                class = "page3_col3_county_desc",
+                uiOutput("county_desc")
               )
             ) # End of inner Column 3 bottom
 
