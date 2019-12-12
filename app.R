@@ -2355,7 +2355,7 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h1(
-        paste0("Nationwide View: ",names(which(cause.list == input$death_cause)), " Rates Over Time")
+        paste0("Nationwide View: ",names(which(cause.list == input$death_cause)), " Midlife Mortality Rates Over Time")
       )
     )
   })
