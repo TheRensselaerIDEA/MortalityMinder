@@ -445,7 +445,7 @@ ui <- fluidPage(
                                           "Investigates deaths due to All Causes, Cancer Deaths, Cardiovascular  Deaths, Cancer Deaths, Deaths of Despair (suicide and self harm)."
                                           ),
                                         tags$li(
-                                          "Freely available open source, publicly-accessible, open source, easily maintained tool,  easily maintained, and readily extensible web tool."
+                                          "Publicly-accessible, freely available, easily maintained, and readily extensible open source web tool."
                                         )
                                       )
                                    ),
