@@ -321,6 +321,21 @@
 
 /********Page 2 Styles**********/
 
+.page2_col1_heading {
+  padding-top: 0;
+/*  padding-bottom: 5px;*/
+  padding-left: 0;
+  padding-right: 0;
+  background: #f7f7f7;
+  color:  #565254;
+  margin-bottom: 2vh;
+}
+
+.page2_col1_heading h3{
+  padding: 4%;
+  color:  #565254;
+}
+
 .page2_col {
   width:50%;
   height:100%;

@@ -120,7 +120,7 @@ ui <- fluidPage(
                   class="page1_col page1_col1", 
                  tags$div(
                    class = "page1_col1_heading",
-                  tags$h3("Which county-level social and economic factors increase mortality in the United States?")
+                  tags$h3("What are the trends in XXX mortality rates across the United States and in YYY?")
                   ),
                  tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
@@ -245,8 +245,13 @@ ui <- fluidPage(
                    class="page2_col page2_col1",
                    fluidRow(
                      class="page2_col page2_col1_top",
+                     
                        column(4,
                               class = "page2_col page2_col1_top_left",
+                              tags$div(
+                                class = "page2_col1_heading",
+                                tags$h3("Which county-level social and economic factors are associated with XXX mortality in YYY")
+                              ),
                               uiOutput("textDescription")
                               
                              ), # End of inner Column (Column 1 Top Left)
@@ -325,7 +330,7 @@ ui <- fluidPage(
                    class = "page3_col3_top",
                    tags$div(
                      class = "page3_col1_heading",
-                     tags$h3("How are county-level social and economic factors associated with mortality?")
+                     tags$h3("How are county-level social and economic factors associated with mortality in XXX?")
                    ),
                    tags$div(
                      tags$div(
