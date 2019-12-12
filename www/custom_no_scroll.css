@@ -349,7 +349,6 @@
   color: #f7f7f7;
 }
 
-
 .page2_col1_top_right_title{
       padding-left: 2vh;
     padding-bottom: 1vw;
@@ -391,42 +390,6 @@
   display:block;
 }
 
-/*
-.page2_col2 h3 {
-  color: black;
-  font-size: 1.6vh; 
-}
-
-.page2_col2 h4 {
-  color: black;
-  font-size: 1.5vh; 
-}
-
-.page2_col2 h5 {
-  color: black;
-  font-size: 1.4vh; 
-}
-
-.page2_col2 h6 {
-  color: black;
-  font-size: 1vh; 
-}
-
-.page2_col2_bottom h4 {
-  color: black;
-  font-size: 1.5vh; 
-}
-
-.page2_col2_bottom h5 {
-  color: black;
-  font-size: 1.4vh; 
-}
-
-.page2_col2_bottom h6 {
-  color: black;
-  font-size: 1vh; 
-}
-*/
 
 /********Page 3 Styles**********/
 .page3 {}
@@ -447,14 +410,9 @@
 }
 
 .page3_col3 {
-  height: 80%;
+  height: 100%;
   width:calc(100% / 3 - 1px);
 }
-
-/*.page3_col3_top {
-  padding: 10px 20px 0px 20px; 
-  margin-right: 20px;
-}*/
 
 .page3_col3_top {
   padding: 10px 20px 0px 20px; 
@@ -479,10 +437,9 @@
   color: #f7f7f7;
 }
 
-
-.page3_col3_bot {
+/*.page3_col3_bot {
   width:100%;
-}
+}*/
 
 
 .page3_col2_top {
@@ -498,28 +455,6 @@
   float:left;
   display:block;
 }
-
-/*
-.page3 h3 {
-  color: black;
-  font-size: 1.6vh; 
-}
-
-.page3 h4 {
-  color: black;
-  font-size: 1.5vh; 
-}
-
-.page3 h5 {
-  color: black;
-  font-size: 1.4vh; 
-}
-
-.page3 h6 {
-  color: black;
-  font-size: 1vh; 
-}
-*/
 
 /********Page 4 Styles**********/
 
