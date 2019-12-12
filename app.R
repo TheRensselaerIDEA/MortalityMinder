@@ -2141,7 +2141,8 @@ server <- function(input, output, session) {
       HTML("<h5>Counties are categorized into <b>risk groups</b> according to risk based on their midlife mortality rate trends.</h5>"),
       HTML("<h5>The <b>upper map</b> shows the <b>mid-life mortality rates</b> of the counties over time. The <b>lower map</b> shows the <b>risk group</b> of each county. The line graph compares the average mortality rates per year for each risk group  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
-      HTML("<h5>Click <b>BACK (<span style='color:#00bfc4'>&lt;&lt;</span>)</b> and <b>NEXT (<span style='color:#00bfc4'>&gt;&gt;</span>)</b> for <b>Nationwide</b> and <b>Factor</b> views.</h5>"),
+      HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
+            <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
       NULL
     )
   })
