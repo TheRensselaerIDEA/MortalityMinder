@@ -2375,7 +2375,7 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups For more information on the method of determining correlation please see Project Overview.", 
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups For more information on the method of determining correlation please see GitHub Wiki.", 
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
@@ -2386,7 +2386,7 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.", 
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see GitHub Wiki.", 
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
@@ -2435,7 +2435,7 @@ server <- function(input, output, session) {
               location_str, " for ", input$year_selector)
         # , icon("info-circle")
       ),
-      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",location_str),
+      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",paste(location_str,".",sep = "")),
       NULL
       )
     }
@@ -2446,7 +2446,7 @@ server <- function(input, output, session) {
         # paste0("State View: ",names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector)
         paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector)
       ),
-      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",names(which(state.list == input$state_choice))),
+      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",paste(names(which(state.list == input$state_choice)),".",sep="")),
       NULL
     )
     }
@@ -2519,7 +2519,7 @@ server <- function(input, output, session) {
       location_str <- "the United States" 
       tagList(
         tags$h3(
-          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
+          title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see GitHub Wiki",
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
@@ -2530,7 +2530,7 @@ server <- function(input, output, session) {
     else {
     tagList(
       tags$h3(
-        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see Project Overview.",
+        title="Each factor is rated as Destructive, meaning that it has a positive correlation with the risk group; or Protective, meaning it has a negative correlation with the risk group. MortalityMinder shows those factors which have the highest absolute correlation with mortality risk groups. For more information on the method of determining correlation please see GitHub Wiki.",
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
