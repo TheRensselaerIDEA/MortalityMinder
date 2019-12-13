@@ -62,14 +62,14 @@ plotly: https://cran.r-project.org/web/packages/plotly/LICENSE
 
 ggrepel: https://cran.r-project.org/web/packages/ggrepel/LICENSE
 
-RUnit: https://cran.r-project.org/web/packages/RUnit/LICENSE
+RUnit: https://cran.r-project.org/web/licenses/GPL-2
 
-mapproj: https://cran.r-project.org/web/packages/mapproj/LICENSE
+mapproj: https://opensource.org/licenses/lucent1.02.php
 
-maps: https://cran.r-project.org/web/packages/maps/LICENSE
+maps: https://cran.r-project.org/web/licenses/GPL-2
 
-leaflet: https://cran.r-project.org/web/packages/leaflet/LICENSE
+leaflet: https://cran.r-project.org/web/licenses/GPL-3
 
 leaflet.extras: https://cran.r-project.org/web/packages/leaflet.extras/LICENSE
 
-urbnmapr: https://cran.r-project.org/web/packages/urbnmapr/LICENSE
+urbnmapr: https://cran.r-project.org/web/licenses/GPL-3
