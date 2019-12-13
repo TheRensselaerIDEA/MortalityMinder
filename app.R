@@ -138,9 +138,6 @@ ui <- fluidPage(
                             alt = "Institute of Data Exploration and Applications")
                  
           ), # End Column 1
-          tags$div(
-            class = "vl"
-          ),
           column(8,
                 fluidRow(
                   class = "page1_col page1_col2_top",

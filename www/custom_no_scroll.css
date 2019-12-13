@@ -150,11 +150,17 @@
 
 .nav_bar_blank {
   width:100%;
-  height: 16%;
-  max-height:50px;
+  height: 50px;
   float:left;
   display:block;
 }
+
+@media screen and (max-width: 935px) {
+.nav_bar_blank {
+  height:100px;
+}
+}
+
 
 /********Title Styles**********/
 
@@ -281,7 +287,6 @@
 
 .page1_col2_top{
   width:100%;
-  height:15%;
 }
 
 .page1_text {
@@ -296,13 +301,11 @@
 
 .page1_col2_middle_left{
   text-align: left;
-    width:65%;
 
 }
 
 .page1_col2_middle_right{
   text-align: left;
-    width:35%;
 }
 
 .page1 img {
