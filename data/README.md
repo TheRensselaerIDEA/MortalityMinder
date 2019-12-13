@@ -1,3 +1,9 @@
-# Describe purpose of data
+# data Documentation
 
-The data folder contains most of the data. You can see "MM_data_formats.xlsx" in the Documentation folder for a more in-depth look. The "CDC" folder contains data about the deaths by cause of death that we got from the CDC website. The "CHR" folder contains the data about our social and economic factors that we got from County Health Records. The "Geo" folder contains geocodes for the states that are used to create the maps. The "RHI" folder contains data about more social and economic factors (specifically related to food and housing) that we got from the Rural Health Information Hub. The "Urban" folder contains data about the urbanization of each county.
+The `data` folder contains most of the data. See `MM_data_formats.xlsx` in the `Documentation` folder for a more in-depth look. 
+
+* `CDC` contains data about the deaths by cause of death that we got from the CDC website. 
+* `CHR` contains the data about our social and economic factors that we obtained from County Health Records. 
+* `Geo` contains geocodes for the states that are used to create the maps. 
+* `RHI` contains data about more social and economic factors (specifically related to food and housing) that we obtained from the Rural Health Information Hub. 
+* `Urban` contains data about the urbanization of each county.
