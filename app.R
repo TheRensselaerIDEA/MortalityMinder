@@ -1028,6 +1028,8 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------------
   output$county_selector <- renderUI({
     if (input$state_choice != "United States") {
+      geo.namemap <- geo.namemap[geo.namemap$state_abbr != "HI",]
+      geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
       pickerInput('county_drop_choice', 
                   'County', 
                   geo.namemap[geo.namemap$state_abbr == input$state_choice,]$county_name,
@@ -1170,6 +1172,7 @@ server <- function(input, output, session) {
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- geo.namemap[geo.namemap$state_abbr != "HI",]
     geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
     res <- cdc.data %>% dplyr::filter(period == "2015-2017",
@@ -1281,6 +1284,7 @@ server <- function(input, output, session) {
   output$determinants_plot3 <- renderPlot({
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- geo.namemap[geo.namemap$state_abbr != "HI",]
     geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
@@ -1414,6 +1418,8 @@ server <- function(input, output, session) {
   # Based on scatterplot
   output$determinants_plot5 <- renderLeaflet({
     
+    geo.namemap <- geo.namemap[geo.namemap$state_abbr != "HI",]
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
     
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
@@ -1575,7 +1581,7 @@ server <- function(input, output, session) {
     }
     
     county.data.00.02 <- dplyr::filter(
-      cdc.original.data,
+      cdc.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
@@ -1583,7 +1589,7 @@ server <- function(input, output, session) {
       is.na(death_rate)
     )
     county.data.15.17 <- dplyr::filter(
-      cdc.original.data,
+      cdc.data,
       county_name == input$county_drop_choice,
       death_cause == input$death_cause,
       state_abbr == input$state_choice,
@@ -3004,6 +3010,8 @@ server <- function(input, output, session) {
     req(event)
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- geo.namemap[geo.namemap$state_abbr != "HI",]
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
