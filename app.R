@@ -2158,7 +2158,7 @@ server <- function(input, output, session) {
     tagList(
       tags$h5(paste0(names(which(cause.definitions == input$death_cause)))),
       HTML("<h5>In this analysis, counties that share similar midlife mortality rate trends are categorized into <b>risk groups</b>.</h5>"),
-      HTML("<h5>The <b>upper map</b> to the right shows the <b>midlife mortality rates</b> of the counties over time. The <b>lower map</b> on the left shows the <b>risk group</b> of each county. The <b>line graph</b> on the lower left compares the average mortality rates per year for each risk group  with the national mean (blue)."),
+      HTML("<h5>The <b>upper map</b> to the right shows the <b>midlife mortality rates</b> of the counties over time. The <b>lower map</b> on the left shows the <b>risk group</b> of each county. The <b>line graph</b> below compares the average mortality rates per year for each risk group  with the national mean (blue)."),
       HTML("<h5><b>Darker colors</b> indicate increased midlife mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
       HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
             <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
