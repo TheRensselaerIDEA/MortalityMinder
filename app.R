@@ -455,8 +455,7 @@ ui <- fluidPage(
                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>open source</a> web tool.")
                                         )
                                       ),
-                                   HTML("<h5>Warning: Associated factors are correlated to midlife mortality rates. 
-                                        Further investigation is needed to see if they actually cause changes in mortality rate.</h5>")
+                                   HTML("<h5>Limitation: Associated factors are correlated to midlife mortality rates. Further investigation is needed to see if they actually cause changes in mortality rate.</h5>")
                                    ),
                             column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
                                    fluidRow(downloadButton("downloadCDCData", "Mortality Data", class = "dbutton")), ##tags$br(),
@@ -483,6 +482,7 @@ ui <- fluidPage(
                                                factors to help determine remedies."), 
                                    HTML("<h5>Using authoritative data from the CDC and other sources, MM is designed to help health policy decision makers in the 
                                             public and private sectors identify and address unmet healthcare needs, healthcare costs, and healthcare utilization.</h5>"),
+                                   HTML("<h5>Innovative analysis divides counties into <b>risk groups</b> for visualization and correlation analysis using K-Means clustering and Kendall correlation.</h5>"),
                                    HTML("<h5>For each State and Cause of Death, MM dynamically creates three analysis and visualization infographics:</h5>"),
                                    tags$ul(
                                      tags$li(HTML("<b>National View</b> reveals midlife mortality rates  through time and compares state and national trends.")),
@@ -503,8 +503,6 @@ ui <- fluidPage(
                                               in regional trends in midlife mortality rates."),
                                       tags$li("Provides county-level confirmation of trends and hypothesized causes."),
                                       tags$li("Yields insights that can be used to create region-specific interventions and best practices to meet unmet healthcare needs."),
-                                      tags$li("Confirms the midlife mortality rate increases in recent literature (e.g. Wolf and Schoomaker, JAMA 2019), 
-                                              while providing much greater insight into community-level variations and their associated factors."),
                                       tags$li("Enables rigorous analysis of potential determinants of health by local, state, and national healthcare 
                                               organizations to support development of programs, policies, and procedures to improve longevity.  ")
                                              ) # End of list
@@ -531,6 +529,7 @@ ui <- fluidPage(
                                             frameworks  for web interactivity.")),
                                     tags$li("Source data preparation is documented on the GitHub Wiki. Data Loader scripts enable new data sources 
                                             and preparations to be easily incorporated. Data may be downloaded under 'DOWNLOAD SOURCE DATA'."),
+                                    tags$li("Missing county mortality rates are imputed using state-wide rates and Amelia R Package."),
                                     tags$li("MM can be run from the public web locations or installed locally."), 
                                     tags$li("Code is easily customized, extended, and maintained. The app continuously evolves in an agile framework
                                             to incorporate user feedback and introductions of new data streams, analyses, visualization, and health 
@@ -542,20 +541,16 @@ ui <- fluidPage(
                                    )
                                    ),
                           column(11, tags$h4("ACKNOWLEDGEMENTS", align = "center"), 
-                                 tags$h5("MortalityMinder was created by undergraduate participants in the Data INCITE Lab at Rensselaer 
-                                    Polytechnic Institute with support from the United Health Foundation and the 
-                                    Rensselaer Institute for Data Exploration and Applications. MortalityMinder was directed by 
-                                    Kristin P. Bennett and John S. Erickson."),
-                                 tags$h5("The MortalityMinder Team would like to thank our team of external mentors, including
-                                         Anne Yau, United Health Foundation; Dan Fabius, Continuum Health; Melissa Kamal, New York State
-                                         Department of Health; and Tom White, Capital District Physicians' Health Plan (CDPHP).")
+                                 tags$h5("MortalityMinder was created by undergraduate and graduate students in the Health Analytics Challenge Lab at Rensselaer Polytechnic Institute with generous support from the United Health Foundation and the Rensselaer Institute for Data Exploration and Applications (IDEA). MortalityMinder was directed by Kristin P. Bennett and John S. Erickson."),
+                                 tags$h5("The MortalityMinder Team would like to thank our advisory board, including Ms. Anne Yau, United Health Foundation; Dr. Dan Fabius, Continuum Health; Ms. Melissa Kamal, New York State Department of Health; and Dr. Tom White, Capital District Physicians' Health Plan (CDPHP).")
                                  ),
                           column(11, tags$h4("LINKS", align = "center"), 
                                  HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
+                                           <a href='https://bit.ly/mortalityminder_video' target=_blank>Mortality Minder Video</a><br>
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/tree/master/HRQ%20document/Mortality%20Minder%20Overview.pdf' target=_blank>Mortality Minder Slides</a><br><br>
                                            Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a><br>
-                                           <a href='https://bit.ly/mortalityminder_video' target=_blank>Overview video</a><br>
-                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/blob/master/HRQ%20document/MortalityMinderRensselaer.pdf' target=_blank>Overview slides</a></h5>")
+                                           Suggest improvements and report bugs on <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/issues' target=_blank>GitHub</a></h5>")
                           )
                    )
                     # Close inner fluidRow
