@@ -126,8 +126,8 @@ ui <- fluidPage(
                       tags$li("Cardiovascular Disease")
                       # tags$li(tags$h4("Assault Deaths"))
                        ), # End List
-                      tags$h4("MortalityMinder is a four-view interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
-                 HTML("<h4>Choose <b>State</b> and <b>Cause of Death</b> on the menu bar at the top of the page to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
+                      tags$h4("MortalityMinder is an interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
+                 HTML("<h4>Choose <b>State</b> and <b>Cause of Death</b> on the menu bar at the top of the page(and <b>Risk Factor</b> on Factor View page) to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
                  HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
                            <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
                  tags$br(),
