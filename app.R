@@ -555,7 +555,7 @@ ui <- fluidPage(
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
                                            Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a><br>
                                            <a href='https://bit.ly/mortalityminder_video' target=_blank>Overview video</a><br>
-                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/tree/master/HRQ%20document/Mortality%20Minder%20Overview.pdf' target=_blank>Overview slides</a></h5>")
+                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/blob/master/HRQ%20document/MortalityMinderRensselaer.pdf' target=_blank>Overview slides</a></h5>")
                           )
                    )
                     # Close inner fluidRow
