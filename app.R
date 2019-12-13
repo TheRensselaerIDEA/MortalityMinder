@@ -548,7 +548,7 @@ ui <- fluidPage(
                                  HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
                                            <a href='https://bit.ly/mortalityminder_video_final' target=_blank>MortalityMinder Video</a><br>
-                                           <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/tree/master/HRQ%20document/Mortality%20Minder%20Overview.pdf' target=_blank>MortalityMinder Overview Slides</a><br><br>
+                                           <a href='http://bit.ly/mortalityminder_slides' target=_blank>MortalityMinder Overview Slides</a><br><br>
                                            Please send questions and comments about MortalityMinder to: <a href='mailto:erickj4@rpi.edu' target=_blank>erickj4@rpi.edu</a><br>
                                            Suggest improvements and report bugs on <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/issues' target=_blank>GitHub</a></h5>")
                           )
