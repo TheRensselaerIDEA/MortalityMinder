@@ -23,8 +23,7 @@ To run a local instance of MORTALITYMINDER, follow the steps below:
 If you use **MORTALITYMINDER** in your work, please use the following reference
 
 ```
-Bennett, Kristin P, and Erickson S John. “Mortality Minder.” Rensselaer Institute for 
-Data Exploration and Applications, 1 Nov. 2019, .
+Kristin P. Bennett and John S. Erickson, “MortalityMinder: an R-based, multi-view interactive presentation examining county-level factors associated with midlife mortality trends.” github: https://github.com/TheRensselaerIDEA/MortalityMinder/
 ```
 
 ## DEVELOPMENT
