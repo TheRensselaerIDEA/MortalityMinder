@@ -44,3 +44,14 @@ For all contributors, **any** changes made to the application should be written 
 10. Now switch back to your branch with git checkout new_branch
 11. Now git commit -a -m "Final awesome changes" and git push origin
 12. Now you can do a PR, which should be safe from conflict.
+
+## ISSUES PROTOCOL
+Found a bug? Please create an issue titled as a clear sentence describing the bug. In the description, please write as many details about your working environment as you can. Details include:
+* Your machine and OS
+* Your screen size and resolution
+* The size of the **MortalityMinder** app window
+* What **MortalityMinder** view did the bug appear on
+* What state/and cause of death/and county, if applicable were selected when bug was found
+* Any other information you may deem relevant to said bug
+
+Would like to recommend an additional view or feature, or have a design recommendation? Create an issue and use the `enhancement` label. Your issue title should also indicate that it is a feature request on the title. Add as many details as you wish in the description section, the more you add, the more likely we will be able to bring this feature to life! You can also email feature requests to [erickj4@rpi.edu](mailto:erickj4@rpi.edu). Our team of open source developers will handle issues in a priority basis.
