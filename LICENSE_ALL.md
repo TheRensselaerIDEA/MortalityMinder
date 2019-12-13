@@ -1,6 +1,8 @@
 The following is a list of links to the `LICENSE` files or other copyright statements of all CRAN-listed R packages imported by MortalityMinder. 
 
-NOTE: In some cases these `LICENSE` files simply list the copyright owner. 
+NOTES: 
+* In some cases these `LICENSE` files simply list the copyright owner.
+* In most cases CRAN-listed pages are published under [GPL-2](https://cran.r-project.org/web/licenses/GPL-2) or [GPL-2](https://cran.r-project.org/web/licenses/GPL-3)
 
 devtools: https://cran.r-project.org/web/licenses/GPL-3
 
