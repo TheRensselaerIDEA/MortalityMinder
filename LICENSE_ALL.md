@@ -1,3 +1,5 @@
+# Copyright Notices for R Packages Used by MortalityMinder
+
 The following is a list of links to the `LICENSE` files or other copyright statements of all CRAN-listed R packages imported by MortalityMinder. 
 
 NOTES: 
