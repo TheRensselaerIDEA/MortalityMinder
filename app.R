@@ -1295,6 +1295,7 @@ server <- function(input, output, session) {
       
     } else if (nrow(sd.select) <= 6){
       
+      sd.select$County <- sd.select$county_name
       dplyr::filter(
         cdc.data,
         period == "2015-2017", 
@@ -1303,10 +1304,8 @@ server <- function(input, output, session) {
         dplyr::select(county_fips, death_rate) %>% 
         dplyr::inner_join(sd.select, by = "county_fips") %>% 
         tidyr::drop_na() %>%
-        
-        
         ggplot(aes(x = death_rate, y = VAR)) + 
-        geom_point(aes(fill = cluster)) + 
+        geom_point(aes(fill = County)) + 
         labs(
           x = "Midlife Mortality Rate (2015-2017)",
           y = input$determinant_choice
@@ -1315,7 +1314,6 @@ server <- function(input, output, session) {
         theme.line.mort() + 
         theme(legend.position = "top") + 
         guides(color = guide_legend(override.aes = list(shape = 15))) + 
-        color.line.cluster(input$state_choice, max(sd.select$cluster)) + 
         scale_color_manual(
           name = "County",
           labels = sd.select$county_name,
@@ -1323,8 +1321,7 @@ server <- function(input, output, session) {
           values = colorRampPalette(
             c("#fef0d9","#fdcc8a","#fc8d59","#e34a33")
             
-          )(nrow(sd.select)),
-          guide = guide_legend(reverse = T)
+          )(nrow(sd.select))
         )
       
     } else if(input$state_choice == "United States"){
@@ -2772,6 +2769,8 @@ server <- function(input, output, session) {
     hover <- input$determinants_plot3_hover
     
     geo.namemap$county_fips <- with_options(c(scipen = 999), str_pad(geo.namemap$county_fips, 5, pad = "0"))
+    geo.namemap <- geo.namemap[geo.namemap$state_abbr != "HI",]
+    geo.namemap <- rbind(geo.namemap, c("Hawaii", "HI", "15", "Hawaii", "15001"), c("Hawaii", "HI", "15", "Honolulu", "15003"), c("Hawaii", "HI", "15", "Kalawao", "15005"), c("Hawaii", "HI", "15", "Kauai", "15007"), c("Hawaii", "HI", "15", "Maui", "15009"))
     sd.code = chr.namemap.inv.2019[input$determinant_choice, "code"]
     sd.select <- chr.data.2019 %>% 
       dplyr::select(county_fips, VAR = sd.code) %>% 
