@@ -23,8 +23,9 @@ To run a local instance of MORTALITYMINDER, follow the steps below:
 If you use **MORTALITYMINDER** in your work, please use the following reference
 
 ```
-Kristin P. Bennett and John S. Erickson, “MortalityMinder: an R-based, multi-view interactive presentation examining county-level factors associated with midlife mortality trends.” [![DOI](https://zenodo.org/badge/197430685.svg)](https://zenodo.org/badge/latestdoi/197430685)
+Kristin P. Bennett and John S. Erickson, “MortalityMinder: an R-based, multi-view interactive presentation examining county-level factors associated with midlife mortality trends.” 
 ```
+[![DOI](https://zenodo.org/badge/197430685.svg)](https://zenodo.org/badge/latestdoi/197430685)
 
 ## DEVELOPMENT
 The **MORTALITYMINDER** app is in active development and undergoes daily updates. Please be sure to consistently pull from master in your local setup. If you notice any bugs, create an issue. Please ensure issues have a descriptive title, and the comment should describe where the bug was found and how you were using the application. 
