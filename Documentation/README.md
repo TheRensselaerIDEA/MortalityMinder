@@ -1,6 +1,6 @@
 # Code and Analysis Documentation
 
-This folder contains general overarching information about the App and its data. 
+This folder contains general overarching information about the MortalityMinder app and its data. 
 
 * `Definitions` contains the ICD-10 categories we used for our causes of death. 
 * `datasets.md` contains information on the location of our data and notes about the formatting of it in the code. It also explains some basic functionality for some of our file types. 
