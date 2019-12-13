@@ -1,3 +1,5 @@
+*MortalityMinder source code is released under GPL-3:*
+
 GNU General Public License
 ==========================
 

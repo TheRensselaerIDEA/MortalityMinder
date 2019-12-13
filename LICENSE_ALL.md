@@ -1,6 +1,10 @@
+# Copyright Notices for R Packages Used by MortalityMinder
+
 The following is a list of links to the `LICENSE` files or other copyright statements of all CRAN-listed R packages imported by MortalityMinder. 
 
-NOTE: In some cases these `LICENSE` files simply list the copyright owner. 
+NOTES: 
+* In some cases these `LICENSE` files simply list the copyright owner.
+* In most cases CRAN-listed pages are published under [GPL-2](https://cran.r-project.org/web/licenses/GPL-2) or [GPL-2](https://cran.r-project.org/web/licenses/GPL-3)
 
 devtools: https://cran.r-project.org/web/licenses/GPL-3
 
@@ -28,48 +32,48 @@ stats: https://cran.r-project.org/web/licenses/GPL-3
 
 magrittr: https://cran.r-project.org/web/packages/magrittr/LICENSE
 
-https://cran.r-project.org/web/packages/zoo/LICENSE
+zoo: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/textshape/LICENSE
+textshape: https://cran.r-project.org/web/licenses/GPL-2
 
-https://cran.r-project.org/web/packages/forcats/LICENSE
+forcats: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/randomForest/LICENSE
+randomForest: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/cluster/LICENSE
+cluster: https://cran.r-project.org/web/licenses/GPL-3
 
 shiny: https://cran.r-project.org/web/packages/shiny/LICENSE
 
-https://cran.r-project.org/web/packages/shinythemes/LICENSE
+shinythemes: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/shinyWidgets/LICENSE
+shinyWidgets: https://cran.r-project.org/web/packages/shinyWidgets/LICENSE
 
-https://cran.r-project.org/web/packages/r2d3/LICENSE
+r2d3: https://cran.r-project.org/web/packages/r2d3/LICENSE
 
-https://cran.r-project.org/web/packages/RColorBrewer/LICENSE
+RColorBrewer: https://www.apache.org/licenses/LICENSE-2.0
 
-https://cran.r-project.org/web/packages/viridis/LICENSE
+viridis: https://cran.r-project.org/web/packages/viridis/LICENSE
 
-https://cran.r-project.org/web/packages/shinyjs/LICENSE
+shinyjs: https://cran.r-project.org/web/licenses/AGPL-3
 
-https://cran.r-project.org/web/packages/grid/LICENSE
+grid: https://cran.r-project.org/web/licenses/GPL-2
 
-https://cran.r-project.org/web/packages/htmltools/LICENSE
+htmltools: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/ggplot2/LICENSE
+ggplot2: https://cran.r-project.org/web/licenses/GPL-2
 
-https://cran.r-project.org/web/packages/plotly/LICENSE
+plotly: https://cran.r-project.org/web/packages/plotly/LICENSE
 
-https://cran.r-project.org/web/packages/ggrepel/LICENSE
+ggrepel: https://cran.r-project.org/web/packages/ggrepel/LICENSE
 
-https://cran.r-project.org/web/packages/RUnit/LICENSE
+RUnit: https://cran.r-project.org/web/licenses/GPL-2
 
-https://cran.r-project.org/web/packages/mapproj/LICENSE
+mapproj: https://opensource.org/licenses/lucent1.02.php
 
-https://cran.r-project.org/web/packages/maps/LICENSE
+maps: https://cran.r-project.org/web/licenses/GPL-2
 
-https://cran.r-project.org/web/packages/leaflet/LICENSE
+leaflet: https://cran.r-project.org/web/licenses/GPL-3
 
-https://cran.r-project.org/web/packages/leaflet.extras/LICENSE
+leaflet.extras: https://cran.r-project.org/web/packages/leaflet.extras/LICENSE
 
-https://cran.r-project.org/web/packages/urbnmapr/LICENSE
+urbnmapr: https://cran.r-project.org/web/licenses/GPL-3
