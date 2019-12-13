@@ -46,17 +46,17 @@ shinyWidgets: https://cran.r-project.org/web/packages/shinyWidgets/LICENSE
 
 r2d3: https://cran.r-project.org/web/packages/r2d3/LICENSE
 
-RColorBrewer: https://cran.r-project.org/web/packages/RColorBrewer/LICENSE
+RColorBrewer: https://www.apache.org/licenses/LICENSE-2.0
 
 viridis: https://cran.r-project.org/web/packages/viridis/LICENSE
 
-shinyjs: https://cran.r-project.org/web/packages/shinyjs/LICENSE
+shinyjs: https://cran.r-project.org/web/licenses/AGPL-3
 
-grid: https://cran.r-project.org/web/packages/grid/LICENSE
+grid: https://cran.r-project.org/web/licenses/GPL-2
 
-htmltools: https://cran.r-project.org/web/packages/htmltools/LICENSE
+htmltools: https://cran.r-project.org/web/licenses/GPL-3
 
-ggplot2: https://cran.r-project.org/web/packages/ggplot2/LICENSE
+ggplot2: https://cran.r-project.org/web/licenses/GPL-2
 
 plotly: https://cran.r-project.org/web/packages/plotly/LICENSE
 
