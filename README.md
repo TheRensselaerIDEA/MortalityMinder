@@ -10,6 +10,7 @@ The notes below are intended for users interested in cloning the repo and contri
 **MORTALITYMINDER** is a web application built on the [R Shiny](https://shiny.rstudio.com/) application framework, written primarily in R, with some UI functionality written in Javascript. It creates highly visual analysis of mortality data provided by [CDCWonder](https://wonder.cdc.gov/) and [County Health Rankings](http://www.countyhealthrankings.org/). You will find live versions of the app at the following locations:
 * http://mortalityminder.idea.rpi.edu/ (primary)
 * https://olyerickson.shinyapps.io/mortalityminder/ (secondary)
+* Overview Video: http://bit.ly/mortalityminder_video_final
 
 ## LOCAL DEPLOYMENT
 To run a local instance of MORTALITYMINDER, follow the steps below:
