@@ -14,6 +14,8 @@ deps <- list("topojson.min.js",
                             version = "1.3.3",
                             src = list(href = "https://d3js.org/"),
                             script = "d3-scale-chromatic.v1.min.js")
+             
+             #TEST DIFFERENCES
 )
 #-----------------
 state.list <- state.abb
