@@ -45,6 +45,7 @@ ui <- fluidPage(
 
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
+  tags$head(includeHTML("analytics.html")),
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),
