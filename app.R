@@ -427,9 +427,10 @@ ui <- fluidPage(
                    column(4, tags$h4("ABOUT MORTALITYMINDER",align="center"),
                           fluidRow(
                             column(11, 
-                                   HTML("<h5>The goal of MortalityMinder (MM)  is to enable healthcare researchers, providers, 
-                                            payers, and policy makers to gain actionable insights into how, where, 
-                                            and why midlife mortality rates are rising in the United States (US).  
+                                   HTML("<h5>MortalityMinder (MM) is a <a href=\"https://www.ahrq.gov/sdoh-challenge/about.html\" target=\"_blank\">
+                                            prize winning</a> application that enables healthcare researchers, 
+                                            providers, payers, and policy makers to gain actionable insights into how, where, and why 
+                                            midlife mortality rates are rising in the United States (US).  
                                             </h5>"),
                                       tags$ul(
                                           tags$li(HTML("Explores mortality trends for midlife adults ages 25-64 across the United 
