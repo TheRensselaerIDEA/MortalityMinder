@@ -425,7 +425,8 @@ ui <- fluidPage(
         ),
           fluidRow(
                   class = "page page4",
-                   column(4, tags$h4("ABOUT MORTALITYMINDER",align="center"),
+                   column(4, 
+                          fluidRow(class="page4_header", tags$h4("ABOUT MORTALITYMINDER")),
                           fluidRow(
                             column(11, 
                                    HTML("<h5>MortalityMinder (MM) is a <a href=\"https://www.ahrq.gov/sdoh-challenge/about.html\" target=\"_blank\">
@@ -459,11 +460,12 @@ ui <- fluidPage(
                                       ),
                                    HTML("<h5>Limitation: Associated factors are correlated to midlife mortality rates. Further investigation is needed to see if they actually cause changes in mortality rate.</h5>")
                                    ),
-                            column(11, tags$h4("DOWNLOAD SOURCE DATA",align="center"),
+                            column(11, 
+                                   fluidRow(class="page4_header", tags$h4("DOWNLOAD SOURCE DATA")),
                                    fluidRow(downloadButton("downloadCDCData", "Mortality Data", class = "dbutton")), ##tags$br(),
                                    fluidRow(downloadButton("downloadCHRData", "Factor Data", class = "dbutton")), ##tags$br(),
                                    fluidRow(downloadButton("downloadFactorDesc", "Factor Descriptions", class = "dbutton")), ##tags$br(),
-                                   tags$h4("DOWNLOAD CURRENT RESULTS",align="center"), 
+                                   fluidRow(class="page4_header", tags$h4("DOWNLOAD CURRENT RESULTS")),
                                    fluidRow(downloadButton("downloadClusters", "Current State Clusters", class = "dbutton")), ##tags$br(),
                                    fluidRow(downloadButton("downloadClusterTime", "Current State Clusters Through Time", class = "dbutton")), ##tags$br(),
                                    fluidRow(downloadButton("downloadCorr", "Current Factor Correlations", class = "dbutton"))
@@ -477,7 +479,9 @@ ui <- fluidPage(
                             )
                           ) # Close row
                    ), #close column
-                   column(4, tags$h4("INNOVATION",align="center"),   offset=1,
+                   column(4, 
+                          fluidRow(class="page4_header", tags$h4("INNOVATION")),
+                          offset=1,
                           fluidRow(
                             column(11, tags$h5("MortalityMinder (MM) dramatically illustrates  midlife mortality rate increases reported in  (Wolf and Schoomaker, 
                                                JAMA 2019), while providing greater insight into community-level variations and their associated 
@@ -496,7 +500,8 @@ ui <- fluidPage(
                                      tags$li(HTML("Selecting 'United States' for <strong>State</strong> initiates nationwide analysis."))
                                    )),
 
-                            column(11, tags$h4("INSIGHTS",align="center"), 
+                            column(11, 
+                                   fluidRow(class="page4_header", tags$h4("INSIGHTS")),
                                    HTML("<h5>MortalityMinder provides a compelling and engaging tool to investigate the social and economic determinants of mortality. MM:</h5>"), 
                                    tags$ul(
                                       tags$li("Documents the disturbing rise in midlife Deaths of Despair due to suicide, overdose, and self-harm and other 
@@ -521,7 +526,8 @@ ui <- fluidPage(
                    )
                    ), # Close column
                    column(4,
-                          column(11, tags$h4("IMPLEMENTATION AND DEPLOYMENT",align="center"), 
+                          column(11,
+                                 fluidRow(class="page4_header", tags$h4("IMPLEMENTATION AND DEPLOYMENT")),
                                  HTML("<h5>MortalityMinder is an open-source R project freely available with full documentation via a 
                                                  <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/', target=_blank>GitHub repository</a>.</h5>"),
                                  tags$ul(
@@ -542,11 +548,13 @@ ui <- fluidPage(
                                             or formats by using the provided code and data.")
                                    )
                                    ),
-                          column(11, tags$h4("ACKNOWLEDGEMENTS", align = "center"), 
+                          column(11, 
+                                 fluidRow(class="page4_header", tags$h4("ACKNOWLEDGEMENTS")),
                                  tags$h5("MortalityMinder was created by undergraduate and graduate students in the Health Analytics Challenge Lab at Rensselaer Polytechnic Institute with generous support from the United Health Foundation and the Rensselaer Institute for Data Exploration and Applications (IDEA). MortalityMinder was directed by Kristin P. Bennett and John S. Erickson."),
                                  tags$h5("The MortalityMinder Team would like to thank our advisory board, including Ms. Anne Yau, United Health Foundation; Dr. Dan Fabius, Continuum Health; Ms. Melissa Kamal, New York State Department of Health; and Dr. Tom White, Capital District Physicians' Health Plan (CDPHP).")
                                  ),
-                          column(11, tags$h4("LINKS", align = "center"), 
+                          column(11, 
+                                 fluidRow(class="page4_header", tags$h4("LINKS")),
                                  HTML("<h5><a href='https://github.com/TheRensselaerIDEA/MortalityMinder/' target=_blank>MortalityMinder GitHub Repository (public)</a><br>
                                            <a href='https://github.com/TheRensselaerIDEA/MortalityMinder/wiki' target=_blank>MortalityMinder GitHub Wiki (public)</a><br>
                                            <a href='https://bit.ly/mortalityminder_video_final' target=_blank>MortalityMinder Video</a><br>
