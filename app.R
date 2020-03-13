@@ -128,9 +128,9 @@ ui <- fluidPage(
                       # tags$li(tags$h4("Assault Deaths"))
                        ), # End List
                       tags$h4("MortalityMinder is an interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
-                 HTML("<h4>Choose <b>State</b> and <b>Cause of Death</b> on the menu bar at the top of the page(and <b>Risk Factor</b> on Factor View page) to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
-                 HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
-                           <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
+                 HTML("<h4>Choose <strong>State</strong> and <strong>Cause of Death</strong> on the menu bar at the top of the page(and <strong>Risk Factor</strong> on Factor View page) to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
+                 HTML("<h5><span style='color:white'>Click <strong>BACK</strong></span> <strong><span style='color:#00bfc4'>&lt;&lt;</span></strong> <span style='color:white'>and <strong>NEXT</strong> </span>
+                           <strong><span style='color:#00bfc4'>&gt;&gt;</span></strong> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><strong>Nationwide, State</strong> and <strong>Factor</strong> views.</span></h5>"),
                  tags$br(),
                  tags$img(
                             class="IDEA_Logo_Wrapper2",
@@ -349,7 +349,7 @@ ui <- fluidPage(
                    ), # End of pickerInput container
                    
                    tags$br(),
-                   tags$h4(htmlOutput("determinant_text")),
+                   tags$div(htmlOutput("determinant_text")),
                    tags$h5(uiOutput("determinant_link")),
                    tags$h5(htmlOutput("determinant_original_source")),
                    tags$h5(htmlOutput("determinant_corr")),
@@ -484,16 +484,16 @@ ui <- fluidPage(
                                                factors to help determine remedies."), 
                                    HTML("<h5>Using authoritative data from the CDC and other sources, MM is designed to help health policy decision makers in the 
                                             public and private sectors identify and address unmet healthcare needs, healthcare costs, and healthcare utilization.</h5>"),
-                                   HTML("<h5>Innovative analysis divides counties into <b>risk groups</b> for visualization and correlation analysis using K-Means clustering and Kendall correlation.</h5>"),
+                                   HTML("<h5>Innovative analysis divides counties into <strong>risk groups</strong> for visualization and correlation analysis using K-Means clustering and Kendall correlation.</h5>"),
                                    HTML("<h5>For each State and Cause of Death, MM dynamically creates three analysis and visualization infographics:</h5>"),
                                    tags$ul(
-                                     tags$li(HTML("<b>National View</b> reveals midlife mortality rates  through time and compares state and national trends.")),
-                                     tags$li(HTML("<b>State View</b> categorizes counties into risk groups based on their midlife mortality rates over time. 
+                                     tags$li(HTML("<strong>National View</strong> reveals midlife mortality rates  through time and compares state and national trends.")),
+                                     tags$li(HTML("<strong>State View</strong> categorizes counties into risk groups based on their midlife mortality rates over time. 
                                                   The app determines correlations of factors to risk groups and  visualizes the most significant protective 
                                                   and destructive factors. ")),
-                                     tags$li(HTML("<b>Factor View</b> enables users to explore individual factors including their relation to the selected cause at 
+                                     tags$li(HTML("<strong>Factor View</strong> enables users to explore individual factors including their relation to the selected cause at 
                                                   a county level for each state and the distribution of those factors within each state.")),
-                                     tags$li(HTML("Selecting 'United States' for <b>State</b> initiates nationwide analysis."))
+                                     tags$li(HTML("Selecting 'United States' for <strong>State</strong> initiates nationwide analysis."))
                                    )),
 
                             column(11, tags$h4("INSIGHTS",align="center"), 
@@ -2159,11 +2159,11 @@ server <- function(input, output, session) {
     
     tagList(
       tags$h5(paste0(names(which(cause.definitions == input$death_cause)))),
-      HTML("<h5>In this analysis, counties that share similar midlife mortality rate trends are categorized into <b>risk groups</b>.</h5>"),
-      HTML("<h5>The <b>upper map</b> to the right shows the <b>midlife mortality rates</b> of the counties over time. The <b>lower map</b> on the left shows the <b>risk group</b> of each county. The <b>line graph</b> below compares the average mortality rates per year for each risk group  with the national mean (blue)."),
-      HTML("<h5><b>Darker colors</b> indicate increased midlife mortality risk. <b>Hover</b> to see information and definitions. <b>Click on maps</b> to see county names and mortality rates. <b>Zoom maps</b> with buttons or mouse."), 
-      HTML("<h5><span style='color:white'>Click <b>BACK</b></span> <b><span style='color:#00bfc4'>&lt;&lt;</span></b> <span style='color:white'>and <b>NEXT</b> </span>
-            <b><span style='color:#00bfc4'>&gt;&gt;</span></b> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><b>Nationwide, State</b> and <b>Factor</b> views.</span></h5>"),
+      HTML("<h5>In this analysis, counties that share similar midlife mortality rate trends are categorized into <strong>risk groups</strong>.</h5>"),
+      HTML("<h5>The <strong>upper map</strong> to the right shows the <strong>midlife mortality rates</strong> of the counties over time. The <strong>lower map</strong> on the left shows the <strong>risk group</strong> of each county. The <strong>line graph</strong> below compares the average mortality rates per year for each risk group with the national mean (blue)."),
+      HTML("<h5><strong>Darker colors</strong> indicate increased midlife mortality risk. <strong>Hover</strong> to see information and definitions. <strong>Click on maps</strong> to see county names and mortality rates. <strong>Zoom maps</strong> with buttons or mouse."), 
+      HTML("<h5><span style='color:white'>Click <strong>BACK</strong></span> <strong><span style='color:#00bfc4'>&lt;&lt;</span></strong> <span style='color:white'>and <strong>NEXT</strong> </span>
+            <strong><span style='color:#00bfc4'>&gt;&gt;</span></strong> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><strong>Nationwide, State</strong> and <strong>Factor</strong> views.</span></h5>"),
       NULL
     )
   })
