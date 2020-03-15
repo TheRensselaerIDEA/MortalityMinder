@@ -1001,3 +1001,15 @@ width: 40px;
 .page4_header {
   text-align: center;
 }
+
+.page1 a {
+  text-decoration: underline;
+}
+
+.page3 a {
+  text-decoration: underline;
+}
+
+.page4 a {
+  text-decoration: underline;
+}
