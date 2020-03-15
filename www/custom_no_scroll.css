@@ -254,7 +254,7 @@
   margin-bottom: 4vh;
 }
 
-.page1_col1_heading h3{
+.page1_col1_heading h2{
   padding: 4%;
 }
 
@@ -331,7 +331,7 @@
   margin-bottom: 2vh;
 }
 
-.page2_col1_heading h3{
+.page2_col1_heading h2{
   padding: 4%;
   color:  #565254;
 }
@@ -429,7 +429,7 @@
   margin-bottom: 2vh;
 }
 
-.page3_col1_heading h3{
+.page3_col1_heading h2{
   padding: 4%;
   color:  #565254;
 }
@@ -1018,14 +1018,10 @@ width: 40px;
   border: 2px;
 }
 
-#geo_mort_change2:focus {
-  padding: 1px;
+.description {
+  font-size: 0.8em;
 }
 
-#geo_cluster_kmean:focus {
-  padding: 1px;
-}
-
-#determinants_plot5:focus {
-  padding: 1px;
+.small_description {
+  font-size: 0.5em;
 }

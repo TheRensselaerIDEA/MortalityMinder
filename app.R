@@ -51,6 +51,7 @@ ui <- fluidPage(
   tags$head(includeCSS("fullpage.css")),
   tags$head(includeCSS("geoattr.css")),
   tags$head(
+    tags$title("MortalityMinder"),
     tags$script(src="jquery-3.4.1.min.js"),
     tags$script("$.noConflict(true);")),
   
@@ -65,7 +66,7 @@ ui <- fluidPage(
       ),
     tags$div(
       class = "input",
-      tags$h3(id = "input_text2", "State:"),
+      tags$span(id = "input_text2", "State:"),
       pickerInput(
         inputId = "state_choice",
         label = h4("State"), 
@@ -76,7 +77,7 @@ ui <- fluidPage(
           "dropup-auto" = FALSE
         )      
       ),
-      tags$h3(id = "input_text1", "Cause of Death:"),
+      tags$span(id = "input_text1", "Cause of Death:"),
       pickerInput(
         inputId = "death_cause",
         label = h4("Cause of Death"),
@@ -119,7 +120,7 @@ ui <- fluidPage(
                    class = "page1_col1_heading",
                    htmlOutput("page1_main_header")
                   ),
-                 tags$h4("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
+                 tags$h3("MortalityMinder analyzes trends of premature death in the United States which are caused by:\n"),
                     tags$ul(
                       tags$li("All Causes"),
                       tags$li("Cancer"),
@@ -127,7 +128,7 @@ ui <- fluidPage(
                       tags$li("Cardiovascular Disease")
                       # tags$li(tags$h4("Assault Deaths"))
                        ), # End List
-                      tags$h4("MortalityMinder is an interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
+                      tags$h3("MortalityMinder is an interactive presentation that examines county-level factors associated with midlife mortality trends.\n"), 
                  HTML("<h4>Choose <strong>State</strong> and <strong>Cause of Death</strong> on the menu bar at the top of the page(and <strong>Risk Factor</strong> on Factor View page) to see how mortality rates in the selected state and the United States have changed from 2000 to 2017.</h4>"), 
                  HTML("<h5><span style='color:white'>Click <strong>BACK</strong></span> <strong><span style='color:#00bfc4'>&lt;&lt;</span></strong> <span style='color:white'>and <strong>NEXT</strong> </span>
                            <strong><span style='color:#00bfc4'>&gt;&gt;</span></strong> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><strong>Nationwide, State</strong> and <strong>Factor</strong> views.</span></h5>"),
@@ -368,7 +369,7 @@ ui <- fluidPage(
                    leafletOutput("determinants_plot5", width="82%",height="75%"),
                    tags$div(
                      class="data_source_footnote",
-                     HTML("<h6 style='text-align: right;'>Mortality Data: CDC Wonder Detailed Mortality<br>Feature Data: County Health Rankings<br>Analysis: The Rensselaer IDEA</h6>")
+                     HTML("<h5 style='text-align: right;'>Mortality Data: CDC Wonder Detailed Mortality<br>Feature Data: County Health Rankings<br>Analysis: The Rensselaer IDEA</h5>")
                    ),
                    fluidRow(
                      class = "page3_col3_county_desc",
@@ -475,7 +476,7 @@ ui <- fluidPage(
                                      class="IDEA_Logo_Wrapper3",
                                      src="no_mobile.png",
                                      alt = "Do not use with mobile devices"),
-                                   tags$h6("MortalityMinder has been optimized for laptop and large-screen use. Use with mobile devices is not recommended.")
+                                   tags$h4("MortalityMinder has been optimized for laptop and large-screen use. Use with mobile devices is not recommended.")
                             )
                           ) # Close row
                    ), #close column
@@ -917,11 +918,11 @@ server <- function(input, output, session) {
   
   output$page1_main_header <- renderUI({
     if (input$state_choice == "United States") {
-      tags$h3(
+      tags$h2(
         paste0("Nationwide View: What are the trends in midlife mortality rates for ", names(which(cause.list == input$death_cause)), " across the United States?")
       )
     } else {
-      tags$h3(
+      tags$h2(
         paste0("Nationwide View: What are the trends in midlife mortality rates for ", names(which(cause.list == input$death_cause)), " across the United States and in ", 
                names(which(state.list == input$state_choice)), "?")
       )
@@ -935,7 +936,7 @@ server <- function(input, output, session) {
     } else {
       location_str = names(which(state.list == input$state_choice))
     }
-    tags$h3(
+    tags$h2(
       paste0("State View: How do midlife mortality rates for ", names(which(cause.list == input$death_cause)), " vary by county across ", location_str, " and why?")
     )
   })
@@ -946,7 +947,7 @@ server <- function(input, output, session) {
     } else {
       location_str = names(which(state.list == input$state_choice))
     }
-    tags$h3(
+    tags$h2(
       paste0("Factor View: How are county-level social and economic factors associated with midlife mortality rates for ", names(which(cause.list == input$death_cause)), " in ", location_str,"?")
     )
   })
@@ -1496,7 +1497,7 @@ server <- function(input, output, session) {
         paste0("DEFINITION: ", as.character(
           SocialDeterminants[SocialDeterminants$Name == input$determinant_choice,]$"Definitions")
       )),
-      tags$h5(paste0("EXPLANATION: ",reason_text))
+      tags$h4(paste0("EXPLANATION: ",reason_text))
     )
   })
   
@@ -2166,12 +2167,12 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h5(paste0(names(which(cause.definitions == input$death_cause)))),
-      HTML("<h5>In this analysis, counties that share similar midlife mortality rate trends are categorized into <strong>risk groups</strong>.</h5>"),
-      HTML("<h5>The <strong>upper map</strong> to the right shows the <strong>midlife mortality rates</strong> of the counties over time. The <strong>lower map</strong> on the left shows the <strong>risk group</strong> of each county. The <strong>line graph</strong> below compares the average mortality rates per year for each risk group with the national mean (blue)."),
-      HTML("<h5><strong>Darker colors</strong> indicate increased midlife mortality risk. <strong>Hover</strong> to see information and definitions. <strong>Click on maps</strong> to see county names and mortality rates. <strong>Zoom maps</strong> with buttons or mouse."), 
-      HTML("<h5><span style='color:white'>Click <strong>BACK</strong></span> <strong><span style='color:#00bfc4'>&lt;&lt;</span></strong> <span style='color:white'>and <strong>NEXT</strong> </span>
-            <strong><span style='color:#00bfc4'>&gt;&gt;</span></strong> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><strong>Nationwide, State</strong> and <strong>Factor</strong> views.</span></h5>"),
+      tags$h3(paste0(names(which(cause.definitions == input$death_cause)))),
+      HTML("<h4>In this analysis, counties that share similar midlife mortality rate trends are categorized into <strong>risk groups</strong>.</h4>"),
+      HTML("<h4>The <strong>upper map</strong> to the right shows the <strong>midlife mortality rates</strong> of the counties over time. The <strong>lower map</strong> on the left shows the <strong>risk group</strong> of each county. The <strong>line graph</strong> below compares the average mortality rates per year for each risk group with the national mean (blue)."),
+      HTML("<h4><strong>Darker colors</strong> indicate increased midlife mortality risk. <strong>Hover</strong> to see information and definitions. <strong>Click on maps</strong> to see county names and mortality rates. <strong>Zoom maps</strong> with buttons or mouse."), 
+      HTML("<h4><span style='color:white'>Click <strong>BACK</strong></span> <strong><span style='color:#00bfc4'>&lt;&lt;</span></strong> <span style='color:white'>and <strong>NEXT</strong> </span>
+            <strong><span style='color:#00bfc4'>&gt;&gt;</span></strong> <span style='color:white'>or the left and right arrow keys to move between the</span> <span style='color:white'><strong>Nationwide, State</strong> and <strong>Factor</strong> views.</span></h4>"),
       NULL
     )
   })
@@ -2244,7 +2245,7 @@ server <- function(input, output, session) {
     # We reference state.list, cause.list and cause.definitions defined above
     
     tagList(
-      tags$h4(paste0(names(which(cause.definitions == input$death_cause))))
+      tags$span(class="description", paste0(names(which(cause.definitions == input$death_cause))))
     )
   })
   
@@ -2370,7 +2371,7 @@ server <- function(input, output, session) {
     }
     
     tagList(
-      tags$h3(
+      tags$h2(
         paste0("Nationwide ",names(which(cause.list == input$death_cause)), " Rates for ", period.list[period_choice])
       )
     )
@@ -2387,7 +2388,7 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h4>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h4>"),
         NULL
       )
     }
@@ -2398,7 +2399,7 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h4>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h4>"),
       NULL
     )
     }
@@ -2415,7 +2416,7 @@ server <- function(input, output, session) {
           paste0(names(which(cause.list == input$death_cause)), " Trends for Risk Groups across ", location_str)
           # , icon("info-circle")
         ),
-        tags$h6("The average midlife death trends for each risk group conpared with the national average (in blue)."),
+        tags$h4("The average midlife death trends for each risk group conpared with the national average (in blue)."),
         NULL
       )
     }
@@ -2426,7 +2427,7 @@ server <- function(input, output, session) {
         paste0(names(which(cause.list == input$death_cause)), " Trends for Risk Groups across ", names(which(state.list == input$state_choice)))
         # , icon("info-circle")
       ),
-      tags$h6("The average midlife death trends for each risk group compared with the national average (in blue). Click on any map to see the trend for a specific county."),
+      tags$h4("The average midlife death trends for each risk group compared with the national average (in blue). Click on any map to see the trend for a specific county."),
       NULL
     )
     }
@@ -2443,7 +2444,7 @@ server <- function(input, output, session) {
               location_str, " for ", input$year_selector)
         # , icon("info-circle")
       ),
-      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",paste(location_str,".",sep = "")),
+      tags$h4("The geographic distribution of midlife mortality rates (ages 25-64) for ",paste(location_str,".",sep = "")),
       NULL
       )
     }
@@ -2454,7 +2455,7 @@ server <- function(input, output, session) {
         # paste0("State View: ",names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector)
         paste0(names(which(cause.list == input$death_cause)), " Midlife Mortality Rates for ", names(which(state.list == input$state_choice))," for ",input$year_selector)
       ),
-      tags$h6("The geographic distribution of midlife mortality rates (ages 25-64) for ",paste(names(which(state.list == input$state_choice)),".",sep="")),
+      tags$h4("The geographic distribution of midlife mortality rates (ages 25-64) for ",paste(names(which(state.list == input$state_choice)),".",sep="")),
       NULL
     )
     }
@@ -2471,7 +2472,7 @@ server <- function(input, output, session) {
           paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ",location_str)
           # ,icon("info-circle")
         ),
-        tags$h6("A map of ",location_str," in which each county is categorized according to level of risk."),
+        tags$h4("A map of ",location_str," in which each county is categorized according to level of risk."),
         NULL
       )
     }
@@ -2482,7 +2483,7 @@ server <- function(input, output, session) {
         paste0(names(which(cause.list == input$death_cause)), " Risk Groups for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h6("A map of ",names(which(state.list == input$state_choice))," in which each county is categorized according to level of risk."),
+      tags$h4("A map of ",names(which(state.list == input$state_choice))," in which each county is categorized according to level of risk."),
       NULL
     )
     }
@@ -2513,7 +2514,7 @@ server <- function(input, output, session) {
           style = "margin-top: 0;",
           paste0("Geographic distribution of ",input$determinant_choice," for ", names(which(state.list == input$state_choice)))
         ),
-        tags$h6("Select from the drop-down for county details or click the map."),
+        tags$h4("Select from the drop-down for county details or click the map."),
         NULL
       )
     }
@@ -2531,7 +2532,7 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h4>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h4>"),
         NULL
       )
     }
@@ -2542,7 +2543,7 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h4>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h4>"),
       NULL
     )
     }
@@ -2573,7 +2574,7 @@ server <- function(input, output, session) {
           # paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", location_str)
           paste0(input$determinant_choice, " and Risk Group Relationship for ", location_str)
         ),
-        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
+        HTML("<h4>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups.</h4>"),
         NULL
       )
     }
@@ -2584,7 +2585,7 @@ server <- function(input, output, session) {
         # paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
         paste0(input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
       ),
-      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
+      HTML("<h4>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups.</h4>"),
       NULL
     )
   }
@@ -2611,7 +2612,7 @@ server <- function(input, output, session) {
         paste0(input$determinant_choice, " and Mortality Relationship for ", names(which(state.list == input$state_choice)))
         # ,icon("info-circle")
       ),
-      tags$h5("Each dot represents a county's midlife mortality rate, factor, and risk group. Click county to see map location and name."),
+      tags$h4("Each dot represents a county's midlife mortality rate, factor, and risk group. Click county to see map location and name."),
       NULL
     )
   }
