@@ -1013,3 +1013,19 @@ width: 40px;
 .page4 a {
   text-decoration: underline;
 }
+
+.period_text:focus {
+  border: 2px;
+}
+
+#geo_mort_change2:focus {
+  padding: 1px;
+}
+
+#geo_cluster_kmean:focus {
+  padding: 1px;
+}
+
+#determinants_plot5:focus {
+  padding: 1px;
+}
