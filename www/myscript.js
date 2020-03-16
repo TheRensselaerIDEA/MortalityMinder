@@ -87,5 +87,7 @@ $(document).ready(() => {
       borderStyle: 'hidden'
     });
   });
+  
+  $("html").attr("lang", "en");
 });
 

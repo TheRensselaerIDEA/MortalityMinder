@@ -254,7 +254,7 @@
   margin-bottom: 4vh;
 }
 
-.page1_col1_heading h3{
+.page1_col1_heading h2{
   padding: 4%;
 }
 
@@ -331,7 +331,7 @@
   margin-bottom: 2vh;
 }
 
-.page2_col1_heading h3{
+.page2_col1_heading h2{
   padding: 4%;
   color:  #565254;
 }
@@ -429,7 +429,7 @@
   margin-bottom: 2vh;
 }
 
-.page3_col1_heading h3{
+.page3_col1_heading h2{
   padding: 4%;
   color:  #565254;
 }
@@ -996,4 +996,32 @@ width: 40px;
 
 #determinants_plot5 {
   height: 200px !important;
+}
+
+.page4_header {
+  text-align: center;
+}
+
+.page1 a {
+  text-decoration: underline;
+}
+
+.page3 a {
+  text-decoration: underline;
+}
+
+.page4 a {
+  text-decoration: underline;
+}
+
+.period_text:focus {
+  border: 2px;
+}
+
+.description {
+  font-size: 0.8em;
+}
+
+.small_description {
+  font-size: 0.5em;
 }
