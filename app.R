@@ -1500,7 +1500,7 @@ server <- function(input, output, session) {
       tags$a(
         "County Health Rankings",
         href = determinant.url(),
-        style = "color: #00bfc4;",
+        style = "color: #00f7ff;",
         target="_blank"
       )
     )
@@ -1513,7 +1513,7 @@ server <- function(input, output, session) {
       tags$a(
         determinant.source(),
         href = determinant.source_url(),
-        style = "color: #00bfc4;",
+        style = "color: #00f7ff;",
         target="_blank"
       )
     )
@@ -1528,7 +1528,7 @@ server <- function(input, output, session) {
     if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
       return(paste0("Kendall Correlation with ",
                     input$death_cause,
-                    " mortality: <span style=\"color:	#f8766d\"> <strong> ",
+                    " mortality: <span style=\"color:	#ffcdc9\"> <strong> ",
                     round(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor, 4),
                     "</strong> </span>"))
     }
@@ -1553,7 +1553,7 @@ server <- function(input, output, session) {
                     ")"))
     }
     else if (kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_cor >= 0) {
-      return(paste0("Statistically significant <strong> <span style=\"color:	#f8766d\">",
+      return(paste0("Statistically significant <strong> <span style=\"color:	#ffcdc9\">",
                       tolower(as.character(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$DIR)),
                       "</span> </strong> relationship with mortality (p-value = ",
                       signif(kendall.cor()[kendall.cor()$chr_code == input$determinant_choice,]$kendall_p, 2),
