@@ -18,12 +18,10 @@
 /******Framework Formatting*******/
 
 .container-fluid {
-  padding:0px;
+  padding:0;
   height:100vh;
   width:100vw;
   position:fixed;
-
-   background-color: #f7f7f7;
 }
 
 .main {
@@ -96,7 +94,6 @@
   border:0;
   border-radius:0px;
   z-index: 999;
-  background-color: #f7f7f7;
   position:fixed;
   /*top:20px;*/
   width:100%;
