@@ -45,6 +45,8 @@ ui <- fluidPage(
 
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
+  tags$html(lang = "en"),
+  tags$head(tags$title("MortalityMinder: an R-based, multi-view interactive presentation examining county-level factors associated with midlife mortality trends.")),
   tags$head(includeHTML("analytics.html")),
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
