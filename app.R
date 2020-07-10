@@ -1277,7 +1277,7 @@ server <- function(input, output, session) {
         scale_fill_manual(values = theme.categorical.colors(max(mort.cluster.ord()$cluster)))
     }
     
-  }, bg = "transparent")
+  }, bg = "transparent", alt = "A Bar plot representing the distribution of single parent households that fall into 3 risk groups, pertaining to a selected determinant")
   
   
   output$determinants_plot3 <- renderPlot({
@@ -1408,7 +1408,7 @@ server <- function(input, output, session) {
         }
       }
     }
-  }, bg = "transparent")
+  }, bg = "transparent",  alt = "A scatter plot representing the distribution of counties that fall into 3 risk groups, pertaining to a selected determinant")
 
   # Geo-plot of selected determinant for selected county
   # Based on scatterplot
@@ -1901,7 +1901,7 @@ server <- function(input, output, session) {
       }
     }
     
-  },bg="transparent")
+  },bg="transparent", alt = "Mortality Rate Trend Line Graph for a given state and a given cause of death")
   
   generate_text <- function(name, diff_pct){
     change_text <- paste0("The mortality rate \nhas ")
@@ -2152,7 +2152,7 @@ server <- function(input, output, session) {
     }
     assign("page1_infographic", line_plot, envir = .GlobalEnv)
     line_plot
-  }, bg="transparent")
+  }, bg="transparent", alt = "Mortality Rate Trend Line Graph for the selected state compared to the US")
 
   
   # Textual description box (upper-left panel, Page 1)
@@ -2925,7 +2925,7 @@ server <- function(input, output, session) {
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
       
     }
-  }, bg = "transparent")
+  }, bg = "transparent", alt = "Lollipop plot displaying the most impactful social determinants, whether protective or destructive, to a given state.")
   
   draw_border <- function(plot.name, border){
     proxy <- leafletProxy(plot.name)
