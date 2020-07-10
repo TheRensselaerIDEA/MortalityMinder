@@ -2381,7 +2381,11 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str),
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. 
+             <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Positively</span> (
+             <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Negatively</span>) correlated factors indicate potential 
+             <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Destructive</span> (
+             <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2392,7 +2396,11 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))),
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. 
+           <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Positively</span> (
+           <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Negatively</span>) correlated factors indicate potential 
+           <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Destructive</span> (
+           <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2525,7 +2533,11 @@ server <- function(input, output, session) {
           paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", location_str), 
           icon("info-circle")
         ),
-        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+        HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. 
+        <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Positively</span> (
+        <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Negatively</span>) correlated factors indicate potential 
+        <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Destructive</span> (
+        <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Protective</span>) determinants of mortality. Click dot for details.</h5>"),
         NULL
       )
     }
@@ -2536,7 +2548,11 @@ server <- function(input, output, session) {
         paste0("Factors Associated with ",names(which(cause.list == input$death_cause)), " for ", names(which(state.list == input$state_choice))), 
         icon("info-circle")
       ),
-      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. <span style='color:#f8766d'>Positively</span> (<span style='color:#00bfc4'>Negatively</span>) correlated factors indicate potential <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) determinants of mortality. Click dot for details.</h5>"),
+      HTML("<h5>Kendall Correlation between social and economic factors and mortality risk groups. 
+        <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Positively</span> (
+        <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Negatively</span>) correlated factors indicate potential 
+        <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Destructive</span> (
+        <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Protective</span>) determinants of mortality. Click dot for details.</h5>"),
       NULL
     )
     }
@@ -2567,8 +2583,11 @@ server <- function(input, output, session) {
           # paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", location_str)
           paste0(input$determinant_choice, " and Risk Group Relationship for ", location_str)
         ),
-        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift 
-             <span style='background: #f8766d; font-size: 11px; opacity: 0.7;'>&nbsp&nbsp&nbsp&nbsp</span><span>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
+        HTML("<h5>Distribution within each cluster. The middle line is the median. For 
+        <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Destructive</span> (
+        <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Protective</span>) factors, boxes will shift 
+        <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> up</span> (
+        <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> down</span>) for higher risk groups."),
         NULL
       )
     }
