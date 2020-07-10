@@ -927,7 +927,7 @@ width: 40px;
   width:100%;
 }
 
-.bootstrap-select>.dropdown-toggle.bs-placeholder {
+.bootstrap-select>.dropdown-toggle.bs-placeholder, .fp-sr-only {
   color: black;
 }
 

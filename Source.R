@@ -52,5 +52,17 @@ source("Clustering_Lib.R")
 source("Analyzer_Correlation.R")
 source("Theme.R")
 
+# Import "Hacked" shiny code
+# Recusrive import function
+sourceDir <- function(path, trace = TRUE, ...) {
+  for (nm in list.files(path, pattern = "[.][RrSsQq]$")) {
+    if(trace) cat(nm,":")
+    source(file.path(path, nm), ...)
+    if(trace) cat("\n")
+  }
+}
+
+sourceDir("shiny/R")
+
 # Set final working directory
 setwd("../www")

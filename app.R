@@ -1155,7 +1155,7 @@ server <- function(input, output, session) {
         geom_text(aes(x = 0, y = 0, label="There are no significant social determinants."))
       
     }
-  }, bg="transparent")
+  }, bg="transparent", alt = "Lollipop plot displaying the most impactful social determinants, whether protective or destructive, to a given state.")
   
   update.county.fips <- function(value) {
     if (!is.na(value) & nchar(value) == 4) {
