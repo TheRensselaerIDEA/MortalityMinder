@@ -2567,7 +2567,8 @@ server <- function(input, output, session) {
           # paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", location_str)
           paste0(input$determinant_choice, " and Risk Group Relationship for ", location_str)
         ),
-        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
+        HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift 
+             <span style='background: #f8766d; font-size: 11px; opacity: 0.7;'>&nbsp&nbsp&nbsp&nbsp</span><span>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
         NULL
       )
     }
@@ -2578,7 +2579,11 @@ server <- function(input, output, session) {
         # paste0("Factor View: ",input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
         paste0(input$determinant_choice, " and Risk Group Relationship for ", names(which(state.list == input$state_choice)))
       ),
-      HTML("<h5>Distribution within each cluster. The middle line is the median. For <span style='color:#f8766d'>Destructive</span> (<span style='color:#00bfc4'>Protective</span>) factors, boxes will shift <span style='color:#f8766d'>up</span> (<span style='color:#00bfc4'>down</span>) for higher risk groups."),
+      HTML("<h5>Distribution within each cluster. The middle line is the median. For 
+      <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Destructive</span> (
+      <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> Protective</span>) factors, boxes will shift 
+           <span style='background: #f8766d; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> up</span> (
+           <span style='background: #00bfc4; border-radius:50%;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span> down</span>) for higher risk groups."),
       NULL
     )
   }
