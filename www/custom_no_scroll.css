@@ -1025,3 +1025,8 @@ width: 40px;
 .small_description {
   font-size: 0.5em;
 }
+
+/* Fix for button height */
+.bootstrap-select.form-control {
+  height: auto !important;
+}
