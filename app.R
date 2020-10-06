@@ -3071,6 +3071,28 @@ server <- function(input, output, session) {
 
     updatePickerInput(session, "determinant_choice", selected = point$chr_code)
   })
+  
+  # Content of modal dialog 
+  query_modal <- modalDialog(
+    title = "Welcome to MORTALITYMINDER",
+    "WARNING: MORTALITYMINDER represents experimental, student-created work. Reasonable
+    effort has been made to provide a safe, informative, enjoyable user experience, but
+    some MORTALITYMINDER features may not comply with Web Content Accessibility Guidelines (WCAG).
+    USE AT YOUR OWN RISK.",
+    easyClose = F,
+    footer = tagList(
+      actionButton("run", "Continue with MORTALITYMINDER app")
+    )
+  )
+  
+  # Creates modal dialog
+  showModal(query_modal)
+  
+  # Removes modal
+  observeEvent(input$run, {
+    removeModal()
+  })
+  
 }
 
 shinyApp(ui = ui, server = server)
