@@ -1,7 +1,7 @@
 setwd("init")
 source("Curl_fixer.R")
-#source("Librarian.R")
-source("Librarian_deploy.R")
+source("Librarian.R")
+#source("Librarian_deploy.R")
 library(withr)
 library(stringdist)
 # Separated out function definitions 10/01/2019
