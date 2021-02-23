@@ -208,7 +208,8 @@ draw.geo.cluster <- function(state.choice, death.cause, mort.cluster, n_clusters
   dataset <- geo.map.fetch(state.choice, mort.cluster) %>% 
     dplyr::rename(VAR_ = cluster)
   lat_long <- getLatLong(state.choice, dataset)
-  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  myWd <- getwd()
+  shapes <- readRDS(paste(myWd, "/shape_files/", state.choice, ".Rds", sep = ""))
   
   colors <- rev(theme.categorical.colors(n_clusters))
   labels <- c("Low", "Medium", "High")
@@ -287,7 +288,9 @@ draw.sd.geo <- function(sd.rates, state.choice, death.cause) {
   dataset <- geo.map.fetch(state.choice, sd.rates) %>% 
     dplyr::rename(VAR_ = rate)
   lat_long <- getLatLong(state.choice, dataset)
-  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  
+  myWd <- getwd()
+  shapes <- readRDS(paste(myWd, "/shape_files/", state.choice, ".Rds", sep = ""))
   
   # colors <- theme.categorical.colors(n_clusters)
   # labels <- c("Low", "Medium", "High")
@@ -567,7 +570,8 @@ geo.plot <- function(state.choice, death.cause, mort.data, period) {
     dplyr::rename(VAR_ = death_rate)
   lat_long <- getLatLong(state.choice, dataset)
   
-  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  myWd <- getwd()
+  shapes <- readRDS(paste(myWd, "/shape_files/", state.choice, ".Rds", sep = ""))
   
   # These only make sense for categorical!
   colors <- c("#faebeb", "#ffc4c4", "#ff8f8f", "#ff5454", "#ff1414", "#a80000", "#450000", "#000000")
@@ -691,7 +695,8 @@ geo.sd.plot <- function(state.choice, sd.choice, sd.data, period, legend_title="
     dplyr::rename(county_name = county_name.y)
   lat_long <- getLatLong(state.choice, dataset)
   
-  shapes <- readRDS(paste("../shape_files/", state.choice, ".Rds", sep = ""))
+  myWd <- getwd()
+  shapes <- readRDS(paste(myWd, "/shape_files/", state.choice, ".Rds", sep = ""))
   
   dataset <- dataset %>% dplyr::distinct(county_name, county_fips, VAR_)
   shapes.data <- as.data.frame(shapes)

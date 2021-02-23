@@ -8,6 +8,8 @@
 #   Advisors: Kristin Bennett, John Erickson, Karan Bhanot
 #   The Rensselaer Institute for Data Exploration & Applications (IDEA)
 
+myWd <- getwd()
+
 source("Source.R")
 deps <- list("topojson.min.js", 
              htmlDependency(name = "d3-scale-chromatic",
@@ -598,7 +600,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
-      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
+      assign("state_map", readRDS(paste(myWd, "/shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
         state_abbr == input$state_choice,
@@ -628,7 +630,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
-      assign("state_map", readRDS(paste("../shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
+      assign("state_map", readRDS(paste(myWd, "/shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.unimputed.data %>% dplyr::filter(
         death_cause == input$death_cause,
         state_abbr == input$state_choice,
@@ -1062,16 +1064,16 @@ server <- function(input, output, session) {
   
   output$national_map<-renderUI({
     if(input$death_cause == "Despair"){
-      includeScript(path = "Despair.js")
+      includeScript(path = "./www/Despair.js")
     }
     else if(input$death_cause == "Cancer"){
-      includeScript(path = "Cancer.js")
+      includeScript(path = "./www/Cancer.js")
     }
     else if(input$death_cause == "Cardiovascular"){
-      includeScript(path = "Cardio.js")
+      includeScript(path = "./www/Cardio.js")
     }
     else if(input$death_cause == "All Cause"){
-      includeScript(path = "All.js")
+      includeScript(path = "./www/All.js")
     }
   })
   
