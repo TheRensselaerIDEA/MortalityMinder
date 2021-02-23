@@ -634,7 +634,8 @@ saveRDS(selected_SDs_final, "reduced.chr.list.rds")
 reduced.chr.list <- readRDS("reduced.chr.list.rds")
 reduced.chr.list <- append(reduced.chr.list, "county_fips", after = 0)
 chr.data.2019_fewer_SDs <- chr.data.2019 %>%
-  as_data_frame %>%
+  # as_data_frame %>%   # JSE 23-Feb-2021 (depreciated)
+as_tibble %>% 
   select(reduced.chr.list)
 head(chr.data.2019_fewer_SDs)
 

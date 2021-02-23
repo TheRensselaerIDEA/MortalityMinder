@@ -10,8 +10,9 @@
 
 myWd <- getwd()
 
-source("Source.R")
-deps <- list("topojson.min.js", 
+source("./Source.R")  ## Be careful; Source.R dinks around with the wd...
+
+deps <- list("topojson.min.js", ## assumes wd is www
              htmlDependency(name = "d3-scale-chromatic",
                             version = "1.3.3",
                             src = list(href = "https://d3js.org/"),
@@ -47,7 +48,7 @@ ui <- fluidPage(
 
   useShinyjs(),
   extendShinyjs(text = jscode, functions = c("nextpage")),
-  tags$head(includeHTML("analytics.html")),
+  tags$head(includeHTML("analytics.html")),  ## All of these assume wd is www!
   tags$head(includeCSS("custom_no_scroll.css")),
   tags$head(includeCSS("jquery-ui.min.css")),
   tags$head(includeCSS("fullpage.css")),

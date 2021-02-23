@@ -16,10 +16,12 @@ final.determinants <- SocialDeterminants[SocialDeterminants$Keep == 1,]["Code"]
 final.determinants <- append(final.determinants$Code, "county_fips", after = 0)
 
 # Load all data
+getwd()
 chr.data.2019 <- readRDS("../init/chr.data.2019.rds")
 chr.data.2019 <- chr.data.2019 %>%
-  as_data_frame %>%
-  select(final.determinants)
+  # as_data_frame %>%    # JSE 23-Feb-2021 (depreciated)
+  as_tibble %>% 
+  select(all_of(final.determinants))
 
 # Load name map and its inverse
 chr.namemap.2019 <- SocialDeterminants %>% select("Code", "Name")
