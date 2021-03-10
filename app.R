@@ -1064,17 +1064,18 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------------
   
   output$national_map<-renderUI({
+    #browser()
     if(input$death_cause == "Despair"){
-      includeScript(path = "./www/Despair.js")
+      includeScript(path = paste0(myWd, "/www/Despair.js"))
     }
     else if(input$death_cause == "Cancer"){
-      includeScript(path = "./www/Cancer.js")
+      includeScript(path = paste0(myWd, "/www/Cancer.js"))
     }
     else if(input$death_cause == "Cardiovascular"){
-      includeScript(path = "./www/Cardio.js")
+      includeScript(path = paste0(myWd, "/www/Cardio.js"))
     }
     else if(input$death_cause == "All Cause"){
-      includeScript(path = "./www/All.js")
+      includeScript(path = paste0(myWd, "/www/All.js"))
     }
   })
   
