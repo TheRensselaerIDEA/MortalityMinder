@@ -32,7 +32,8 @@ LIBS_ANALYSIS <- c(
 # All libraries for build the shiny-d3 app should be listed below
 #   - e.g. `shiny`
 LIBS_SHINYAPP <- c(
-  "shiny", "shinythemes", "shinyWidgets", "shinydashboard", 
+#  "shiny", "shinythemes", "shinyWidgets", "shinydashboard", 
+  "shinythemes", "shinyWidgets", "shinydashboard", 
   "r2d3", "RColorBrewer", "viridis", "shinyjs", "grid",
   "htmltools"
 )
@@ -56,6 +57,11 @@ LIBS_ALL <- list(
   "loader" = LIBS_LOADER
 )
 
+# MortalityMinder requires old version of Shiny
+if (!require("shiny", character.only = T)) {
+  install.packages("https://cran.r-project.org/src/contrib/Archive/shiny/shiny_1.5.0.tar.gz", repos = NULL, type="source")
+  require("shiny", character.only = T)
+}
 
 # ACTUALL LOADER
 # LIBS_RC SHOULD BE NULL IF ALL PACKAGES LOADED SUCCESSFULLY
@@ -83,6 +89,7 @@ if (!require("urbnmapr", character.only = T)) {
    devtools::install_github("UrbanInstitute/urbnmapr")
   require("urbnmapr", character.only = T)
 }
+
 
 # Clean-up's
 rm(list = ls(all.names = T))
