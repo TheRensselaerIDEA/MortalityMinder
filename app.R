@@ -601,6 +601,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
+#      browser()
       assign("state_map", readRDS(paste(myWd, "/shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.data %>% dplyr::filter(
         death_cause == input$death_cause,
@@ -631,6 +632,7 @@ server <- function(input, output, session) {
         ) %>%
         dplyr::select(county_fips, death_rate)
     }else {
+      #browser()
       assign("state_map", readRDS(paste(myWd, "/shape_files/", input$state_choice, ".Rds", sep = "")), envir = .GlobalEnv)
       cdc.unimputed.data %>% dplyr::filter(
         death_cause == input$death_cause,
@@ -2023,7 +2025,7 @@ server <- function(input, output, session) {
         group_by(period) %>% 
         summarise(population = sum(population), death_num = sum(death_num)) %>%
         mutate(death_rate = death_num/population*100000, group = "United States") %>%
-        select(period, death_rate, group)
+        dplyr::select(period, death_rate, group)
       
       nation_begin <- nation_data[nation_data$period=="2000-2002",]$death_rate
       nation_end <- nation_data[nation_data$period=="2015-2017",]$death_rate
@@ -2080,7 +2082,7 @@ server <- function(input, output, session) {
                     group_by(period) %>% 
                     summarise(population = sum(population), death_num = sum(death_num)) %>%
                     mutate(death_rate = death_num/population*100000, group = input$state_choice) %>%
-                    select(period, death_rate, group)
+                    dplyr::select(period, death_rate, group)
       
       state_begin <- state_data[state_data$period=="2000-2002",]$death_rate
       state_end <- state_data[state_data$period=="2015-2017",]$death_rate
@@ -2096,7 +2098,7 @@ server <- function(input, output, session) {
                       group_by(period) %>% 
                       summarise(population = sum(population), death_num = sum(death_num)) %>%
                       mutate(death_rate = death_num/population*100000, group = "United States") %>%
-                      select(period, death_rate, group)
+                      dplyr::select(period, death_rate, group)
 
       nation_begin <- nation_data[nation_data$period=="2000-2002",]$death_rate
       nation_end <- nation_data[nation_data$period=="2015-2017",]$death_rate

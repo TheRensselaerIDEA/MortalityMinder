@@ -1,4 +1,4 @@
-setwd("init")
+setwd("./init")
 source("Curl_fixer.R")
 source("Librarian.R")
 #source("Librarian_deploy.R")
@@ -21,14 +21,16 @@ chr.data.2019 <- readRDS("../init/chr.data.2019.rds")
 chr.data.2019 <- chr.data.2019 %>%
   # as_data_frame %>%    # JSE 23-Feb-2021 (depreciated)
   as_tibble %>% 
-  select(all_of(final.determinants))
+  dplyr::select(all_of(final.determinants))
 
 # Load name map and its inverse
-chr.namemap.2019 <- SocialDeterminants %>% select("Code", "Name")
+chr.namemap.2019 <- SocialDeterminants %>% 
+  dplyr::select("Code", "Name")
 chr.namemap.2019 <- column_to_rownames(chr.namemap.2019, "Code")
 names(chr.namemap.2019)[1] <- "name"
 
-chr.namemap.inv.2019 <- SocialDeterminants %>% select("Name", "Code")
+chr.namemap.inv.2019 <- SocialDeterminants %>% 
+  dplyr::select("Name", "Code")
 chr.namemap.inv.2019 <- column_to_rownames(chr.namemap.inv.2019, "Name")
 names(chr.namemap.inv.2019)[1] <- "code"
 
